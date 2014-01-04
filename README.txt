@@ -6,10 +6,15 @@ Getting Started
 
 - cd <directory containing this file>
 
-- $VENV/bin/python setup.py develop
+- python3 setup.py develop
 
-- $VENV/bin/initialize_PlanEvent_db development.ini
+- initialize_PlanEvent_db development.ini
 
-- $VENV/bin/pserve development.ini --reload
+- pserve development.ini --reload
 
-nosetests
+To run tests
+- nosetests
+
+To run watch
+ - npm install
+ - grunt dev
