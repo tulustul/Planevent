@@ -10,8 +10,10 @@ from sqlalchemy.exc import DBAPIError
 
 import planevent.models as models
 
+
 @view_defaults(route_name='vendor', renderer='json')
 class VendorView(object):
+
     def __init__(self, request):
         self.request = request
 
@@ -31,6 +33,7 @@ class VendorView(object):
 
 @view_defaults(route_name='vendors', renderer='json')
 class VendorsView(object):
+
     def __init__(self, request):
         self.request = request
 
@@ -58,4 +61,3 @@ might be caused by one of the following things:
 After you fix the problem, please restart the Pyramid application to
 try it again.
 """
-

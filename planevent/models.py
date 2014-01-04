@@ -7,7 +7,7 @@ from sqlalchemy import (
     DateTime,
     Boolean,
     ForeignKey,
-    )
+)
 
 from sqlalchemy.ext.declarative import (
     declarative_base,
@@ -19,13 +19,14 @@ from sqlalchemy.orm import (
     sessionmaker,
     relationship,
     class_mapper,
-    )
+)
 
 from zope.sqlalchemy import ZopeTransactionExtension
 
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 
 Base = declarative_base()
+
 
 class BaseEntity(AbstractConcreteBase, Base):
     id = Column(Integer, primary_key=True)
@@ -49,6 +50,7 @@ class BaseEntity(AbstractConcreteBase, Base):
 
     def deserialize(self):
         pass
+
 
 class Vendor(BaseEntity):
     __tablename__ = 'vendor'
