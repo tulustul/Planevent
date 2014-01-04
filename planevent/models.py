@@ -4,6 +4,7 @@ from sqlalchemy import (
     Integer,
     Float,
     Text,
+    DateTime,
     ForeignKey,
     )
 
@@ -21,8 +22,9 @@ DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
 
 
-class User(object):
+class User(Base):
     __tablename__ = 'user'
+    id = Column(Integer, primary_key=True)
     name = Column(Text)
 
 
@@ -36,6 +38,9 @@ class Vendor(Base):
     contacts = relationship("Contact")
     logo = Column(Integer, ForeignKey('image.id'))
     gallery = Column(Integer, ForeignKey('gallery.id'))
+    added_by = Column(Integer, ForeignKey('user.id'))
+    added_at = Column(DateTime)
+    updated_at = Column(DateTime)
 
 
 class Address(Base):
