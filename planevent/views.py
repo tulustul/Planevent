@@ -1,46 +1,47 @@
 import json
 
 from pyramid.response import Response
-from pyramid.view import view_config
+from pyramid.view import (
+    view_config,
+    view_defaults,
+)
 
 from sqlalchemy.exc import DBAPIError
 
-from .models import (
-    DBSession,
-    )
+import planevent.models as models
 
-@view_config(route_name='fakeData')
-def fakeDataView(request):
-    return Response(
-        json.dumps([
-            {
-                'type': 'point',
-                'coords': [20, 50],
-                'text': 'ALA',
-            },
-            {
-                'type': 'point',
-                'coords': [100, 10],
-                'text': 'xcvxcv',
-            },
-            {
-                'type': 'point',
-                'coords': [-20, 0],
-                'text': 'sdsdf',
-            },
-        ]),
-        content_type='application/json',
-        status_int=200
-    )
+@view_defaults(route_name='vendor', renderer='json')
+class VendorView(object):
+    def __init__(self, request):
+        self.request = request
 
-@view_config(route_name='home', renderer='../templates/index.pt')
-def my_view(request):
-    # try:
-    #     one = DBSession.query(MyModel).filter(MyModel.name == 'one').first()
-    # except DBAPIError:
-    #     return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    # return {'one': one, 'project': 'PlanEvent'}
-    pass
+    @view_config(request_method='GET')
+    def get(self):
+        id = self.request.matchdict['id']
+        return models.DBSession.query(models.Vendor).get(id)
+
+    @view_config(request_method='POST')
+    def post(self):
+        return Response('post')
+
+    @view_config(request_method='DELETE')
+    def delete(self):
+        return Response('delete')
+
+
+@view_defaults(route_name='vendors', renderer='json')
+class VendorsView(object):
+    def __init__(self, request):
+        self.request = request
+
+    @view_config(request_method='GET')
+    def get(self):
+        return models.DBSession.query(models.Vendor).all()
+
+    @view_config(request_method='POST')
+    def post(self):
+        return Response('post')
+
 
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
