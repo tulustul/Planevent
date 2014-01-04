@@ -39,7 +39,7 @@ def my_view(request):
         # one = DBSession.query(MyModel).filter(MyModel.name == 'one').first()
     except DBAPIError:
         return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {'one': one, 'project': 'HistoryAtlas'}
+    return {'one': one, 'project': 'PlanEvent'}
 
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
