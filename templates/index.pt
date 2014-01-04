@@ -1,0 +1,19 @@
+<html ng-app="PlanEvent">
+<head>
+    <title>Plan Event</title>
+
+    <script type="text/javascript" src="static/vendor.js"></script>
+
+    <script type="text/javascript">
+        var planevent = angular.module('PlanEvent', ['ui.bootstrap', 'ngAnimate', 'ngRoute']);
+    </script>
+
+    <script type="text/javascript" src="static/app.js"></script>
+
+    <link rel="stylesheet" href="static/vendor.css" />
+    <link rel="stylesheet" href="static/main.css" />
+</head>
+<body ng-controller="MasterPageController">
+    <!-- TODO -->
+</body>
+</html>

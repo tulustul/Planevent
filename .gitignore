@@ -1,0 +1,13 @@
+__pycache__
+*.pyc
+.sass-cache
+PlanEvent.egg-info
+tmp
+lib
+node_modules
+static/app.js
+static/vendor.js
+static/main.css
+static/vendor.css
+PlanEvent.sublime-project
+PlanEvent.sublime-workspace
