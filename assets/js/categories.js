@@ -1,18 +1,15 @@
-var lastCategoryId = 0;
-
-function makeCategory(icon) {
-    lastCategoryId += 1;
+function makeCategory(name, icon) {
     return {
-        id: lastCategoryId,
+        name: name,
         iconPath: '/static/images/icons/' + icon
     };
 }
 
-var categories = {
+var categories = [
     // add categories only to the end of the list
-    'Hotele': makeCategory('question.png'),
-    'Catering': makeCategory('question.png'),
-    'Transport': makeCategory('question.png'),
-    'Sale': makeCategory('question.png'),
-    'Sport': makeCategory('question.png')
-};
+    makeCategory('Hotele', 'question.png'),
+    makeCategory('Catering', 'question.png'),
+    makeCategory('Transport', 'question.png'),
+    makeCategory('Sale', 'question.png'),
+    makeCategory('Sport', 'question.png')
+];

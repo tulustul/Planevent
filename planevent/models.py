@@ -1,3 +1,5 @@
+import transaction
+
 from sqlalchemy import (
     Column,
     Index,
@@ -31,6 +33,28 @@ Base = declarative_base()
 class BaseEntity(AbstractConcreteBase, Base):
     id = Column(Integer, primary_key=True)
 
+    @classmethod
+    def query(cls):
+         return DBSession.query(cls)
+
+    @classmethod
+    def all(cls):
+         return DBSession.query(cls).all()
+
+    @classmethod
+    def get(cls, id_):
+         return DBSession.query(cls).get(id_)
+
+    def delete(self):
+        # TODO
+        pass
+
+    def save(self):
+        with transaction.manager:
+            if self.id is None:
+                DBSession.add(self)
+        # DBSession.commit()
+
     def __json__(self, request):
         return self.serialize()
 
@@ -48,8 +72,31 @@ class BaseEntity(AbstractConcreteBase, Base):
             result[relation] = child
         return result
 
-    def deserialize(self):
-        pass
+    def deserialize(self, dict_):
+        if dict_ is None:
+            return
+
+        mapper = class_mapper(self.__class__)
+        columns = [c.key for c in mapper.columns if not c.foreign_keys]
+        relationships = [c for c in mapper.relationships]
+
+        for column in columns:
+            if column in dict_.keys():
+                setattr(self, column, dict_[column])
+
+        for relation in relationships:
+            if relation.key in dict_.keys():
+                child_dict = dict_[relation.key]
+                if isinstance(child_dict, list):
+                    for subchild in child_dict:
+                        child = relation.mapper.class_()
+                        child.deserialize(subchild)
+                        getattr(self, relation.key).append(child)
+                else:
+                    child = relation.mapper.class_()
+                    child.deserialize(child_dict)
+                    setattr(self, relation.key, child)
+        return self
 
 
 class Vendor(BaseEntity):
@@ -62,12 +109,11 @@ class Vendor(BaseEntity):
 
     address_id = Column(Integer, ForeignKey('address.id'))
     logo_id = Column(Integer, ForeignKey('image.id'), nullable=True)
-    gallery_id = Column(Integer, ForeignKey('gallery.id'))
 
     contacts = relationship("Contact")
     address = relationship("Address")
     logo = relationship("Image")
-    gallery = relationship("Gallery")
+    gallery = relationship("ImageGallery")
 
 
 class Address(BaseEntity):
@@ -76,7 +122,7 @@ class Address(BaseEntity):
     second_line = Column(Text)
     longitude = Column(Float)
     latitude = Column(Float)
-    validated = Column(Boolean)
+    validated = Column(Boolean, default=False)
 
 
 class Contact(BaseEntity):
@@ -89,10 +135,10 @@ class Contact(BaseEntity):
 
 class Image(BaseEntity):
     __tablename__ = 'image'
-    gallery_id = Column(Integer, ForeignKey('gallery.id'), nullable=True)
     path = Column(Text)
 
 
-class Gallery(BaseEntity):
-    __tablename__ = 'gallery'
-    images = relationship("Image")
+class ImageGallery(BaseEntity):
+    __tablename__ = 'image_gallery'
+    path = Column(Text)
+    vendor_id = Column(Integer, ForeignKey('vendor.id'))
