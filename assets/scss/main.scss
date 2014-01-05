@@ -1,0 +1,55 @@
+#container {
+    width: 100%;
+    background: white;
+    border: 1px solid;
+
+    #wrapper {
+        margin: 0px auto;
+        width: 800px;
+    }
+}
+
+section#vendor {
+    background: azure;
+    border: 1px solid;
+    margin: 10px;
+    padding: 10px;
+}
+
+.vendor-preview {
+    height: 140px;
+    background: azure;
+    border: 1px solid;
+    margin: 5px 0px;
+    padding: 0px 5px 0px 0px;
+    overflow: hidden;
+
+    &:hover {
+        background: aquamarine;
+    }
+
+    img {
+        width: 130px;
+        margin-top: 10px;
+        float: left;
+    }
+
+    h2 {
+        font-size: 22px;
+        white-space: nowrap;
+        overflow: hidden;
+        padding: 0px;
+        margin: 0px;
+    }
+
+    h3 {
+        font-size: 16px;
+        margin-top: -18px;
+        padding: 0px;
+    }
+
+    p {
+        font-size: 13px;
+        margin-top: -12px;
+    }
+}

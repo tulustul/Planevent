@@ -1,0 +1,19 @@
+<section id="vendor">
+    <a href="/">Do listy</a>
+
+    <h2>{{ vendor.name }}</h2>
+    <img src="{{ vendor.logo.path }}" alt="vendor logo">
+    <p>{{ vendor.description }}</p>
+
+    <span>
+        {{ vendor.address.street }},
+        {{ vendor.address.city }}
+        {{ vendor.address.postal_code }}
+    </span>
+
+    <h5>Dodano: {{ vendor.added_at }}</h5>
+
+    <li ng-repeat="contact in vendor.contacts">
+        {{ contact.value }} - {{ contact.description }}
+    </li>
+</section>

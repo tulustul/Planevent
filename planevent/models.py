@@ -118,8 +118,9 @@ class Vendor(BaseEntity):
 
 class Address(BaseEntity):
     __tablename__ = 'address'
-    first_line = Column(Text)
-    second_line = Column(Text)
+    street = Column(Text)
+    city = Column(Text)
+    postal_code = Column(Text)
     longitude = Column(Float)
     latitude = Column(Float)
     validated = Column(Boolean, default=False)

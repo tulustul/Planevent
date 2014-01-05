@@ -15,6 +15,11 @@ class View(object):
         self.request = request
 
 
+@view_config(route_name='home', renderer='../templates/index.pt')
+def home_view(request):
+    return {}
+
+
 @view_defaults(route_name='vendor', renderer='json')
 class VendorView(View):
 

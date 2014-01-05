@@ -1,5 +1,5 @@
 addresses = {
-    'first_lines': [
+    'streets': [
         'Zgodna 2/3',
         'Krówki 5/8',
         'Dziady 1/1',
@@ -7,13 +7,13 @@ addresses = {
         'Dziewki 9',
         'Lemoniady 42',
     ],
-    'second_lines': [
-        'Wrocław 12-123',
-        'Kraków 22-123',
-        'Łódź 12-345',
-        'Warszawa 34-345',
-        'Szczecin 66-345',
-        'Kalisz 18-254',
+    'cities': [
+        'Wrocław',
+        'Kraków',
+        'Łódź',
+        'Warszawa',
+        'Szczecin',
+        'Kalisz',
     ],
 }
 

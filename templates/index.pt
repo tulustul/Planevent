@@ -2,10 +2,12 @@
 <head>
     <title>Plan Event</title>
 
+    <meta charset="utf-8">
+
     <script type="text/javascript" src="static/vendor.js"></script>
 
     <script type="text/javascript">
-        var planevent = angular.module('PlanEvent', ['ui.bootstrap', 'ngAnimate', 'ngRoute']);
+        var planevent = angular.module('PlanEvent', ['ui.bootstrap', 'ngAnimate', 'ngRoute', 'ngResource']);
     </script>
 
     <script type="text/javascript" src="static/app.js"></script>
@@ -14,8 +16,11 @@
     <link rel="stylesheet" href="static/main.css" />
 </head>
 <body>
-    <p>ASDAS</p>
+    <div id="container">
+        <div id="wrapper" ng-view></div>
+    </div>
+    <!-- <p>ASDAS</p>
     <input type="text" ng-model="test" />
-    <p>{{ test }}</p>
+    <p>{{ test }}</p> -->
 </body>
 </html>

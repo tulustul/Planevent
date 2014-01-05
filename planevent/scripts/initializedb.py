@@ -25,15 +25,17 @@ def usage(argv):
 
 def create_test_address():
     address = models.Address()
-    address.first_line = random.choice(testdata.addresses['first_lines'])
-    address.second_line = random.choice(testdata.addresses['second_lines'])
+    address.street = random.choice(testdata.addresses['streets'])
+    address.city = random.choice(testdata.addresses['cities'])
+    address.postal_code = str(random.randrange(10,100)) + '-' + \
+        str(random.randrange(100, 1000))
     address.latitude = 0
     address.longitude = 0
     return address
 
 def create_test_logo():
     image = models.Image()
-    image.path = '/static/pyramid.png'
+    image.path = '/static/images/icons/question.png'
     return image
 
 def create_test_gallery(vendor, quantity):

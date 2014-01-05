@@ -54,7 +54,7 @@ module.exports = function(grunt) {
     },
 
     ngtemplates: {
-      Atlas: {
+      PlanEvent: {
          options:    {
            base: 'assets/partials',
            htmlmin: {}
