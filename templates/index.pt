@@ -7,7 +7,9 @@
     <script type="text/javascript" src="static/vendor.js"></script>
 
     <script type="text/javascript">
-        var planevent = angular.module('PlanEvent', ['ui.bootstrap', 'ngAnimate', 'ngRoute', 'ngResource']);
+        var planevent = angular.module('PlanEvent',
+        ['ui.bootstrap', 'ngAnimate', 'ngRoute', 'ngResource',
+        'infinite-scroll']);
     </script>
 
     <script type="text/javascript" src="static/app.js"></script>
@@ -17,10 +19,7 @@
 </head>
 <body>
     <div id="container">
-        <div id="wrapper" ng-view></div>
+        <div class="wrapper" ng-view></div>
     </div>
-    <!-- <p>ASDAS</p>
-    <input type="text" ng-model="test" />
-    <p>{{ test }}</p> -->
 </body>
 </html>
