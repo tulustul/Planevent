@@ -18,8 +18,12 @@
     <link rel="stylesheet" href="static/main.css" />
 </head>
 <body>
-    <div id="container">
-        <div class="wrapper" ng-view></div>
+    <div id="container" ng-controller="MainPageController">
+        <div id="wrapper">
+            <div ng-include="categoriesView"></div><br />
+            <div class="clear"></div>
+            <div id="view" ng-view></div>
+        </div>
     </div>
 </body>
 </html>

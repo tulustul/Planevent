@@ -39,11 +39,12 @@ class VendorsView(View):
     @view_config(request_method='GET')
     @param('offset', int, required=True)
     @param('limit', int, required=True)
-    def get(self, limit, offset):
-        return models.Vendor.query()\
-            .limit(limit)\
-            .offset(offset)\
-            .all()
+    @param('category', int, required=True)
+    def get(self, category, limit, offset):
+        query = models.Vendor.query()
+        if category != 0:
+            query = query.filter(models.Vendor.category==category)
+        return query.limit(limit).offset(offset).all()
 
     @view_config(request_method='POST')
     @param('vendor', models.Vendor, required=True)

@@ -1,0 +1,8 @@
+<section id="categories" ng-controller="CategoriesController">
+    <li ng-class="{ selected: selectedCategoryId == i }" ng-repeat="(i, category) in categories" ng-click="searchCategory(i)">
+        <img src="{{ category.iconPath }}" alt="Category icon">
+        <h6>{{category.name }}</h6>
+    </li>
+
+    <a id="addVendor" href="#/addVendor">Dodaj firmę</a>
+</section>
