@@ -125,17 +125,19 @@ planevent.controller('VendorAddEditController',
                 $scope.locationComplete = true;
             }
             $scope.validatingLocation = true;
-            addressString = address.street + ' ' + address.city + ' ' + address.postal_code;
+            addressString = address.street + ' ' + address.postal_code + ' ' + address.city;
             geocoder = new google.maps.Geocoder();
             geocoder.geocode({'address': addressString},
                 function(results, status) {
                     $scope.validatingLocation = false;
                     if (status == google.maps.GeocoderStatus.OK) {
                         var location = results[0].geometry.location;
-                        address.latitude = location.ob;
-                        address.longitude = location.nb;
+                        address.latitude = location.nb;
+                        address.longitude = location.ob;
                         address.validated = true;
                     } else {
+                        address.latitude = 0;
+                        address.longitude = 0;
                         address.validated = false;
                     }
                     $scope.$apply();

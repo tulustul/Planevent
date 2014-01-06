@@ -66,8 +66,8 @@ html {
 }
 
 .address-viewer {
-    width: 200px;
-    height: 200px;
+    width: 230px;
+    height: 230px;
 }
 
 $create-edit-navigation-height: 60px;
@@ -94,6 +94,21 @@ article#create-edit {
 
         &.ng-enter-active {
             opacity: 1;
+        }
+
+        #address-form {
+
+            #address-incorrect {
+                color: red;
+            }
+
+            #address-correct {
+                color: green;
+            }
+
+            #validating-address {
+                color: gray;
+            }
         }
     }
 

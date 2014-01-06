@@ -18,7 +18,7 @@
         {{ contact.value }} - {{ contact.description }}
     </li>
 
-    <addressviewer latitude="vendor.address.latitude", longitude="vendor.address.longitude"></addressviewer>
+    <addressviewer ng-model="vendor.address" />
 
     <a href="#/vendorAddEdit/{{ vendor.id }}">Edytuj</a>
 </section>

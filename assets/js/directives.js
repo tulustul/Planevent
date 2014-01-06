@@ -1,29 +1,41 @@
 planevent.directive('addressviewer', function() {
     return {
         restrict: 'EA',
-        // require: 'longitude, latitude',
-        // scope: {
-        //   ngModel: '='
-        // },
+        require: '^ngModel',
         templateUrl: 'assets/partials/directives/addressViewer.html',
         link: function(scope, element, attrs) {
             function updateMap() {
-                var latitude = scope.$eval(attrs.latitude);
-                var longitude = scope.$eval(attrs.longitude);
+                var address = scope.$eval(attrs.ngModel);
+
+                if (address && address.validated) {
+                    var position = new google.maps.LatLng(
+                            address.latitude, address.longitude);
+                    var zoom = 13;
+                } else {
+                    var position = new google.maps.LatLng(52, 19);
+                    var zoom = 5;
+                }
 
                 var mapOptions = {
-                    center: new google.maps.LatLng(
-                        latitude, longitude),
-                    zoom: 10
+                    center: position,
+                    zoom: zoom
                 };
-                var mapElement = $(element, '.address-viewer');
+
+                var mapElement = $('.address-viewer', element)[0];
                 var map = new google.maps.Map(mapElement, mapOptions);
+
+                if (address.validated) {
+                    var marker = new google.maps.Marker({
+                        position: mapOptions.center,
+                        map: map,
+                        title: address.street + ', ' + address.city
+                    });
+                }
             }
 
-            updateMap();
-
-            scope.$watch(latitude, updateMap);
-            scope.$watch(longitude, updateMap);
+            scope.$watchCollection(
+                '[vendor.address.longitude, vendor.address.latitude]',
+                updateMap);
         }
     }
 });
