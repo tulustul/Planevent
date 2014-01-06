@@ -24,9 +24,9 @@ planevent.controller('MainPageController', ['$scope',
 ]);
 
 planevent.controller('CategoriesController',
-        ['$scope', '$location', '$rootScope', 'CategoriesService',
-    function($scope, $location, $rootScope, categoriesService) {
-        $scope.categories = categoriesService.categories;
+        ['$scope', '$location', '$rootScope', 'globalsService',
+    function($scope, $location, $rootScope, globalsService) {
+        $scope.categories = globalsService.categories;
         $rootScope.selectedCategoryId = 0;
 
         $scope.searchCategory = function(categoryId) {
@@ -77,20 +77,22 @@ planevent.controller('VendorListController',
 }]);
 
 planevent.controller('VendorPageController',
-        ['$scope', '$resource', '$routeParams', 'CategoriesService',
-        function($scope, $resource, $routeParams, categoriesService) {
+        ['$scope', '$resource', '$routeParams', 'globalsService',
+        function($scope, $resource, $routeParams, globalsService) {
     var Vendor = $resource('/api/vendor/:id');
     $scope.vendor = Vendor.get({id: $routeParams.vendorId});
-    $scope.categories = categoriesService.categories;
+    $scope.categories = globalsService.categories;
 
 }]);
 
 planevent.controller('VendorAddEditController',
-    ['$scope', '$resource', '$routeParams', '$location', 'CategoriesService',
-    function($scope, $resource, $routeParams, $location, categoriesService) {
+    ['$scope', '$resource', '$routeParams', '$location', 'globalsService',
+    function($scope, $resource, $routeParams, $location, globalsService) {
 
         $scope.locationComplete = false;
         $scope.validatingLocation = false;
+        $scope.categories = globalsService.categories;
+        $scope.contactTypes = globalsService.contactTypes;
 
         if ($routeParams.vendorId == undefined) {
             $scope.vendor = {}
@@ -101,7 +103,6 @@ planevent.controller('VendorAddEditController',
                 $scope.locationComplete = address.city && address.street;
             });
         }
-        $scope.categories = categoriesService.categories;
 
         $scope.goTo = function(section) {
             $scope.step = section;
@@ -145,23 +146,44 @@ planevent.controller('VendorAddEditController',
             );
         }
 
+        $scope.addContact = function() {
+            var contacts = $scope.vendor.contacts;
+            if (contacts == undefined) {
+                contacts = $scope.vendor.contacts = [];
+            }
+            contacts[contacts.length] = {};
+        }
+
+        $scope.removeContact = function(contactNo) {
+            $scope.vendor.contacts.splice(contactNo, 1);
+        }
+
         $scope.goTo('info');
     }
 ]);
 
-planevent.factory('CategoriesService', function($routeParams) {
+planevent.factory('globalsService', function($routeParams) {
 
-    var lastId = -1;
+    var lastCategoryId = -1;
     function makeCategory(name, icon, bindable) {
         if (bindable == undefined) {
             bindable = true;
         }
-        lastId += 1;
+        lastCategoryId += 1;
         return {
-            id: lastId,
+            id: lastCategoryId,
             name: name,
             iconPath: '/static/images/icons/' + icon,
             bindable: bindable
+        };
+    }
+
+    var lastContactTypeId = 0;
+    function makeContactType(name) {
+        lastContactTypeId += 1;
+        return {
+            id: lastContactTypeId,
+            name: name
         };
     }
 
@@ -175,6 +197,13 @@ planevent.factory('CategoriesService', function($routeParams) {
             makeCategory('Sport', 'question.png'),
             makeCategory('Inne', 'question.png')
         ],
+        contactTypes: [
+            makeContactType('www'),
+            makeContactType('email'),
+            makeContactType('tel'),
+            makeContactType('fax'),
+            makeContactType('facebook')
+        ]
     };
     return service;
 });

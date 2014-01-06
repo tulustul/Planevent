@@ -145,7 +145,7 @@ contacts = [
             'zzz@azzzzzz.zad',
         ],
     },
-    {#email
+    {#tel
         'type': 3,
         'values': [
             '132-132-132',
