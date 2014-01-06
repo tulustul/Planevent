@@ -1,5 +1,5 @@
 <section id="vendor">
-    <a href="/">Do listy</a>
+    <a href="#/vendors/{{ selectedCategoryId }}">Do listy</a>
 
     <h2>{{ vendor.name }}</h2>
     <img src="{{ vendor.logo.path }}" alt="vendor logo">
@@ -17,4 +17,8 @@
     <li ng-repeat="contact in vendor.contacts">
         {{ contact.value }} - {{ contact.description }}
     </li>
+
+    <addressviewer latitude="vendor.address.latitude", longitude="vendor.address.longitude"></addressviewer>
+
+    <a href="#/vendorAddEdit/{{ vendor.id }}">Edytuj</a>
 </section>

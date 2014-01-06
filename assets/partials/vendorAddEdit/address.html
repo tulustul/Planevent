@@ -1,0 +1,16 @@
+Ulica i numer: <input type="text" ng-model="vendor.address.street" ng-blur="validateAddress()"><br />
+Miasto: <input type="text" ng-model="vendor.address.city" ng-blur="validateAddress()"><br />
+Kod pocztowy: <input type="text" ng-model="vendor.address.postal_code" ng-blur="validateAddress()"><br />
+
+<div ng-show="locationComplete">
+    <span ng-show="validatingLocation">Walidowanie adresu...</span>
+    <div ng-show="!validatingLocation">
+        <span ng-show="vendor.address.validated">Adres poprawny</span>
+        <span ng-show="!vendor.address.validated">Adres niepoprawny</span>
+    </div>
+</div>
+
+<!-- <addressViewer ng-model="vendor.address" /> -->
+
+<button ng-click="goTo('basic')">Wstecz</button>
+<button ng-click="goTo('logo')">Dalej</button>

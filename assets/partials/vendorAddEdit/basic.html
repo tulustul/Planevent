@@ -1,0 +1,6 @@
+Nazwa: <input type="text" ng-model="vendor.name"><br />
+Kategoria: <select ng-model="vendor.category" ng-options="c.id as c.name for c in categories | filter:{bindable: true}">
+</select><br />
+Opis: <textarea ng-model="vendor.description"></textarea><br />
+<button ng-click="goTo('info')">Wstecz</button>
+<button ng-click="goTo('address')">Dalej</button>

@@ -65,6 +65,60 @@ html {
     clear: both;
 }
 
+.address-viewer {
+    width: 200px;
+    height: 200px;
+}
+
+$create-edit-navigation-height: 60px;
+article#create-edit {
+    background: azure;
+    border: 1px solid;
+
+    section {
+
+        &.ng-leave {
+            @include transition(0.5s);
+            opacity: 1;
+        }
+
+        &.ng-enter {
+            @include transition(0.5s);
+            @include transition-delay(0.5s);
+            opacity: 0;
+        }
+
+        &.ng-leave-active {
+            opacity: 0;
+        }
+
+        &.ng-enter-active {
+            opacity: 1;
+        }
+    }
+
+    #navigation {
+        height: $create-edit-navigation-height;
+
+        li {
+            float: left;
+            width: 100px;
+            margin: 0px 5px;
+            background: green;
+            cursor: pointer;
+            height: $create-edit-navigation-height;
+
+            &:hover {
+                background: red;
+            }
+
+            &.selected {
+                background: red;
+            }
+        }
+    }
+}
+
 section#categories {
     margin-top: 5px;
 

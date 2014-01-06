@@ -47,7 +47,7 @@ class VendorsView(View):
         return query.limit(limit).offset(offset).all()
 
     @view_config(request_method='POST')
-    @param('vendor', models.Vendor, required=True)
+    @param('vendor', models.Vendor, body=True, required=True)
     def post(self, vendor):
         now = datetime.datetime.now()
         if not vendor.added_at:
@@ -55,4 +55,4 @@ class VendorsView(View):
         else:
             vendor.updated_at = now
         vendor.save()
-        return Response(['saved', {'id': vendor.id}])
+        return vendor

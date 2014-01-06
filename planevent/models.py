@@ -50,10 +50,11 @@ class BaseEntity(AbstractConcreteBase, Base):
         pass
 
     def save(self):
-        with transaction.manager:
-            if self.id is None:
-                DBSession.add(self)
-        # DBSession.commit()
+        if self.id is None:
+            DBSession.add(self)
+        else:
+            DBSession.merge(self)
+        DBSession.flush()
 
     def __json__(self, request):
         return self.serialize()

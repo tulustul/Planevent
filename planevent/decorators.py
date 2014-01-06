@@ -3,12 +3,15 @@ import json
 
 from planevent.models import BaseEntity
 
-def param(name, type_, rest=False, required=False):
+def param(name, type_, body=False, rest=False, required=False):
     def decorator(mth):
         @wraps(mth)
         def wrap(self, *args, **kwargs):
-            params = self.request.matchdict if rest else self.request.params
-            param_value = params.get(name)
+            if body:
+                param_value = self.request.body.decode("utf-8")
+            else:
+                params = self.request.matchdict if rest else self.request.params
+                param_value = params.get(name)
             if required and param_value is None:
                 raise ValueError('Missing request param: ' + name)
             if param_value:
