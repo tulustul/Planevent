@@ -18,22 +18,21 @@ planevent.controller('MainPageController', ['$scope',
 ]);
 
 planevent.controller('CategoriesController',
-        ['$scope', '$location', 'CategoriesService',
-    function($scope, $location, categoriesService) {
+        ['$scope', '$location', '$rootScope', 'CategoriesService',
+    function($scope, $location, $rootScope, categoriesService) {
         $scope.categories = categoriesService.categories;
-        $scope.selectedCategoryId = categoriesService.selectedCategoryId;
+        $rootScope.selectedCategoryId = 0;
 
         $scope.searchCategory = function(categoryId) {
-            $scope.selectedCategoryId = categoryId;
-            categoriesService.selectedCategoryId = categoryId;
+            $rootScope.selectedCategoryId = categoryId;
             $location.path('/vendors/' + categoryId);
         }
     }
 ]);
 
 planevent.controller('VendorListController',
-        ['$scope', '$resource', '$location', '$routeParams',
-        function($scope, $resource, $location, $routeParams) {
+        ['$scope', '$resource', '$location', '$routeParams', '$rootScope',
+        function($scope, $resource, $location, $routeParams, $rootScope) {
 
     var LIMIT = 15;
 
@@ -41,6 +40,8 @@ planevent.controller('VendorListController',
     $scope.waitingForMore = false;
     $scope.noMoreData = false;
     $scope.vendors = [];
+
+    $rootScope.selectedCategoryId = $routeParams.categoryId;
 
     var Vendors = $resource('/api/vendors');
 
@@ -100,8 +101,6 @@ planevent.factory('CategoriesService', function($routeParams) {
             makeCategory('Sale', 'question.png'),
             makeCategory('Sport', 'question.png')
         ],
-
-        selectedCategoryId: parseInt($routeParams.categoryId)
     };
     return service;
 });
