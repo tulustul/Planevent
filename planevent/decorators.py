@@ -1,5 +1,9 @@
+import os
 from functools import wraps
 import json
+import random
+
+from PIL import Image
 
 from planevent.models import BaseEntity
 
@@ -26,3 +30,40 @@ def param(name, type_, body=False, rest=False, required=False):
             return mth(self, param_value, *args, **kwargs)
         return wrap
     return decorator
+
+class image_upload(object):
+    def __init__(self, repo_path, size=None):
+        self.repo_path = repo_path
+        self.size = size
+
+    def prepare_unique_filename(self, filename):
+        while os.path.exists(self.repo_path + filename):
+            filename = str(random.randrange(0, 10)) + filename
+        return filename
+
+    def prepare_image(self, input_file, output_file_path):
+        image = Image.open(input_file)
+        if self.size:
+            image.thumbnail(self.size, Image.ANTIALIAS)
+        image.save(output_file_path, 'PNG')
+
+        # input_file.seek(0)
+        # while True:
+        #     data = input_file.read(2<<16)
+        #     if not data:
+        #         break
+        #     output_file.write(data)
+
+    def __call__(self, mth):
+        @wraps(mth)
+        def wrap(instance, *args, **kwargs):
+            file_upload = instance.request.POST['file']
+
+            output_file_path = self.repo_path + \
+                self.prepare_unique_filename(file_upload.filename)
+            # output_file = open(output_file_path, 'wb')
+            input_file = file_upload.file
+            self.prepare_image(input_file, output_file_path)
+
+            return mth(instance, output_file_path, *args, **kwargs)
+        return wrap

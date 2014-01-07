@@ -28,5 +28,7 @@ def main(global_config, **settings):
     config.add_route('home', '/')
     config.add_route('vendor', '/api/vendor/{id}')
     config.add_route('vendors', '/api/vendors')
+    config.add_route('image', '/api/image')
+    config.add_route('gallery', '/api/gallery')
     config.scan()
     return config.make_wsgi_app()

@@ -86,16 +86,17 @@ planevent.controller('VendorPageController',
 }]);
 
 planevent.controller('VendorAddEditController',
-    ['$scope', '$resource', '$routeParams', '$location', 'globalsService',
-    function($scope, $resource, $routeParams, $location, globalsService) {
+    ['$scope', '$resource', '$routeParams', '$location', '$upload', 'globalsService',
+    function($scope, $resource, $routeParams, $location, $upload, globalsService) {
 
         $scope.locationComplete = false;
         $scope.validatingLocation = false;
         $scope.categories = globalsService.categories;
         $scope.contactTypes = globalsService.contactTypes;
+        $scope.vendorView = 'assets/partials/vendorPage.html';
 
         if ($routeParams.vendorId == undefined) {
-            $scope.vendor = {}
+            $scope.vendor = {gallery: []};
         } else {
             var Vendor = $resource('/api/vendor/:id');
             $scope.vendor = Vendor.get({id: $routeParams.vendorId}, function() {
@@ -156,6 +157,42 @@ planevent.controller('VendorAddEditController',
 
         $scope.removeContact = function(contactNo) {
             $scope.vendor.contacts.splice(contactNo, 1);
+        }
+
+        $scope.uploadLogo = function(files) {
+            uploadImages(files, 'api/image', function(data) {
+                $scope.vendor.logo = {path: data.path};
+            });
+        }
+
+        $scope.uploadGallery = function(files) {
+            uploadImages(files, 'api/gallery', function(data) {
+                var gallery = $scope.vendor.gallery;
+                gallery[gallery.length] = {path: data.path};
+            });
+        }
+
+        function uploadImages(files, api, callback) {
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                $scope.upload = $upload.upload({
+                    url: api,
+                    method: 'POST',
+                    // data: {myObj: $scope.myModelObj},
+                    file: file,
+                    // file: $files, //upload multiple files, this feature only works in HTML5 FromData browsers
+                    /* set file formData name for 'Content-Desposition' header. Default: 'file' */
+                    //fileFormDataName: myFile,
+                    /* customize how data is added to formData. See #40#issuecomment-28612000 for example */
+                    //formDataAppender: function(formData, key, val){}
+                }).progress(function(evt) {
+                    // console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+                }).success(function(data, status, headers, config) {
+                    callback(data);
+                });
+                //.error(...)
+                //.then(success, error, progress);
+            }
         }
 
         $scope.goTo('info');

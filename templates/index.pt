@@ -12,7 +12,7 @@
     <script type="text/javascript">
         var planevent = angular.module('PlanEvent',
         ['ui.bootstrap', 'ngAnimate', 'ngRoute', 'ngResource',
-        'infinite-scroll']);
+        'infinite-scroll', 'angularFileUpload']);
     </script>
 
     <script type="text/javascript" src="static/app.js"></script>

@@ -7,7 +7,10 @@ from pyramid.view import (
 )
 
 import planevent.models as models
-from planevent.decorators import param
+from planevent.decorators import (
+    param,
+    image_upload
+)
 
 class View(object):
 
@@ -56,3 +59,21 @@ class VendorsView(View):
             vendor.updated_at = now
         vendor.save()
         return vendor
+
+
+@view_defaults(route_name='image', renderer='json')
+class ImageView(View):
+
+    @view_config(request_method='POST')
+    @image_upload('static/images/uploads/logos/', size=(200,200))
+    def post(self, image_path):
+        return {'path': image_path}
+
+
+@view_defaults(route_name='gallery', renderer='json')
+class GalleryView(View):
+
+    @view_config(request_method='POST')
+    @image_upload('static/images/uploads/galleries/', size=(800,500))
+    def post(self, image_path):
+        return {'path': image_path}

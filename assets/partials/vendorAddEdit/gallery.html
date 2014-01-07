@@ -1,4 +1,10 @@
-<img src="{{ image.path }}" alt="gallery item" ng-repeat="image in vendor.gallery"><br />
+<input type="file" ng-file-select="uploadGallery($files)" >
+<input type="file" ng-file-select="uploadGallery($files)" multiple>
+<div ng-file-drop="uploadGallery($files)" ng-file-drag-over-class="optional-css-class" ng-show="dropSupported">drop files here</div>
+<div ng-file-drop-available="dropSupported=true" ng-show="!dropSupported">HTML5 Drop File is not supported!</div>
+<button ng-click="upload.abort()">Cancel Upload</button>
 
-<button ng-click="goTo('logo')">Wstecz</button>
+<gallery ng-model="vendor.gallery" />
+
+<button ng-click="goTo('contacts')">Wstecz</button>
 <button ng-click="goTo('submit')">Dalej</button>

@@ -13,6 +13,31 @@
           transition:$args;
 }
 
+
+@mixin perspective($value) {
+    -webkit-perspective: $value;
+    -moz-perspective: $value;
+    -ms-perspective: $value;
+    -o-perspective: $value;
+    perspective: $value;
+}
+
+@mixin transform-style($value) {
+    -webkit-transform-style: $value;
+    -moz-transform-style: $value;
+    -ms-transform-style: $value;
+    -o-transform-style: $value;
+    transform-style: $value;
+}
+
+@mixin transform-origin($args) {
+    -webkit-transform-origin: $args;
+        -moz-transform-origin: $args;
+        -ms-transform-origin: $args;
+        -o-transform-origin: $args;
+        transform-origin: $args;
+}
+
 @mixin transition-delay($delay) {
     -webkit-transition-delay: $delay;
             transition-delay: $delay;
@@ -23,13 +48,29 @@
             transition-duration:$duration;
 }
 
-html {
-    font-family: 'Open Sans',arial,sans-serif;
+
+@mixin transform($args) {
+    -webkit-transform: $args;
+    -moz-transform: $args;
+    -ms-transform: $args;
+    -o-transform: $args;
+    transform: $args;
 }
 
-$greenGradient: linear-gradient(0, rgb(130, 228, 84), rgb(219, 255, 174));
-$yellowGradient: linear-gradient(0, rgb(230, 235, 107), white);
-$bluishGradient: linear-gradient(0, azure, rgb(197, 247, 211));
+@mixin gradient-background($colors) {
+    background: -webkit-linear-gradient($colors);
+    background: -o-linear-gradient($colors);
+    background: -moz-linear-gradient($colors);
+    background: linear-gradient($colors);
+}
+
+$greenGradient: rgb(130, 228, 84), rgb(219, 255, 174);
+$yellowGradient: rgb(230, 235, 107), white;
+$bluishGradient: azure, rgb(197, 247, 211);
+
+html {
+    font-family: 'Open Sans', arial,sans-serif;
+}
 
 #container {
     width: 100%;
@@ -126,11 +167,11 @@ article#create-edit {
         padding-top: 5px;
 
         li {
-            width: 106px;
+            width: 124px;
             margin: 11px;
             padding: 0px;
-            background: $greenGradient;
-cursor: pointer;
+            @include gradient-background($greenGradient);
+            cursor: pointer;
             cursor: pointer;
             vertical-align: middle;
             display: table-cell;
@@ -140,11 +181,11 @@ cursor: pointer;
             border-bottom: none;
 
             &:hover {
-                background: $yellowGradient;
+                @include gradient-background($yellowGradient);
             }
 
             &.selected {
-                background: $bluishGradient;
+                @include gradient-background($bluishGradient);
             }
         }
     }
@@ -157,17 +198,17 @@ section#categories {
         float: left;
         margin-right: 10px;
         width: 55px;
-        background: $bluishGradient;
+        @include gradient-background($bluishGradient);
         border-radius: 10px;
         box-shadow: 0px 0px 6px #888;
         cursor: pointer;
 
         &:hover {
-            background: $yellowGradient;
+            @include gradient-background($yellowGradient);
         }
 
         &.selected {
-            background: $greenGradient;
+            @include gradient-background($greenGradient);
         }
 
         img {
@@ -184,7 +225,7 @@ section#categories {
     }
 
     #addVendor {
-        background: $greenGradient;
+        @include gradient-background($greenGradient);
         font-size: 19px;
         color: rgb(97, 173, 255);
         padding: 10px 30px;
@@ -195,7 +236,7 @@ section#categories {
         box-shadow: 0px 0px 6px #888;
 
         &:hover {
-            background: $yellowGradient;
+            @include gradient-background($yellowGradient);
             text-decoration: none;
         }
     }
@@ -210,7 +251,7 @@ section#vendor {
 
 .vendor-preview {
     height: 140px;
-    background: $bluishGradient;
+    @include gradient-background($bluishGradient);
     border: 1px solid;
     margin: 5px 0px;
     padding: 0px 5px 0px 0px;
@@ -219,7 +260,7 @@ section#vendor {
     cursor: pointer;
 
     &:hover {
-        background: $yellowGradient;
+        @include gradient-background($yellowGradient);
     }
 
     &.ng-enter, &.ng-move {
@@ -261,5 +302,115 @@ section#vendor {
     p {
         font-size: 13px;
         margin-top: -12px;
+    }
+}
+
+$galleryHeigth: 500px;
+.gallery {
+    border: 15px solid #FFFFFF;
+    border-radius: 5px;
+    height: $galleryHeigth;
+    max-height: $galleryHeigth;
+    margin: 20px auto;
+    text-align: center;
+
+    @include perspective(1000px);
+    @include transform-style(preserve-3d);
+
+    .slide {
+        position: absolute;
+        left: 50%;
+        max-height: $galleryHeigth;
+        width: 100%;
+
+        div {
+            position: relative;
+            left: -50%;
+
+            img {
+                max-height: 100%;
+            }
+        }
+    }
+
+    .slide.ng-hide-add {
+        display:block!important;
+        opacity:1;
+        @include transition(1s linear all);
+        @include transform-origin(right top 0);
+    }
+    .slide.ng-hide-add.ng-hide-add-active {
+        @include transform(rotateX(50deg) rotateY(30deg));
+        opacity:0;
+    }
+    .slide.ng-hide-remove {
+        @include transition(1s linear all);
+        display:block!important;
+        opacity:0;
+    }
+    .slide, .slide.ng-hide-remove.ng-hide-remove-active {
+        opacity:1;
+    }
+
+    .arrow {
+        cursor: pointer;
+        display: block;
+        height: 64px;
+        margin-top: -35px;
+        outline: medium none;
+        position: absolute;
+        top: 50%;
+        width: 64px;
+        z-index: 5;
+        opacity: 0.2;
+
+        &:hover {
+            opacity:1;
+        }
+
+        &.prev {
+            background-image: url("/static/images/prev.png");
+            left: 20px;
+            transition: all 0.2s linear 0s;
+        }
+
+        &.next {
+            background-image: url("/static/images/next.png");
+            right: 20px;
+            transition: all 0.2s linear 0s;
+        }
+    }
+
+    .nav {
+        bottom: -4px;
+        display: block;
+        height: 48px;
+        left: 0;
+        margin: 0 auto;
+        padding: 1em 0 0.8em;
+        position: absolute;
+        right: 0;
+        text-align: center;
+        width: 100%;
+        z-index: 5;
+
+        li {
+            border: 5px solid #AAAAAA;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            height: 30px;
+            margin: 0 8px;
+            position: relative;
+            width: 50px;
+
+            &.active {
+                border: 5px solid #FFFFFF;
+            }
+
+            img {
+                width: 100%;
+            }
+        }
     }
 }
