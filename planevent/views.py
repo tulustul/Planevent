@@ -32,8 +32,10 @@ class VendorView(View):
         return models.Vendor.get(id_)
 
     @view_config(request_method='DELETE')
-    def delete(self):
-        return Response('delete')
+    @param('id', int, required=True, rest=True)
+    def delete(self, id_):
+        models.Vendor.delete(id_)
+        return Response('deleted');
 
 
 @view_defaults(route_name='vendors', renderer='json')

@@ -4,10 +4,11 @@ from pyramid.config import Configurator
 from pyramid.renderers import JSON
 from sqlalchemy import engine_from_config
 
-from .models import (
+from planevent.models import (
     DBSession,
     Base,
 )
+from planevent.urls import urls
 
 
 def main(global_config, **settings):
@@ -25,10 +26,7 @@ def main(global_config, **settings):
 
     config.include('pyramid_chameleon')
     config.add_static_view('static', '../static', cache_max_age=3600)
-    config.add_route('home', '/')
-    config.add_route('vendor', '/api/vendor/{id}')
-    config.add_route('vendors', '/api/vendors')
-    config.add_route('image', '/api/image')
-    config.add_route('gallery', '/api/gallery')
+    for url_config in urls:
+        config.add_route(*url_config)
     config.scan()
     return config.make_wsgi_app()

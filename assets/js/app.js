@@ -83,6 +83,10 @@ planevent.controller('VendorPageController',
     $scope.vendor = Vendor.get({id: $routeParams.vendorId});
     $scope.categories = globalsService.categories;
 
+    $scope.removeVendor = function() {
+        Vendor.remove({id: $scope.vendor.id});
+    }
+
 }]);
 
 planevent.controller('VendorAddEditController',

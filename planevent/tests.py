@@ -31,7 +31,7 @@ class TestMyViewSuccessCondition(unittest.TestCase):
         request = testing.DummyRequest()
         info = my_view(request)
         self.assertEqual(info['one'].name, 'one')
-        self.assertEqual(info['project'], 'HistoryAtlas')
+        self.assertEqual(info['project'], 'Planevent')
 
 
 class TestMyViewFailureCondition(unittest.TestCase):

@@ -47,13 +47,6 @@ class image_upload(object):
             image.thumbnail(self.size, Image.ANTIALIAS)
         image.save(output_file_path, 'PNG')
 
-        # input_file.seek(0)
-        # while True:
-        #     data = input_file.read(2<<16)
-        #     if not data:
-        #         break
-        #     output_file.write(data)
-
     def __call__(self, mth):
         @wraps(mth)
         def wrap(instance, *args, **kwargs):
@@ -61,7 +54,6 @@ class image_upload(object):
 
             output_file_path = self.repo_path + \
                 self.prepare_unique_filename(file_upload.filename)
-            # output_file = open(output_file_path, 'wb')
             input_file = file_upload.file
             self.prepare_image(input_file, output_file_path)
 

@@ -45,9 +45,9 @@ class BaseEntity(AbstractConcreteBase, Base):
     def get(cls, id_):
          return DBSession.query(cls).get(id_)
 
-    def delete(self):
-        # TODO
-        pass
+    @classmethod
+    def delete(cls, id_):
+        cls.query().filter(cls.id==id_).delete()
 
     def save(self):
         if self.id is None:
@@ -111,10 +111,10 @@ class Vendor(BaseEntity):
     address_id = Column(Integer, ForeignKey('address.id'))
     logo_id = Column(Integer, ForeignKey('image.id'), nullable=True)
 
-    contacts = relationship("Contact")
-    address = relationship("Address")
-    logo = relationship("Image")
-    gallery = relationship("ImageGallery")
+    contacts = relationship("Contact", cascade="delete, all")
+    address = relationship("Address", cascade="delete, all")
+    logo = relationship("Image", cascade="delete, all")
+    gallery = relationship("ImageGallery", cascade="delete, all")
 
 
 class Address(BaseEntity):

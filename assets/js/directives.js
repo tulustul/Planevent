@@ -24,7 +24,7 @@ planevent.directive('addressviewer', function() {
                 var mapElement = $('.address-viewer', element)[0];
                 var map = new google.maps.Map(mapElement, mapOptions);
 
-                if (address.validated) {
+                if (address && address.validated) {
                     var marker = new google.maps.Marker({
                         position: mapOptions.center,
                         map: map,
