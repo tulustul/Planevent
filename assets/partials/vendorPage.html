@@ -1,4 +1,4 @@
-<section id="vendor">
+<section id="vendor" ng-show="fetched">
     <a href="#/vendors/{{ selectedCategoryId }}">Do listy</a>
 
     <h2>{{ vendor.name }}</h2>
@@ -25,3 +25,6 @@
     <a href="#/vendorAddEdit/{{ vendor.id }}">Edytuj</a>
     <a href="#" ng-click="removeVendor()">Usuń</a>
 </section>
+
+<h2 ng-show="vendorDoesNotExists">Nie ma takiej firmy :/</h2>
+<h2 ng-show="otherError">Nieznany błąd</h2>

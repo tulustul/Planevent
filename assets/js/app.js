@@ -80,7 +80,20 @@ planevent.controller('VendorPageController',
         ['$scope', '$resource', '$routeParams', 'globalsService',
         function($scope, $resource, $routeParams, globalsService) {
     var Vendor = $resource('/api/vendor/:id');
-    $scope.vendor = Vendor.get({id: $routeParams.vendorId});
+    $scope.vendorDoesNotExists = false;
+    $scope.otherError = false;
+    $scope.vendor = Vendor.get({id: $routeParams.vendorId},
+        function(){
+            $scope.fetched = true;
+        },
+        function(response){
+            if (response.status === 404) {
+                $scope.vendorDoesNotExists = true;
+            } else {
+                $scope.otherError = true;
+            }
+        }
+    );
     $scope.categories = globalsService.categories;
 
     $scope.removeVendor = function() {

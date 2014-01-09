@@ -29,7 +29,11 @@ class VendorView(View):
     @view_config(request_method='GET')
     @param('id', int, required=True, rest=True)
     def get(self, id_):
-        return models.Vendor.get(id_, '*')
+        vendor = models.Vendor.get(id_, '*')
+        if not vendor:
+            self.request.response.status = 404
+            return {'error': 'No vendor with id ' + str(id_)}
+        return vendor
 
     @view_config(request_method='DELETE')
     @param('id', int, required=True, rest=True)
