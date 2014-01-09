@@ -47,7 +47,8 @@ class BaseEntity(AbstractConcreteBase, Base):
 
     @classmethod
     def delete(cls, id_):
-        cls.query().filter(cls.id==id_).delete()
+        # cls.query().filter(cls.id==id_).delete()
+        DBSession.delete(cls.get(id_))
 
     def save(self):
         if self.id is None:
