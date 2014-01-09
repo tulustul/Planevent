@@ -29,7 +29,7 @@ class VendorView(View):
     @view_config(request_method='GET')
     @param('id', int, required=True, rest=True)
     def get(self, id_):
-        return models.Vendor.get(id_)
+        return models.Vendor.get(id_, '*')
 
     @view_config(request_method='DELETE')
     @param('id', int, required=True, rest=True)
@@ -46,7 +46,7 @@ class VendorsView(View):
     @param('limit', int, required=True)
     @param('category', int, required=True)
     def get(self, category, limit, offset):
-        query = models.Vendor.query()
+        query = models.Vendor.query('address', 'logo')
         if category != 0:
             query = query.filter(models.Vendor.category==category)
         return query.limit(limit).offset(offset).all()

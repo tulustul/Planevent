@@ -324,6 +324,10 @@ $galleryHeigth: 500px;
         div {
             position: relative;
             left: -50%;
+
+            img {
+                max-height: $galleryHeigth;
+            }
         }
     }
 

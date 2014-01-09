@@ -21,6 +21,8 @@ from sqlalchemy.orm import (
     sessionmaker,
     relationship,
     class_mapper,
+    joinedload,
+
 )
 
 from zope.sqlalchemy import ZopeTransactionExtension
@@ -34,20 +36,27 @@ class BaseEntity(AbstractConcreteBase, Base):
     id = Column(Integer, primary_key=True)
 
     @classmethod
-    def query(cls):
-         return DBSession.query(cls)
+    def get_query_options(cls, *relations):
+        if len(relations) == 1 and relations[0] == '*':
+            return [joinedload(c.key) for c in class_mapper(cls).relationships]
+        else:
+            return [joinedload(relation) for relation in relations]
 
     @classmethod
-    def all(cls):
-         return DBSession.query(cls).all()
+    def query(cls, *relations):
+        query = DBSession.query(cls)
+        return query.options(cls.get_query_options(*relations))
 
     @classmethod
-    def get(cls, id_):
-         return DBSession.query(cls).get(id_)
+    def all(cls, *relations):
+        return cls.query(*relations).all()
+
+    @classmethod
+    def get(cls, id_, *relations):
+        return cls.query(*relations).get(id_)
 
     @classmethod
     def delete(cls, id_):
-        # cls.query().filter(cls.id==id_).delete()
         DBSession.delete(cls.get(id_))
 
     def save(self):
@@ -66,6 +75,8 @@ class BaseEntity(AbstractConcreteBase, Base):
         relationships = [c.key for c in mapper.relationships]
         result = dict((c, getattr(self, c)) for c in columns)
         for relation in relationships:
+            if relation not in self.__dict__:
+                continue
             child = getattr(self, relation)
             if isinstance(child, list):
                 child = [c.serialize() for c in child]
