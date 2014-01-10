@@ -46,9 +46,9 @@ class VendorView(View):
 class VendorsView(View):
 
     @view_config(request_method='GET')
-    @param('offset', int, required=True)
-    @param('limit', int, required=True)
-    @param('category', int, required=True)
+    @param('offset', int, default=0)
+    @param('limit', int, default=10)
+    @param('category', int, default=0)
     def get(self, category, limit, offset):
         query = models.Vendor.query('address', 'logo')
         if category != 0:
@@ -89,7 +89,7 @@ class GalleryView(View):
 class TagsAutocompleteView(View):
 
     @view_config(request_method='GET')
-    @param('limit', int, required=True)
+    @param('limit', int, default=10)
     @param('tag', str, required=True, rest=True)
     def get(self, tag, limit):
         query = models.Tag.query() \
@@ -103,8 +103,8 @@ class TagsAutocompleteView(View):
 class TagsView(View):
 
     @view_config(request_method='GET')
-    @param('limit', int, required=True)
-    @param('offset', int, required=True)
+    @param('limit', int, default=10)
+    @param('offset', int, default=0)
     def get(self, offset, limit):
         query = models.Tag.query() \
             .order_by(models.Tag.references_count.desc()) \

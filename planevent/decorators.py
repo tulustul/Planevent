@@ -7,7 +7,7 @@ from PIL import Image
 
 from planevent.models import BaseEntity
 
-def param(name, type_, body=False, rest=False, required=False):
+def param(name, type_, body=False, rest=False, required=False, default=None):
     def decorator(mth):
         @wraps(mth)
         def wrap(self, *args, **kwargs):
@@ -16,9 +16,11 @@ def param(name, type_, body=False, rest=False, required=False):
             else:
                 params = self.request.matchdict if rest else self.request.params
                 param_value = params.get(name)
-            if required and param_value is None:
-                raise ValueError('Missing request param: ' + name)
-            if param_value:
+            if param_value is None:
+                if required:
+                    raise ValueError('Missing request param: ' + name)
+                param_value = default
+            else:
                 try:
                     if issubclass(type_, BaseEntity):
                         param_value = type_().deserialize(json.loads(param_value))
