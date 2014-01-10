@@ -42,6 +42,24 @@ class VendorView(View):
         return Response('deleted');
 
 
+@view_defaults(route_name='related_vendors', renderer='json')
+class RelatedVendorsView(View):
+
+    @view_config(request_method='GET')
+    @param('id', int, required=True, rest=True)
+    def get(self, id_):
+        vendor = models.Vendor.get(id_, 'tags')
+        if not vendor:
+            self.request.response.status = 404
+            return {'error': 'No vendor with id ' + str(id_)}
+
+        tags = [tag.id for tag in vendor.tags]
+        query = models.Vendor.query().join(models.VendorTag) \
+                .filter(models.VendorTag.tag_id.in_(tags)) \
+                .filter(models.Vendor.id!=id_)
+        return query.all()
+
+
 @view_defaults(route_name='vendors', renderer='json')
 class VendorsView(View):
 
