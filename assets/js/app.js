@@ -176,6 +176,18 @@ planevent.controller('VendorAddEditController',
             $scope.vendor.contacts.splice(contactNo, 1);
         }
 
+        $scope.addTag = function() {
+            var tags = $scope.vendor.tags;
+            if (tags == undefined) {
+                tags = $scope.vendor.tags = [];
+            }
+            tags[tags.length] = {};
+        }
+
+        $scope.removeTag = function(tagNo) {
+            $scope.vendor.tags.splice(tagNo, 1);
+        }
+
         $scope.uploadLogo = function(files) {
             uploadImages(files, 'api/image', function(data) {
                 $scope.vendor.logo = {path: data.path};
@@ -195,13 +207,7 @@ planevent.controller('VendorAddEditController',
                 $scope.upload = $upload.upload({
                     url: api,
                     method: 'POST',
-                    // data: {myObj: $scope.myModelObj},
                     file: file,
-                    // file: $files, //upload multiple files, this feature only works in HTML5 FromData browsers
-                    /* set file formData name for 'Content-Desposition' header. Default: 'file' */
-                    //fileFormDataName: myFile,
-                    /* customize how data is added to formData. See #40#issuecomment-28612000 for example */
-                    //formDataAppender: function(formData, key, val){}
                 }).progress(function(evt) {
                     // console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
                 }).success(function(data, status, headers, config) {

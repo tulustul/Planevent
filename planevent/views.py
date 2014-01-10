@@ -83,3 +83,47 @@ class GalleryView(View):
     @image_upload('static/images/uploads/galleries/', size=(800,500))
     def post(self, image_path):
         return {'path': image_path}
+
+
+@view_defaults(route_name='tag_autocomplete', renderer='json')
+class TagsAutocompleteView(View):
+
+    @view_config(request_method='GET')
+    @param('limit', int, required=True)
+    @param('tag', str, required=True, rest=True)
+    def get(self, tag, limit):
+        query = models.Tag.query() \
+            .filter(models.Tag.name.like('%'+tag+'%')) \
+            .order_by(models.Tag.references_count.desc()) \
+            .limit(limit)
+        return query.all()
+
+
+@view_defaults(route_name='tags', renderer='json')
+class TagsView(View):
+
+    @view_config(request_method='GET')
+    @param('limit', int, required=True)
+    @param('offset', int, required=True)
+    def get(self, offset, limit):
+        query = models.Tag.query() \
+            .order_by(models.Tag.references_count.desc()) \
+            .limit(limit).offset(offset)
+        return query.all()
+
+    @view_config(request_method='POST')
+    @param('tag_name', str, body=True, required=True)
+    def post(self, tag_name):
+        tag = models.Tag.query() \
+                .filter(models.Tag.name==tag_name).first()
+        if tag:
+            self.request.response.status = 409
+            return {
+                'error': 'Tag "' + tag_name + '" already exists',
+                'tag_id': tag.id,
+            }
+
+        tag = models.Tag(name=tag_name)
+        tag.save()
+        return tag
+

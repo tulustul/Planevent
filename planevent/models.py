@@ -6,9 +6,11 @@ from sqlalchemy import (
     Integer,
     Float,
     Text,
+    String,
     DateTime,
     Boolean,
     ForeignKey,
+    Table,
 )
 
 from sqlalchemy.ext.declarative import (
@@ -112,9 +114,15 @@ class BaseEntity(AbstractConcreteBase, Base):
         return self
 
 
+vendor_tags = Table('vendor_tags', Base.metadata,
+    Column('vendor_id', Integer, ForeignKey('vendor.id')),
+    Column('tag_id', Integer, ForeignKey('tag.id'))
+)
+
+
 class Vendor(BaseEntity):
     __tablename__ = 'vendor'
-    name = Column(Text)
+    name = Column(String(150))
     description = Column(Text)
     category = Column(Integer)
     added_at = Column(DateTime)
@@ -127,13 +135,14 @@ class Vendor(BaseEntity):
     address = relationship("Address", cascade="delete, all")
     logo = relationship("Image", cascade="delete, all")
     gallery = relationship("ImageGallery", cascade="delete, all")
+    tags = relationship('Tag', secondary=vendor_tags, cascade="delete, all")
 
 
 class Address(BaseEntity):
     __tablename__ = 'address'
-    street = Column(Text)
-    city = Column(Text)
-    postal_code = Column(Text)
+    street = Column(String(50))
+    city = Column(String(50))
+    postal_code = Column(String(6))
     longitude = Column(Float)
     latitude = Column(Float)
     validated = Column(Boolean, default=False)
@@ -143,16 +152,22 @@ class Contact(BaseEntity):
     __tablename__ = 'contact'
     vendor_id = Column(Integer, ForeignKey('vendor.id'))
     type = Column(Integer)
-    value = Column(Text)
+    value = Column(String(50))
     description = Column(Text)
 
 
 class Image(BaseEntity):
     __tablename__ = 'image'
-    path = Column(Text)
+    path = Column(String(50))
 
 
 class ImageGallery(BaseEntity):
     __tablename__ = 'image_gallery'
-    path = Column(Text)
+    path = Column(String(50))
     vendor_id = Column(Integer, ForeignKey('vendor.id'))
+
+
+class Tag(BaseEntity):
+    __tablename__ = 'tag'
+    name = Column(String(50), nullable=False, unique=True)
+    references_count = Column(Integer, default=0)
