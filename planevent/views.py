@@ -38,8 +38,12 @@ class VendorView(View):
     @view_config(request_method='DELETE')
     @param('id', int, required=True, rest=True)
     def delete(self, id_):
+        vendor = models.Vendor.get(id_)
+        if not vendor:
+            self.request.response.status = 404
+            return {'error': 'No vendor with id ' + str(id_)}
         models.Vendor.delete(id_)
-        return Response('deleted');
+        return {'message': 'deleted', 'id': id_};
 
 
 @view_defaults(route_name='related_vendors', renderer='json')
