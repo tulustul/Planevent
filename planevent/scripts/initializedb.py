@@ -2,6 +2,7 @@ import os
 import sys
 import random
 import datetime
+import transaction
 
 from sqlalchemy import engine_from_config
 
@@ -35,13 +36,15 @@ def create_test_address():
 
 def create_test_logo():
     image = models.Image()
-    image.path = '/static/images/icons/question.png'
+    image.path = '/static/images/test/logos/' + \
+                str(random.randrange(15)) + '.png'
     return image
 
 def create_test_gallery(vendor, quantity):
     for i in range(quantity):
         image = models.ImageGallery()
-        image.path = '/static/images/icons/question.png'
+        image.path = '/static/images/test/gallery/' + \
+                    str(random.randrange(40)) + '.jpg'
         vendor.gallery.append(image)
 
 def create_test_contacts(vendor, quantity):
@@ -62,7 +65,7 @@ def create_test_vendor():
     vendor.address = create_test_address()
     vendor.logo = create_test_logo()
     create_test_contacts(vendor, random.randrange(0, 6))
-    create_test_gallery(vendor, random.randrange(0, 5))
+    create_test_gallery(vendor, random.randrange(0, 10))
     vendor.save()
 
 def create_test_instances(quantity):
@@ -79,4 +82,5 @@ def main(argv=sys.argv):
     engine = engine_from_config(settings, 'sqlalchemy.')
     models.DBSession.configure(bind=engine)
     models.Base.metadata.create_all(engine)
-    create_test_instances(500)
+    with transaction.manager as manager:
+        create_test_instances(500)
