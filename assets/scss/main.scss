@@ -1,115 +1,23 @@
-@mixin border-radius($radius) {
-  -webkit-border-radius: $radius;
-     -moz-border-radius: $radius;
-      -ms-border-radius: $radius;
-       -o-border-radius: $radius;
-          border-radius: $radius;
-}
+@import "mixins.scss";
+@import "susy";
+@import "compass/css3/transition";
+@import "compass/css3/transform";
 
-@mixin transition($args) {
-  -webkit-transition:$args;
-     -moz-transition:$args;
-       -o-transition:$args;
-          transition:$args;
-}
-
-
-@mixin perspective($value) {
-    -webkit-perspective: $value;
-    -moz-perspective: $value;
-    -ms-perspective: $value;
-    -o-perspective: $value;
-    perspective: $value;
-}
-
-@mixin transform-style($value) {
-    -webkit-transform-style: $value;
-    -moz-transform-style: $value;
-    -ms-transform-style: $value;
-    -o-transform-style: $value;
-    transform-style: $value;
-}
-
-@mixin transform-origin($args) {
-    -webkit-transform-origin: $args;
-        -moz-transform-origin: $args;
-        -ms-transform-origin: $args;
-        -o-transform-origin: $args;
-        transform-origin: $args;
-}
-
-@mixin transition-delay($delay) {
-    -webkit-transition-delay: $delay;
-            transition-delay: $delay;
-}
-
-@mixin transition-duration($duration) {
-    -webkit-transition-duration:$duration;
-            transition-duration:$duration;
-}
-
-
-@mixin transform($args) {
-    -webkit-transform: $args;
-    -moz-transform: $args;
-    -ms-transform: $args;
-    -o-transform: $args;
-    transform: $args;
-}
-
-@mixin gradient-background($colors) {
-    background: -webkit-linear-gradient($colors);
-    background: -o-linear-gradient($colors);
-    background: -moz-linear-gradient($colors);
-    background: linear-gradient($colors);
-}
+$total-columns  : 12;
+$column-width   : 10em;
+$gutter-width   : 1em;
+$grid-padding   : $gutter-width;
 
 $greenGradient: rgb(130, 228, 84), rgb(219, 255, 174);
 $yellowGradient: rgb(230, 235, 107), white;
-$bluishGradient: azure, rgb(197, 247, 211);
+$bluishGradient: rgb(197, 247, 211), azure;
 
 html {
     font-family: 'Open Sans', arial,sans-serif;
 }
 
-#container {
-    width: 100%;
-    background: white;
-    border: 1px solid;
-    padding-bottom: 10px;
-
-    #wrapper {
-        margin: 0px auto;
-        width: 800px;
-    }
-
-    #view {
-        position: relative;
-        margin-top: 6px;
-
-        &.ng-leave {
-            @include transition(0.5s);
-            left: 0;
-        }
-
-        &.ng-enter {
-            @include transition(0.5s);
-            @include transition-delay(0.5s);
-            left: -100%;
-        }
-
-        &.ng-leave-active {
-            left: 100%;
-        }
-
-        &.ng-enter-active {
-            left: 0;
-        }
-    }
-}
-
-.clear {
-    clear: both;
+h1 {
+    margin: 0px;
 }
 
 .address-viewer {
@@ -161,13 +69,17 @@ article#create-edit {
 
     #navigation {
         height: $create-edit-navigation-height;
+        width: 100%;
         display: table;
         border-spacing: 7px 0px;
         margin-bottom: 10px;
         padding-top: 5px;
 
+        // @include susy-grid-background;
+
         li {
-            width: 124px;
+            @include span-columns(1, 6);
+            float: none;
             margin: 11px;
             padding: 0px;
             @include gradient-background($greenGradient);
@@ -222,85 +134,100 @@ section#categories {
             margin: 0px;
         }
     }
+}
 
-    #addVendor {
-        @include gradient-background($greenGradient);
-        font-size: 19px;
-        color: rgb(97, 173, 255);
-        padding: 10px 30px;
-        position: relative;
-        float: right;
-        top: 10px;
-        border-radius: 10px;
-        box-shadow: 0px 0px 6px #888;
 
-        &:hover {
-            @include gradient-background($yellowGradient);
-            text-decoration: none;
+
+#categories-view {
+    @include span-columns(2);
+
+    #categories {
+        width: 100%;
+        float: left;
+
+        li {
+            width: 100%;
+
+            img {
+                float: left;
+            }
+
+            h6 {
+                font-size: 20px;
+                margin: 10px;
+            }
         }
     }
 }
 
-section#vendor {
-    background: azure;
-    border: 1px solid;
-    margin: 10px;
-    padding: 10px;
+
+#vendor-page {
+    section#vendor {
+        float: right;
+        background: azure;
+        border: 1px solid;
+        padding: 10px;
+        @include span-columns(10 omega);
+    }
 }
 
-.vendor-preview {
-    height: 140px;
-    @include gradient-background($bluishGradient);
-    border: 1px solid;
-    margin: 5px 0px;
-    padding: 0px 5px 0px 0px;
-    overflow: hidden;
-    position: relative;
-    cursor: pointer;
+#vendor-list {
+    @include span-columns(6);
 
-    &:hover {
-        @include gradient-background($yellowGradient);
-    }
-
-    &.ng-enter, &.ng-move {
-        @include transition(0.3s linear all);
-        opacity: 0;
-    }
-
-    &.ng-enter.ng-enter-active,
-    &.ng-move.ng-move-active {
-        opacity: 1;
-    }
-
-    &.ng-move-stagger,
-    &.ng-enter-stagger {
-        @include transition-delay(0.1s);
-        @include transition-duration(0s);
-    }
-
-    img {
-        width: 130px;
-        margin-top: 10px;
-        float: left;
-    }
-
-    h2 {
-        font-size: 22px;
-        white-space: nowrap;
+    .vendor-preview {
+        height: 140px;
+        @include gradient-background($bluishGradient);
+        border: 1px solid;
+        margin: 5px 0px;
+        padding: 0px 5px 0px 0px;
         overflow: hidden;
-        padding: 0px;
-        margin: 0px;
-    }
+        position: relative;
+        cursor: pointer;
 
-    h3 {
-        font-size: 16px;
-        margin-top: -18px;
-        padding: 0px;
-    }
+        &:hover {
+            @include gradient-background($yellowGradient);
+        }
 
-    p {
-        font-size: 13px;
-        margin-top: -12px;
+        &.ng-enter, &.ng-move {
+            @include transition(0.3s linear all);
+            opacity: 0;
+        }
+
+        &.ng-enter.ng-enter-active,
+        &.ng-move.ng-move-active {
+            opacity: 1;
+        }
+
+        &.ng-move-stagger,
+        &.ng-enter-stagger {
+            @include transition-delay(0.1s);
+            @include transition-duration(0s);
+        }
+
+        img {
+            width: 130px;
+            margin-top: 10px;
+            float: left;
+        }
+
+        h2 {
+            font-size: 22px;
+            white-space: nowrap;
+            overflow: hidden;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        h3 {
+            font-size: 16px;
+            margin-top: -18px;
+            padding: 0px;
+        }
+
+        p {
+            font-size: 13px;
+            margin-top: -12px;
+        }
     }
 }
 
@@ -392,5 +319,103 @@ $galleryHeigth: 500px;
                 border: 5px solid #FFFFFF;
             }
         }
+    }
+}
+
+#addVendor {
+    @include gradient-background($greenGradient);
+    font-size: 19px;
+    color: rgb(97, 173, 255);
+    padding: 10px 30px;
+    position: relative;
+    float: right;
+    top: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 6px #888;
+    @include span-columns(2);
+
+    &:hover {
+        @include gradient-background($yellowGradient);
+        text-decoration: none;
+    }
+}
+
+
+header {
+    clear: both;
+    background-color: azure;
+    padding: 20px;
+    position: fixed;
+    width: 100%;
+    top: 0px;
+    z-index: 1;
+    box-shadow: 0px 0px 10px #383838;
+
+    img {
+        float: left;
+        height: 60px;
+    }
+
+    h1 {
+        float: left;
+    }
+}
+
+footer {
+    clear: both;
+    background-color: #DDD;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0px 0px 10px #383838;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+
+    a {
+        padding: 0 50px;
+    }
+}
+
+.new-design {
+    @include container;
+    @include border-box-sizing;
+    // @include susy-grid-background;
+    margin-top: 115px;
+    margin-bottom: 80px;
+
+    .content {
+
+        #categories {
+            // @include span-columns(3);
+        }
+
+        #addVendor {
+            @include span-columns(2 omega);
+        }
+
+        #view {
+            position: relative;
+            margin-top: 6px;
+
+            &.ng-leave {
+                @include transition(0.5s);
+                left: 0;
+            }
+
+            &.ng-enter {
+                @include transition(0.5s);
+                @include transition-delay(0.5s);
+                left: -100%;
+            }
+
+            &.ng-leave-active {
+                left: 100%;
+            }
+
+            &.ng-enter-active {
+                left: 0;
+            }
+        }
+
     }
 }

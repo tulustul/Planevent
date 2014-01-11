@@ -1,5 +1,22 @@
 planevent.config(['$routeProvider', function($routeProvider) {$routeProvider
 
+    .when('/', {
+        templateUrl: 'assets/partials/mainView.html',
+        controller: 'MainPageController'})
+
+    .when('/about', {
+        templateUrl: 'assets/partials/about.html',
+        controller: 'MainPageController'})
+    .when('/terms', {
+        templateUrl: 'assets/partials/term.html',
+        controller: 'MainPageController'})
+    .when('/faq', {
+        templateUrl: 'assets/partials/faq.html',
+        controller: 'MainPageController'})
+    .when('/contact', {
+        templateUrl: 'assets/partials/contact.html',
+        controller: 'MainPageController'})
+
     .when('/vendors/:categoryId', {
         templateUrl: 'assets/partials/vendorsList.html',
         controller: 'VendorListController'})
@@ -14,23 +31,25 @@ planevent.config(['$routeProvider', function($routeProvider) {$routeProvider
         templateUrl: 'assets/partials/vendorAddEdit/main.html',
         controller: 'VendorAddEditController'})
 
-    .otherwise({redirectTo: '/vendors/0'});
+    .otherwise({redirectTo: '/'});
 }]);
 
 planevent.controller('MainPageController', ['$scope',
     function($scope) {
+        $scope.mainView = 'assets/partials/mainView.html';
         $scope.categoriesView = 'assets/partials/categoriesView.html';
+        $scope.vendorView = 'assets/partials/vendorView.html';
     }
 ]);
 
 planevent.controller('CategoriesController',
-        ['$scope', '$location', '$rootScope', 'globalsService',
-    function($scope, $location, $rootScope, globalsService) {
+        ['$scope', '$location', '$routeParams', 'globalsService',
+    function($scope, $location, $routeParams, globalsService) {
         $scope.categories = globalsService.categories;
-        $rootScope.selectedCategoryId = 0;
+        $scope.selectedCategoryId = $routeParams.categoryId;
 
         $scope.searchCategory = function(categoryId) {
-            $rootScope.selectedCategoryId = categoryId;
+            $scope.selectedCategoryId = categoryId;
             $location.path('/vendors/' + categoryId);
         }
     }
@@ -46,8 +65,6 @@ planevent.controller('VendorListController',
     $scope.waitingForMore = false;
     $scope.noMoreData = false;
     $scope.vendors = [];
-
-    $rootScope.selectedCategoryId = $routeParams.categoryId;
 
     var Vendors = $resource('/api/vendors');
 
@@ -110,7 +127,7 @@ planevent.controller('VendorAddEditController',
         $scope.validatingLocation = false;
         $scope.categories = globalsService.categories;
         $scope.contactTypes = globalsService.contactTypes;
-        $scope.vendorView = 'assets/partials/vendorPage.html';
+        $scope.vendorView = 'assets/partials/vendorView.html';
 
         if ($routeParams.vendorId == undefined) {
             $scope.vendor = {gallery: []};

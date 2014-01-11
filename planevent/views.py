@@ -18,7 +18,7 @@ class View(object):
         self.request = request
 
 
-@view_config(route_name='home', renderer='../templates/index.pt')
+@view_config(route_name='home', renderer='../templates/newDesign.pt')
 def home_view(request):
     return {}
 

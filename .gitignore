@@ -7,8 +7,7 @@ lib
 node_modules
 static/app.js
 static/vendor.js
-static/main.css
-static/vendor.css
+static/*.css
 static/images/uploads/logos/*
 !static/images/uploads/logos/dummyfile
 static/images/uploads/galleries/*

@@ -1,30 +1,4 @@
-<section id="vendor" ng-show="fetched">
-    <a href="#/vendors/{{ selectedCategoryId }}">Do listy</a>
-
-    <h2>{{ vendor.name }}</h2>
-    <img src="{{ vendor.logo.path }}" alt="vendor logo">
-    <h5>Kategoria: {{ categories[vendor.category].name }}</h5>
-    <p>{{ vendor.description }}</p>
-
-    <span>
-        {{ vendor.address.street }},
-        {{ vendor.address.city }}
-        {{ vendor.address.postal_code }}
-    </span>
-
-    <h5>Dodano: {{ vendor.added_at }}</h5>
-
-    <li ng-repeat="contact in vendor.contacts">
-        {{ contact.value }} - {{ contact.description }}
-    </li>
-
-    <addressviewer ng-model="vendor.address" />
-
-    <gallery ng-model="vendor.gallery" />
-
-    <a href="#/vendorAddEdit/{{ vendor.id }}">Edytuj</a>
-    <a href="#" ng-click="removeVendor()">Usuń</a>
-</section>
-
-<h2 ng-show="vendorDoesNotExists">Nie ma takiej firmy :/</h2>
-<h2 ng-show="otherError">Nieznany błąd</h2>
+<div id="vendor-page">
+    <div id="categories-view" ng-include="categoriesView"></div>
+    <div id="vendor-view" ng-include="vendorView"></div>
+</div>

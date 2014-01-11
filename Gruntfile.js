@@ -45,6 +45,7 @@ module.exports = function(grunt) {
     },
 
     compass: {
+      require: 'susy',
       dev: {
         options: {
           sassDir: 'assets/scss',
