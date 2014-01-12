@@ -122,6 +122,7 @@ class Vendor(BaseEntity):
     category = Column(Integer)
     added_at = Column(DateTime)
     updated_at = Column(DateTime)
+    promotion = Column(Integer)
 
     address_id = Column(Integer, ForeignKey('address.id'))
     logo_id = Column(Integer, ForeignKey('image.id'), nullable=True)

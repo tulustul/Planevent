@@ -23,6 +23,11 @@ def home_view(request):
     return {}
 
 
+@view_config(route_name='admin', renderer='../templates/admin.pt')
+def admin_view(request):
+    return {}
+
+
 @view_defaults(route_name='vendor', renderer='json')
 class VendorView(View):
 
@@ -61,8 +66,55 @@ class RelatedVendorsView(View):
         query = models.Vendor.query().join(models.VendorTag) \
                 .filter(models.VendorTag.tag_id.in_(tags)) \
                 .filter(models.Vendor.id!=id_)
+
+        query = query.order_by(models.Vendor.promotion.desc())
         return query.all()
 
+
+@view_defaults(route_name='vendor_promotion', renderer='json')
+class VendorPromotionView(View):
+
+    @view_config(request_method='POST')
+    @param('id', int, required=True, rest=True)
+    @param('promotion', int, required=True, rest=True)
+    def post(self, promotion, id_):
+        vendor = models.Vendor.get(id_)
+        if not vendor:
+            self.request.response.status = 404
+            return {'error': 'No vendor with id ' + str(id_)}
+        vendor.promotion = promotion
+        vendor.save()
+        return {'message': 'saved', 'id': id_, 'promotion': promotion}
+
+
+@view_defaults(route_name='vendors_search', renderer='json')
+class SearchVendorsView(View):
+
+    @view_config(request_method='GET')
+    @param('offset', int, default=0)
+    @param('limit', int, default=10)
+    @param('category', int, default=0)
+    @param('tag_id', int)
+    @param('lon', int)
+    @param('lat', int)
+    @param('range_', int)
+    def get(self, range_, lat, lon, tag_id, category, limit, offset):
+        query = models.Vendor.query('address', 'logo')
+        if category != 0:
+            query = query.filter(models.Vendor.category==category)
+
+        if tag_id:
+            query = query.filter(models.VendorTag.id==tag_id)
+
+        if lon and lat:
+            range_ /= 111.12
+            query = query.filter(models.Address.longitude.between(
+                lon-range_, lon+range_))
+            query = query.filter(models.Address.latitude.between(
+                lat-range_, lat+range_))
+
+        query = query.order_by(models.Vendor.promotion.desc())
+        return query.limit(limit).offset(offset).all()
 
 @view_defaults(route_name='vendors', renderer='json')
 class VendorsView(View):
@@ -75,11 +127,13 @@ class VendorsView(View):
         query = models.Vendor.query('address', 'logo')
         if category != 0:
             query = query.filter(models.Vendor.category==category)
+        query = query.order_by(models.Vendor.promotion.desc())
         return query.limit(limit).offset(offset).all()
 
     @view_config(request_method='POST')
     @param('vendor', models.Vendor, body=True, required=True)
     def post(self, vendor):
+        # TODO restore original promotion value
         now = datetime.datetime.now()
         if not vendor.added_at:
             vendor.added_at = now

@@ -1,0 +1,31 @@
+<html ng-app="PlanEvent">
+<head>
+    <title>Plan Event</title>
+
+    <meta charset="utf-8">
+
+    <script type="text/javascript" src="static/vendor.js"></script>
+
+    <script type="text/javascript">
+        var planevent = angular.module('PlanEvent',
+        ['ui.bootstrap', 'ngAnimate', 'ngRoute', 'ngResource',
+        'infinite-scroll', 'angularFileUpload']);
+    </script>
+
+    <script type="text/javascript" src="static/app.js"></script>
+
+    <link rel="stylesheet" href="static/vendor.css" />
+    <link rel="stylesheet" href="static/main.css" />
+</head>
+<body ng-controller="AdminPageController">
+    <b>Vendor id:</b> <input type="text" ng-model="vendorId" ng-change="getVendor()"><br />
+    <div ng-show="vendor">
+        <b>Vendor:</b> <span>{{ vendor.name }}</span><br />
+        <b>Promotion value:</b> <input type="text" ng-model="vendor.promotion">
+        <button ng-click="savePromotion()">Save promotion</button><br />
+        <b ng-show="saved">Saved</b><br />
+    </div>
+    <b ng-show="vendorDoesNotExists">Given vendor does not exists!</b>
+    <b ng-show="unknownError">Unknown error</b>
+</body>
+</html>

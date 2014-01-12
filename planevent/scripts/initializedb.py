@@ -30,8 +30,9 @@ def create_test_address():
     address.city = random.choice(testdata.addresses['cities'])
     address.postal_code = str(random.randrange(10,100)) + '-' + \
         str(random.randrange(100, 1000))
-    address.latitude = 0
-    address.longitude = 0
+    address.longitude = 51 + random.randrange(-100, 100) / 100
+    address.latitude = 19 + random.randrange(-100, 100) / 100
+    address.validated = True
     return address
 
 def create_test_logo():
@@ -62,6 +63,7 @@ def create_test_vendor():
     vendor.description = random.choice(testdata.vendors['descriptions'])
     vendor.category = random.randrange(1,6)
     vendor.added_at = datetime.datetime.now()
+    vendor.promotion = random.randrange(1000)
     vendor.address = create_test_address()
     vendor.logo = create_test_logo()
     create_test_contacts(vendor, random.randrange(0, 6))

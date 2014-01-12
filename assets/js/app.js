@@ -284,3 +284,57 @@ planevent.factory('globalsService', function($routeParams) {
     };
     return service;
 });
+
+planevent.controller('AdminPageController',
+        ['$scope', '$resource',
+        function($scope, $resource) {
+
+    var Vendor = $resource('/api/vendor/:id');
+    var VendorPromotion = $resource('/api/vendor/:id/promotion/:promotion',
+        {id:'@id', promotion: '@promotion'}
+    );
+
+    $scope.vendor = undefined;
+    $scope.vendorId = undefined;
+    $scope.saved = false;
+    $scope.vendorDoesNotExists = false;
+    $scope.unknownError = false;
+
+    $scope.getVendor = function() {
+        $scope.saved = false;
+        $scope.vendorDoesNotExists = false;
+        $scope.unknownError = false;
+        $scope.vendor = Vendor.get({id: $scope.vendorId},
+            function(){},
+            function(response){
+                $scope.vendor = undefined;
+                if (response.status === 404) {
+                    $scope.vendorDoesNotExists = true;
+                } else {
+                    $scope.unknownError = true;
+                }
+            }
+        );
+    }
+
+    $scope.savePromotion = function() {
+        if ($scope.vendor == undefined) {
+            return;
+        }
+        VendorPromotion.save({
+                id: $scope.vendorId,
+                promotion: $scope.vendor.promotion
+            },
+            function(){
+                $scope.saved = true;
+            },
+            function(response){
+                if (response.status === 404) {
+                    $scope.vendorDoesNotExists = true;
+                } else {
+                    $scope.unknownError = true;
+                }
+            }
+        );
+    }
+}]);
