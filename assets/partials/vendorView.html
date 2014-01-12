@@ -1,6 +1,4 @@
 <section id="vendor">
-    <a href="#/vendors/{{ selectedCategoryId }}">Do listy</a>
-
     <h2>{{ vendor.name }}</h2>
     <img src="{{ vendor.logo.path }}" alt="vendor logo">
     <h5>Kategoria: {{ categories[vendor.category].name }}</h5>
@@ -22,6 +20,4 @@
 
     <gallery ng-model="vendor.gallery" />
 
-    <a href="#/vendorAddEdit/{{ vendor.id }}">Edytuj</a>
-    <a href="#" ng-click="removeVendor()">Usuń</a>
 </section>

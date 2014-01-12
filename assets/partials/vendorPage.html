@@ -1,5 +1,14 @@
 <div id="categories-view" ng-include="categoriesView"></div>
-<div id="vendor-view" ng-include="vendorView" ng-show="fetched"></div>
 
-<h2 ng-show="vendorDoesNotExists">Nie ma takiej firmy :/</h2>
-<h2 ng-show="otherError">Nieznany błąd</h2>
+<div class="vendor-page">
+    <div class="navigation">
+        <a href="#/vendors/{{ selectedCategoryId }}">Do listy</a>
+        <a href="#" ng-click="removeVendor()">Usuń</a>
+        <a href="#/vendorAddEdit/{{ vendor.id }}">Edytuj</a>
+    </div><br />
+
+    <div id="vendor-view" ng-include="vendorView" ng-show="fetched"></div>
+
+    <h2 ng-show="vendorDoesNotExists">Nie ma takiej firmy :/</h2>
+    <h2 ng-show="otherError">Nieznany błąd</h2>
+</div>
