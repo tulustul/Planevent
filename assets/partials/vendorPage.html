@@ -1,4 +1,5 @@
-<div id="vendor-page">
-    <div id="categories-view" ng-include="categoriesView"></div>
-    <div id="vendor-view" ng-include="vendorView"></div>
-</div>
+<div id="categories-view" ng-include="categoriesView"></div>
+<div id="vendor-view" ng-include="vendorView" ng-show="fetched"></div>
+
+<h2 ng-show="vendorDoesNotExists">Nie ma takiej firmy :/</h2>
+<h2 ng-show="otherError">Nieznany błąd</h2>

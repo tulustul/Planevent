@@ -1,7 +1,13 @@
 <section id="categories" ng-controller="CategoriesController">
-    <li ng-class="{ selected: selectedCategoryId == i }" ng-repeat="(i, category) in categories" ng-click="searchCategory(i)">
-        <img src="{{ category.iconPath }}" alt="Category icon">
-        <h6>{{category.name }}</h6>
-    </li>
+    <div class="checkbox-list">
+        <select ng-options="c.name for c in categories" ng-change="searchCategory()" ng-model="selectedCategory"/><br />
+    </div>
+
+    <ul class="full-list">
+        <li ng-class="{ selected: selectedCategory.id == i }" ng-repeat="(i, category) in categories" ng-click="searchCategory(i)">
+            <img src="{{ category.iconPath }}" alt="Category icon">
+            <h6>{{category.name }}</h6>
+        </li>
+    </ul>
 
 </section>

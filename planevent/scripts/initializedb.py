@@ -30,8 +30,8 @@ def create_test_address():
     address.city = random.choice(testdata.addresses['cities'])
     address.postal_code = str(random.randrange(10,100)) + '-' + \
         str(random.randrange(100, 1000))
-    address.longitude = 51 + random.randrange(-100, 100) / 100
-    address.latitude = 19 + random.randrange(-100, 100) / 100
+    address.longitude = 19 + random.randrange(-100, 100) / 100
+    address.latitude = 51 + random.randrange(-100, 100) / 100
     address.validated = True
     return address
 

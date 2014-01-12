@@ -46,11 +46,13 @@ planevent.controller('CategoriesController',
         ['$scope', '$location', '$routeParams', 'globalsService',
     function($scope, $location, $routeParams, globalsService) {
         $scope.categories = globalsService.categories;
-        $scope.selectedCategoryId = $routeParams.categoryId;
+        $scope.selectedCategory = $scope.categories[$routeParams.categoryId];
 
         $scope.searchCategory = function(categoryId) {
-            $scope.selectedCategoryId = categoryId;
-            $location.path('/vendors/' + categoryId);
+            if (categoryId != undefined) {
+                $scope.selectedCategory = $scope.categories[categoryId];
+            }
+            $location.path('/vendors/' + $scope.selectedCategory.id);
         }
     }
 ]);

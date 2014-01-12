@@ -20,13 +20,24 @@
     <link rel="stylesheet" href="static/vendor.css" />
     <link rel="stylesheet" href="static/main.css" />
 </head>
-<body>
-    <div id="container" ng-controller="MainPageController">
-        <div id="wrapper">
-            <div ng-include="categoriesView"></div><br />
-            <div class="clear"></div>
+<body ng-controller="MainPageController">
+    <header>
+        <a href="/">
+            <img src="/static/images/icons/question.png" alt="logo">
+            <h1>Tu tytuł</h1>
+        </a>
+        <a id="addVendor" href="#/vendorAddEdit">Dodaj firmę</a><br /><br /><br />
+    </header>
+    <div id="container">
+        <section class="content">
             <div id="view" ng-view></div>
-        </div>
+        </section>
     </div>
+    <footer>
+        <a href="#/about">O nas</a>|
+        <a href="#/terms">Regulamin</a>|
+        <a href="#/faq">FAQ</a>|
+        <a href="#/contact">Kontakt</a>
+    </footer>
 </body>
 </html>

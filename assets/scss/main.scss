@@ -12,6 +12,11 @@ $greenGradient: rgb(130, 228, 84), rgb(219, 255, 174);
 $yellowGradient: rgb(230, 235, 107), white;
 $bluishGradient: rgb(197, 247, 211), azure;
 
+$break-small: 320px;
+$break-medium: 600px;
+$break-big: 800px;
+$break-add-vendor: 450px;
+
 html {
     font-family: 'Open Sans', arial,sans-serif;
 }
@@ -20,10 +25,142 @@ h1 {
     margin: 0px;
 }
 
+
+#container {
+    @include container;
+    @include border-box-sizing;
+    margin-top: 85px;
+    margin-bottom: 45px;
+    overflow: hidden;
+
+    @media screen and (max-width: $break-medium) {
+        margin-top: 0px;
+    }
+
+    @media screen and (max-width: $break-medium) {
+        padding-left: 0;
+        padding-right: 0;
+        margin-bottom: 5px;
+    }
+
+
+    .content {
+
+        #view {
+            position: relative;
+            margin-top: 6px;
+
+            &.ng-leave {
+                @include transition(0.5s);
+                left: 0;
+            }
+
+            &.ng-enter {
+                @include transition(0.5s);
+                @include transition-delay(0.5s);
+                left: -100%;
+            }
+
+            &.ng-leave-active {
+                left: 100%;
+            }
+
+            &.ng-enter-active {
+                left: 0;
+            }
+        }
+
+    }
+}
+
+
+header {
+    clear: both;
+    background-color: azure;
+    padding: 10px;
+    position: fixed;
+    top: 0px;
+    z-index: 1;
+    box-shadow: 0px 0px 10px #383838;
+    width: 100%;
+
+    @media screen and (max-width: $break-medium) {
+        position: inherit;
+        width: auto;
+    }
+
+    img {
+        float: left;
+        height: 60px;
+    }
+
+    h1 {
+        float: left;
+        margin-top: 7px;
+
+        @media screen and (max-width: $break-add-vendor) {
+            float: none;
+        }
+    }
+
+    #addVendor {
+        @include gradient-background($greenGradient);
+        font-size: 19px;
+        color: rgb(97, 173, 255);
+        padding: 10px 30px;
+        position: relative;
+        float: right;
+        top: 10px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 6px #888;
+        margin-right: 40px;
+        width: 125px;
+        text-align: center;
+
+        &:hover {
+            @include gradient-background($yellowGradient);
+            text-decoration: none;
+        }
+
+        @media screen and (max-width: $break-add-vendor) {
+            display: block;
+            white-space: nowrap;
+        }
+    }
+}
+
+
+footer {
+    clear: both;
+    background-color: #DDD;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0px 0px 10px #383838;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+
+    @media screen and (max-width: $break-medium) {
+        position: inherit;
+        width: auto;
+    }
+
+    a {
+        padding: 0 45px;
+    }
+}
+
+
 .address-viewer {
     width: 230px;
     height: 230px;
+
+    @media screen and (max-width: $break-medium) {
+        width: 190px;
+        height: 190px;
+    }
 }
+
 
 $create-edit-navigation-height: 41px;
 article#create-edit {
@@ -75,8 +212,6 @@ article#create-edit {
         margin-bottom: 10px;
         padding-top: 5px;
 
-        // @include susy-grid-background;
-
         li {
             @include span-columns(1, 6);
             float: none;
@@ -91,6 +226,15 @@ article#create-edit {
             border: 1px solid;
             border-bottom: none;
 
+            @media screen and (max-width: $break-medium) {
+                @include span-columns(1, 1);
+                margin: 0;
+                height: 35px;
+                padding-top: 6px;
+                font-weight: bold;
+                font-size: 20px;
+            }
+
             &:hover {
                 @include gradient-background($yellowGradient);
             }
@@ -102,48 +246,74 @@ article#create-edit {
     }
 }
 
+
 section#categories {
-    margin-top: 5px;
 
-    li {
-        float: left;
-        margin-right: 10px;
-        width: 55px;
-        @include gradient-background($bluishGradient);
-        border-radius: 10px;
-        box-shadow: 0px 0px 6px #888;
-        cursor: pointer;
+    .checkbox-list {
+        display: none;
 
-        &:hover {
-            @include gradient-background($yellowGradient);
+        @media screen and (max-width: $break-big) {
+            display: block;
+        }
+    }
+
+    .full-list {
+
+        @media screen and (max-width: $break-big) {
+            display: none;
         }
 
-        &.selected {
-            @include gradient-background($greenGradient);
-        }
+        li {
+            float: left;
+            margin-right: 10px;
+            margin-bottom: 5px;
+            width: 55px;
+            @include gradient-background($bluishGradient);
+            border-radius: 10px;
+            box-shadow: 0px 0px 6px #888;
+            cursor: pointer;
+            list-style: none;
 
-        img {
-            height: 40px;
-            margin-left: 9px;
-            margin-top: 2px;
-        }
+            &:hover {
+                @include gradient-background($yellowGradient);
+            }
 
-        h6 {
-            text-align: center;
-            font-size: 10px;
-            margin: 0px;
+            &.selected {
+                @include gradient-background($greenGradient);
+            }
+
+            img {
+                height: 40px;
+                margin-left: 9px;
+                margin-top: 2px;
+            }
+
+            h6 {
+                text-align: center;
+                font-size: 10px;
+                margin: 0px;
+            }
         }
     }
 }
 
 
-
 #categories-view {
-    @include span-columns(2);
+    width: 210px;
+    height: 100%;
+    float: left;
+
+    @media screen and (max-width: $break-big) {
+        float: none;
+        width: 100%;
+        height: auto;
+    }
 
     #categories {
-        width: 100%;
-        float: left;
+
+        select {
+            width: 100%;
+        }
 
         li {
             width: 100%;
@@ -161,18 +331,27 @@ section#categories {
 }
 
 
-#vendor-page {
-    section#vendor {
-        float: right;
+
+#vendor-view {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+
+    #vendor {
         background: azure;
         border: 1px solid;
         padding: 10px;
-        @include span-columns(10 omega);
     }
 }
 
 #vendor-list {
-    @include span-columns(6);
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+
+    @media screen and (max-width: $break-medium) {
+        width: 100%;
+    }
 
     .vendor-preview {
         height: 140px;
@@ -183,6 +362,12 @@ section#categories {
         overflow: hidden;
         position: relative;
         cursor: pointer;
+
+        @media screen and (max-width: $break-small) {
+            height: auto;
+            max-height: 300px;
+            text-align: center;
+        }
 
         &:hover {
             @include gradient-background($yellowGradient);
@@ -208,6 +393,10 @@ section#categories {
             width: 130px;
             margin-top: 10px;
             float: left;
+
+            @media screen and (max-width: $break-small) {
+                float: none;
+            }
         }
 
         h2 {
@@ -227,195 +416,106 @@ section#categories {
         p {
             font-size: 13px;
             margin-top: -12px;
+
+            @media screen and (max-width: $break-small) {
+                text-align: left;
+            }
         }
     }
 }
 
+
 $galleryHeigth: 500px;
 .gallery {
-    height: $galleryHeigth;
     max-height: $galleryHeigth;
     margin: 10px auto;
     text-align: center;
+    border: 2px solid;
 
     @include perspective(1000px);
     @include transform-style(preserve-3d);
 
-    .slide {
-        position: absolute;
-        left: 50%;
-        max-height: $galleryHeigth;
+
+    .gallery-wrapper {
         width: 100%;
+        padding-bottom: 75%;
 
-        div {
-            position: relative;
-            left: -50%;
+        .slide {
+            position: absolute;
+            max-height: $galleryHeigth;
+            width: 100%;
 
-            img {
-                max-height: $galleryHeigth;
+            div {
+                position: relative;
+
+                img {
+                    max-height: $galleryHeigth;
+                }
             }
         }
-    }
 
-    .slide.ng-hide-add {
-        display:block!important;
-        opacity:1;
-        @include transition(1s linear all);
-        @include transform-origin(right top 0);
-    }
-    .slide.ng-hide-add.ng-hide-add-active {
-        @include transform(rotateX(50deg) rotateY(30deg));
-        opacity:0;
-    }
-    .slide.ng-hide-remove {
-        @include transition(1s linear all);
-        display:block!important;
-        opacity:0;
-    }
-    .slide, .slide.ng-hide-remove.ng-hide-remove-active {
-        opacity:1;
-    }
-
-    .arrow {
-        position: absolute;
-        height: 64px;
-        width: 64px;
-        margin-top: -35px;
-        top: 50%;
-        opacity: 0.2;
-        cursor: pointer;
-
-        &:hover {
+        .slide.ng-hide-add {
+            display:block!important;
+            opacity:1;
+            @include transition(1s linear all);
+            @include transform-origin(right top 0);
+        }
+        .slide.ng-hide-add.ng-hide-add-active {
+            @include transform(rotateX(50deg) rotateY(30deg));
+            opacity:0;
+        }
+        .slide.ng-hide-remove {
+            @include transition(1s linear all);
+            display:block!important;
+            opacity:0;
+        }
+        .slide, .slide.ng-hide-remove.ng-hide-remove-active {
             opacity:1;
         }
 
-        &.prev {
-            background-image: url("/static/images/prev.png");
-            left: 20px;
-            transition: all 0.2s linear 0s;
-        }
-
-        &.next {
-            background-image: url("/static/images/next.png");
-            right: 20px;
-            transition: all 0.2s linear 0s;
-        }
-    }
-
-    .nav {
-        bottom: -15px;
-        position: absolute;
-        width: 100%;
-
-        li {
-            border: 5px solid #AAAAAA;
-            border-radius: 5px;
+        .arrow {
+            position: absolute;
+            height: 64px;
+            width: 64px;
+            margin-top: -35px;
+            top: 50%;
+            opacity: 0.2;
             cursor: pointer;
-            display: inline-block;
-            margin: 0 8px;
-            width: 60px;
 
-            &.active {
-                border: 5px solid #FFFFFF;
-            }
-        }
-    }
-}
-
-#addVendor {
-    @include gradient-background($greenGradient);
-    font-size: 19px;
-    color: rgb(97, 173, 255);
-    padding: 10px 30px;
-    position: relative;
-    float: right;
-    top: 10px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 6px #888;
-    @include span-columns(2);
-
-    &:hover {
-        @include gradient-background($yellowGradient);
-        text-decoration: none;
-    }
-}
-
-
-header {
-    clear: both;
-    background-color: azure;
-    padding: 20px;
-    position: fixed;
-    width: 100%;
-    top: 0px;
-    z-index: 1;
-    box-shadow: 0px 0px 10px #383838;
-
-    img {
-        float: left;
-        height: 60px;
-    }
-
-    h1 {
-        float: left;
-    }
-}
-
-footer {
-    clear: both;
-    background-color: #DDD;
-    padding: 10px;
-    text-align: center;
-    box-shadow: 0px 0px 10px #383838;
-    position: fixed;
-    bottom: 0px;
-    width: 100%;
-
-    a {
-        padding: 0 50px;
-    }
-}
-
-.new-design {
-    @include container;
-    @include border-box-sizing;
-    // @include susy-grid-background;
-    margin-top: 115px;
-    margin-bottom: 80px;
-
-    .content {
-
-        #categories {
-            // @include span-columns(3);
-        }
-
-        #addVendor {
-            @include span-columns(2 omega);
-        }
-
-        #view {
-            position: relative;
-            margin-top: 6px;
-
-            &.ng-leave {
-                @include transition(0.5s);
-                left: 0;
+            &:hover {
+                opacity:1;
             }
 
-            &.ng-enter {
-                @include transition(0.5s);
-                @include transition-delay(0.5s);
-                left: -100%;
+            &.prev {
+                background-image: url("/static/images/prev.png");
+                left: 20px;
+                transition: all 0.2s linear 0s;
             }
 
-            &.ng-leave-active {
-                left: 100%;
-            }
-
-            &.ng-enter-active {
-                left: 0;
+            &.next {
+                background-image: url("/static/images/next.png");
+                right: 20px;
+                transition: all 0.2s linear 0s;
             }
         }
 
+        .nav {
+            bottom: -15px;
+            position: absolute;
+            width: 100%;
+
+            li {
+                border: 5px solid #AAAAAA;
+                border-radius: 5px;
+                cursor: pointer;
+                display: inline-block;
+                margin: 0 8px;
+                width: 60px;
+
+                &.active {
+                    border: 5px solid #FFFFFF;
+                }
+            }
+        }
     }
 }
