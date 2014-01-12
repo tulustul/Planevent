@@ -5,7 +5,7 @@
 
 $total-columns  : 12;
 $column-width   : 10em;
-$gutter-width   : 1em;
+$gutter-width   : 0.5em;
 $grid-padding   : $gutter-width;
 
 $dark: #CCC;
@@ -21,7 +21,8 @@ $darkGradient: #F0F0F0, #CCC;
 
 $break-small: 320px;
 $break-medium: 600px;
-$break-big: 800px;
+$break-bigger: 800px;
+$break-big: 1200px;
 $break-add-vendor: 450px;
 
 html {
@@ -48,9 +49,6 @@ h1 {
 
     @media screen and (max-width: $break-medium) {
         margin-top: 0px;
-    }
-
-    @media screen and (max-width: $break-medium) {
         padding-left: 0;
         padding-right: 0;
         margin-bottom: 5px;
@@ -265,14 +263,14 @@ section#categories {
     .checkbox-list {
         display: none;
 
-        @media screen and (max-width: $break-big) {
+        @media screen and (max-width: $break-bigger) {
             display: block;
         }
     }
 
     .full-list {
 
-        @media screen and (max-width: $break-big) {
+        @media screen and (max-width: $break-bigger) {
             display: none;
         }
 
@@ -310,14 +308,14 @@ section#categories {
 
 
 #categories-view {
-    width: 210px;
-    height: 100%;
-    float: left;
+    @include span-columns(2);
 
     @media screen and (max-width: $break-big) {
-        float: none;
-        width: 100%;
-        height: auto;
+        @include span-columns(3);
+    }
+
+    @media screen and (max-width: $break-bigger) {
+        @include span-columns(12 omega);
     }
 
     #categories {
@@ -346,8 +344,15 @@ section#categories {
     border: 1px solid;
     padding: 10px;
     width: 100%;
-    max-width: 800px;
-    float: left;
+    @include span-columns(7);
+
+    @media screen and (max-width: $break-big) {
+        @include span-columns(9 omega);
+    }
+
+    @media screen and (max-width: $break-bigger) {
+        @include span-columns(12 omega);
+    }
 
     .navigation {
         a {
@@ -362,8 +367,15 @@ section#categories {
 }
 
 .related-vendors {
-    width: 400px;
-    float: left;
+    @include span-columns(3 omega);
+
+    @media screen and (max-width: $break-big) {
+        @include span-columns(9 omega);
+    }
+
+    @media screen and (max-width: $break-medium) {
+        @include span-columns(12 omega);
+    }
 }
 
 #vendor {
@@ -371,14 +383,29 @@ section#categories {
 }
 
 #vendor-list {
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
+    @include span-columns(10 omega);
 
-    @media screen and (max-width: $break-medium) {
-        width: 100%;
+    @media screen and (max-width: $break-big) {
+        @include span-columns(9 omega);
+    }
+
+    @media screen and (max-width: $break-bigger) {
+        @include span-columns(12 omega);
+    }
+
+    .vendor-preview {
+        @include span-columns(5 omega, 10);
+
+        @media screen and (max-width: $break-big) {
+            @include span-columns(9 omega, 9);
+        }
+
+        @media screen and (max-width: $break-bigger) {
+            @include span-columns(12 omega);
+        }
     }
 }
+
 .vendor-preview {
     height: 140px;
     @include gradient-background($darkGradient);
