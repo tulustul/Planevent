@@ -101,9 +101,10 @@ planevent.controller('VendorPageController',
     var Vendor = $resource('/api/vendor/:id');
     $scope.vendorDoesNotExists = false;
     $scope.otherError = false;
-    $scope.vendor = Vendor.get({id: $routeParams.vendorId},
+    var vendor = Vendor.get({id: $routeParams.vendorId},
         function(){
             $scope.fetched = true;
+            $scope.vendor = vendor;
         },
         function(response){
             if (response.status === 404) {
@@ -338,5 +339,42 @@ planevent.controller('AdminPageController',
                 }
             }
         );
+    }
+}]);
+
+planevent.controller('RelatedVendorsController',
+        ['$scope', '$resource', '$location',
+        function($scope, $resource, $location) {
+
+    var VendorsSearch = $resource('/api/vendors/search');
+
+    $scope.$watch('vendor', function() {
+        if ($scope.vendor == undefined) {
+            return;
+        }
+
+        tags_ids = _.map($scope.vendor.tags, function(tag) {
+            return tag.id;
+        })
+
+        var params = {
+            category: $scope.vendor.category,
+            exclude_vendor_id: $scope.vendor.id,
+            tags: tags_ids,
+            range: 50,
+            limit: 5
+        };
+
+        if ($scope.vendor.address.validated) {
+            params.lon = $scope.vendor.address.longitude;
+            params.lat = $scope.vendor.address.latitude;
+        }
+
+        $scope.relatedVendors = VendorsSearch.query(params);
+    });
+
+
+    $scope.goToVendor = function(vendor) {
+        $location.path('/vendor/' + vendor.id);
     }
 }]);

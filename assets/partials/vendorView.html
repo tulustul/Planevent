@@ -11,6 +11,7 @@
     </span>
 
     <h5>Dodano: {{ vendor.added_at }}</h5>
+    <h5>Tagi: <span ng-repeat="tag in vendor.tags">{{tag.name}}, </span></h5>
 
     <li ng-repeat="contact in vendor.contacts">
         {{ contact.value }} - {{ contact.description }}

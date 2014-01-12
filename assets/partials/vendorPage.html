@@ -12,3 +12,13 @@
     <h2 ng-show="vendorDoesNotExists">Nie ma takiej firmy :/</h2>
     <h2 ng-show="otherError">Nieznany błąd</h2>
 </div>
+
+<div class="related-vendors" ng-controller="RelatedVendorsController">
+    Najbliższe podobne firmy:<br />
+    <figure class="vendor-preview" ng-repeat="vendor in relatedVendors" ng-click="goToVendor(vendor)">
+        <img src="{{ vendor.logo.path }}" alt="vendor logo">
+        <h2>{{ vendor.name }}</h2>
+        <h3>{{ vendor.address.city }}</h3>
+        <p>{{ vendor.description }}</p>
+    </figure>
+</div>

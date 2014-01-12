@@ -115,6 +115,14 @@ class BaseEntity(AbstractConcreteBase, Base):
         return self
 
 
+class VendorTag(BaseEntity):
+    __tablename__ = 'vendor_tags'
+    vendor_id = Column(Integer, ForeignKey('vendor.id'))
+    tag_id = Column(Integer, ForeignKey('tag.id'))
+
+    tag = relationship('Tag', cascade="delete, all")
+
+
 class Vendor(BaseEntity):
     __tablename__ = 'vendor'
     name = Column(String(150))
@@ -131,7 +139,7 @@ class Vendor(BaseEntity):
     address = relationship("Address", cascade="delete, all")
     logo = relationship("Image", cascade="delete, all")
     gallery = relationship("ImageGallery", cascade="delete, all")
-    tags = relationship('VendorTag', cascade="delete, all")
+    tags = relationship('Tag', secondary=VendorTag.__table__, cascade="delete, all")
 
 
 class Address(BaseEntity):
@@ -167,11 +175,3 @@ class Tag(BaseEntity):
     __tablename__ = 'tag'
     name = Column(String(50), nullable=False, unique=True)
     references_count = Column(Integer, default=0)
-
-
-class VendorTag(BaseEntity):
-    __tablename__ = 'vendor_tags'
-    vendor_id = Column(Integer, ForeignKey('vendor.id'))
-    tag_id = Column(Integer, ForeignKey('tag.id'))
-
-    tag = relationship('Tag', cascade="delete, all")

@@ -27,8 +27,8 @@ def param(name, type_, body=False, rest=False, required=False, default=None):
                     else:
                         param_value = type_(param_value)
                 except Exception as e:
-                    raise ValueError('Cannot cast param ' + name,
-                        ' to type ' + type_.__name__) from e
+                    raise ValueError('Cannot cast param ' + name \
+                        + ' to type ' + type_.__name__) from e
             return mth(self, param_value, *args, **kwargs)
         return wrap
     return decorator

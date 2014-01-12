@@ -347,7 +347,7 @@ section#categories {
     padding: 10px;
     width: 100%;
     max-width: 800px;
-    margin: 0 auto;
+    float: left;
 
     .navigation {
         a {
@@ -359,6 +359,11 @@ section#categories {
             }
         }
     }
+}
+
+.related-vendors {
+    width: 400px;
+    float: left;
 }
 
 #vendor {
@@ -373,74 +378,73 @@ section#categories {
     @media screen and (max-width: $break-medium) {
         width: 100%;
     }
+}
+.vendor-preview {
+    height: 140px;
+    @include gradient-background($darkGradient);
+    border: 1px solid;
+    margin: 5px 0px;
+    padding: 0px 5px 0px 0px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
 
-    .vendor-preview {
-        height: 140px;
-        @include gradient-background($darkGradient);
-        border: 1px solid;
-        margin: 5px 0px;
-        padding: 0px 5px 0px 0px;
-        overflow: hidden;
-        position: relative;
-        cursor: pointer;
+    @media screen and (max-width: $break-small) {
+        height: auto;
+        max-height: 300px;
+        text-align: center;
+    }
+
+    &:hover {
+        @include gradient-background($yellowGradient);
+    }
+
+    &.ng-enter, &.ng-move {
+        @include transition(0.3s linear all);
+        opacity: 0;
+    }
+
+    &.ng-enter.ng-enter-active,
+    &.ng-move.ng-move-active {
+        opacity: 1;
+    }
+
+    &.ng-move-stagger,
+    &.ng-enter-stagger {
+        @include transition-delay(0.1s);
+        @include transition-duration(0s);
+    }
+
+    img {
+        width: 130px;
+        margin-top: 10px;
+        float: left;
 
         @media screen and (max-width: $break-small) {
-            height: auto;
-            max-height: 300px;
-            text-align: center;
+            float: none;
         }
+    }
 
-        &:hover {
-            @include gradient-background($yellowGradient);
-        }
+    h2 {
+        font-size: 22px;
+        white-space: nowrap;
+        overflow: hidden;
+        padding: 0px;
+        margin: 0px;
+    }
 
-        &.ng-enter, &.ng-move {
-            @include transition(0.3s linear all);
-            opacity: 0;
-        }
+    h3 {
+        font-size: 16px;
+        margin-top: -18px;
+        padding: 0px;
+    }
 
-        &.ng-enter.ng-enter-active,
-        &.ng-move.ng-move-active {
-            opacity: 1;
-        }
+    p {
+        font-size: 13px;
+        margin-top: -12px;
 
-        &.ng-move-stagger,
-        &.ng-enter-stagger {
-            @include transition-delay(0.1s);
-            @include transition-duration(0s);
-        }
-
-        img {
-            width: 130px;
-            margin-top: 10px;
-            float: left;
-
-            @media screen and (max-width: $break-small) {
-                float: none;
-            }
-        }
-
-        h2 {
-            font-size: 22px;
-            white-space: nowrap;
-            overflow: hidden;
-            padding: 0px;
-            margin: 0px;
-        }
-
-        h3 {
-            font-size: 16px;
-            margin-top: -18px;
-            padding: 0px;
-        }
-
-        p {
-            font-size: 13px;
-            margin-top: -12px;
-
-            @media screen and (max-width: $break-small) {
-                text-align: left;
-            }
+        @media screen and (max-width: $break-small) {
+            text-align: left;
         }
     }
 }

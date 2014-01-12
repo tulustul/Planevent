@@ -55,20 +55,23 @@ class VendorView(View):
 class RelatedVendorsView(View):
 
     @view_config(request_method='GET')
+    @param('offset', int, default=0)
+    @param('limit', int, default=5)
     @param('id', int, required=True, rest=True)
-    def get(self, id_):
+    def get(self, id_, limit, offset):
         vendor = models.Vendor.get(id_, 'tags')
         if not vendor:
             self.request.response.status = 404
             return {'error': 'No vendor with id ' + str(id_)}
 
         tags = [tag.id for tag in vendor.tags]
-        query = models.Vendor.query().join(models.VendorTag) \
+        query = models.Vendor.query('logo', 'address') \
+                .join(models.VendorTag) \
                 .filter(models.VendorTag.tag_id.in_(tags)) \
                 .filter(models.Vendor.id!=id_)
 
         query = query.order_by(models.Vendor.promotion.desc())
-        return query.all()
+        return query.limit(limit).offset(offset).all()
 
 
 @view_defaults(route_name='vendor_promotion', renderer='json')
@@ -94,27 +97,38 @@ class SearchVendorsView(View):
     @param('offset', int, default=0)
     @param('limit', int, default=10)
     @param('category', int, default=0)
-    @param('tag_id', int)
-    @param('lon', int)
-    @param('lat', int)
-    @param('range_', int)
-    def get(self, range_, lat, lon, tag_id, category, limit, offset):
-        query = models.Vendor.query('address', 'logo')
+    @param('tags', list)
+    @param('lon', float)
+    @param('lat', float)
+    @param('range', int)
+    @param('exclude_vendor_id', int)
+    def get(self, exclude_vendor_id, range_, lat, lon, tags, category, limit, offset):
+        query = models.DBSession.query(models.Vendor.id)
+        query
         if category != 0:
             query = query.filter(models.Vendor.category==category)
 
-        if tag_id:
-            query = query.filter(models.VendorTag.id==tag_id)
+        if tags:
+            query = query.join(models.VendorTag) \
+                .filter(models.VendorTag.tag_id.in_(tags))
+
+        if exclude_vendor_id:
+            query = query.filter(models.Vendor.id!=exclude_vendor_id)
 
         if lon and lat:
             range_ /= 111.12
-            query = query.filter(models.Address.longitude.between(
-                lon-range_, lon+range_))
-            query = query.filter(models.Address.latitude.between(
-                lat-range_, lat+range_))
+            query = query.join(models.Address) \
+                .filter(models.Address.longitude.between(
+                    lon-range_, lon+range_)) \
+                .filter(models.Address.latitude.between(
+                    lat-range_, lat+range_))
 
         query = query.order_by(models.Vendor.promotion.desc())
-        return query.limit(limit).offset(offset).all()
+
+        vendors_ids = [t[0] for t in query.limit(limit).offset(offset).all()]
+
+        return models.Vendor.query('address', 'logo') \
+            .filter(models.Vendor.id.in_(vendors_ids)).all()
 
 @view_defaults(route_name='vendors', renderer='json')
 class VendorsView(View):

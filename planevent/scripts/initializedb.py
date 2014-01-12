@@ -25,13 +25,15 @@ def usage(argv):
 
 
 def create_test_address():
+    city = random.choice(testdata.addresses['cities'])
+
     address = models.Address()
     address.street = random.choice(testdata.addresses['streets'])
-    address.city = random.choice(testdata.addresses['cities'])
+    address.city = city['name']
     address.postal_code = str(random.randrange(10,100)) + '-' + \
         str(random.randrange(100, 1000))
-    address.longitude = 19 + random.randrange(-100, 100) / 100
-    address.latitude = 51 + random.randrange(-100, 100) / 100
+    address.longitude = city['lon'] + random.randrange(-50, 50) / 100
+    address.latitude = city['lat'] + random.randrange(-50, 50) / 100
     address.validated = True
     return address
 
@@ -57,7 +59,16 @@ def create_test_contacts(vendor, quantity):
         contact.description = random.choice(testdata.contact_descriptions)
         vendor.contacts.append(contact)
 
-def create_test_vendor():
+def create_test_vendor_tags(vendor, tags, quantity):
+    tags_sample = random.sample(tags, quantity)
+    for i in range(quantity):
+        vendor_tag = models.VendorTag(
+            vendor_id=vendor.id,
+            tag=tags_sample[i],
+        )
+        vendor_tag.save()
+
+def create_test_vendor(tags):
     vendor = models.Vendor()
     vendor.name = random.choice(testdata.vendors['names'])
     vendor.description = random.choice(testdata.vendors['descriptions'])
@@ -66,13 +77,24 @@ def create_test_vendor():
     vendor.promotion = random.randrange(1000)
     vendor.address = create_test_address()
     vendor.logo = create_test_logo()
-    create_test_contacts(vendor, random.randrange(0, 6))
-    create_test_gallery(vendor, random.randrange(0, 10))
+    create_test_contacts(vendor, random.randrange(6))
+    create_test_gallery(vendor, random.randrange(10))
+    vendor.save()
+    create_test_vendor_tags(vendor, tags, random.randrange(6))
     vendor.save()
 
+def create_test_tags():
+    tags = []
+    for tag_name in testdata.tags:
+        tag = models.Tag(name=tag_name)
+        tag.save()
+        tags.append(tag)
+    return tags
+
 def create_test_instances(quantity):
+    tags = create_test_tags()
     for i in range(quantity):
-        create_test_vendor()
+        create_test_vendor(tags)
 
 def main(argv=sys.argv):
     if len(argv) < 2:
@@ -85,4 +107,4 @@ def main(argv=sys.argv):
     models.DBSession.configure(bind=engine)
     models.Base.metadata.create_all(engine)
     with transaction.manager as manager:
-        create_test_instances(500)
+        create_test_instances(2000)

@@ -1,3 +1,27 @@
+tags = [
+    'kuchnia polska',
+    'kuchnia francuska',
+    'kuchnia włoska',
+    'kuchnia chińska',
+    'kuchnia japońska',
+    'kuchnia rosyjska',
+    'kuchnia meksykańska',
+    'kajaki',
+    'gokarty',
+    'paintball',
+    'basen',
+    'las',
+    'plaża',
+    'krowy',
+    'konie',
+    'dziwki',
+    'jazz',
+    'pop',
+    'klasyczna',
+    'rock',
+    'kabaret',
+]
+
 addresses = {
     'streets': [
         'Zgodna 2/3',
@@ -8,12 +32,16 @@ addresses = {
         'Lemoniady 42',
     ],
     'cities': [
-        'Wrocław',
-        'Kraków',
-        'Łódź',
-        'Warszawa',
-        'Szczecin',
-        'Kalisz',
+        {'name': 'Wrocław', 'lat': 51, 'lon': 17},
+        {'name': 'Kraków', 'lat': 50, 'lon': 20},
+        {'name': 'Łódź', 'lat': 51.8, 'lon': 19.5},
+        {'name': 'Warszawa', 'lat': 52.2, 'lon': 21},
+        {'name': 'Szczecin', 'lat': 53.5, 'lon': 14.5},
+        {'name': 'Kalisz', 'lat': 51.7, 'lon': 18.1},
+        {'name': 'Gdańsk', 'lat': 54.4, 'lon': 18.6},
+        {'name': 'Poznań', 'lat': 52.4, 'lon': 16.9},
+        {'name': 'Lublin', 'lat': 51.2, 'lon': 22.6},
+        {'name': 'Białystok', 'lat': 53.1, 'lon': 23.2}
     ],
 }
 
