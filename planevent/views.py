@@ -33,42 +33,42 @@ class VendorView(View):
 
     @view_config(request_method='GET')
     @param('id', int, required=True, rest=True)
-    def get(self, id_):
-        vendor = models.Vendor.get(id_, '*')
+    def get(self, id):
+        vendor = models.Vendor.get(id, '*')
         if not vendor:
             self.request.response.status = 404
-            return {'error': 'No vendor with id ' + str(id_)}
+            return {'error': 'No vendor with id ' + str(id)}
         return vendor
 
     @view_config(request_method='DELETE')
     @param('id', int, required=True, rest=True)
-    def delete(self, id_):
-        vendor = models.Vendor.get(id_)
+    def delete(self, id):
+        vendor = models.Vendor.get(id)
         if not vendor:
             self.request.response.status = 404
-            return {'error': 'No vendor with id ' + str(id_)}
-        models.Vendor.delete(id_)
-        return {'message': 'deleted', 'id': id_};
+            return {'error': 'No vendor with id ' + str(id)}
+        models.Vendor.delete(id)
+        return {'message': 'deleted', 'id': id};
 
 
 @view_defaults(route_name='related_vendors', renderer='json')
 class RelatedVendorsView(View):
 
     @view_config(request_method='GET')
+    @param('id', int, required=True, rest=True)
     @param('offset', int, default=0)
     @param('limit', int, default=5)
-    @param('id', int, required=True, rest=True)
-    def get(self, id_, limit, offset):
-        vendor = models.Vendor.get(id_, 'tags')
+    def get(self, id, offset, limit):
+        vendor = models.Vendor.get(id, 'tags')
         if not vendor:
             self.request.response.status = 404
-            return {'error': 'No vendor with id ' + str(id_)}
+            return {'error': 'No vendor with id ' + str(id)}
 
         tags = [tag.id for tag in vendor.tags]
         query = models.Vendor.query('logo', 'address') \
                 .join(models.VendorTag) \
                 .filter(models.VendorTag.tag_id.in_(tags)) \
-                .filter(models.Vendor.id!=id_)
+                .filter(models.Vendor.id!=id)
 
         query = query.order_by(models.Vendor.promotion.desc())
         return query.limit(limit).offset(offset).all()
@@ -80,29 +80,30 @@ class VendorPromotionView(View):
     @view_config(request_method='POST')
     @param('id', int, required=True, rest=True)
     @param('promotion', int, required=True, rest=True)
-    def post(self, promotion, id_):
-        vendor = models.Vendor.get(id_)
+    def post(self, id, promotion):
+        vendor = models.Vendor.get(id)
         if not vendor:
             self.request.response.status = 404
-            return {'error': 'No vendor with id ' + str(id_)}
+            return {'error': 'No vendor with id ' + str(id)}
         vendor.promotion = promotion
         vendor.save()
-        return {'message': 'saved', 'id': id_, 'promotion': promotion}
+        return {'message': 'saved', 'id': id, 'promotion': promotion}
 
 
 @view_defaults(route_name='vendors_search', renderer='json')
 class SearchVendorsView(View):
 
     @view_config(request_method='GET')
-    @param('offset', int, default=0)
-    @param('limit', int, default=10)
     @param('category', int, default=0)
     @param('tags', list)
     @param('lon', float)
     @param('lat', float)
     @param('range', int)
     @param('exclude_vendor_id', int)
-    def get(self, exclude_vendor_id, range_, lat, lon, tags, category, limit, offset):
+    @param('offset', int, default=0)
+    @param('limit', int, default=10)
+    def get(self, category, tags, lon, lat, range, exclude_vendor_id, offset,
+            limit):
         query = models.DBSession.query(models.Vendor.id)
         query
         if category != 0:
@@ -116,12 +117,12 @@ class SearchVendorsView(View):
             query = query.filter(models.Vendor.id!=exclude_vendor_id)
 
         if lon and lat:
-            range_ /= 111.12
+            range /= 111.12
             query = query.join(models.Address) \
                 .filter(models.Address.longitude.between(
-                    lon-range_, lon+range_)) \
+                    lon-range, lon+range)) \
                 .filter(models.Address.latitude.between(
-                    lat-range_, lat+range_))
+                    lat-range, lat+range))
 
         query = query.order_by(models.Vendor.promotion.desc())
 
@@ -134,10 +135,10 @@ class SearchVendorsView(View):
 class VendorsView(View):
 
     @view_config(request_method='GET')
+    @param('category', int, default=0)
     @param('offset', int, default=0)
     @param('limit', int, default=10)
-    @param('category', int, default=0)
-    def get(self, category, limit, offset):
+    def get(self, category, offset, limit):
         query = models.Vendor.query('address', 'logo')
         if category != 0:
             query = query.filter(models.Vendor.category==category)
@@ -179,8 +180,8 @@ class GalleryView(View):
 class TagsAutocompleteView(View):
 
     @view_config(request_method='GET')
-    @param('limit', int, default=10)
     @param('tag', str, required=True, rest=True)
+    @param('limit', int, default=10)
     def get(self, tag, limit):
         query = models.Tag.query() \
             .filter(models.Tag.name.like('%'+tag+'%')) \
@@ -195,7 +196,7 @@ class TagsView(View):
     @view_config(request_method='GET')
     @param('limit', int, default=10)
     @param('offset', int, default=0)
-    def get(self, offset, limit):
+    def get(self, limit, offset):
         query = models.Tag.query() \
             .order_by(models.Tag.references_count.desc()) \
             .limit(limit).offset(offset)
@@ -216,4 +217,3 @@ class TagsView(View):
         tag = models.Tag(name=tag_name)
         tag.save()
         return tag
-
