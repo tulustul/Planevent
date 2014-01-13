@@ -20,3 +20,7 @@ To run tests
 To run watch
  - npm install
  - grunt dev
+
+
+- gem install compass
+- gem install suzy
