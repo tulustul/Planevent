@@ -11,6 +11,7 @@ from planevent.decorators import (
     param,
     image_upload
 )
+from planevent.services import geocode_location
 
 class View(object):
 
@@ -96,14 +97,14 @@ class SearchVendorsView(View):
     @view_config(request_method='GET')
     @param('category', int, default=0)
     @param('tags', list)
-    @param('lon', float)
-    @param('lat', float)
+    @param('location', str)
     @param('range', int)
     @param('exclude_vendor_id', int)
     @param('offset', int, default=0)
     @param('limit', int, default=10)
-    def get(self, category, tags, lon, lat, range, exclude_vendor_id, offset,
+    def get(self, category, tags, location, range, exclude_vendor_id, offset,
             limit):
+
         query = models.DBSession.query(models.Vendor.id)
         query
         if category != 0:
@@ -116,13 +117,15 @@ class SearchVendorsView(View):
         if exclude_vendor_id:
             query = query.filter(models.Vendor.id!=exclude_vendor_id)
 
-        if lon and lat:
-            range /= 111.12
-            query = query.join(models.Address) \
-                .filter(models.Address.longitude.between(
-                    lon-range, lon+range)) \
-                .filter(models.Address.latitude.between(
-                    lat-range, lat+range))
+        if location:
+            latlng = geocode_location(location)
+            if latlng:
+                range /= 111.12
+                query = query.join(models.Address) \
+                    .filter(models.Address.longitude.between(
+                        latlng.lng-range, latlng.lng+range)) \
+                    .filter(models.Address.latitude.between(
+                        latlng.lat-range, latlng.lat+range))
 
         query = query.order_by(models.Vendor.promotion.desc())
 

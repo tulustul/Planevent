@@ -29,6 +29,18 @@ from sqlalchemy.orm import (
 
 from zope.sqlalchemy import ZopeTransactionExtension
 
+import redis as r
+
+redis = None
+host = 'localhost'
+port =  6379
+db = 0
+def createRedisConnection():
+    global redis
+    redis = r.StrictRedis(host=host, port=port,
+        db=db,  charset='utf-8', decode_responses=True)
+createRedisConnection()
+
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 
 Base = declarative_base()

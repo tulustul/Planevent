@@ -19,6 +19,8 @@ requires = [
     'nose',
     'webtest',
     'pillow',
+    'redis',
+    'geopy',
 ]
 
 setup(name='PlanEvent',

@@ -365,10 +365,7 @@ planevent.controller('RelatedVendorsController',
             limit: 5
         };
 
-        if ($scope.vendor.address.validated) {
-            params.lon = $scope.vendor.address.longitude;
-            params.lat = $scope.vendor.address.latitude;
-        }
+        params.location = $scope.vendor.address.city;
 
         $scope.relatedVendors = VendorsSearch.query(params);
     });
