@@ -12,15 +12,21 @@ Getting Started
 
 - initialize_PlanEvent_db development.ini
 
+- npm install
+
+To run app
 - pserve development.ini --reload
 
 To run tests
 - nosetests
 
 To run watch
- - npm install
- - grunt dev
+- grunt dev
 
+
+Requirements
+------------
+nodejs, ruby, python3
 
 - gem install compass
 - gem install suzy

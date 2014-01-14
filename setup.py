@@ -10,20 +10,19 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
 
 requires = [
     'pyramid',
-    'pyramid_chameleon',
-    'pyramid_debugtoolbar',
     'pyramid_tm',
     'SQLAlchemy',
     'transaction',
     'zope.sqlalchemy',
     'waitress',
-    'redis',
     'pymysql',
     'nose',
-    ]
+    'webtest',
+    'pillow',
+]
 
 setup(name='PlanEvent',
-      version='0.0',
+      version='0.1',
       description='PlanEvent',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
