@@ -14,7 +14,7 @@ def geocode_location(location_name):
     location_name = location_name.lower()
     location_geocoding = redis.get(LOCATION_PREFIX + location_name)
     if location_geocoding is None:
-        logging.info('Geocoding location:' + location_name)
+        logging.info('Geocoding location: ' + location_name)
         g = geocoders.GoogleV3()
         response = g.geocode(location_name)
         if not response:
@@ -23,6 +23,6 @@ def geocode_location(location_name):
         redis.set(LOCATION_PREFIX + location_name,
             json.dumps(location_geocoding))
     else:
-        logging.info('Location geocoding cache hit:' + location_name)
+        logging.info('Location geocoding cache hit: ' + location_name)
         location_geocoding = json.loads(location_geocoding)
     return LatLng(*location_geocoding)

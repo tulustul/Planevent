@@ -34,18 +34,20 @@ planevent.config(['$routeProvider', function($routeProvider) {$routeProvider
     .otherwise({redirectTo: '/'});
 }]);
 
-planevent.controller('MainPageController', ['$scope',
-    function($scope) {
+planevent.controller('MainPageController', ['$scope', 'globalsService',
+    function($scope, globalsService) {
         $scope.mainView = 'assets/partials/mainView.html';
         $scope.categoriesView = 'assets/partials/categoriesView.html';
         $scope.vendorView = 'assets/partials/vendorView.html';
+        $scope.searchForm = 'assets/partials/search.html';
+
+        $scope.categories = globalsService.categories;
     }
 ]);
 
 planevent.controller('CategoriesController',
-        ['$scope', '$location', '$routeParams', 'globalsService',
-    function($scope, $location, $routeParams, globalsService) {
-        $scope.categories = globalsService.categories;
+        ['$scope', '$location', '$routeParams',
+    function($scope, $location, $routeParams) {
         $scope.selectedCategory = $scope.categories[$routeParams.categoryId];
 
         $scope.searchCategory = function(categoryId) {
@@ -374,4 +376,32 @@ planevent.controller('RelatedVendorsController',
     $scope.goToVendor = function(vendor) {
         $location.path('/vendor/' + vendor.id);
     }
+}]);
+
+planevent.controller('SearchController',
+        ['$scope', '$resource', '$location',
+        function($scope, $resource, $location) {
+
+    var VendorsSearch = $resource('/api/vendors/search');
+
+    $scope.formVisible = false;
+    $scope.tags = '';
+    $scope.location = '';
+    $scope.range = 50;
+
+    $scope.toogleSearch = function() {
+        $scope.formVisible = !$scope.formVisible;
+    };
+
+    $scope.search = function() {
+        var params = {
+            category: $scope.category,
+            tags: $scope.tags,
+            range: $scope.range,
+            limit: 15,
+            location: $scope.location
+        };
+
+        $scope.vendors = VendorsSearch.query(params);
+    };
 }]);

@@ -3,20 +3,27 @@ import datetime
 from pyramid.config import Configurator
 from pyramid.renderers import JSON
 from sqlalchemy import engine_from_config
+import redis
 
-from planevent.models import (
-    DBSession,
-    Base,
-)
+from planevent import models
 from planevent.urls import urls
 
+
+def createRedisConnection(settings):
+    models.redis = redis.StrictRedis(
+        host=settings['redis.url'],
+        port=int(settings['redis.port']),
+        db=settings['redis.db'],
+        charset='utf-8', decode_responses=True
+    )
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
+    createRedisConnection(settings)
     engine = engine_from_config(settings, 'sqlalchemy.')
-    DBSession.configure(bind=engine)
-    Base.metadata.bind = engine
+    models.DBSession.configure(bind=engine)
+    models.Base.metadata.bind = engine
     config = Configurator(settings=settings)
     json_renderer = JSON()
     def datetime_adapter(obj, request):
