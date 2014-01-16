@@ -3,9 +3,9 @@
 
     <div id="search-form" ng-show="formVisible">
         Kategoria: <select ng-model="category" ng-options="c.id as c.name for c in categories"></select><br />
-        tagi: <input type="text" ng-model="tags"><br />
+        <!-- tagi: <input type="text" ng-model="tags"><br /> -->
         Miejscowość: <input type="text" ng-model="location"><br />
-        Maksymalna odległość: <input type="range" min="1" max="200" ng-model="range"><br />
+        Maksymalna odległość: <input type="range" min="1" max="200" ng-model="range"><span>{{ range }}km</span><br />
         <button ng-click="search()">szukaj</button>
     </div>
 </div>

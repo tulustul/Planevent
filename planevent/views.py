@@ -106,7 +106,7 @@ class SearchVendorsView(View):
             limit):
 
         query = models.DBSession.query(models.Vendor.id)
-        query
+
         if category != 0:
             query = query.filter(models.Vendor.category==category)
 

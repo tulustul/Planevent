@@ -60,20 +60,22 @@ planevent.controller('CategoriesController',
 ]);
 
 planevent.controller('VendorListController',
-        ['$scope', '$resource', '$location', '$routeParams', '$rootScope',
-        function($scope, $resource, $location, $routeParams, $rootScope) {
+        ['$scope', '$location', '$routeParams', '$rootScope', 'searchService',
+        function($scope, $location, $routeParams, $rootScope, searchService) {
 
     var LIMIT = 15;
 
-    $scope.currentOffset = 0;
-    $scope.waitingForMore = false;
-    $scope.noMoreData = false;
-    $scope.vendors = [];
-
-    var Vendors = $resource('/api/vendors');
+    searchService.resetParams();
+    searchService.params.category = $routeParams.categoryId;
 
     $scope.goToVendor = function(vendor) {
         $location.path('/vendor/' + vendor.id);
+    }
+
+    $scope.clearVendors = function() {
+        $scope.vendors = [];
+        $scope.waitingForMore = false;
+        $scope.noMoreData = false;
     }
 
     $scope.loadMore = function() {
@@ -81,19 +83,16 @@ planevent.controller('VendorListController',
             return;
         }
         $scope.waitingForMore = true;
-        var moreVendors = Vendors.query({
-            category: $routeParams.categoryId,
-            limit: LIMIT,
-            offset: $scope.currentOffset
-        }, function() {
+
+        searchService.loadMore(LIMIT, function(moreVendors) {
             if (moreVendors.length == 0) {
                 $scope.noMoreData = true;
             }
             $scope.vendors = _.union($scope.vendors, moreVendors);
             $scope.waitingForMore = false;
         });
-        $scope.currentOffset += LIMIT;
     }
+    $scope.clearVendors();
     $scope.loadMore();
 }]);
 
@@ -379,10 +378,8 @@ planevent.controller('RelatedVendorsController',
 }]);
 
 planevent.controller('SearchController',
-        ['$scope', '$resource', '$location',
-        function($scope, $resource, $location) {
-
-    var VendorsSearch = $resource('/api/vendors/search');
+        ['$scope', '$location', 'searchService',
+        function($scope, $location, searchService) {
 
     $scope.formVisible = false;
     $scope.tags = '';
@@ -394,14 +391,39 @@ planevent.controller('SearchController',
     };
 
     $scope.search = function() {
-        var params = {
-            category: $scope.category,
-            tags: $scope.tags,
-            range: $scope.range,
-            limit: 15,
-            location: $scope.location
-        };
+        searchService.resetParams();
+        searchService.params.category = $scope.category;
+        searchService.params.tags = $scope.tags;
+        searchService.params.location = $scope.location;
+        searchService.params.range = $scope.range;
 
-        $scope.vendors = VendorsSearch.query(params);
+        $scope.clearVendors();
+        $scope.loadMore();
     };
+}]);
+
+
+planevent.service('searchService', ['$resource', function($resource) {
+
+    this.Vendors = $resource('/api/vendors/search');
+
+    this.resetParams = function() {
+        this.params = {
+            category: 0,
+            tags: [],
+            location: '',
+            range: 50,
+            offset: 0,
+            limit: 15,
+        }
+    }
+    this.resetParams();
+
+    this.loadMore = function(quantity, callback) {
+        this.params.limit = quantity;
+        var moreVendors = this.Vendors.query(this.params, function() {
+            callback(moreVendors);
+        });
+        this.params.offset += quantity
+    }
 }]);
