@@ -404,6 +404,17 @@ section#categories {
             @include span-columns(12 omega);
         }
     }
+
+    .loading-message {
+        @include span-columns(12 omega);
+        text-align: center;
+
+        span {
+            font-size: 40px;
+            line-height: 60px;
+            color: white;
+        }
+    }
 }
 
 .vendor-preview {

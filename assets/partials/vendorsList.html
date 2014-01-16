@@ -7,6 +7,8 @@
         <h3>{{ vendor.address.city }}</h3>
         <p>{{ vendor.description }}</p>
     </figure>
-    <span ng-show="waitingForMore">Wczytywanie...</span>
-    <span ng-show="noMoreData">Nie ma już więcej firm :(</span>
+    <div class="loading-message">
+        <span ng-show="waitingForMore">Wczytywanie...</span>
+        <span ng-show="noMoreData">Nie ma już więcej firm :(</span>
+    </div>
 </div>

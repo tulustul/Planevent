@@ -85,7 +85,7 @@ planevent.controller('VendorListController',
         $scope.waitingForMore = true;
 
         searchService.loadMore(LIMIT, function(moreVendors) {
-            if (moreVendors.length == 0) {
+            if (moreVendors.length < LIMIT) {
                 $scope.noMoreData = true;
             }
             $scope.vendors = _.union($scope.vendors, moreVendors);
