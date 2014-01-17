@@ -18,14 +18,29 @@
     <link rel="stylesheet" href="static/main.css" />
 </head>
 <body ng-controller="AdminPageController">
-    <b>Vendor id:</b> <input type="text" ng-model="vendorId" ng-change="getVendor()"><br />
-    <div ng-show="vendor">
-        <b>Vendor:</b> <span>{{ vendor.name }}</span><br />
-        <b>Promotion value:</b> <input type="text" ng-model="vendor.promotion">
-        <button ng-click="savePromotion()">Save promotion</button><br />
-        <b ng-show="saved">Saved</b><br />
-    </div>
-    <b ng-show="vendorDoesNotExists">Given vendor does not exists!</b>
-    <b ng-show="unknownError">Unknown error</b>
+    <section id="admin-panel">
+            <div>
+            <label>Vendor id:</label>
+            <input placeholder="Vendor id" type="text" ng-model="vendorId" ng-change="getVendor()">
+            </div>
+
+        <div ng-show="vendor">
+
+            <label>Vendor:</label>
+            <strong>{{ vendor.name }}</strong>
+
+            <label>Promotion value:</label>
+            <input type="text" ng-model="vendor.promotion">
+
+            <div class="btn-wrapper"><button class="btn btn-primary" ng-click="savePromotion()">Save promotion</button></div>
+
+            <alert ng-show="saved" type="'success'">Saved</alert>
+        </div>
+
+        <alert ng-show="vendorDoesNotExists" type="'danger'">Given vendor does not exists!</alert>
+
+        <alert ng-show="unknownError" type="'danger'">Unknown error</alert>
+
+    </section>
 </body>
 </html>

@@ -305,9 +305,15 @@ planevent.controller('AdminPageController',
     $scope.unknownError = false;
 
     $scope.getVendor = function() {
+        $scope.vendor = undefined;
         $scope.saved = false;
         $scope.vendorDoesNotExists = false;
         $scope.unknownError = false;
+
+        if ($scope.vendorId == '') {
+            return;
+        }
+
         $scope.vendor = Vendor.get({id: $scope.vendorId},
             function(){},
             function(response){
