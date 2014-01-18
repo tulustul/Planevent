@@ -3,19 +3,11 @@ import datetime
 from pyramid.config import Configurator
 from pyramid.renderers import JSON
 from sqlalchemy import engine_from_config
-import redis
 
 from planevent import models
 from planevent.urls import urls
+from planevent.cache import createRedisConnection
 
-
-def createRedisConnection(settings):
-    models.redis = redis.StrictRedis(
-        host=settings['redis.url'],
-        port=int(settings['redis.port']),
-        db=settings['redis.db'],
-        charset='utf-8', decode_responses=True
-    )
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.

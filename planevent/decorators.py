@@ -2,6 +2,8 @@ import os
 from functools import wraps
 import json
 import random
+import time
+import logging
 
 from PIL import Image
 
@@ -23,7 +25,9 @@ def param(name, type_, body=False, rest=False, required=False, default=None):
             else:
                 try:
                     if issubclass(type_, BaseEntity):
-                        param_value = type_().deserialize(json.loads(param_value))
+                        param_value = type_().deserialize(
+                            json.loads(param_value)
+                        )
                     else:
                         param_value = type_(param_value)
                 except Exception as e:
@@ -62,3 +66,17 @@ class image_upload(object):
 
             return mth(instance, output_file_path, *args, **kwargs)
         return wrap
+
+def time_profiler(profile_name):
+    def decorator(mth):
+        @wraps(mth)
+        def wrap(*args):
+            startTime = time.time()
+            result = mth(*args)
+            endTime = time.time()
+            timeCount = endTime - startTime
+            logging.info(profile_name + ' ' + mth.__name__ + ' time: \t'\
+                         + '%.2f' % (timeCount*1000) + ' ms')
+            return result
+        return wrap
+    return decorator

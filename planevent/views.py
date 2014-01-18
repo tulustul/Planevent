@@ -6,12 +6,20 @@ from pyramid.view import (
     view_defaults,
 )
 
-import planevent.models as models
+from planevent import (
+    models,
+    cache,
+)
 from planevent.decorators import (
     param,
-    image_upload
+    image_upload,
+    time_profiler,
 )
 from planevent.services import geocode_location
+
+
+VENDOR_KEY = 'vendor:{}'
+
 
 class View(object):
 
@@ -32,13 +40,19 @@ def admin_view(request):
 @view_defaults(route_name='vendor', renderer='json')
 class VendorView(View):
 
+    @time_profiler('VendorView')
     @view_config(request_method='GET')
     @param('id', int, required=True, rest=True)
     def get(self, id):
+        vendor = cache.get((VENDOR_KEY, id), models.Vendor)
+        if vendor:
+            return vendor
+
         vendor = models.Vendor.get(id, '*')
         if not vendor:
             self.request.response.status = 404
             return {'error': 'No vendor with id ' + str(id)}
+        cache.set((VENDOR_KEY, id), vendor)
         return vendor
 
     @view_config(request_method='DELETE')
@@ -49,6 +63,7 @@ class VendorView(View):
             self.request.response.status = 404
             return {'error': 'No vendor with id ' + str(id)}
         models.Vendor.delete(id)
+        cache.delete((VENDOR_KEY, vendor.id))
         return {'message': 'deleted', 'id': id};
 
 
@@ -94,6 +109,7 @@ class VendorPromotionView(View):
 @view_defaults(route_name='vendors_search', renderer='json')
 class SearchVendorsView(View):
 
+    @time_profiler('SearchVendorsView')
     @view_config(request_method='GET')
     @param('category', int, default=0)
     @param('tags', list)
@@ -158,6 +174,7 @@ class VendorsView(View):
         else:
             vendor.updated_at = now
         vendor.save()
+        cache.set((VENDOR_KEY, vendor.id), vendor)
         return vendor
 
 

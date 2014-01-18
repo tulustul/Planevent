@@ -29,7 +29,6 @@ from sqlalchemy.orm import (
 
 from zope.sqlalchemy import ZopeTransactionExtension
 
-redis = None
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 
 Base = declarative_base()
@@ -70,7 +69,7 @@ class BaseEntity(AbstractConcreteBase, Base):
             DBSession.merge(self)
         DBSession.flush()
 
-    def __json__(self, request):
+    def __json__(self, request=None):
         return self.serialize()
 
     def serialize(self):
