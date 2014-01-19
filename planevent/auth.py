@@ -26,7 +26,7 @@ def facebook_compliance_fix(session):
 
 
 def _get_oauth2_callback_url(request, provider):
-    return request.route_url('oauth2_callback', **{'provider': provider})
+    return request.route_url('oauth2_callback', provider=provider)
 
 
 def authorize(request, provider):

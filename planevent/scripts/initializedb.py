@@ -105,6 +105,7 @@ def main(argv=sys.argv):
     settings = get_appsettings(config_uri, options=options)
     engine = engine_from_config(settings, 'sqlalchemy.')
     models.DBSession.configure(bind=engine)
+    models.Base.metadata.drop_all(engine)
     models.Base.metadata.create_all(engine)
     with transaction.manager as manager:
-        create_test_instances(2000)
+        create_test_instances(200)
