@@ -108,6 +108,7 @@ class VendorPromotionView(View):
             return {'error': 'No vendor with id ' + str(id)}
         vendor.promotion = promotion
         vendor.save()
+        cache.set((VENDOR_KEY, vendor.id), vendor)
         return {'message': 'saved', 'id': id, 'promotion': promotion}
 
 
