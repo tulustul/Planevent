@@ -17,6 +17,10 @@ planevent.config(['$routeProvider', function($routeProvider) {$routeProvider
         templateUrl: 'assets/partials/contact.html',
         controller: 'MainPageController'})
 
+    .when('/userProfile', {
+        templateUrl: 'assets/partials/userProfile.html',
+        controller: 'AccountController'})
+
     .when('/vendors/:categoryId', {
         templateUrl: 'assets/partials/vendorsList.html',
         controller: 'VendorListController'})
@@ -40,6 +44,7 @@ planevent.controller('MainPageController', ['$scope', 'globalsService',
         $scope.categoriesView = 'assets/partials/categoriesView.html';
         $scope.vendorView = 'assets/partials/vendorView.html';
         $scope.searchForm = 'assets/partials/search.html';
+        $scope.loggedUserView = 'assets/partials/loggedUser.html';
 
         $scope.categories = globalsService.categories;
     }
@@ -408,7 +413,6 @@ planevent.controller('SearchController',
     };
 }]);
 
-
 planevent.service('searchService', ['$resource', function($resource) {
 
     this.Vendors = $resource('/api/vendors/search');
@@ -430,6 +434,24 @@ planevent.service('searchService', ['$resource', function($resource) {
         var moreVendors = this.Vendors.query(this.params, function() {
             callback(moreVendors);
         });
-        this.params.offset += quantity
+        this.params.offset += quantity;
     }
+}]);
+
+planevent.controller('AccountController',
+        ['$scope', '$resource', '$location',
+        function($scope, $resource, $location) {
+
+    var LoggedUser = $resource('/api/user/logged');
+
+    $scope.loggedUser = LoggedUser.get({}, function() {
+        if ($scope.loggedUser.id == undefined) {
+            $scope.loggedUser = undefined;
+        }
+    });
+
+    $scope.goToProfile = function() {
+        $location.path('/userProfile');
+    }
+
 }]);

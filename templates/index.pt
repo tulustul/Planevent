@@ -26,6 +26,7 @@
             <img src="/static/images/icons/question.png" alt="logo">
             <h1>Tu tytuł</h1>
         </a>
+        <div ng-include="loggedUserView"></div>
         <a id="addVendor" href="#/vendorAddEdit">Dodaj firmę</a><br /><br /><br />
     </header>
     <div id="container">

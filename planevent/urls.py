@@ -9,6 +9,7 @@ urls = [
 
     # api
     ('vendor', '/api/vendor/{id}'),
+    ('logged_user', '/api/user/logged'),
     ('related_vendors', '/api/vendor/{id}/related'),
     ('vendor_promotion', '/api/vendor/{id}/promotion/{promotion}'),
     ('vendors', '/api/vendors'),

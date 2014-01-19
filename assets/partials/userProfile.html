@@ -1,0 +1,9 @@
+<div id="user-profile">
+    Nazwa: {{ loggedUser.name }}<br />
+    Imię: {{ loggedUser.first_name }}<br />
+    Nazwisko: {{ loggedUser.last_name }}<br />
+    Płeć: {{ loggedUser.gender }}<br />
+    Link: <a href="{{ loggedUser.link }}">{{ loggedUser.provider }}</a><br />
+    Data rejestracji: {{ loggedUser.created_at }}<br />
+    Ilość logowań: {{ loggedUser.login_count }}<br />
+</div>

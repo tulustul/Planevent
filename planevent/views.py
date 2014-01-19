@@ -231,3 +231,14 @@ class TagsView(View):
         tag = models.Tag(name=tag_name)
         tag.save()
         return tag
+
+
+@view_defaults(route_name='logged_user', renderer='json')
+class LoggedUserView(View):
+
+    @view_config(request_method='GET')
+    def get(self):
+        user_id = self.request.session.get('user_id')
+        if user_id:
+            return models.Account.get(user_id)
+        return
