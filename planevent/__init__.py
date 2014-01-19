@@ -1,6 +1,7 @@
 import datetime
 import os
 
+from pyramid_beaker import session_factory_from_settings
 from pyramid.config import Configurator
 from pyramid.renderers import JSON
 from sqlalchemy import engine_from_config
@@ -15,10 +16,16 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     createRedisConnection(settings)
+
     engine = engine_from_config(settings, 'sqlalchemy.')
     models.DBSession.configure(bind=engine)
     models.Base.metadata.bind = engine
+
     config = Configurator(settings=settings)
+
+    session_factory = session_factory_from_settings(settings)
+    config.set_session_factory(session_factory)
+
     json_renderer = JSON()
     def datetime_adapter(obj, request):
         return obj.isoformat()
@@ -26,8 +33,13 @@ def main(global_config, **settings):
     config.add_renderer('json', json_renderer)
 
     config.include('pyramid_chameleon')
+    config.include('pyramid_beaker')
+
     config.add_static_view('static', '../static', cache_max_age=3600)
+
     for url_config in urls:
         config.add_route(*url_config)
+
     config.scan()
+
     return config.make_wsgi_app()

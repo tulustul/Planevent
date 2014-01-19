@@ -45,7 +45,7 @@ class LoginView(View):
     @view_config(request_method='GET')
     @param('provider', str, required=True, rest=True)
     def get(self, provider):
-        return HTTPFound(location=auth.authorize(self.request, provider))
+        return HTTPFound(location=auth.login(self.request, provider))
 
 
 @view_defaults(route_name='oauth2_callback', renderer='json')
@@ -54,8 +54,15 @@ class OAuth2CallbackView(View):
     @view_config(request_method='GET')
     @param('provider', str, required=True, rest=True)
     def get(self, provider):
-        # return HTTPFound(location=auth.process_callback(self.request, provider))
-        return auth.process_callback(self.request, provider)
+        return HTTPFound(location=auth.process_callback(self.request, provider))
+
+
+@view_defaults(route_name='logout')
+class LogoutView(View):
+
+    @view_config(request_method='GET')
+    def get(self):
+        return HTTPFound(location=auth.logout(self.request))
 
 
 @view_defaults(route_name='vendor', renderer='json')
@@ -86,29 +93,6 @@ class VendorView(View):
         models.Vendor.delete(id)
         cache.delete((VENDOR_KEY, vendor.id))
         return {'message': 'deleted', 'id': id};
-
-
-@view_defaults(route_name='related_vendors', renderer='json')
-class RelatedVendorsView(View):
-
-    @view_config(request_method='GET')
-    @param('id', int, required=True, rest=True)
-    @param('offset', int, default=0)
-    @param('limit', int, default=5)
-    def get(self, id, offset, limit):
-        vendor = models.Vendor.get(id, 'tags')
-        if not vendor:
-            self.request.response.status = 404
-            return {'error': 'No vendor with id ' + str(id)}
-
-        tags = [tag.id for tag in vendor.tags]
-        query = models.Vendor.query('logo', 'address') \
-                .join(models.VendorTag) \
-                .filter(models.VendorTag.tag_id.in_(tags)) \
-                .filter(models.Vendor.id!=id)
-
-        query = query.order_by(models.Vendor.promotion.desc())
-        return query.limit(limit).offset(offset).all()
 
 
 @view_defaults(route_name='vendor_promotion', renderer='json')
@@ -173,17 +157,6 @@ class SearchVendorsView(View):
 
 @view_defaults(route_name='vendors', renderer='json')
 class VendorsView(View):
-
-    @view_config(request_method='GET')
-    @param('category', int, default=0)
-    @param('offset', int, default=0)
-    @param('limit', int, default=10)
-    def get(self, category, offset, limit):
-        query = models.Vendor.query('address', 'logo')
-        if category != 0:
-            query = query.filter(models.Vendor.category==category)
-        query = query.order_by(models.Vendor.promotion.desc())
-        return query.limit(limit).offset(offset).all()
 
     @view_config(request_method='POST')
     @param('vendor', models.Vendor, body=True, required=True)

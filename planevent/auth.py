@@ -29,7 +29,12 @@ def _get_oauth2_callback_url(request, provider):
     return request.route_url('oauth2_callback', provider=provider)
 
 
-def authorize(request, provider):
+def logout(request):
+    request.session['user_id'] = None
+    return request.route_url('home')
+
+
+def login(request, provider):
     provider_settings = settings.OAUTH[provider]
 
     oauth = OAuth2Session(
@@ -69,9 +74,11 @@ def process_callback(request, provider):
     response = oauth.get(provider_settings.user_info_url)
     provider_user = json.loads(response.content.decode('utf8'))
 
-    process_user(provider, provider_user)
+    account = process_user(provider, provider_user)
 
-    return 'ok'
+    request.session['user_id'] = account.id
+
+    return request.route_url('home')
 
 
 def process_user(provider, provider_user):
@@ -106,3 +113,4 @@ def process_user(provider, provider_user):
     account.login_count += 1
 
     account.save()
+    return account

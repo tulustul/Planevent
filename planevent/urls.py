@@ -5,6 +5,7 @@ urls = [
     # login handlers
     ('login_oauth2', '/login/{provider}'),
     ('oauth2_callback', '/login/{provider}/callback'),
+    ('logout', '/logout'),
 
     # api
     ('vendor', '/api/vendor/{id}'),
