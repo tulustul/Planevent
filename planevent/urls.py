@@ -1,6 +1,12 @@
 urls = [
     ('home', '/'),
     ('admin', '/admin'),
+
+    # login handlers
+    ('login_oauth2', '/login/{provider}'),
+    ('oauth2_callback', '/login/{provider}/callback'),
+
+    # api
     ('vendor', '/api/vendor/{id}'),
     ('related_vendors', '/api/vendor/{id}/related'),
     ('vendor_promotion', '/api/vendor/{id}/promotion/{promotion}'),

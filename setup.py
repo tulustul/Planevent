@@ -21,6 +21,7 @@ requires = [
     'pillow',
     'redis',
     'geopy',
+    'requests_oauthlib',
 ]
 
 setup(name='PlanEvent',

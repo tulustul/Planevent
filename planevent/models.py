@@ -175,3 +175,18 @@ class Tag(BaseEntity):
     __tablename__ = 'tag'
     name = Column(String(50), nullable=False, unique=True)
     references_count = Column(Integer, default=0)
+
+
+class Account(BaseEntity):
+    __tablename__ = 'account'
+    origin_id = Column(String(21), nullable=False)
+    provider = Column(String(50), nullable=False)
+    name = Column(String(50), nullable=False)
+    email = Column(String(50), nullable=False)
+    first_name = Column(String(50))
+    last_name = Column(String(50))
+    link = Column(String(50))
+    gender = Column(String(1))
+    created_at = Column(DateTime)
+    last_login = Column(DateTime)
+    login_count = Column(Integer, default=0)

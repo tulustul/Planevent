@@ -1,4 +1,5 @@
 import datetime
+import os
 
 from pyramid.config import Configurator
 from pyramid.renderers import JSON
@@ -8,6 +9,7 @@ from planevent import models
 from planevent.urls import urls
 from planevent.cache import createRedisConnection
 
+os.environ['DEBUG'] = '1'
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.

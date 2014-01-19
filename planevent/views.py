@@ -1,6 +1,7 @@
 import datetime
 
 from pyramid.response import Response
+from pyramid.httpexceptions import HTTPFound
 from pyramid.view import (
     view_config,
     view_defaults,
@@ -16,6 +17,7 @@ from planevent.decorators import (
     time_profiler,
 )
 from planevent.services import geocode_location
+from planevent import auth
 
 
 VENDOR_KEY = 'vendor:{}'
@@ -35,6 +37,25 @@ def home_view(request):
 @view_config(route_name='admin', renderer='../templates/admin.pt')
 def admin_view(request):
     return {}
+
+
+@view_defaults(route_name='login_oauth2')
+class LoginView(View):
+
+    @view_config(request_method='GET')
+    @param('provider', str, required=True, rest=True)
+    def get(self, provider):
+        return HTTPFound(location=auth.authorize(self.request, provider))
+
+
+@view_defaults(route_name='oauth2_callback', renderer='json')
+class OAuth2CallbackView(View):
+
+    @view_config(request_method='GET')
+    @param('provider', str, required=True, rest=True)
+    def get(self, provider):
+        # return HTTPFound(location=auth.process_callback(self.request, provider))
+        return auth.process_callback(self.request, provider)
 
 
 @view_defaults(route_name='vendor', renderer='json')
