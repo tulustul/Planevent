@@ -53,11 +53,18 @@ planevent.controller('MainPageController', ['$scope', 'globalsService',
 planevent.controller('CategoriesController',
         ['$scope', '$location', '$routeParams',
     function($scope, $location, $routeParams) {
-        $scope.selectedCategory = $scope.categories[$routeParams.categoryId];
+        var categoryId = parseInt($routeParams.categoryId);
+        for (i in $scope.categories) {
+            var category = $scope.categories[i];
+            if (category.id == categoryId) {
+                $scope.selectedCategory = category;
+                break;
+            }
+        }
 
-        $scope.searchCategory = function(categoryId) {
-            if (categoryId != undefined) {
-                $scope.selectedCategory = $scope.categories[categoryId];
+        $scope.searchCategory = function(category) {
+            if (category != undefined) {
+                $scope.selectedCategory = category;
             }
             $location.path('/vendors/' + $scope.selectedCategory.id);
         }
@@ -248,21 +255,10 @@ planevent.controller('VendorAddEditController',
     }
 ]);
 
-planevent.factory('globalsService', function($routeParams) {
+planevent.factory('globalsService',
+    function($routeParams, $resource) {
 
-    var lastCategoryId = -1;
-    function makeCategory(name, icon, bindable) {
-        if (bindable == undefined) {
-            bindable = true;
-        }
-        lastCategoryId += 1;
-        return {
-            id: lastCategoryId,
-            name: name,
-            iconPath: '/static/images/icons/' + icon,
-            bindable: bindable
-        };
-    }
+    var Categories = $resource('/api/categories')
 
     var lastContactTypeId = 0;
     function makeContactType(name) {
@@ -274,15 +270,7 @@ planevent.factory('globalsService', function($routeParams) {
     }
 
     var service = {
-        categories: [
-            makeCategory('Wszystko', 'question.png', false),
-            makeCategory('Hotele', 'question.png'),
-            makeCategory('Catering', 'question.png'),
-            makeCategory('Transport', 'question.png'),
-            makeCategory('Sale', 'question.png'),
-            makeCategory('Sport', 'question.png'),
-            makeCategory('Inne', 'question.png')
-        ],
+        categories: Categories.query(),
         contactTypes: [
             makeContactType('www'),
             makeContactType('email'),
@@ -298,28 +286,32 @@ planevent.controller('AdminPageController',
         ['$scope', '$resource',
         function($scope, $resource) {
 
+    $scope.vendorPromotionView = 'assets/partials/admin/vendorPromotion.html';
+    $scope.categoriesView = 'assets/partials/admin/categories.html';
+    $scope.subcategoriesView = 'assets/partials/admin/subcategories.html';
+    $scope.statisticsView = 'assets/partials/admin/statistics.html';
+
     var Vendor = $resource('/api/vendor/:id');
     var VendorPromotion = $resource('/api/vendor/:id/promotion/:promotion',
         {id:'@id', promotion: '@promotion'}
     );
 
     $scope.vendor = undefined;
-    $scope.vendorId = undefined;
     $scope.saved = false;
     $scope.vendorDoesNotExists = false;
     $scope.unknownError = false;
 
-    $scope.getVendor = function() {
+    $scope.getVendor = function(vendorId) {
         $scope.vendor = undefined;
         $scope.saved = false;
         $scope.vendorDoesNotExists = false;
         $scope.unknownError = false;
 
-        if ($scope.vendorId == '') {
+        if (vendorId == '') {
             return;
         }
 
-        $scope.vendor = Vendor.get({id: $scope.vendorId},
+        $scope.vendor = Vendor.get({id: vendorId},
             function(){},
             function(response){
                 $scope.vendor = undefined;
@@ -332,12 +324,12 @@ planevent.controller('AdminPageController',
         );
     }
 
-    $scope.savePromotion = function() {
+    $scope.savePromotion = function(vendorId) {
         if ($scope.vendor == undefined) {
             return;
         }
         VendorPromotion.save({
-                id: $scope.vendorId,
+                id: vendorId,
                 promotion: $scope.vendor.promotion
             },
             function(){
@@ -370,7 +362,7 @@ planevent.controller('RelatedVendorsController',
         })
 
         var params = {
-            category: $scope.vendor.category,
+            category: $scope.vendor.category.id,
             exclude_vendor_id: $scope.vendor.id,
             tags: tags_ids,
             range: 50,
@@ -403,7 +395,7 @@ planevent.controller('SearchController',
 
     $scope.search = function() {
         searchService.resetParams();
-        searchService.params.category = $scope.category;
+        searchService.params.category = $scope.category.id;
         searchService.params.tags = $scope.tags;
         searchService.params.location = $scope.location;
         searchService.params.range = $scope.range;
@@ -441,6 +433,10 @@ planevent.service('searchService', ['$resource', function($resource) {
 planevent.controller('AccountController',
         ['$scope', '$resource', '$location',
         function($scope, $resource, $location) {
+
+    $scope.informationView = 'assets/partials/profile/information.html';
+    $scope.settingsView = 'assets/partials/profile/settings.html';
+    $scope.likingsView = 'assets/partials/profile/linkings.html';
 
     var LoggedUser = $resource('/api/user/logged');
 

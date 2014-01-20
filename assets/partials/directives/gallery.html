@@ -11,7 +11,7 @@
 
         <ul class="nav">
             <li ng-repeat="image in gallery" ng-class="{'active':isActive($index)}">
-                <img src="{{image.path}}" alt="{{image.desc}}" title="{{image.desc}}" ng-click="showPhoto($index);" />
+                <img ng-src="{{image.path}}" alt="{{image.desc}}" title="{{image.desc}}" ng-click="showPhoto($index);" />
             </li>
         </ul>
     </div>

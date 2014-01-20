@@ -2,14 +2,18 @@ import redis
 import json
 import datetime
 
+from planevent import models
+
 redis_db = None
 
 
-class DatetimeEncoder(json.JSONEncoder):
+class PlaneventJsonEncoder(json.JSONEncoder):
 
     def default(self, obj):
         if isinstance(obj, datetime.datetime):
             return obj.isoformat()
+        elif isinstance(obj, models.BaseEntity):
+            return obj.__json__()
         return json.JSONEncoder.default(self, obj)
 
 
@@ -28,9 +32,7 @@ def create_key(key_data):
 def set(key_data, obj, expire=3600):
     key = create_key(key_data)
 
-    if hasattr(obj, '__json__'):
-        obj = obj.__json__()
-    data = json.dumps(obj, cls=DatetimeEncoder)
+    data = json.dumps(obj, cls=PlaneventJsonEncoder)
 
     redis_db.set(key, data)
     redis_db.expire(key, expire)

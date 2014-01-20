@@ -4,7 +4,7 @@ Kategoria: <select ng-model="vendor.category" ng-options="c.id as c.name for c i
 Opis: <textarea ng-model="vendor.description"></textarea><br />
 
 <input type="file" ng-file-select="uploadLogo($files)" >
-<img src="{{ vendor.logo.path }}" alt="vendor logo"><br />
+<img ng-src="{{ vendor.logo.path }}" alt="vendor logo"><br />
 
 <button ng-click="goTo('info')">Wstecz</button>
 <button ng-click="goTo('address')">Dalej</button>

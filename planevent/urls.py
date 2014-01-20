@@ -18,4 +18,6 @@ urls = [
     ('gallery', '/api/gallery'),
     ('tags', '/api/tags'),
     ('tag_autocomplete', '/api/tags/autocomplete/{tag}'),
+    ('categories', '/api/categories'),
+    ('subcategories', '/api/categories/{category_id}'),
 ]

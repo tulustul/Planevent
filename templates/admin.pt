@@ -19,28 +19,20 @@
 </head>
 <body ng-controller="AdminPageController">
     <section id="admin-panel">
-            <div>
-            <label>Vendor id:</label>
-            <input placeholder="Vendor id" type="text" ng-model="vendorId" ng-change="getVendor()">
-            </div>
-
-        <div ng-show="vendor">
-
-            <label>Vendor:</label>
-            <strong>{{ vendor.name }}</strong>
-
-            <label>Promotion value:</label>
-            <input type="text" ng-model="vendor.promotion">
-
-            <div class="btn-wrapper"><button class="btn btn-primary" ng-click="savePromotion()">Save promotion</button></div>
-
-            <alert ng-show="saved" type="'success'">Saved</alert>
-        </div>
-
-        <alert ng-show="vendorDoesNotExists" type="'danger'">Given vendor does not exists!</alert>
-
-        <alert ng-show="unknownError" type="'danger'">Unknown error</alert>
-
+        <tabset>
+            <tab heading="Vendor promotion">
+                <div ng-include="vendorPromotionView"></div>
+            </tab>
+            <tab heading="Categories">
+                <div ng-include="categoriesView"></div>
+            </tab>
+            <tab heading="Subcategories">
+                <div ng-include="subcategoriesView"></div>
+            </tab>
+            <tab heading="Statistics">
+                <div ng-include="statisticsView"></div>
+            </tab>
+        </tabset>
     </section>
 </body>
 </html>

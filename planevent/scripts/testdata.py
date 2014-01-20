@@ -1,3 +1,29 @@
+categories = {
+    'Sport': [
+        'Brydż',
+        'Szachy',
+        'Siatkówka',
+        'Krykiet',
+        'Bilard :P',
+    ],
+    'Muzyka': [
+        'Techno',
+        'Metal',
+        'Country',
+        'Hip-Hop',
+    ],
+    'Historia': [
+        'Wystawy historyczne',
+        'Rekonstrukcje',
+    ],
+    'Sztuka': [
+        'Wystawy',
+        'Galerie',
+        'Teatr',
+        'Opera',
+    ],
+}
+
 tags = [
     'kuchnia polska',
     'kuchnia francuska',

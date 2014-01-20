@@ -21,6 +21,8 @@ from planevent import auth
 
 
 VENDOR_KEY = 'vendor:{}'
+CATEGORIES_KEY = 'categories'
+SUBCATEGORIES_KEY = 'categories:{}'
 
 
 class View(object):
@@ -130,7 +132,7 @@ class SearchVendorsView(View):
         query = models.DBSession.query(models.Vendor.id)
 
         if category != 0:
-            query = query.filter(models.Vendor.category==category)
+            query = query.filter(models.Vendor.category_id==category)
 
         if tags:
             query = query.join(models.VendorTag) \
@@ -162,7 +164,13 @@ class VendorsView(View):
     @view_config(request_method='POST')
     @param('vendor', models.Vendor, body=True, required=True)
     def post(self, vendor):
-        # TODO restore original promotion value
+        original_vendor = cache.get((VENDOR_KEY, vendor.id), models.Vendor)
+        if not original_vendor:
+            original_vendor = models.Vendor.get(vendor.id)
+
+        if original_vendor:
+            vendor.promotion = original_vendor.promotion
+
         now = datetime.datetime.now()
         if not vendor.added_at:
             vendor.added_at = now
@@ -243,3 +251,33 @@ class LoggedUserView(View):
         if user_id:
             return models.Account.get(user_id)
         return
+
+
+@view_defaults(route_name='categories', renderer='json')
+class CategoriesView(View):
+
+    @view_config(request_method='GET')
+    def get(self):
+        categories = cache.get(CATEGORIES_KEY)
+        if categories:
+            return categories
+
+        categories = models.Category.all()
+        cache.set(CATEGORIES_KEY, categories)
+        return categories
+
+@view_defaults(route_name='subcategories', renderer='json')
+class SubcategoriesView(View):
+
+    @view_config(request_method='GET')
+    @param('category_id', int, rest=True)
+    def get(self, category_id):
+        subcategories = cache.get((CATEGORIES_KEY, category_id))
+        if subcategories:
+            return subcategories
+
+        subcategories = models.Subcategory.query() \
+            .filter(models.Subcategory.category_id==category_id) \
+            .all()
+        cache.set((CATEGORIES_KEY, category_id), subcategories)
+        return subcategories

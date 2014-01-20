@@ -127,7 +127,7 @@ class Vendor(BaseEntity):
     __tablename__ = 'vendor'
     name = Column(String(150))
     description = Column(Text)
-    category = Column(Integer)
+    category_id = Column(Integer, ForeignKey('category.id'))
     added_at = Column(DateTime)
     updated_at = Column(DateTime)
     promotion = Column(Integer)
@@ -135,6 +135,7 @@ class Vendor(BaseEntity):
     address_id = Column(Integer, ForeignKey('address.id'))
     logo_id = Column(Integer, ForeignKey('image.id'), nullable=True)
 
+    category = relationship("Category", cascade="delete, all")
     contacts = relationship("Contact", cascade="delete, all")
     address = relationship("Address", cascade="delete, all")
     logo = relationship("Image", cascade="delete, all")
@@ -190,3 +191,39 @@ class Account(BaseEntity):
     created_at = Column(DateTime)
     last_login = Column(DateTime)
     login_count = Column(Integer, default=0)
+
+    settings = relationship('AccountSettings', cascade="delete, all")
+
+
+class AccountSettings(BaseEntity):
+    __tablename__ = 'account_settings'
+    account_id = Column(Integer, ForeignKey('account.id'))
+    recomendations_range = Column(Integer)
+
+    likings = relationship('AccountLiking', cascade="delete, all")
+
+
+class Category(BaseEntity):
+    __tablename__ = 'category'
+    name = Column(String(50), nullable=False, unique=True)
+    color = Column(String(6), nullable=False)
+    icon_path = Column(String(50))
+
+
+class Subcategory(BaseEntity):
+    __tablename__ = 'subcategory'
+    name = Column(String(50), nullable=False, unique=True)
+    color = Column(String(6), nullable=False)
+    icon_path = Column(String(50))
+    category_id = Column(Integer, ForeignKey('category.id'))
+
+
+class AccountLiking(BaseEntity):
+    __tablename__ = 'account_liking'
+    account_settings_id = Column(Integer, ForeignKey('account_settings.id'))
+    category_id = Column(Integer, ForeignKey('category.id'))
+    subcategory_id = Column(Integer, ForeignKey('subcategory.id'))
+    level = Column(String(1))
+
+    category = relationship('Category', cascade="delete, all")
+    subcategory = relationship('Subcategory', cascade="delete, all")

@@ -4,9 +4,10 @@
     </div>
 
     <ul class="full-list">
-        <li ng-class="{ selected: selectedCategory.id == i }" ng-repeat="(i, category) in categories" ng-click="searchCategory(i)">
-            <img src="{{ category.iconPath }}" alt="Category icon">
-            <h6>{{category.name }}</h6>
+
+            <li ng-class="{ selected: selectedCategory.id == category.id }" ng-repeat="category in categories" ng-click="searchCategory(category)">
+            <img ng-src="{{ category.icon_path }}" alt="Category icon">
+            <h6>{{ category.name }}</h6>
         </li>
     </ul>
 

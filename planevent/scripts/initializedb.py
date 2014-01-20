@@ -3,6 +3,7 @@ import sys
 import random
 import datetime
 import transaction
+from collections import namedtuple
 
 from sqlalchemy import engine_from_config
 
@@ -15,6 +16,15 @@ from pyramid.scripts.common import parse_vars
 
 import planevent.models as models
 import planevent.scripts.testdata as testdata
+
+
+TestInstances = namedtuple(
+    'TestInstances', [
+        'tags',
+        'categories',
+        'subcategories',
+    ]
+)
 
 
 def usage(argv):
@@ -68,11 +78,11 @@ def create_test_vendor_tags(vendor, tags, quantity):
         )
         vendor_tag.save()
 
-def create_test_vendor(tags):
+def create_test_vendor(test_instances):
     vendor = models.Vendor()
     vendor.name = random.choice(testdata.vendors['names'])
     vendor.description = random.choice(testdata.vendors['descriptions'])
-    vendor.category = random.randrange(1,6)
+    vendor.category = random.choice(test_instances.categories)
     vendor.added_at = datetime.datetime.now()
     vendor.promotion = random.randrange(1000)
     vendor.address = create_test_address()
@@ -80,8 +90,29 @@ def create_test_vendor(tags):
     create_test_contacts(vendor, random.randrange(6))
     create_test_gallery(vendor, random.randrange(10))
     vendor.save()
-    create_test_vendor_tags(vendor, tags, random.randrange(6))
+    create_test_vendor_tags(vendor, test_instances.tags, random.randrange(6))
     vendor.save()
+
+def create_test_categories():
+    categories_list, subcategories_list = [], []
+    for category_name, subcategories in testdata.categories.items():
+        category = models.Category(
+            name=category_name,
+            color=generate_random_color(),
+            icon_path='/static/images/icons/question.png',
+        )
+        categories_list.append(category)
+        category.save()
+        for subcategory_name in subcategories:
+            subcategory = models.Subcategory(
+                name=subcategory_name,
+                color=generate_random_color(),
+                icon_path='/static/images/icons/question.png',
+                category_id=category.id,
+            )
+            subcategory.save()
+            subcategories_list.append(subcategory)
+    return categories_list, subcategories_list
 
 def create_test_tags():
     tags = []
@@ -92,9 +123,14 @@ def create_test_tags():
     return tags
 
 def create_test_instances(quantity):
+    categories, subcategories = create_test_categories()
     tags = create_test_tags()
     for i in range(quantity):
-        create_test_vendor(tags)
+        create_test_vendor(TestInstances(tags, categories, subcategories))
+
+def generate_random_color():
+    color = lambda: random.randint(0,255)
+    return '%02X%02X%02X' % (color(), color(), color())
 
 def main(argv=sys.argv):
     if len(argv) < 2:
