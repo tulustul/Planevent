@@ -1,42 +1,5 @@
-planevent.config(['$routeProvider', function($routeProvider) {$routeProvider
-
-    .when('/', {
-        templateUrl: 'assets/partials/mainView.html',
-        controller: 'MainPageController'})
-
-    .when('/about', {
-        templateUrl: 'assets/partials/about.html',
-        controller: 'MainPageController'})
-    .when('/terms', {
-        templateUrl: 'assets/partials/term.html',
-        controller: 'MainPageController'})
-    .when('/faq', {
-        templateUrl: 'assets/partials/faq.html',
-        controller: 'MainPageController'})
-    .when('/contact', {
-        templateUrl: 'assets/partials/contact.html',
-        controller: 'MainPageController'})
-
-    .when('/userProfile', {
-        templateUrl: 'assets/partials/userProfile.html',
-        controller: 'AccountController'})
-
-    .when('/vendors/:categoryId', {
-        templateUrl: 'assets/partials/vendorsList.html',
-        controller: 'VendorListController'})
-    .when('/vendor/:vendorId', {
-        templateUrl: 'assets/partials/vendorPage.html',
-        controller: 'VendorPageController'})
-
-    .when('/vendorAddEdit', {
-        templateUrl: 'assets/partials/vendorAddEdit/main.html',
-        controller: 'VendorAddEditController'})
-    .when('/vendorAddEdit/:vendorId', {
-        templateUrl: 'assets/partials/vendorAddEdit/main.html',
-        controller: 'VendorAddEditController'})
-
-    .otherwise({redirectTo: '/'});
-}]);
+/*jshint camelcase: false */
+'use strict';
 
 planevent.controller('MainPageController', ['$scope', 'globalsService',
     function($scope, globalsService) {
@@ -54,20 +17,20 @@ planevent.controller('CategoriesController',
         ['$scope', '$location', '$routeParams',
     function($scope, $location, $routeParams) {
         var categoryId = parseInt($routeParams.categoryId);
-        for (i in $scope.categories) {
+        for (var i in $scope.categories) {
             var category = $scope.categories[i];
-            if (category.id == categoryId) {
+            if (category.id === categoryId) {
                 $scope.selectedCategory = category;
                 break;
             }
         }
 
         $scope.searchCategory = function(category) {
-            if (category != undefined) {
+            if (category !== undefined) {
                 $scope.selectedCategory = category;
             }
             $location.path('/vendors/' + $scope.selectedCategory.id);
-        }
+        };
     }
 ]);
 
@@ -82,13 +45,13 @@ planevent.controller('VendorListController',
 
     $scope.goToVendor = function(vendor) {
         $location.path('/vendor/' + vendor.id);
-    }
+    };
 
     $scope.clearVendors = function() {
         $scope.vendors = [];
         $scope.waitingForMore = false;
         $scope.noMoreData = false;
-    }
+    };
 
     $scope.loadMore = function() {
         if ($scope.waitingForMore || $scope.noMoreData) {
@@ -103,7 +66,7 @@ planevent.controller('VendorListController',
             $scope.vendors = _.union($scope.vendors, moreVendors);
             $scope.waitingForMore = false;
         });
-    }
+    };
     $scope.clearVendors();
     $scope.loadMore();
 }]);
@@ -131,7 +94,7 @@ planevent.controller('VendorPageController',
 
     $scope.removeVendor = function() {
         Vendor.remove({id: $scope.vendor.id});
-    }
+    };
 
 }]);
 
@@ -145,7 +108,7 @@ planevent.controller('VendorAddEditController',
         $scope.contactTypes = globalsService.contactTypes;
         $scope.vendorView = 'assets/partials/vendorView.html';
 
-        if ($routeParams.vendorId == undefined) {
+        if ($routeParams.vendorId === undefined) {
             $scope.vendor = {gallery: []};
         } else {
             var Vendor = $resource('/api/vendor/:id');
@@ -157,16 +120,16 @@ planevent.controller('VendorAddEditController',
 
         $scope.goTo = function(section) {
             $scope.step = section;
-            $scope.section = 'assets/partials/vendorAddEdit/'
-                + section + '.html';
-        }
+            $scope.section = 'assets/partials/vendorAddEdit/' +
+                section + '.html';
+        };
 
         $scope.submit = function() {
             var Vendors = $resource('/api/vendors');
             var vendor = Vendors.save($scope.vendor , function() {
                 $location.path('/vendor/' + vendor.id);
             });
-        }
+        };
 
         $scope.validateAddress = function() {
             var address = $scope.vendor.address;
@@ -177,12 +140,12 @@ planevent.controller('VendorAddEditController',
                 $scope.locationComplete = true;
             }
             $scope.validatingLocation = true;
-            addressString = address.street + ' ' + address.postal_code + ' ' + address.city;
-            geocoder = new google.maps.Geocoder();
+            var addressString = address.street + ' ' + address.postal_code + ' ' + address.city;
+            var geocoder = new google.maps.Geocoder();
             geocoder.geocode({'address': addressString},
                 function(results, status) {
                     $scope.validatingLocation = false;
-                    if (status == google.maps.GeocoderStatus.OK) {
+                    if (status === google.maps.GeocoderStatus.OK) {
                         var location = results[0].geometry.location;
                         address.latitude = location.nb;
                         address.longitude = location.ob;
@@ -195,57 +158,59 @@ planevent.controller('VendorAddEditController',
                     $scope.$apply();
                 }
             );
-        }
+        };
 
         $scope.addContact = function() {
             var contacts = $scope.vendor.contacts;
-            if (contacts == undefined) {
+            if (contacts === undefined) {
                 contacts = $scope.vendor.contacts = [];
             }
             contacts[contacts.length] = {};
-        }
+        };
 
         $scope.removeContact = function(contactNo) {
             $scope.vendor.contacts.splice(contactNo, 1);
-        }
+        };
 
         $scope.addTag = function() {
             var tags = $scope.vendor.tags;
-            if (tags == undefined) {
+            if (tags === undefined) {
                 tags = $scope.vendor.tags = [];
             }
             tags[tags.length] = {};
-        }
+        };
 
         $scope.removeTag = function(tagNo) {
             $scope.vendor.tags.splice(tagNo, 1);
-        }
+        };
 
         $scope.uploadLogo = function(files) {
             uploadImages(files, 'api/image', function(data) {
                 $scope.vendor.logo = {path: data.path};
             });
-        }
+        };
 
         $scope.uploadGallery = function(files) {
             uploadImages(files, 'api/gallery', function(data) {
                 var gallery = $scope.vendor.gallery;
                 gallery[gallery.length] = {path: data.path};
             });
-        }
+        };
 
         function uploadImages(files, api, callback) {
+            function successHandler(data) { //, status, headers, config
+                callback(data);
+            }
+
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
                 $scope.upload = $upload.upload({
                     url: api,
                     method: 'POST',
                     file: file,
-                }).progress(function(evt) {
+                // }).progress(function(evt) {
                     // console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-                }).success(function(data, status, headers, config) {
-                    callback(data);
-                });
+                }).success(successHandler);
                 //.error(...)
                 //.then(success, error, progress);
             }
@@ -254,33 +219,6 @@ planevent.controller('VendorAddEditController',
         $scope.goTo('info');
     }
 ]);
-
-planevent.factory('globalsService',
-    function($routeParams, $resource) {
-
-    var Categories = $resource('/api/categories')
-
-    var lastContactTypeId = 0;
-    function makeContactType(name) {
-        lastContactTypeId += 1;
-        return {
-            id: lastContactTypeId,
-            name: name
-        };
-    }
-
-    var service = {
-        categories: Categories.query(),
-        contactTypes: [
-            makeContactType('www'),
-            makeContactType('email'),
-            makeContactType('tel'),
-            makeContactType('fax'),
-            makeContactType('facebook')
-        ]
-    };
-    return service;
-});
 
 planevent.controller('AdminPageController',
         ['$scope', '$resource',
@@ -307,7 +245,7 @@ planevent.controller('AdminPageController',
         $scope.vendorDoesNotExists = false;
         $scope.unknownError = false;
 
-        if (vendorId == '') {
+        if (vendorId === '') {
             return;
         }
 
@@ -322,10 +260,10 @@ planevent.controller('AdminPageController',
                 }
             }
         );
-    }
+    };
 
     $scope.savePromotion = function(vendorId) {
-        if ($scope.vendor == undefined) {
+        if ($scope.vendor === undefined) {
             return;
         }
         VendorPromotion.save({
@@ -343,7 +281,7 @@ planevent.controller('AdminPageController',
                 }
             }
         );
-    }
+    };
 }]);
 
 planevent.controller('RelatedVendorsController',
@@ -353,13 +291,13 @@ planevent.controller('RelatedVendorsController',
     var VendorsSearch = $resource('/api/vendors/search');
 
     $scope.$watch('vendor', function() {
-        if ($scope.vendor == undefined) {
+        if ($scope.vendor === undefined) {
             return;
         }
 
-        tags_ids = _.map($scope.vendor.tags, function(tag) {
+        var tags_ids = _.map($scope.vendor.tags, function(tag) {
             return tag.id;
-        })
+        });
 
         var params = {
             category: $scope.vendor.category.id,
@@ -377,7 +315,7 @@ planevent.controller('RelatedVendorsController',
 
     $scope.goToVendor = function(vendor) {
         $location.path('/vendor/' + vendor.id);
-    }
+    };
 }]);
 
 planevent.controller('SearchController',
@@ -405,49 +343,34 @@ planevent.controller('SearchController',
     };
 }]);
 
-planevent.service('searchService', ['$resource', function($resource) {
-
-    this.Vendors = $resource('/api/vendors/search');
-
-    this.resetParams = function() {
-        this.params = {
-            category: 0,
-            tags: [],
-            location: '',
-            range: 50,
-            offset: 0,
-            limit: 15,
-        }
-    }
-    this.resetParams();
-
-    this.loadMore = function(quantity, callback) {
-        this.params.limit = quantity;
-        var moreVendors = this.Vendors.query(this.params, function() {
-            callback(moreVendors);
-        });
-        this.params.offset += quantity;
-    }
-}]);
-
 planevent.controller('AccountController',
-        ['$scope', '$resource', '$location',
-        function($scope, $resource, $location) {
+        ['$scope', '$location', 'accountService',
+        function($scope, $location, accountService) {
 
     $scope.informationView = 'assets/partials/profile/information.html';
     $scope.settingsView = 'assets/partials/profile/settings.html';
     $scope.likingsView = 'assets/partials/profile/linkings.html';
 
-    var LoggedUser = $resource('/api/user/logged');
-
-    $scope.loggedUser = LoggedUser.get({}, function() {
-        if ($scope.loggedUser.id == undefined) {
-            $scope.loggedUser = undefined;
-        }
+    accountService.getAccount(function(loggedUser) {
+        $scope.loggedUser = loggedUser;
     });
 
     $scope.goToProfile = function() {
         $location.path('/userProfile');
-    }
+    };
+}]);
 
+planevent.controller('FirstLoggingController',
+        ['$scope', '$location', 'accountService',
+        function($scope, $location, accountService) {
+
+    accountService.getAccount(function(loggedUser) {
+        $scope.loggedUser = loggedUser;
+
+        if (loggedUser === undefined) {
+            $location.path('/');
+        } else if (loggedUser.login_count > 1) {
+            $location.path('/userProfile');
+        }
+    });
 }]);

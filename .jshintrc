@@ -1,0 +1,23 @@
+{
+  "browser": true,
+  "esnext": true,
+  "globalstrict": true,
+  "quotmark": "single",
+  "smarttabs": true,
+  "trailing": true,
+  "undef": true,
+  "unused": true,
+  "camelcase": false,
+  "curly": true,
+  "eqeqeq": true,
+  "noempty": false,
+  "indent": 4,
+
+  "jquery": true,
+
+  "globals": {
+    "planevent": false,
+    "_": false,
+    "google": false
+  }
+}

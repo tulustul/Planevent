@@ -74,11 +74,14 @@ def process_callback(request, provider):
     response = oauth.get(provider_settings.user_info_url)
     provider_user = json.loads(response.content.decode('utf8'))
 
-    account = process_user(provider, provider_user)
+    account, is_new = process_user(provider, provider_user)
 
     request.session['user_id'] = account.id
 
-    return request.route_url('home')
+    if is_new:
+        return request.route_url('home') + '#/userProfile/firstLogging'
+    else:
+        return request.route_url('home')
 
 
 def process_user(provider, provider_user):
@@ -92,6 +95,7 @@ def process_user(provider, provider_user):
         .filter(models.Account.origin_id==provider_user['id']) \
         .first()
 
+    is_new = False
     if not account:
         account = models.Account(
             origin_id=provider_user['id'],
@@ -99,6 +103,7 @@ def process_user(provider, provider_user):
             created_at=datetime.datetime.now(),
             login_count=0,
         )
+        is_new = True
 
     provider_settings = settings.OAUTH[provider]
 
@@ -113,4 +118,4 @@ def process_user(provider, provider_user):
     account.login_count += 1
 
     account.save()
-    return account
+    return account, is_new
