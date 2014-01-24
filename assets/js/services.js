@@ -1,6 +1,6 @@
 'use strict';
 
-planevent.service('searchService', ['$resource', function($resource) {
+planevent.service('searchService', function($resource) {
 
     this.Vendors = $resource('/api/vendors/search');
 
@@ -23,9 +23,9 @@ planevent.service('searchService', ['$resource', function($resource) {
         });
         this.params.offset += quantity;
     };
-}]);
+});
 
-planevent.service('accountService', ['$resource', function($resource) {
+planevent.service('accountService', function($resource) {
 
     var LoggedUser = $resource('/api/user/logged');
 
@@ -37,7 +37,7 @@ planevent.service('accountService', ['$resource', function($resource) {
             callback(loggedUser);
         });
     };
-}]);
+});
 
 planevent.factory('globalsService',
     function($routeParams, $resource) {

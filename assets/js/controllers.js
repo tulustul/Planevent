@@ -1,7 +1,7 @@
 /*jshint camelcase: false */
 'use strict';
 
-planevent.controller('MainPageController', ['$scope', 'globalsService',
+planevent.controller('MainPageController',
     function($scope, globalsService) {
         $scope.mainView = 'assets/partials/mainView.html';
         $scope.categoriesView = 'assets/partials/categoriesView.html';
@@ -11,10 +11,9 @@ planevent.controller('MainPageController', ['$scope', 'globalsService',
 
         $scope.categories = globalsService.categories;
     }
-]);
+);
 
 planevent.controller('CategoriesController',
-        ['$scope', '$location', '$routeParams',
     function($scope, $location, $routeParams) {
         var categoryId = parseInt($routeParams.categoryId);
         for (var i in $scope.categories) {
@@ -32,10 +31,9 @@ planevent.controller('CategoriesController',
             $location.path('/vendors/' + $scope.selectedCategory.id);
         };
     }
-]);
+);
 
 planevent.controller('VendorListController',
-        ['$scope', '$location', '$routeParams', '$rootScope', 'searchService',
         function($scope, $location, $routeParams, $rootScope, searchService) {
 
     var LIMIT = 15;
@@ -69,10 +67,9 @@ planevent.controller('VendorListController',
     };
     $scope.clearVendors();
     $scope.loadMore();
-}]);
+});
 
 planevent.controller('VendorPageController',
-        ['$scope', '$resource', '$routeParams', 'globalsService',
         function($scope, $resource, $routeParams, globalsService) {
     var Vendor = $resource('/api/vendor/:id');
     $scope.vendorDoesNotExists = false;
@@ -96,10 +93,9 @@ planevent.controller('VendorPageController',
         Vendor.remove({id: $scope.vendor.id});
     };
 
-}]);
+});
 
 planevent.controller('VendorAddEditController',
-    ['$scope', '$resource', '$routeParams', '$location', '$upload', 'globalsService',
     function($scope, $resource, $routeParams, $location, $upload, globalsService) {
 
         $scope.locationComplete = false;
@@ -218,10 +214,9 @@ planevent.controller('VendorAddEditController',
 
         $scope.goTo('info');
     }
-]);
+);
 
 planevent.controller('AdminPageController',
-        ['$scope', '$resource',
         function($scope, $resource) {
 
     $scope.vendorPromotionView = 'assets/partials/admin/vendorPromotion.html';
@@ -282,10 +277,9 @@ planevent.controller('AdminPageController',
             }
         );
     };
-}]);
+});
 
 planevent.controller('RelatedVendorsController',
-        ['$scope', '$resource', '$location',
         function($scope, $resource, $location) {
 
     var VendorsSearch = $resource('/api/vendors/search');
@@ -316,10 +310,9 @@ planevent.controller('RelatedVendorsController',
     $scope.goToVendor = function(vendor) {
         $location.path('/vendor/' + vendor.id);
     };
-}]);
+});
 
 planevent.controller('SearchController',
-        ['$scope', '$location', 'searchService',
         function($scope, $location, searchService) {
 
     $scope.formVisible = false;
@@ -333,7 +326,7 @@ planevent.controller('SearchController',
 
     $scope.search = function() {
         searchService.resetParams();
-        searchService.params.category = $scope.category.id;
+        searchService.params.category = $scope.category;
         searchService.params.tags = $scope.tags;
         searchService.params.location = $scope.location;
         searchService.params.range = $scope.range;
@@ -341,10 +334,9 @@ planevent.controller('SearchController',
         $scope.clearVendors();
         $scope.loadMore();
     };
-}]);
+});
 
 planevent.controller('AccountController',
-        ['$scope', '$location', 'accountService',
         function($scope, $location, accountService) {
 
     $scope.informationView = 'assets/partials/profile/information.html';
@@ -358,10 +350,9 @@ planevent.controller('AccountController',
     $scope.goToProfile = function() {
         $location.path('/userProfile');
     };
-}]);
+});
 
 planevent.controller('FirstLoggingController',
-        ['$scope', '$location', 'accountService',
         function($scope, $location, accountService) {
 
     accountService.getAccount(function(loggedUser) {
@@ -373,4 +364,4 @@ planevent.controller('FirstLoggingController',
             $location.path('/userProfile');
         }
     });
-}]);
+});
