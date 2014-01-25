@@ -12,6 +12,7 @@ from planevent.cache import createRedisConnection
 
 os.environ['DEBUG'] = '1'
 
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -27,6 +28,7 @@ def main(global_config, **settings):
     config.set_session_factory(session_factory)
 
     json_renderer = JSON()
+
     def datetime_adapter(obj, request):
         return obj.isoformat()
     json_renderer.add_adapter(datetime.datetime, datetime_adapter)

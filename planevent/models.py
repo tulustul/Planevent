@@ -1,8 +1,5 @@
-import transaction
-
 from sqlalchemy import (
     Column,
-    Index,
     Integer,
     Float,
     Text,
@@ -10,7 +7,6 @@ from sqlalchemy import (
     DateTime,
     Boolean,
     ForeignKey,
-    Table,
 )
 
 from sqlalchemy.ext.declarative import (
@@ -74,7 +70,7 @@ class BaseEntity(AbstractConcreteBase, Base):
 
     def serialize(self):
         mapper = class_mapper(self.__class__)
-        columns = [c.key for c in mapper.columns if not c.foreign_keys]
+        columns = [col.key for col in mapper.columns if not col.foreign_keys]
         relationships = [c.key for c in mapper.relationships]
         result = dict((c, getattr(self, c)) for c in columns)
         for relation in relationships:
@@ -82,7 +78,7 @@ class BaseEntity(AbstractConcreteBase, Base):
                 continue
             child = getattr(self, relation)
             if isinstance(child, list):
-                child = [c.serialize() for c in child]
+                child = [elem.serialize() for elem in child]
             elif isinstance(child, BaseEntity):
                 child = child.serialize()
             result[relation] = child
@@ -140,7 +136,9 @@ class Vendor(BaseEntity):
     address = relationship("Address", cascade="delete, all")
     logo = relationship("Image", cascade="delete, all")
     gallery = relationship("ImageGallery", cascade="delete, all")
-    tags = relationship('Tag', secondary=VendorTag.__table__, cascade="delete, all")
+    tags = relationship('Tag',
+                        secondary=VendorTag.__table__,
+                        cascade="delete, all")
 
 
 class Address(BaseEntity):

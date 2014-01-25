@@ -91,8 +91,8 @@ def process_user(provider, provider_user):
         setattr(account, field, provider_user.get(provider_field))
 
     account = models.Account.query() \
-        .filter(models.Account.provider==provider) \
-        .filter(models.Account.origin_id==provider_user['id']) \
+        .filter(models.Account.provider == provider) \
+        .filter(models.Account.origin_id == provider_user['id']) \
         .first()
 
     is_new = False

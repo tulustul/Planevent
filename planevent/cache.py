@@ -26,8 +26,10 @@ def createRedisConnection(settings):
         charset='utf-8', decode_responses=True
     )
 
+
 def create_key(key_data):
     return key_data[0].format(*key_data[1:])
+
 
 def set(key_data, obj, expire=3600):
     key = create_key(key_data)
@@ -36,6 +38,7 @@ def set(key_data, obj, expire=3600):
 
     redis_db.set(key, data)
     redis_db.expire(key, expire)
+
 
 def get(key_data, model=None):
     key = create_key(key_data)
@@ -46,6 +49,7 @@ def get(key_data, model=None):
             return model().deserialize(data)
         return data
     return None
+
 
 def delete(key_data):
     key = create_key(key_data)

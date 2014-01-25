@@ -19,6 +19,7 @@
   "globals": {
     "planevent": false,
     "_": false,
-    "google": false
+    "google": false,
+    "module": false
   }
 }

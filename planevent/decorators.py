@@ -9,6 +9,7 @@ from PIL import Image
 
 from planevent.models import BaseEntity
 
+
 def param(name, type_, body=False, rest=False, required=False, default=None):
     def decorator(mth):
         @wraps(mth)
@@ -31,12 +32,13 @@ def param(name, type_, body=False, rest=False, required=False, default=None):
                     else:
                         param_value = type_(param_value)
                 except Exception as e:
-                    raise ValueError('Cannot cast param ' + name \
-                        + ' to type ' + type_.__name__) from e
+                    raise ValueError('Cannot cast param ' + name
+                                     + ' to type ' + type_.__name__) from e
             kwargs[name] = param_value
             return mth(self, *args, **kwargs)
         return wrap
     return decorator
+
 
 class image_upload(object):
     def __init__(self, repo_path, size=None):
@@ -67,6 +69,7 @@ class image_upload(object):
             return mth(instance, output_file_path, *args, **kwargs)
         return wrap
 
+
 def time_profiler(profile_name):
     def decorator(mth):
         @wraps(mth)
@@ -75,7 +78,7 @@ def time_profiler(profile_name):
             result = mth(*args)
             endTime = time.time()
             timeCount = endTime - startTime
-            logging.info(profile_name + ' ' + mth.__name__ + ' time: \t'\
+            logging.info(profile_name + ' ' + mth.__name__ + ' time: \t'
                          + '%.2f' % (timeCount*1000) + ' ms')
             return result
         return wrap

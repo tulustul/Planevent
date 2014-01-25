@@ -1,5 +1,4 @@
 from planevent.tests import PlaneventTest
-import planevent.models as models
 
 
 class VendorViewTestCase(PlaneventTest):
@@ -16,7 +15,7 @@ class VendorViewTestCase(PlaneventTest):
 
     def test_deletion(self):
         vendor = self.create_vendor()
-        data = self.delete('/api/vendor/' + str(vendor.id))
+        self.delete('/api/vendor/' + str(vendor.id))
         self.get('/api/vendor/' + str(vendor.id), status=404)
 
     def test_deletion_not_existing(self):
@@ -78,9 +77,9 @@ class TagsTestCase(PlaneventTest):
 
     def test_get_with_offset_and_limit(self):
         data = self.get('/api/tags', params={
-                'offset': 2,
-                'limit': 3,
-            })
+            'offset': 2,
+            'limit': 3,
+        })
         self.assertEqual(len(data), 3)
         self.assertEqual(data[0]['name'], 'kuchnia francuska')
         self.assertEqual(data[1]['name'], 'rowery')

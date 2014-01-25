@@ -40,25 +40,28 @@ def create_test_address():
     address = models.Address()
     address.street = random.choice(testdata.addresses['streets'])
     address.city = city['name']
-    address.postal_code = str(random.randrange(10,100)) + '-' + \
+    address.postal_code = str(random.randrange(10, 100)) + '-' + \
         str(random.randrange(100, 1000))
     address.longitude = city['lon'] + random.randrange(-50, 50) / 100
     address.latitude = city['lat'] + random.randrange(-50, 50) / 100
     address.validated = True
     return address
 
+
 def create_test_logo():
     image = models.Image()
     image.path = '/static/images/test/logos/' + \
-                str(random.randrange(15)) + '.png'
+        str(random.randrange(15)) + '.png'
     return image
+
 
 def create_test_gallery(vendor, quantity):
     for i in range(quantity):
         image = models.ImageGallery()
         image.path = '/static/images/test/gallery/' + \
-                    str(random.randrange(40)) + '.jpg'
+            str(random.randrange(40)) + '.jpg'
         vendor.gallery.append(image)
+
 
 def create_test_contacts(vendor, quantity):
     for i in range(quantity):
@@ -69,6 +72,7 @@ def create_test_contacts(vendor, quantity):
         contact.description = random.choice(testdata.contact_descriptions)
         vendor.contacts.append(contact)
 
+
 def create_test_vendor_tags(vendor, tags, quantity):
     tags_sample = random.sample(tags, quantity)
     for i in range(quantity):
@@ -77,6 +81,7 @@ def create_test_vendor_tags(vendor, tags, quantity):
             tag=tags_sample[i],
         )
         vendor_tag.save()
+
 
 def create_test_vendor(test_instances):
     vendor = models.Vendor()
@@ -92,6 +97,7 @@ def create_test_vendor(test_instances):
     vendor.save()
     create_test_vendor_tags(vendor, test_instances.tags, random.randrange(6))
     vendor.save()
+
 
 def create_test_categories():
     categories_list, subcategories_list = [], []
@@ -114,6 +120,7 @@ def create_test_categories():
             subcategories_list.append(subcategory)
     return categories_list, subcategories_list
 
+
 def create_test_tags():
     tags = []
     for tag_name in testdata.tags:
@@ -122,15 +129,18 @@ def create_test_tags():
         tags.append(tag)
     return tags
 
+
 def create_test_instances(quantity):
     categories, subcategories = create_test_categories()
     tags = create_test_tags()
     for i in range(quantity):
         create_test_vendor(TestInstances(tags, categories, subcategories))
 
+
 def generate_random_color():
-    color = lambda: random.randint(0,255)
+    color = lambda: random.randint(0, 255)
     return '%02X%02X%02X' % (color(), color(), color())
+
 
 def main(argv=sys.argv):
     if len(argv) < 2:
@@ -143,5 +153,5 @@ def main(argv=sys.argv):
     models.DBSession.configure(bind=engine)
     models.Base.metadata.drop_all(engine)
     models.Base.metadata.create_all(engine)
-    with transaction.manager as manager:
+    with transaction.manager:
         create_test_instances(200)

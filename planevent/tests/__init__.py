@@ -1,12 +1,11 @@
 import unittest
-import sys
 import json
 
 from pyramid.paster import get_app
-from sqlalchemy import create_engine
 from webtest import TestApp
 
 import planevent.models as models
+
 
 class PlaneventTest(unittest.TestCase):
 

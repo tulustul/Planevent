@@ -173,13 +173,15 @@ vendors = {
         'E.Leclerc Polska',
     ],
     'descriptions': [
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, dicta, quasi itaque ullam in quo architecto molestias non pariatur reiciendis fuga saepe sint minus. Magni vero eius modi dolore deleniti.",
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, dicta, "
+        "quasi itaque ullam in quo architecto molestias non pariatur reiciendis"
+        " fuga saepe sint minus. Magni vero eius modi dolore deleniti.",
         'ashdjhas jkdh ajkhsd jkahsd kj',
     ],
 }
 
 contacts = [
-    {# www
+    {  # www
         'type': 1,
         'values': [
             'www.asd.com',
@@ -189,7 +191,7 @@ contacts = [
             'www.dupa.com',
         ],
     },
-    {# email
+    {  # email
         'type': 2,
         'values': [
             'asd@asd.sad',
@@ -199,7 +201,7 @@ contacts = [
             'zzz@azzzzzz.zad',
         ],
     },
-    {#tel
+    {  # tel
         'type': 3,
         'values': [
             '132-132-132',
@@ -209,7 +211,7 @@ contacts = [
             '348-348-348',
         ],
     },
-    {#fax
+    {  # fax
         'type': 4,
         'values': [
             '+44-208-1234567',
@@ -219,7 +221,7 @@ contacts = [
             '+82-287-5738975',
         ],
     },
-    {#facebook
+    {  # facebook
         'type': 5,
         'values': [
             'www.facebook.com/asd'

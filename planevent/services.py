@@ -9,6 +9,7 @@ LOCATION_KEY = 'location:{}'
 
 LatLng = namedtuple('LatLng', ['lat', 'lng'])
 
+
 def geocode_location(location_name):
     location_name = location_name.lower()
     location_geocoding = cache.get((LOCATION_KEY, location_name))

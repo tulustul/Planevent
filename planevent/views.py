@@ -1,6 +1,5 @@
 import datetime
 
-from pyramid.response import Response
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import (
     view_config,
@@ -94,7 +93,7 @@ class VendorView(View):
             return {'error': 'No vendor with id ' + str(id)}
         models.Vendor.delete(id)
         cache.delete((VENDOR_KEY, vendor.id))
-        return {'message': 'deleted', 'id': id};
+        return {'message': 'deleted', 'id': id}
 
 
 @view_defaults(route_name='vendor_promotion', renderer='json')
@@ -132,14 +131,14 @@ class SearchVendorsView(View):
         query = models.DBSession.query(models.Vendor.id)
 
         if category != 0:
-            query = query.filter(models.Vendor.category_id==category)
+            query = query.filter(models.Vendor.category_id == category)
 
         if tags:
             query = query.join(models.VendorTag) \
                 .filter(models.VendorTag.tag_id.in_(tags))
 
         if exclude_vendor_id:
-            query = query.filter(models.Vendor.id!=exclude_vendor_id)
+            query = query.filter(models.Vendor.id != exclude_vendor_id)
 
         if location:
             latlng = geocode_location(location)
@@ -157,6 +156,7 @@ class SearchVendorsView(View):
 
         return models.Vendor.query('address', 'logo') \
             .filter(models.Vendor.id.in_(vendors_ids)).all()
+
 
 @view_defaults(route_name='vendors', renderer='json')
 class VendorsView(View):
@@ -185,7 +185,7 @@ class VendorsView(View):
 class ImageView(View):
 
     @view_config(request_method='POST')
-    @image_upload('static/images/uploads/logos/', size=(200,200))
+    @image_upload('static/images/uploads/logos/', size=(200, 200))
     def post(self, image_path):
         return {'path': image_path}
 
@@ -194,7 +194,7 @@ class ImageView(View):
 class GalleryView(View):
 
     @view_config(request_method='POST')
-    @image_upload('static/images/uploads/galleries/', size=(800,500))
+    @image_upload('static/images/uploads/galleries/', size=(800, 500))
     def post(self, image_path):
         return {'path': image_path}
 
@@ -229,7 +229,7 @@ class TagsView(View):
     @param('tag_name', str, body=True, required=True)
     def post(self, tag_name):
         tag = models.Tag.query() \
-                .filter(models.Tag.name==tag_name).first()
+            .filter(models.Tag.name == tag_name).first()
         if tag:
             self.request.response.status = 409
             return {
@@ -266,6 +266,7 @@ class CategoriesView(View):
         cache.set(CATEGORIES_KEY, categories)
         return categories
 
+
 @view_defaults(route_name='subcategories', renderer='json')
 class SubcategoriesView(View):
 
@@ -277,7 +278,7 @@ class SubcategoriesView(View):
             return subcategories
 
         subcategories = models.Subcategory.query() \
-            .filter(models.Subcategory.category_id==category_id) \
+            .filter(models.Subcategory.category_id == category_id) \
             .all()
         cache.set((CATEGORIES_KEY, category_id), subcategories)
         return subcategories
