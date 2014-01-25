@@ -5,6 +5,7 @@ from pyramid.paster import get_app
 from webtest import TestApp
 
 import planevent.models as models
+from planevent import cache
 
 
 class PlaneventTest(unittest.TestCase):
@@ -12,9 +13,11 @@ class PlaneventTest(unittest.TestCase):
     def setUp(self):
         self.app = TestApp(get_app('testing.ini'))
         models.Base.metadata.create_all(models.DBSession.get_bind())
+        cache.flush()
 
     def tearDown(self):
         models.DBSession.remove()
+        cache.flush()
 
     def get_response_data(self, response):
         return json.loads(response.body.decode())

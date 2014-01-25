@@ -12,14 +12,14 @@ from planevent import (
 
 def facebook_compliance_fix(session):
 
-    def _compliance_fix(rrr):
-        token = dict(urldecode(rrr.text))
+    def _compliance_fix(response):
+        token = dict(urldecode(response.text))
         expires = token.get('expires')
         if expires is not None:
             token['expires_in'] = expires
         token['token_type'] = 'Bearer'
-        rrr._content = bytes(json.dumps(token), encoding='utf8')
-        return rrr
+        response._content = bytes(json.dumps(token), encoding='utf8')
+        return response
 
     session.register_compliance_hook('access_token_response', _compliance_fix)
     return session

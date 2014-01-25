@@ -54,3 +54,7 @@ def get(key_data, model=None):
 def delete(key_data):
     key = create_key(key_data)
     redis_db.delete(key)
+
+
+def flush():
+    redis_db.flushall()
