@@ -1,3 +1,5 @@
+'use strict';
+
 planevent.directive('addressviewer', function() {
     return {
         restrict: 'EA',
@@ -5,17 +7,15 @@ planevent.directive('addressviewer', function() {
         templateUrl: 'assets/partials/directives/addressViewer.html',
         link: function(scope, element, attrs) {
             function updateMap() {
-                var address = scope.$eval(attrs.ngModel);
+                var address = scope.$eval(attrs.ngModel),
+                    position = new google.maps.LatLng(52, 19),
+                    zoom = 5;
 
                 if (address && address.validated) {
-                    var position = new google.maps.LatLng(
+                    position = new google.maps.LatLng(
                             address.latitude, address.longitude);
-                    var zoom = 13;
-                } else {
-                    var position = new google.maps.LatLng(52, 19);
-                    var zoom = 5;
+                    zoom = 13;
                 }
-
                 var mapOptions = {
                     center: position,
                     zoom: zoom
@@ -25,7 +25,7 @@ planevent.directive('addressviewer', function() {
                 var map = new google.maps.Map(mapElement, mapOptions);
 
                 if (address && address.validated) {
-                    var marker = new google.maps.Marker({
+                    new google.maps.Marker({
                         position: mapOptions.center,
                         map: map,
                         title: address.street + ', ' + address.city
@@ -37,7 +37,7 @@ planevent.directive('addressviewer', function() {
                 '[vendor.address.longitude, vendor.address.latitude]',
                 updateMap);
         }
-    }
+    };
 });
 
 planevent.directive('gallery', function() {

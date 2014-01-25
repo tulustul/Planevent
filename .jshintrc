@@ -12,6 +12,7 @@
   "eqeqeq": true,
   "noempty": false,
   "indent": 4,
+  "maxlen": 80,
 
   "jquery": true,
 

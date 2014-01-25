@@ -96,7 +96,8 @@ planevent.controller('VendorPageController',
 });
 
 planevent.controller('VendorAddEditController',
-    function($scope, $resource, $routeParams, $location, $upload, globalsService) {
+    function($scope, $resource, $routeParams, $location, $upload,
+             globalsService) {
 
         $scope.locationComplete = false;
         $scope.validatingLocation = false;
@@ -136,7 +137,8 @@ planevent.controller('VendorAddEditController',
                 $scope.locationComplete = true;
             }
             $scope.validatingLocation = true;
-            var addressString = address.street + ' ' + address.postal_code + ' ' + address.city;
+            var addressString = address.street + ' ' + address.postal_code +
+                                ' ' + address.city;
             var geocoder = new google.maps.Geocoder();
             geocoder.geocode({'address': addressString},
                 function(results, status) {
@@ -205,7 +207,8 @@ planevent.controller('VendorAddEditController',
                     method: 'POST',
                     file: file,
                 // }).progress(function(evt) {
-                    // console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+                    // console.log('percent: ' + parseInt(100.0 *
+                                   //evt.loaded / evt.total));
                 }).success(successHandler);
                 //.error(...)
                 //.then(success, error, progress);
