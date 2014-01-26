@@ -61,6 +61,7 @@ CAUTION: make sure your statics are updated with grunt and that js and css
 
 To update db:
 -rhc ssh planevent
+-cd app-root/repo
 -initialize_planevent_db production.ini
 
 To browse logs:
