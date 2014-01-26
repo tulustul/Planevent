@@ -1,7 +1,7 @@
 __pycache__
 *.pyc
 .sass-cache
-PlanEvent.egg-info
+planevent.egg-info
 tmp
 node_modules
 static/app.js

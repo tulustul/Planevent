@@ -1,16 +1,16 @@
-PlanEvent README
+planevent README
 ==================
 
 Getting Started
 ---------------
 
-- create two db schemas: PlanEvent and PlanEventTest with collation set to utf-8
+- create two db schemas: planevent and planeventTest with collation set to utf-8
 
 - cd <directory containing this file>
 
 - python3 setup.py develop
 
-- initialize_PlanEvent_db development.ini
+- initialize_planevent_db development.ini
 
 - npm install
 

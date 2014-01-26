@@ -22,6 +22,7 @@ def createRedisConnection(settings):
     redis_db = redis.StrictRedis(
         host=settings['redis.url'],
         port=int(settings['redis.port']),
+        password=settings['redis.password'],
         db=settings['redis.db'],
         charset='utf-8', decode_responses=True
     )

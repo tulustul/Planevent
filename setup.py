@@ -11,6 +11,7 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
 requires = [
     'pyramid',
     'pyramid_tm',
+    'pyramid_chameleon',
     'pyramid_beaker',
     'SQLAlchemy',
     'transaction',
@@ -25,9 +26,9 @@ requires = [
     'requests_oauthlib',
 ]
 
-setup(name='PlanEvent',
-      version='0.1',
-      description='PlanEvent',
+setup(name='planevent',
+      version='0.111',
+      description='planevent',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
           "Programming Language :: Python",
@@ -48,6 +49,6 @@ setup(name='PlanEvent',
       [paste.app_factory]
       main = planevent:main
       [console_scripts]
-      initialize_PlanEvent_db = planevent.scripts.initializedb:main
+      initialize_planevent_db = planevent.scripts.initializedb:main
       """,
       )

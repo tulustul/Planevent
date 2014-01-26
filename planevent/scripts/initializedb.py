@@ -154,4 +154,4 @@ def main(argv=sys.argv):
     models.Base.metadata.drop_all(engine)
     models.Base.metadata.create_all(engine)
     with transaction.manager:
-        create_test_instances(200)
+        create_test_instances(int(settings['test_instances']))

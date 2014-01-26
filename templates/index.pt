@@ -1,4 +1,4 @@
-<html ng-app="PlanEvent">
+<html ng-app="planevent">
 <head>
     <title>Plan Event</title>
 
@@ -10,7 +10,7 @@
     <script type="text/javascript" src="static/vendor.js"></script>
 
     <script type="text/javascript">
-        var planevent = angular.module('PlanEvent',
+        var planevent = angular.module('planevent',
         ['ui.bootstrap', 'ngAnimate', 'ngRoute', 'ngResource',
         'infinite-scroll', 'angularFileUpload']);
     </script>
