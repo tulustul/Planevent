@@ -58,3 +58,6 @@ To deploy (from origin working):
 To update db:
 -rhc ssh planevent
 -initialize_planevent_db production.ini
+
+To browse logs:
+-rhc tail planevent
