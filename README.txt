@@ -66,3 +66,7 @@ To update db:
 
 To browse logs:
 -rhc tail planevent
+
+To access redis on openshift
+-rhc ssh planevent
+-redis-cli -h 127.10.51.3 -p 16379 -a ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5
