@@ -52,8 +52,12 @@ To deploy (from origin working):
 -git checkout master
 -git pull openshift master
 -git pull origin working
+-git add -A
+-git commit -m "adding statics for openshift"
 -git push openshift master
 -git checkout working (get back to working branch)
+CAUTION: make sure your statics are updated with grunt and that js and css
+         static files are disabled in .gitignore on master branch
 
 To update db:
 -rhc ssh planevent
