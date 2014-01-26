@@ -138,7 +138,7 @@ def create_test_instances(quantity):
 
 
 def generate_random_color():
-    color = lambda: random.randint(0, 255)
+    color = lambda: random.randint(150, 255)
     return '%02X%02X%02X' % (color(), color(), color())
 
 

@@ -29,12 +29,29 @@ planevent.service('accountService', function($resource) {
 
     var LoggedUser = $resource('/api/user/logged');
 
+    function computeLikedSubcategoriesIds(account) {
+        account.likingsIds = _.map(account.likings, function(liking) {
+            return liking.subcategory.id;
+        });
+    }
+
+    function restCallback(account, callback) {
+        if (account.id === undefined) {
+            account = undefined;
+        }
+        computeLikedSubcategoriesIds(account);
+        callback(account);
+    }
+
     this.getAccount = function(callback) {
         var loggedUser = LoggedUser.get({}, function() {
-            if (loggedUser.id === undefined) {
-                loggedUser = undefined;
-            }
-            callback(loggedUser);
+            restCallback(loggedUser, callback);
+        });
+    };
+
+    this.saveAccount = function(account, callback) {
+        var loggedUser = LoggedUser.save(account, function() {
+            restCallback(loggedUser, callback);
         });
     };
 });
@@ -43,6 +60,7 @@ planevent.factory('globalsService',
     function($routeParams, $resource) {
 
     var Categories = $resource('/api/categories');
+    var Subcategories = $resource('/api/subcategories');
 
     var lastContactTypeId = 0;
     function makeContactType(name) {
@@ -55,6 +73,7 @@ planevent.factory('globalsService',
 
     var service = {
         categories: Categories.query(),
+        subcategories: Subcategories.query(),
         contactTypes: [
             makeContactType('www'),
             makeContactType('email'),
@@ -63,5 +82,12 @@ planevent.factory('globalsService',
             makeContactType('facebook')
         ]
     };
+
+    service.getCategories = function(callback) {
+        var categories = Categories.query({}, function() {
+            callback(categories);
+        });
+    };
+
     return service;
 });

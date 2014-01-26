@@ -21,7 +21,7 @@ from planevent import auth
 
 VENDOR_KEY = 'vendor:{}'
 CATEGORIES_KEY = 'categories'
-SUBCATEGORIES_KEY = 'categories:{}'
+SUBCATEGORIES_KEY = 'subcategories'
 
 
 class View(object):
@@ -249,8 +249,26 @@ class LoggedUserView(View):
     def get(self):
         user_id = self.request.session.get('user_id')
         if user_id:
-            return models.Account.get(user_id)
+            return models.Account.get(
+                user_id,
+                'settings',
+                'likings',
+                'likings.subcategory',
+            )
         return
+
+    @view_config(request_method='POST')
+    @param('account', models.Account, body=True, required=True)
+    def post(self, account):
+        user_id = self.request.session.get('user_id')
+        if account.id != user_id:
+            self.request.response.status = 401
+            return {
+                'error': 'Can edit only owned account'
+            }
+
+        account.save()
+        return account
 
 
 @view_defaults(route_name='categories', renderer='json')
@@ -262,7 +280,7 @@ class CategoriesView(View):
         if categories:
             return categories
 
-        categories = models.Category.all()
+        categories = models.Category.query('subcategories').all()
         cache.set(CATEGORIES_KEY, categories)
         return categories
 
@@ -271,14 +289,11 @@ class CategoriesView(View):
 class SubcategoriesView(View):
 
     @view_config(request_method='GET')
-    @param('category_id', int, rest=True)
-    def get(self, category_id):
-        subcategories = cache.get((CATEGORIES_KEY, category_id))
+    def get(self):
+        subcategories = cache.get((SUBCATEGORIES_KEY))
         if subcategories:
             return subcategories
 
-        subcategories = models.Subcategory.query() \
-            .filter(models.Subcategory.category_id == category_id) \
-            .all()
-        cache.set((CATEGORIES_KEY, category_id), subcategories)
+        subcategories = models.Subcategory.query().all()
+        cache.set((SUBCATEGORIES_KEY), subcategories)
         return subcategories

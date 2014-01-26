@@ -189,16 +189,15 @@ class Account(BaseEntity):
     created_at = Column(DateTime)
     last_login = Column(DateTime)
     login_count = Column(Integer, default=0)
+    settings_id = Column(Integer, ForeignKey('account_settings.id'))
 
     settings = relationship('AccountSettings', cascade="delete, all")
+    likings = relationship('AccountLiking', cascade="delete, all")
 
 
 class AccountSettings(BaseEntity):
     __tablename__ = 'account_settings'
-    account_id = Column(Integer, ForeignKey('account.id'))
     recomendations_range = Column(Integer)
-
-    likings = relationship('AccountLiking', cascade="delete, all")
 
 
 class Category(BaseEntity):
@@ -206,6 +205,8 @@ class Category(BaseEntity):
     name = Column(String(50), nullable=False, unique=True)
     color = Column(String(6), nullable=False)
     icon_path = Column(String(50))
+
+    subcategories = relationship('Subcategory', cascade="delete, all")
 
 
 class Subcategory(BaseEntity):
@@ -218,7 +219,7 @@ class Subcategory(BaseEntity):
 
 class AccountLiking(BaseEntity):
     __tablename__ = 'account_liking'
-    account_settings_id = Column(Integer, ForeignKey('account_settings.id'))
+    account_id = Column(Integer, ForeignKey('account.id'))
     category_id = Column(Integer, ForeignKey('category.id'))
     subcategory_id = Column(Integer, ForeignKey('subcategory.id'))
     level = Column(String(1))

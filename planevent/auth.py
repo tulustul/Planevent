@@ -102,6 +102,7 @@ def process_user(provider, provider_user):
             provider=provider,
             created_at=datetime.datetime.now(),
             login_count=0,
+            settings=models.AccountSettings(),
         )
         is_new = True
 

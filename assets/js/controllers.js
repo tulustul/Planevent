@@ -340,18 +340,61 @@ planevent.controller('SearchController',
 });
 
 planevent.controller('AccountController',
-        function($scope, $location, accountService) {
+        function($scope, $location, accountService, globalsService) {
 
     $scope.informationView = 'assets/partials/profile/information.html';
     $scope.settingsView = 'assets/partials/profile/settings.html';
-    $scope.likingsView = 'assets/partials/profile/linkings.html';
+    $scope.likingsView = 'assets/partials/profile/likings.html';
+
+    $scope.accountSaved = false;
 
     accountService.getAccount(function(loggedUser) {
         $scope.loggedUser = loggedUser;
+
+        if (loggedUser === undefined) {
+            $location.path('/');
+            return;
+        }
+
+        globalsService.getCategories(function(categories) {
+            var likingsIds = $scope.loggedUser.likingsIds;
+            $scope.availableCategories = _.map(categories, function(c) {
+                // TODO list of ids instead of field injection
+                c.available = true;
+                c.subcategories = _.map(c.subcategories, function(sub) {
+                    sub.available = likingsIds.indexOf(sub.id) === -1;
+                    return sub;
+                });
+                return c;
+            });
+        });
     });
 
     $scope.goToProfile = function() {
         $location.path('/userProfile');
+    };
+
+    $scope.saveAccount = function() {
+        $scope.accountSaved = false;
+        accountService.saveAccount($scope.loggedUser, function(account) {
+            $scope.loggedUser = account;
+        });
+        $scope.accountSaved = true;
+    };
+
+    $scope.addLiking = function(subcategory, level) {
+        var likings = $scope.loggedUser.likings;
+        likings[likings.length] = {
+            subcategory: subcategory,
+            level: level
+        };
+        subcategory.available = false;
+    };
+
+    $scope.removeLiking = function(liking) {
+        var likings = $scope.loggedUser.likings;
+        likings.splice(likings.indexOf(liking), 1);
+        liking.subcategory.available = true;
     };
 });
 
