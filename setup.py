@@ -24,6 +24,7 @@ requires = [
     'redis',
     'geopy',
     'requests_oauthlib',
+    'jinja2',
 ]
 
 setup(name='planevent',

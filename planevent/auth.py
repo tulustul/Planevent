@@ -7,6 +7,7 @@ from requests_oauthlib import OAuth2Session
 from planevent import (
     settings,
     models,
+    mailing,
 )
 
 
@@ -86,9 +87,17 @@ def process_callback(request, provider):
 
 def process_user(provider, provider_user):
 
-    def fill_user_field(account, provider_user, provider_settings, field):
-        provider_field = provider_settings.mapper.get(field) or field
-        setattr(account, field, provider_user.get(provider_field))
+    def fill_user_fields(account, provider_user, provider_settings):
+        def fill_user_field(field):
+            provider_field = provider_settings.mapper.get(field) or field
+            setattr(account, field, provider_user.get(provider_field))
+
+        fill_user_field('name')
+        fill_user_field('first_name')
+        fill_user_field('last_name')
+        fill_user_field('email')
+        fill_user_field('gender')
+        fill_user_field('link')
 
     account = models.Account.query() \
         .filter(models.Account.provider == provider) \
@@ -108,15 +117,20 @@ def process_user(provider, provider_user):
 
     provider_settings = settings.OAUTH[provider]
 
-    fill_user_field(account, provider_user, provider_settings, 'name')
-    fill_user_field(account, provider_user, provider_settings, 'first_name')
-    fill_user_field(account, provider_user, provider_settings, 'last_name')
-    fill_user_field(account, provider_user, provider_settings, 'email')
-    fill_user_field(account, provider_user, provider_settings, 'gender')
-    fill_user_field(account, provider_user, provider_settings, 'link')
+    fill_user_fields(account, provider_user, provider_settings)
 
     account.last_login = datetime.datetime.now()
     account.login_count += 1
 
     account.save()
+
+    if is_new:
+        mailing.send(
+            template='welcome',
+            to=account.email,
+            subject='Sie ma',
+            account=account,
+            app_url=settings.get_config()['app_url'],
+        )
+
     return account, is_new

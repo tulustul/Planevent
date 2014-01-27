@@ -1,0 +1,3 @@
+<h2>Witaj {{ account.first_name }}!</h2>
+<h3>Jak sie masz?</h3>
+<a href="{{ app_url }}">Planevent!</a>

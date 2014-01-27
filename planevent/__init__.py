@@ -1,5 +1,6 @@
 import datetime
 import os
+import logging
 
 from pyramid_beaker import session_factory_from_settings
 from pyramid.config import Configurator
@@ -7,10 +8,13 @@ from pyramid.renderers import JSON
 from sqlalchemy import engine_from_config
 
 from planevent import models
+
 from planevent.urls import urls
 from planevent.cache import createRedisConnection
 
 os.environ['DEBUG'] = '1'
+
+logger = logging.getLogger('planevent')
 
 
 def main(global_config, **settings):
