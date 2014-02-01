@@ -1,0 +1,2 @@
+celery -A planevent.tasks worker --loglevel=info --config planevent.settings.production
+celery -A planevent.tasks beat --loglevel=info --config planevent.settings.production

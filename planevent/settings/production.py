@@ -5,7 +5,7 @@ CELERY_TIMEZONE = 'Europe/Warsaw'
 CELERYBEAT_SCHEDULE = {
     'send_recomendations_emails': {
         'task': 'planevent.tasks.send_recomendations_emails',
-        'schedule': crontab(minute=0, hour=2),
+        'schedule': crontab(minute='*'),
     },
 }
 
