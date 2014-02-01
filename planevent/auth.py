@@ -7,7 +7,7 @@ from requests_oauthlib import OAuth2Session
 from planevent import (
     settings,
     models,
-    mailing,
+    tasks,
 )
 
 
@@ -125,12 +125,6 @@ def process_user(provider, provider_user):
     account.save()
 
     if is_new:
-        mailing.send(
-            template='welcome',
-            to=account.email,
-            subject='Sie ma',
-            account=account,
-            app_url=settings.get_config()['app_url'],
-        )
+        tasks.send_welcome_email.delay(account)
 
     return account, is_new

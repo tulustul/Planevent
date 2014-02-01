@@ -25,6 +25,8 @@ requires = [
     'geopy',
     'requests_oauthlib',
     'jinja2',
+    'celery',
+    'celery[redis]',
 ]
 
 setup(name='planevent',

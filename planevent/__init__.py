@@ -16,15 +16,21 @@ os.environ['DEBUG'] = '1'
 
 logger = logging.getLogger('planevent')
 
+sql_engine = None
+
+
+def createSQLConnection(settings):
+    global sql_engine
+    if not sql_engine:
+        sql_engine = engine_from_config(settings, 'sqlalchemy.')
+        models.DBSession.configure(bind=sql_engine)
+        models.Base.metadata.bind = sql_engine
+
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
-    createRedisConnection(settings)
-
-    engine = engine_from_config(settings, 'sqlalchemy.')
-    models.DBSession.configure(bind=engine)
-    models.Base.metadata.bind = engine
+    createRedisConnection()
 
     config = Configurator(settings=settings)
 

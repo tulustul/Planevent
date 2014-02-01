@@ -13,3 +13,4 @@ static/images/uploads/galleries/*
 !static/images/uploads/galleries/dummyfile
 PlanEvent.sublime-project
 PlanEvent.sublime-workspace
+celerybeat-schedule

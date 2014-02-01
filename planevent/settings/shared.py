@@ -1,11 +1,5 @@
 from collections import namedtuple
 
-import pyramid
-
-
-def get_config():
-    return pyramid.threadlocal.get_current_registry().settings
-
 OAuthData = namedtuple(
     'OAuthData', [
         'client_id',

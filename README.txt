@@ -70,3 +70,12 @@ To browse logs:
 To access redis on openshift
 -rhc ssh planevent
 -redis-cli -h 127.10.51.3 -p 16379 -a ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5
+
+
+Celery
+------
+to run worker
+celery -A planevent.tasks worker --loglevel=info --config planevent.settings.development
+
+to run beat
+celery -A planevent.tasks beat --loglevel=info --config planevent.settings.development

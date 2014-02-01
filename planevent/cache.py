@@ -2,7 +2,10 @@ import redis
 import json
 import datetime
 
-from planevent import models
+from planevent import (
+    models,
+    settings,
+)
 
 redis_db = None
 
@@ -17,13 +20,13 @@ class PlaneventJsonEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-def createRedisConnection(settings):
+def createRedisConnection():
     global redis_db
     redis_db = redis.StrictRedis(
-        host=settings['redis.url'],
-        port=int(settings['redis.port']),
-        password=settings['redis.password'],
-        db=settings['redis.db'],
+        host=settings.REDIS['URL'],
+        port=int(settings.REDIS['PORT']),
+        password=settings.REDIS['PASSWORD'],
+        db=settings.REDIS['CACHE_DB'],
         charset='utf-8', decode_responses=True
     )
 
