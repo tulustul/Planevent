@@ -309,10 +309,6 @@ planevent.controller('RelatedVendorsController',
         $scope.relatedVendors = VendorsSearch.query(params);
     });
 
-
-    $scope.goToVendor = function(vendor) {
-        $location.path('/vendor/' + vendor.id);
-    };
 });
 
 planevent.controller('SearchController',

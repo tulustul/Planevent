@@ -39,6 +39,10 @@ h1 {
     margin: 0px;
 }
 
+a {
+    color: #444;
+}
+
 
 #container {
     @include container;

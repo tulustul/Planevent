@@ -4,11 +4,12 @@
     </div>
 
     <ul class="full-list">
-
-            <li ng-class="{ selected: selectedCategory.id == category.id }" ng-repeat="category in categories" ng-click="searchCategory(category)">
-            <img ng-src="{{ category.icon_path }}" alt="Category icon">
-            <h6>{{ category.name }}</h6>
-        </li>
+        <a href="#/vendors/{{ category.id }}" ng-repeat="category in categories">
+            <li ng-class="{ selected: selectedCategory.id == category.id }">
+                <img ng-src="{{ category.icon_path }}" alt="Category icon">
+                <h6>{{ category.name }}</h6>
+            </li>
+        </a>
     </ul>
 
 </section>

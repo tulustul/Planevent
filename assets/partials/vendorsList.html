@@ -1,12 +1,14 @@
 <div ng-include="searchForm"></div>
 <div id="categories-view" ng-include="categoriesView"></div>
 <div id="vendor-list" infinite-scroll="loadMore()" infinite-scroll-distance="1">
-    <figure class="vendor-preview" ng-repeat="vendor in vendors" ng-click="goToVendor(vendor)">
-        <img ng-src="{{ vendor.logo.path }}" alt="vendor logo">
-        <h2>{{ vendor.name }}</h2>
-        <h3>{{ vendor.address.city }}</h3>
-        <p>{{ vendor.description }}</p>
-    </figure>
+    <a href="#/vendor/{{ vendor.id }}" ng-repeat="vendor in vendors">
+        <figure class="vendor-preview">
+            <img ng-src="{{ vendor.logo.path }}" alt="vendor logo">
+            <h2>{{ vendor.name }}</h2>
+            <h3>{{ vendor.address.city }}</h3>
+            <p>{{ vendor.description }}</p>
+        </figure>
+    </a>
     <div class="loading-message">
         <span ng-show="waitingForMore">Wczytywanie...</span>
         <span ng-show="noMoreData">Nie ma już więcej firm :(</span>
