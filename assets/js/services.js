@@ -38,6 +38,7 @@ planevent.service('accountService', function($resource) {
     function restCallback(account, callback) {
         if (account.id === undefined) {
             account = undefined;
+            return;
         }
         computeLikedSubcategoriesIds(account);
         callback(account);

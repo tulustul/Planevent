@@ -14,7 +14,10 @@ from pyramid.paster import (
 
 from pyramid.scripts.common import parse_vars
 
-import planevent.models as models
+from planevent import (
+    models,
+    settings,
+)
 import planevent.scripts.testdata as testdata
 
 
@@ -148,10 +151,10 @@ def main(argv=sys.argv):
     config_uri = argv[1]
     options = parse_vars(argv[2:])
     setup_logging(config_uri)
-    settings = get_appsettings(config_uri, options=options)
-    engine = engine_from_config(settings, 'sqlalchemy.')
+    configs = get_appsettings(config_uri, options=options)
+    engine = engine_from_config(configs, 'sqlalchemy.')
     models.DBSession.configure(bind=engine)
     models.Base.metadata.drop_all(engine)
     models.Base.metadata.create_all(engine)
     with transaction.manager:
-        create_test_instances(int(settings.TEST_INSTANCES))
+        create_test_instances(settings.TEST_INSTANCES)

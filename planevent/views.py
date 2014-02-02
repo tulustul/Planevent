@@ -252,6 +252,7 @@ class LoggedUserView(View):
             return models.Account.get(
                 user_id,
                 'settings',
+                'settings.address',
                 'likings',
                 'likings.subcategory',
             )

@@ -143,9 +143,9 @@ class Vendor(BaseEntity):
 
 class Address(BaseEntity):
     __tablename__ = 'address'
-    street = Column(String(50))
-    city = Column(String(50))
-    postal_code = Column(String(6))
+    street = Column(String(50), default='')
+    city = Column(String(50), default='')
+    postal_code = Column(String(6), default='')
     longitude = Column(Float)
     latitude = Column(Float)
     validated = Column(Boolean, default=False)
@@ -197,7 +197,10 @@ class Account(BaseEntity):
 
 class AccountSettings(BaseEntity):
     __tablename__ = 'account_settings'
-    recomendations_range = Column(Integer)
+    recomendations_range = Column(Integer, default=10)
+    address_id = Column(Integer, ForeignKey('address.id'))
+
+    address = relationship("Address", cascade="delete, all")
 
 
 class Category(BaseEntity):

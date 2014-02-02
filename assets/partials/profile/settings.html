@@ -1,0 +1,9 @@
+<div id="address-form">
+
+    <addressSetter ng-model="loggedUser.settings.address" />
+    <addressViewer ng-model="loggedUser.settings.address" radius="loggedUser.settings.recomendations_range" />
+
+</div>
+
+Zasięg rekomendacji: <input type="range" ng-model="loggedUser.settings.recomendations_range" min="1" max="50">
+{{ loggedUser.settings.recomendations_range }}km

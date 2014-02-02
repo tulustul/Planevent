@@ -128,36 +128,6 @@ planevent.controller('VendorAddEditController',
             });
         };
 
-        $scope.validateAddress = function() {
-            var address = $scope.vendor.address;
-            if (!address.city || !address.street) {
-                $scope.locationComplete = false;
-                return;
-            } else {
-                $scope.locationComplete = true;
-            }
-            $scope.validatingLocation = true;
-            var addressString = address.street + ' ' + address.postal_code +
-                                ' ' + address.city;
-            var geocoder = new google.maps.Geocoder();
-            geocoder.geocode({'address': addressString},
-                function(results, status) {
-                    $scope.validatingLocation = false;
-                    if (status === google.maps.GeocoderStatus.OK) {
-                        var location = results[0].geometry.location;
-                        address.latitude = location.nb;
-                        address.longitude = location.ob;
-                        address.validated = true;
-                    } else {
-                        address.latitude = 0;
-                        address.longitude = 0;
-                        address.validated = false;
-                    }
-                    $scope.$apply();
-                }
-            );
-        };
-
         $scope.addContact = function() {
             var contacts = $scope.vendor.contacts;
             if (contacts === undefined) {
