@@ -297,8 +297,8 @@ planevent.controller('SearchController',
         searchService.resetParams();
         searchService.params.category = $scope.category;
         searchService.params.tags = $scope.tags;
-        searchService.params.location = $scope.location;
-        searchService.params.range = $scope.range;
+        searchService.params.location = $scope.location.formatted;
+        searchService.params.range = $scope.radius;
 
         $scope.clearVendors();
         $scope.loadMore();
