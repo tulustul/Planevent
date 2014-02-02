@@ -4,8 +4,14 @@
     <div id="search-form" ng-show="formVisible">
         Kategoria: <select ng-model="category" ng-options="c.id as c.name for c in categories"></select><br />
         <!-- tagi: <input type="text" ng-model="tags"><br /> -->
-        Miejscowość: <input type="text" ng-model="location"><br />
-        Maksymalna odległość: <input type="range" min="1" max="200" ng-model="range"><span>{{ range }}km</span><br />
+        <!-- Miejscowość: <input type="text" ng-model="location"><br /> -->
+
+        <addressSetter ng-model="location" label="Lokalizacja" type="simple" />
+
+        Zasięg szukania: <input type="range" min="1" max="50" ng-model="radius"><span>{{ radius }}km</span><br />
+
+        <addressViewer ng-model="location" radius="radius" scale-policy="radius-only" />
+
         <button ng-click="search()">szukaj</button>
     </div>
 </div>

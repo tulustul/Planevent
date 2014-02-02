@@ -36,7 +36,8 @@ planevent.directive('addressviewer', function() {
             }
 
             function updatePosition() {
-                var address = scope.$eval(attrs.ngModel);
+                var address = scope.$eval(attrs.ngModel),
+                    scaleRadiusOnly = attrs.scalePolicy === 'radius-only';
                 position = new google.maps.LatLng(52, 19);
                 scope.address = address;
 
@@ -51,19 +52,26 @@ planevent.directive('addressviewer', function() {
                     positionMarker = new google.maps.Marker({
                         position: position,
                         map: map,
-                        title: address.street + ', ' + address.city
+                        title: address.formatted
                     });
 
                     map.setCenter(position);
-                    map.setZoom(13);
+                    if (!scaleRadiusOnly) {
+                        map.setZoom(13);
+                    }
                 }
 
-                updateRadius(false);
+                updateRadius(scaleRadiusOnly);
             }
 
             function updateRadius(zoom) {
                 var address = scope.$eval(attrs.ngModel),
-                    radius = parseInt(scope.$eval(attrs.radius));
+                    radius = scope.$eval(attrs.radius);
+
+                if (radius === undefined) {
+                    return;
+                }
+                radius = parseInt(radius);
 
                 if (zoom === undefined) {
                     zoom = true;
@@ -76,6 +84,7 @@ planevent.directive('addressviewer', function() {
                 if (address && address.validated && radius !== undefined) {
                     addRadius(map, position, radius);
                     if (zoom) {
+                        map.setCenter(position);
                         map.setZoom(parseInt(140 / (Math.sqrt(radius+2)+9)));
                     }
                 }
@@ -91,6 +100,23 @@ planevent.directive('addressviewer', function() {
                 attrs.radius,
                 updateRadius
             );
+
+            scope.$watch(
+                attrs.radius,
+                updateRadius
+            );
+
+            var viewerElement = $('.address-viewer', element);
+            scope.$watch(
+                function() {
+                    return viewerElement.is(':visible');
+                },
+                function() {
+                    var center = map.getCenter();
+                    google.maps.event.trigger(map, 'resize');
+                    map.setCenter(center);
+                }
+            );
         }
     };
 });
@@ -101,38 +127,81 @@ planevent.directive('addresssetter', function() {
         require: '^ngModel',
         templateUrl: 'assets/partials/directives/addressSetter.html',
         link: function(scope, element, attrs) {
+            var address;
 
-            scope.validateAddress = function() {
-                var address = scope.$eval(attrs.ngModel);
-                scope.address = address;
+            scope.locationLabel = attrs.label;
+            scope.type = attrs.type;
 
+            function parseResponse(result) {
+                var type, component,
+                    street = ' ',
+                    location = result.geometry.location,
+                    address_components = result.address_components;
+
+                address.formatted = result.formatted_address;
+
+                for (var i = address_components.length - 1; i >= 0; i--) {
+                    type = address_components[i].types[0];
+                    component = address_components[i].long_name;
+
+                    if (type === 'street_number') {
+                        street += component;
+                    } else if (type === 'route') {
+                        street = component + street;
+                    } else if (type === 'administrative_area_level_3') {
+                        address.city = component;
+                    }
+                }
+
+                if (street !== ' ') {
+                    address.street = street;
+                }
+
+                address.latitude = location.d;
+                address.longitude = location.e;
+            }
+
+            function processMultilineAddress() {
                 if (!address.city) {
                     scope.locationComplete = false;
                     return;
                 } else {
                     scope.locationComplete = true;
                 }
+                scope.addressString = '';
+                if (address.street !== undefined) {
+                    scope.addressString += address.street + ' ';
+                }
+                if (address.city !== undefined) {
+                    scope.addressString += address.city;
+                }
+            }
+
+            scope.validateAddress = function() {
+                address = scope.$eval(attrs.ngModel);
+
+                if (scope.type !== 'simple') {
+                    processMultilineAddress();
+                }
+
                 scope.validatingLocation = true;
-                var addressString = address.street + ' ' + address.postal_code +
-                                    ' ' + address.city;
                 var geocoder = new google.maps.Geocoder();
-                geocoder.geocode({'address': addressString},
-                    function(results, status) {
-                        scope.validatingLocation = false;
-                        if (status === google.maps.GeocoderStatus.OK) {
-                            var location = results[0].geometry.location;
-                            address.latitude = location.d;
-                            address.longitude = location.e;
-                            address.validated = true;
-                        } else {
-                            address.latitude = 0;
-                            address.longitude = 0;
-                            address.validated = false;
-                        }
-                        scope.$apply();
-                    }
+                geocoder.geocode(
+                    {'address': scope.addressString},
+                    geocodeCallback
                 );
             };
+
+            function geocodeCallback(results, status) {
+                scope.validatingLocation = false;
+                if (status === google.maps.GeocoderStatus.OK) {
+                    parseResponse(results[0]);
+                    address.validated = true;
+                } else {
+                    address.validated = false;
+                }
+                scope.$apply();
+            }
         }
     };
 });

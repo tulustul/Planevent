@@ -1,7 +1,12 @@
 <div class="address-setter">
-    Ulica i numer: <input type="text" ng-model="address.street" ng-blur="validateAddress()"><br />
-    Miasto: <input type="text" ng-model="address.city" ng-blur="validateAddress()"><br />
-    Kod pocztowy: <input type="text" ng-model="address.postal_code" ng-blur="validateAddress()"><br />
+    <div ng-show="type != 'simple'">
+        Ulica i numer: <input type="text" ng-model="address.street" ng-blur="validateAddress()"><br />
+        Miasto: <input type="text" ng-model="address.city" ng-blur="validateAddress()"><br />
+        Kod pocztowy: <input type="text" ng-model="address.postal_code" ng-blur="validateAddress()"><br />
+    </div>
+    <div ng-show="type == 'simple'">
+        {{ locationLabel }}: <input type="text" ng-model="addressString" ng-blur="validateAddress()"><br />
+    </div>
 
     <div ng-show="locationComplete">
         <span id="validating-address" ng-show="validatingLocation">Walidowanie adresu...</span>

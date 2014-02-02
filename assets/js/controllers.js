@@ -106,7 +106,7 @@ planevent.controller('VendorAddEditController',
         $scope.vendorView = 'assets/partials/vendorView.html';
 
         if ($routeParams.vendorId === undefined) {
-            $scope.vendor = {gallery: []};
+            $scope.vendor = {gallery: [], address: {}};
         } else {
             var Vendor = $resource('/api/vendor/:id');
             $scope.vendor = Vendor.get({id: $routeParams.vendorId}, function() {
@@ -286,8 +286,8 @@ planevent.controller('SearchController',
 
     $scope.formVisible = false;
     $scope.tags = '';
-    $scope.location = '';
-    $scope.range = 50;
+    $scope.location = {};
+    $scope.radius = 30;
 
     $scope.toogleSearch = function() {
         $scope.formVisible = !$scope.formVisible;

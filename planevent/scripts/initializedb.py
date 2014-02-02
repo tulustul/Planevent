@@ -48,6 +48,7 @@ def create_test_address():
     address.longitude = city['lon'] + random.randrange(-50, 50) / 100
     address.latitude = city['lat'] + random.randrange(-50, 50) / 100
     address.validated = True
+    address.formatted = ', '.join([address.street, address.city])
     return address
 
 
