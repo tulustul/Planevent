@@ -10,7 +10,7 @@ from sqlalchemy import engine_from_config
 from planevent import models
 
 from planevent.urls import urls
-from planevent.cache import createRedisConnection
+from planevent import redisdb
 
 os.environ['DEBUG'] = '1'
 
@@ -30,7 +30,7 @@ def createSQLConnection(settings):
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
-    createRedisConnection()
+    redisdb.createConnections()
 
     config = Configurator(settings=settings)
 

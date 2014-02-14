@@ -20,4 +20,11 @@ urls = [
     ('tag_autocomplete', '/api/tags/autocomplete/{tag}'),
     ('categories', '/api/categories'),
     ('subcategories', '/api/subcategories'),
+
+    #A/B experiments
+    ('experiments', '/api/experiments'),
+    ('activate_experiment', '/api/experiment/{name}/activate'),
+    ('deactivate_experiment', '/api/experiment/{name}/deactivate'),
+    ('experiment_variation', '/api/experiment/{name}/variation'),
+    ('experiment_increment', '/api/experiment/{name}/{variation}/increment'),
 ]

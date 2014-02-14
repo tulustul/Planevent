@@ -1,13 +1,8 @@
-import redis
 import json
 import datetime
 
-from planevent import (
-    models,
-    settings,
-)
-
-redis_db = None
+from planevent import models
+from planevent.redisdb import redis_cache
 
 
 class PlaneventJsonEncoder(json.JSONEncoder):
@@ -20,17 +15,6 @@ class PlaneventJsonEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-def createRedisConnection():
-    global redis_db
-    redis_db = redis.StrictRedis(
-        host=settings.REDIS['URL'],
-        port=int(settings.REDIS['PORT']),
-        password=settings.REDIS['PASSWORD'],
-        db=settings.REDIS['CACHE_DB'],
-        charset='utf-8', decode_responses=True
-    )
-
-
 def create_key(key_data):
     return key_data[0].format(*key_data[1:])
 
@@ -40,13 +24,13 @@ def set(key_data, obj, expire=3600):
 
     data = json.dumps(obj, cls=PlaneventJsonEncoder)
 
-    redis_db.set(key, data)
-    redis_db.expire(key, expire)
+    redis_cache.set(key, data)
+    redis_cache.expire(key, expire)
 
 
 def get(key_data, model=None):
     key = create_key(key_data)
-    obj = redis_db.get(key)
+    obj = redis_cache.get(key)
     if obj:
         data = json.loads(obj)
         if model:
@@ -57,8 +41,8 @@ def get(key_data, model=None):
 
 def delete(key_data):
     key = create_key(key_data)
-    redis_db.delete(key)
+    redis_cache.delete(key)
 
 
 def flush():
-    redis_db.flushall()
+    redis_cache.flushall()

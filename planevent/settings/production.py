@@ -19,7 +19,7 @@ REDIS = {
     'URL': '127.10.51.3',
     'PORT': 16379,
     'CACHE_DB': 0,
-    'CELERY_DB': 1,
-    'DB': 0,
+    'DB': 1,
+    'CELERY_DB': 2,
     'PASSWORD': 'ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5',
 }
