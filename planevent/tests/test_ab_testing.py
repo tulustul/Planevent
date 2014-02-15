@@ -3,6 +3,7 @@ import json
 
 from planevent.tests import PlaneventTest
 from planevent.abtesting import models
+from planevent import abtesting
 
 
 class ABTestingTestCase(PlaneventTest):
@@ -81,50 +82,96 @@ class ManagingTestCase(ABTestingTestCase):
         experiment['active'] = True
         # experiment['variations'].append(self.create_variation_dict('var 2', 1))
 
-        experiment = self.post_experiment(experiment)
+        # experiment = self.post_experiment(experiment)
 
-        self.assertEquals(experiment['name'], 'modified test')
-        self.assertFalse(experiment['active'])
-        self.assertEquals(len(experiment['variations']), 2)
+        # self.assertEquals(experiment['name'], 'modified test')
+        # self.assertFalse(experiment['active'])
+        # self.assertEquals(len(experiment['variations']), 2)
 
     def test_edit_active(self):
-        pass
+        experiment = models.Experiment(name='test', active=True)
+        experiment.save()
+
+        experiment_dict = experiment.serialize()
+
+        self.post_experiment(experiment_dict, status=409)
 
     def test_edit_previously_activated(self):
-        pass
+        experiment = models.Experiment(
+            name='test',
+            active=False,
+            in_preparations=False
+        )
+        experiment.save()
+
+        experiment_dict = experiment.serialize()
+
+        self.post_experiment(experiment_dict, status=409)
 
 
 class GettingListTestCase(ABTestingTestCase):
 
-    def test_get_active(self):
-        pass
-
-    def test_get_active_with_offset_and_limit(self):
-        pass
+    def setUp(self):
+        super().setUp()
+        self.create_and_post_experiment('test1', [
+            self.Variation(name='var1_1', probability=1),
+        ])
+        self.create_and_post_experiment('test2', [
+            self.Variation(name='var2_1', probability=1),
+        ])
+        self.create_and_post_experiment('test3', [
+            self.Variation(name='var3_1', probability=1),
+        ])
+        self.get('/api/experiment/test3/activate')
 
     def test_get_inactive(self):
-        pass
+        experiments = self.get('/api/experiments', params={'active': 0})
+
+        self.assertEquals(len(experiments), 2)
+
+    def test_get_inactive_with_offset_and_limit(self):
+        experiments = self.get('/api/experiments', params={
+            'active': 0,
+            'offset': 1,
+            'limit': 1,
+        })
+
+        self.assertEquals(len(experiments), 1)
+
+    def test_get_active(self):
+        experiments = self.get('/api/experiments', params={'active': 1})
+
+        self.assertEquals(len(experiments), 1)
+        self.assertEquals(experiments[0]['name'], 'test3')
 
 
 class ActivationTestCase(ABTestingTestCase):
 
+    def setUp(self):
+        super().setUp()
+        self.create_and_post_experiment('test1', [
+            self.Variation(name='var1_1', probability=1),
+        ])
+
     def test_activate(self):
-        pass
+        self.get('/api/experiment/test1/activate')
 
     def test_activate_already_active(self):
-        pass
+        self.get('/api/experiment/test1/activate')
+        self.get('/api/experiment/test1/activate', status=400)
 
     def test_activate_not_existing(self):
-        pass
+        self.get('/api/experiment/test2/activate', status=400)
 
     def test_deactivate(self):
-        pass
+        self.get('/api/experiment/test1/activate')
+        self.get('/api/experiment/test1/deactivate')
 
     def test_deactivate_already_inactive(self):
-        pass
+        self.get('/api/experiment/test1/deactivate', status=400)
 
     def test_deactivate_not_existing(self):
-        pass
+        self.get('/api/experiment/test2/deactivate', status=400)
 
     def test_remove_all_redis_data_on_deactivation(self):
         pass
@@ -132,8 +179,17 @@ class ActivationTestCase(ABTestingTestCase):
 
 class VariationTestCase(ABTestingTestCase):
 
+    def setUp(self):
+        super().setUp()
+        self.create_and_post_experiment('test1', [
+            self.Variation(name='var1', probability=1),
+            self.Variation(name='var2', probability=2),
+        ])
+        self.get('/api/experiment/test1/activate')
+
     def test_get_variation(self):
-        pass
+        variation = self.get('/api/experiment/test1/variation')
+        self.assertIn(variation, ['var1', 'var2'])
 
     def test_get_new_variation_for_user(self):
         pass
@@ -142,10 +198,32 @@ class VariationTestCase(ABTestingTestCase):
         pass
 
     def test_get_variation_for_not_existing_experiment(self):
-        pass
+        self.get('/api/experiment/test2/variation', status=400)
 
     def test_get_variation_for_finished(self):
-        pass
+        self.get('/api/experiment/test1/deactivate')
 
     def test_increment_variation(self):
-        pass
+        self.get('/api/experiment/test1/var1/increment')
+
+    def test_winner_selection(self):
+        self.get('/api/experiment/test1/var1/increment')
+        self.get('/api/experiment/test1/var2/increment')
+        self.get('/api/experiment/test1/var1/increment')
+
+        self.get('/api/experiment/test1/deactivate')
+
+        winner = abtesting.get_winner('test1')
+
+        self.assertEquals(winner, 'var1')
+
+    def test_get_winner(self):
+        variation = self.get('/api/experiment/test1/variation')
+
+        self.get('/api/experiment/test1/{}/increment'.format(variation))
+
+        self.get('/api/experiment/test1/deactivate')
+
+        winner = self.get('/api/experiment/test1/variation')
+
+        self.assertEquals(variation, winner)

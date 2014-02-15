@@ -5,4 +5,5 @@ from planevent.abtesting.service import (
     deactivate,
     get_receivers_count,
     get_success_count,
+    get_winner,
 )

@@ -19,9 +19,10 @@ from planevent.abtesting import (
 class ExperimentView(View):
 
     def get_experiments(self, active):
-        query = models.Experiment.query('variations')
-        if active is not None:
-            query = query.filter(models.Experiment.active == active)
+        query = models.Experiment.query('variations') \
+            .filter(models.Experiment.active == active) \
+            .order_by(models.Experiment.created_at.desc())
+
         return query.limit(self.limit).offset(self.offset).all()
 
     def get_active(self):

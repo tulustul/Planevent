@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 import random
 
-from planevent.redisdb import redis_db
+from planevent import redisdb
 from planevent.abtesting.models import Experiment
 
 EXPERIMENT_PATTERN = 'experiment:{}'
@@ -29,11 +29,17 @@ def _get_experiment(experiment_name):
 
 
 def get_receivers_count(experiment, variation):
-    return redis_db.get(RECEIVERS_COUNT.format(experiment, variation))
+    return int(redisdb.redis_db.get(RECEIVERS_COUNT
+               .format(experiment, variation)))
 
 
 def get_success_count(experiment, variation):
-    return redis_db.get(SUCCESS_COUNT.format(experiment, variation))
+    return int(redisdb.redis_db.get(SUCCESS_COUNT
+               .format(experiment, variation)))
+
+
+def get_winner(experiment):
+    return redisdb.redis_db.get(WINNER.format(experiment))
 
 
 def get_variation(experiment_name, user_id=None):
@@ -50,15 +56,16 @@ def get_variation(experiment_name, user_id=None):
         variation = roulette(probabilities)
 
         if user_id:
-            redis_db.set(USER_VARIATION.format(
-                         experiment_name, user_id), variation)
+            redisdb.redis_db.set(USER_VARIATION.format(
+                                 experiment_name, user_id), variation)
 
-        redis_db.incr(RECEIVERS_COUNT.format(experiment_name, variation))
+        redisdb.redis_db.incr(RECEIVERS_COUNT
+                              .format(experiment_name, variation))
 
         return variation
 
-    def try_get_winner(self):
-        variation = redis_db.get(WINNER.format(experiment_name))
+    def try_get_winner():
+        variation = get_winner(experiment_name)
         if variation is None:
             raise ABExperimentError(
                 'Experiment {} is in preperations or does not exists'
@@ -68,11 +75,12 @@ def get_variation(experiment_name, user_id=None):
 
     variation = None
     if user_id:
-        variation = redis_db.get(USER_VARIATION.format(
-                                 experiment_name, user_id))
+        variation = redisdb.redis_db.get(USER_VARIATION.format(
+                                         experiment_name, user_id))
 
     if not variation:
-        probabilities_json = redis_db.get(PROBABILITIES.format(experiment_name))
+        probabilities_json = redisdb.redis_db.get(PROBABILITIES
+                                                  .format(experiment_name))
 
         if probabilities_json is not None:
             variation = get_random_variation(probabilities_json)
@@ -85,7 +93,7 @@ def get_variation(experiment_name, user_id=None):
 def increment_success(experiment_name, variation_name):
     # Can put some garbage to db if names are invalid. Task for evicting them
     # from time to time might be a good idea
-    redis_db.incr(SUCCESS_COUNT.format(experiment_name, variation_name))
+    redisdb.redis_db.incr(SUCCESS_COUNT.format(experiment_name, variation_name))
 
 
 def activate(experiment_name):
@@ -100,18 +108,18 @@ def activate(experiment_name):
         )
 
     for variation in experiment.variations:
-        redis_db.set(
+        redisdb.redis_db.set(
             RECEIVERS_COUNT.format(experiment_name, variation.name),
             variation.receivers_count,
         )
-        redis_db.set(
+        redisdb.redis_db.set(
             SUCCESS_COUNT.format(experiment_name, variation.name),
             variation.success_count,
         )
 
     probabilities = {v.name: v.probability for v in experiment.variations}
-    redis_db.set(PROBABILITIES.format(experiment_name),
-                 json.dumps(probabilities))
+    redisdb.redis_db.set(PROBABILITIES.format(experiment_name),
+                         json.dumps(probabilities))
 
     experiment.active = True
     if experiment.in_preparations:
@@ -124,7 +132,7 @@ def deactivate(experiment_name):
     def choose_winner(experiment):
         return sorted(
             experiment.variations,
-            key=lambda v: v.success_count / v.receivers_count,
+            key=lambda v: -v.success_count / (v.receivers_count+1),
         )[0].name
 
     experiment = _get_experiment(experiment_name)
@@ -140,12 +148,13 @@ def deactivate(experiment_name):
         var.success_count = get_success_count(experiment_name, var.name)
 
     experiment.winner_name = choose_winner(experiment)
-
     experiment.active = False
     experiment.ended_at = datetime.now()
     experiment.save()
 
-    redis_db.set(WINNER.format(experiment_name), experiment.winner_name)
+    keys = redisdb.redis_db.keys(EXPERIMENT_PATTERN
+                                 .format(experiment_name) + '*')
+    redisdb.redis_db.delete(*keys)
 
-    keys = redis_db.keys(EXPERIMENT_PATTERN.format(experiment_name) + '*')
-    redis_db.delete(*keys)
+    redisdb.redis_db.set(WINNER.format(experiment_name),
+                         experiment.winner_name)

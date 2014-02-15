@@ -19,7 +19,7 @@ broker_url = 'redis://:{0}@{1}:{2}/{3}'.format(
 celery = Celery('tasks', broker=broker_url)
 
 # TODO celery beat opens unnecessary connection here
-createSQLConnection(get_appsettings(settings.INI_FILE))
+# createSQLConnection(get_appsettings(settings.INI_FILE))
 
 
 @celery.task

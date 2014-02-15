@@ -23,6 +23,7 @@ def setup_module():
 
     connection = planevent.sql_engine.connect()
     transaction = connection.begin()
+    models.Base.metadata.drop_all(connection)
     models.Base.metadata.create_all(connection)
 
     redisdb.createConnections()
@@ -30,7 +31,6 @@ def setup_module():
 
 def teardown_module():
     global transaction, connection
-    # models.Base.metadata.drop_all(sql_engine)
 
     transaction.rollback()
     connection.close()
@@ -40,10 +40,11 @@ class PlaneventTest(unittest.TestCase):
 
     def setUp(self):
         self.__transaction = connection.begin_nested()
-        self.session = Session(connection)
+        models.DBSession = Session(connection)
+        # models.Base.metadata.drop_all(connection)
 
     def tearDown(self):
-        self.session.close()
+        models.DBSession.close()
         self.__transaction.rollback()
         # models.DBSession.rollback()
         cache.flush()
