@@ -3,4 +3,6 @@ from planevent.abtesting.service import (
     increment_success,
     activate,
     deactivate,
+    get_receivers_count,
+    get_success_count,
 )

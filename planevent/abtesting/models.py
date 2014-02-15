@@ -23,6 +23,7 @@ class Experiment(BaseEntity):
     ended_at = Column(DateTime)
     active = Column(Boolean)
     in_preparations = Column(Boolean)
+    winner_name = Column(String(150))
 
     variations = relationship("Variation", cascade="delete, all")
 

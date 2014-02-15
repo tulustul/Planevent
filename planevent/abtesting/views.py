@@ -1,3 +1,7 @@
+from datetime import datetime
+
+from sqlalchemy.exc import IntegrityError
+
 from pyramid.view import (
     view_config,
     view_defaults,
@@ -5,7 +9,6 @@ from pyramid.view import (
 
 from planevent.decorators import param
 from planevent.views import View
-from planevent.redisdb import redis_db
 from planevent.abtesting import (
     service as ab_service,
     models,
@@ -26,12 +29,12 @@ class ExperimentView(View):
         experiments = self.get_experiments(1)
         for experiment in experiments:
             for variation in experiment.variations:
-                variation.receivers_count = \
-                    redis_db.get(ab_service.RECEIVERS_COUNT.format(
-                                 experiment.name, variation.name))
-                variation.success_count = \
-                    redis_db.get(ab_service.SUCCESS_COUNT.format(
-                                 experiment.name, variation.name))
+                variation.receivers_count = ab_service.get_receivers_count(
+                    experiment.name, variation.name)
+
+                variation.success_count = ab_service.get_success_count(
+                    experiment.name, variation.name)
+
         return experiments
 
     def get_inactive(self):
@@ -40,7 +43,7 @@ class ExperimentView(View):
     @view_config(request_method='GET')
     @param('offset', int, default=0)
     @param('limit', int, default=10)
-    @param('active', int, default=None)
+    @param('active', int, required=True)
     def get(self, offset, limit, active):
         self.offset = offset
         self.limit = limit
@@ -49,19 +52,36 @@ class ExperimentView(View):
             return self.get_active()
         elif active == 0:
             return self.get_inactive()
-        else:
-            return self.get_active() + self.get_inactive()
 
     @view_config(request_method='POST')
     @param('experiment', models.Experiment, body=True, required=True)
     def post(self, experiment):
-        if experiment.id is None or experiment.in_preparations:
-            experiment.save()
+        if experiment.id is None:
+            experiment.created_at = datetime.now()
+            experiment.in_preparations = True
+            experiment.active = False
         else:
+            original_experiment = models.Experiment.get(experiment.id)
+            original_experiment.name = experiment.name
+            original_experiment.description = experiment.description
+            original_experiment.variations = experiment.variations
+
+            experiment = original_experiment
+
+        if not experiment.in_preparations:
             self.request.response.status = 409
             return {
                 'error': 'Cannot edit experiment which was previously activated'
             }
+
+        try:
+            experiment.save()
+        except IntegrityError as e:
+            self.request.response.status = 409
+            return {
+                'error': 'Data integrity error: ' + str(e)
+            }
+        return experiment
 
 
 @view_defaults(route_name='activate_experiment', renderer='json')
@@ -72,6 +92,7 @@ class ActivateExperimentView(View):
     def get(self, name):
         try:
             ab_service.activate(name)
+            return 'OK'
         except ab_service.ABExperimentError as e:
             self.request.response.status = 400
             return {'error': str(e)}
@@ -85,20 +106,7 @@ class DeactivateExperimentView(View):
     def get(self, name):
         try:
             ab_service.deactivate(name)
-        except ab_service.ABExperimentError as e:
-            self.request.response.status = 400
-            return {'error': str(e)}
-
-
-@view_defaults(route_name='experiment_variation', renderer='json')
-class ExperimentVariationView(View):
-
-    @view_config(request_method='GET')
-    @param('name', str, required=True, rest=True)
-    def get(self, name):
-        try:
-            return ab_service.get_variation(name,
-                                            self.request.session.get('user_id'))
+            return 'OK'
         except ab_service.ABExperimentError as e:
             self.request.response.status = 400
             return {'error': str(e)}
@@ -113,6 +121,21 @@ class ExperimentIncrementView(View):
     def get(self, name, variation):
         try:
             ab_service.increment_success(name, variation)
+            return 'OK'
+        except ab_service.ABExperimentError as e:
+            self.request.response.status = 400
+            return {'error': str(e)}
+
+
+@view_defaults(route_name='experiment_variation', renderer='json')
+class ExperimentVariationView(View):
+
+    @view_config(request_method='GET')
+    @param('name', str, required=True, rest=True)
+    def get(self, name):
+        try:
+            return ab_service.get_variation(name,
+                                            self.request.session.get('user_id'))
         except ab_service.ABExperimentError as e:
             self.request.response.status = 400
             return {'error': str(e)}

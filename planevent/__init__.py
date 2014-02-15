@@ -6,11 +6,13 @@ from pyramid_beaker import session_factory_from_settings
 from pyramid.config import Configurator
 from pyramid.renderers import JSON
 from sqlalchemy import engine_from_config
+from pyramid.paster import get_appsettings
 
 from planevent import models
 
 from planevent.urls import urls
 from planevent import redisdb
+from planevent import settings as app_settings
 
 os.environ['DEBUG'] = '1'
 
@@ -30,6 +32,7 @@ def createSQLConnection(settings):
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
+    createSQLConnection(get_appsettings(app_settings.INI_FILE))
     redisdb.createConnections()
 
     config = Configurator(settings=settings)
