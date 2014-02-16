@@ -16,6 +16,7 @@ from planevent.decorators import (
     time_profiler,
 )
 from planevent.services import geocode_location
+from planevent.core import sql
 from planevent import auth
 
 
@@ -128,7 +129,7 @@ class SearchVendorsView(View):
     def get(self, category, tags, location, range, exclude_vendor_id, offset,
             limit):
 
-        query = models.DBSession.query(models.Vendor.id)
+        query = sql.DBSession.query(models.Vendor.id)
 
         if category != 0:
             query = query.filter(models.Vendor.category_id == category)

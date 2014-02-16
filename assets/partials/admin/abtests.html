@@ -1,0 +1,61 @@
+<div id="ab-testing-management" ng-controller="ABTestingManagementController">
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary" ng-model="activeFilter" btn-radio="null" ng-click="getExperiments(null)">Wszystkie</button>
+        <button type="button" class="btn btn-primary" ng-model="activeFilter" btn-radio="1" ng-click="getExperiments(1)">Aktywne</button>
+        <button type="button" class="btn btn-primary" ng-model="activeFilter" btn-radio="0" ng-click="getExperiments(0)">Nieaktywne</button>
+    </div>
+
+    <button id="create-experiment-button" type="button" class="btn btn-primary" ng-click="createExperiment()">Stwórz</button>
+
+    <table id="experiment-edition-temp" style="display:none">
+    <tr id="ab-edition-form" ng-show="editedExperiment"><td colspan="6"><section id="ab-edition-form-section">
+        <div>Nazwa: <input type="text" ng-model="editedExperiment.name"></div><br />
+        <div>Opis: <input type="text" ng-model="editedExperiment.description"></div><br />
+
+        <div class="btn-group">
+            <button class="btn btn-primary" ng-click="activate(editedExperiment)" ng-show="!editedExperiment.active">Aktywuj</button>
+            <button class="btn btn-primary" ng-click="deactivate(editedExperiment)" ng-show="editedExperiment.active">Deaktywuj</button>
+            <button class="btn btn-primary" ng-click="addVariation(editedExperiment)">Dodaj Wariację</button>
+            <button class="btn btn-primary" ng-click="saveExperiment(editedExperiment)">Zapisz zmiany</button>
+        </div>
+
+        <table ng-table id="experiments-variations-table" class="table" ng-show="editedExperiment.variations.length > 0">
+            <tr ng-repeat="(i, variation) in editedExperiment.variations">
+                <td data-title="'Nazwa'">
+                    <span ng-if="!variation.$edit">{{variation.name}}</span>
+                    <input ng-if="variation.$edit" type="text" ng-model="variation.name">
+                </td>
+                <td data-title="'Opis'">
+                    <span ng-if="!variation.$edit">{{variation.description}}</span>
+                    <input ng-if="variation.$edit" type="text" ng-model="variation.description">
+                </td>
+                <td data-title="'Szansa'">
+                    <span ng-if="!variation.$edit">{{variation.probability}}</span>
+                    <input ng-if="variation.$edit" type="text" ng-model="variation.probability">
+                </td>
+                <td data-title="'Odbiorcy'">{{variation.receivers_count}}</td>
+                <td data-title="'Konwersje'">{{variation.success_count}}</td>
+                <td data-title="'Sukces'">{{variation.success_count / (variation.receivers_count+1)}}</td>
+                <td>
+                    <button ng-click="removeVariation(editedExperiment, i)">Usuń</button>
+                    <button ng-if="!variation.$edit" ng-click="variation.$edit = true">Edytuj</button>
+                    <button ng-if="variation.$edit" ng-click="variation.$edit = false">Zapisz</button>
+                </td>
+            </tr>
+        </table>
+    </section></td></tr>
+    </table>
+
+    <table ng-table id="experiments-table" class="table">
+
+        <tr ng-repeat="experiment in experiments" ng-click="editExperiment(experiment, $event)" ng-class="{'selected': experiment === editedExperiment}">
+            <td data-title="'Nazwa'">{{experiment.name}}</td>
+            <td data-title="'W przygotowaniu'">{{experiment.in_preparations}}</td>
+            <td data-title="'Rozpoczęty'">{{experiment.started_at}}</td>
+            <td data-title="'Zakończony'">{{experiment.ended_at}}</td>
+            <td data-title="'Aktywny'">{{experiment.active}}</td>
+            <td data-title="'Zwycięzca'">{{experiment.winner_name}}</td>
+        </tr>
+    </table>
+
+</div>

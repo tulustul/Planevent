@@ -595,7 +595,7 @@ $galleryHeigth: 500px;
     $column-width: 3em;
     @include container;
     @include border-box-sizing;
-    max-width: 500px;
+    max-width: 1000px;
     margin: 0 auto;
     margin-top: 10px;
     border: 1px #999 solid;
@@ -625,6 +625,59 @@ $galleryHeigth: 500px;
         .btn {
             float: right;
         }
+    }
+
+    #experiments-table {
+        border: none;
+        width: 100%;
+        margin-top: 5px;
+
+        thead tr {
+            background-color: #AAA !important;
+        }
+
+        td {
+            border-top: none;
+        }
+
+        tr {
+            cursor: pointer;
+
+            &.selected {
+                background-color: #A4CCAC !important;
+            }
+            &:nth-child(even) {
+                background-color: #BBB;
+            }
+            &:nth-child(odd) {
+                background-color: #CCC;
+            }
+            &:hover {
+                background-color: #C9CCA4 !important;
+            }
+        }
+
+        #ab-edition-form {
+            width: 100%;
+
+            section {
+                margin: 0px 10px 10px 10px;
+                padding: 10px;
+                background: #A4CCAC;
+            }
+
+            td {
+                padding: 0px;
+            }
+
+            #experiments-variations-table {
+                margin-top: 10px;
+            }
+        }
+    }
+
+    #create-experiment-button {
+        float: right;
     }
 }
 

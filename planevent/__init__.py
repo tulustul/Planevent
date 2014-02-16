@@ -8,8 +8,8 @@ from pyramid.renderers import JSON
 from sqlalchemy import engine_from_config
 from pyramid.paster import get_appsettings
 
-from planevent import models
 
+from planevent.core import sql
 from planevent.urls import urls
 from planevent import redisdb
 from planevent import settings as app_settings
@@ -25,8 +25,8 @@ def createSQLConnection(settings):
     global sql_engine
     if not sql_engine:
         sql_engine = engine_from_config(settings, 'sqlalchemy.')
-        models.DBSession.configure(bind=sql_engine)
-        models.Base.metadata.bind = sql_engine
+        sql.DBSession.configure(bind=sql_engine)
+        sql.Base.metadata.bind = sql_engine
 
 
 def main(global_config, **settings):

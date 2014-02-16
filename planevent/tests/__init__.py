@@ -6,6 +6,7 @@ from webtest import TestApp
 from sqlalchemy.orm.session import Session
 
 import planevent.models as models
+from planevent.core import sql
 from planevent import cache
 from planevent import redisdb
 import planevent
@@ -23,8 +24,8 @@ def setup_module():
 
     connection = planevent.sql_engine.connect()
     transaction = connection.begin()
-    models.Base.metadata.drop_all(connection)
-    models.Base.metadata.create_all(connection)
+    sql.Base.metadata.drop_all(connection)
+    sql.Base.metadata.create_all(connection)
 
     redisdb.createConnections()
 
@@ -40,13 +41,11 @@ class PlaneventTest(unittest.TestCase):
 
     def setUp(self):
         self.__transaction = connection.begin_nested()
-        models.DBSession = Session(connection)
-        # models.Base.metadata.drop_all(connection)
+        sql.DBSession = Session(connection)
 
     def tearDown(self):
-        models.DBSession.close()
+        sql.DBSession.close()
         self.__transaction.rollback()
-        # models.DBSession.rollback()
         cache.flush()
         redisdb.redis_db.flushall()
 

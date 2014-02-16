@@ -7,7 +7,7 @@ planevent.controller('MainPageController',
         $scope.categoriesView = 'assets/partials/categoriesView.html';
         $scope.vendorView = 'assets/partials/vendorView.html';
         $scope.searchForm = 'assets/partials/search.html';
-        $scope.loggedUserView = 'assets/partials/loggedUser.html';
+        $scope.loggedUsstatisticsViewerView = 'assets/partials/loggedUser.html';
 
         $scope.categories = globalsService.categories;
     }
@@ -196,6 +196,7 @@ planevent.controller('AdminPageController',
     $scope.categoriesView = 'assets/partials/admin/categories.html';
     $scope.subcategoriesView = 'assets/partials/admin/subcategories.html';
     $scope.statisticsView = 'assets/partials/admin/statistics.html';
+    $scope.abTestsView = 'assets/partials/admin/abtests.html';
 
     var Vendor = $resource('/api/vendor/:id');
     var VendorPromotion = $resource('/api/vendor/:id/promotion/:promotion',
@@ -207,10 +208,31 @@ planevent.controller('AdminPageController',
     $scope.vendorDoesNotExists = false;
     $scope.unknownError = false;
 
+
+    $scope.resetMessages = function() {
+        $scope.dangers = [];
+        $scope.warnings = [];
+        $scope.successes = [];
+    };
+    $scope.resetMessages();
+
+    $scope.addDanger = function(msg) {
+        $scope.dangers[$scope.dangers.length] = msg;
+    };
+
+    $scope.addWarning = function(msg) {
+        $scope.warnings[$scope.warnings.length] = msg;
+    };
+
+    $scope.addSuccess = function(msg) {
+        $scope.successes[$scope.successes.length] = msg;
+    };
+
     $scope.getVendor = function(vendorId) {
+        $scope.resetMessages();
+
         $scope.vendor = undefined;
         $scope.saved = false;
-        $scope.vendorDoesNotExists = false;
         $scope.unknownError = false;
 
         if (vendorId === '') {
@@ -222,15 +244,17 @@ planevent.controller('AdminPageController',
             function(response){
                 $scope.vendor = undefined;
                 if (response.status === 404) {
-                    $scope.vendorDoesNotExists = true;
+                    $scope.addDanger('Vendor does not exists!');
                 } else {
-                    $scope.unknownError = true;
+                    $scope.addDanger('Unknown error');
                 }
             }
         );
     };
 
     $scope.savePromotion = function(vendorId) {
+        $scope.resetMessages();
+
         if ($scope.vendor === undefined) {
             return;
         }
@@ -240,12 +264,13 @@ planevent.controller('AdminPageController',
             },
             function(){
                 $scope.saved = true;
+                $scope.addSuccess('Vendor saved');
             },
             function(response){
                 if (response.status === 404) {
-                    $scope.vendorDoesNotExists = true;
+                    $scope.addDanger('Vendor does not exists!');
                 } else {
-                    $scope.unknownError = true;
+                    $scope.addDanger('Unknown error');
                 }
             }
         );
@@ -253,7 +278,7 @@ planevent.controller('AdminPageController',
 });
 
 planevent.controller('RelatedVendorsController',
-        function($scope, $resource, $location) {
+        function($scope, $resource) {
 
     var VendorsSearch = $resource('/api/vendors/search');
 

@@ -20,8 +20,10 @@ class ExperimentView(View):
 
     def get_experiments(self, active):
         query = models.Experiment.query('variations') \
-            .filter(models.Experiment.active == active) \
             .order_by(models.Experiment.created_at.desc())
+
+        if active is not None:
+            query = query.filter(models.Experiment.active == active)
 
         return query.limit(self.limit).offset(self.offset).all()
 
@@ -44,7 +46,7 @@ class ExperimentView(View):
     @view_config(request_method='GET')
     @param('offset', int, default=0)
     @param('limit', int, default=10)
-    @param('active', int, required=True)
+    @param('active', int, required=None, default=None)
     def get(self, offset, limit, active):
         self.offset = offset
         self.limit = limit
@@ -53,21 +55,32 @@ class ExperimentView(View):
             return self.get_active()
         elif active == 0:
             return self.get_inactive()
+        else:
+            return self.get_active() + self.get_inactive()
 
-    @view_config(request_method='POST')
+    @view_config(request_method='POST', renderer='json')
     @param('experiment', models.Experiment, body=True, required=True)
     def post(self, experiment):
+        unique_names_count = len({v.name for v in experiment.variations})
+        if unique_names_count < len(experiment.variations):
+            self.request.response.status = 409
+            return {
+                'error': 'Variations must have unique names'
+            }
+
         if experiment.id is None:
             experiment.created_at = datetime.now()
             experiment.in_preparations = True
             experiment.active = False
         else:
             original_experiment = models.Experiment.get(experiment.id)
-            original_experiment.name = experiment.name
-            original_experiment.description = experiment.description
-            original_experiment.variations = experiment.variations
 
-            experiment = original_experiment
+            experiment.in_preparations = original_experiment.in_preparations
+            experiment.active = original_experiment.active
+            experiment.winner_name = original_experiment.winner_name
+            experiment.created_at = original_experiment.created_at
+            experiment.started_at = original_experiment.started_at
+            experiment.ended_at = original_experiment.ended_at
 
         if not experiment.in_preparations:
             self.request.response.status = 409

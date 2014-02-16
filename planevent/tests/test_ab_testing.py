@@ -80,13 +80,13 @@ class ManagingTestCase(ABTestingTestCase):
 
         experiment['name'] = 'modified test'
         experiment['active'] = True
-        # experiment['variations'].append(self.create_variation_dict('var 2', 1))
+        experiment['variations'].append(self.create_variation_dict('var 2', 1))
 
-        # experiment = self.post_experiment(experiment)
+        experiment = self.post_experiment(experiment)
 
-        # self.assertEquals(experiment['name'], 'modified test')
-        # self.assertFalse(experiment['active'])
-        # self.assertEquals(len(experiment['variations']), 2)
+        self.assertEquals(experiment['name'], 'modified test')
+        self.assertFalse(experiment['active'])
+        self.assertEquals(len(experiment['variations']), 2)
 
     def test_edit_active(self):
         experiment = models.Experiment(name='test', active=True)
@@ -143,6 +143,9 @@ class GettingListTestCase(ABTestingTestCase):
 
         self.assertEquals(len(experiments), 1)
         self.assertEquals(experiments[0]['name'], 'test3')
+
+    def test_get_all(self):
+        pass
 
 
 class ActivationTestCase(ABTestingTestCase):

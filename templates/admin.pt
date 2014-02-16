@@ -8,7 +8,7 @@
 
     <script type="text/javascript">
         var planevent = angular.module('planevent',
-        ['ui.bootstrap', 'ngAnimate', 'ngRoute', 'ngResource',
+        ['ui.bootstrap', 'ngAnimate', 'ngRoute', 'ngResource', 'ngTable',
         'infinite-scroll', 'angularFileUpload']);
     </script>
 
@@ -18,6 +18,11 @@
     <link rel="stylesheet" href="static/main.css" />
 </head>
 <body ng-controller="AdminPageController">
+
+    <alert ng-repeat="msg in dangers" type="'danger'">{{ msg }}</alert>
+    <alert ng-repeat="msg in warnings" type="'warning'">{{ msg }}</alert>
+    <alert ng-repeat="msg in successes" type="'success'">{{ msg }}</alert>
+
     <section id="admin-panel">
         <tabset>
             <tab heading="Vendor promotion">
@@ -31,6 +36,9 @@
             </tab>
             <tab heading="Statistics">
                 <div ng-include="statisticsView"></div>
+            </tab>
+            <tab heading="Testy A/B">
+                <div ng-include="abTestsView"></div>
             </tab>
         </tabset>
     </section>

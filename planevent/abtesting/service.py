@@ -29,13 +29,13 @@ def _get_experiment(experiment_name):
 
 
 def get_receivers_count(experiment, variation):
-    return int(redisdb.redis_db.get(RECEIVERS_COUNT
-               .format(experiment, variation)))
+    count = redisdb.redis_db.get(RECEIVERS_COUNT.format(experiment, variation))
+    return 0 if count is None else int(count)
 
 
 def get_success_count(experiment, variation):
-    return int(redisdb.redis_db.get(SUCCESS_COUNT
-               .format(experiment, variation)))
+    count = redisdb.redis_db.get(SUCCESS_COUNT.format(experiment, variation))
+    return 0 if count is None else int(count)
 
 
 def get_winner(experiment):

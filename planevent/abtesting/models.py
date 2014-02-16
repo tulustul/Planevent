@@ -1,7 +1,6 @@
 from sqlalchemy import (
     Column,
     Integer,
-    Float,
     Text,
     String,
     DateTime,
@@ -11,7 +10,7 @@ from sqlalchemy import (
 
 from sqlalchemy.orm import relationship
 
-from planevent.models import BaseEntity
+from planevent.core.sql import BaseEntity
 
 
 class Experiment(BaseEntity):
