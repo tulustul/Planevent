@@ -27,7 +27,15 @@
             <h1>Tu tytuł</h1>
         </a>
         <div ng-include="loggedUserView"></div>
-        <a id="addVendor" href="#/vendorAddEdit">Dodaj firmę</a><br /><br /><br />
+
+        <experiment id="addVendorExp">
+            <variation id="bsVar">
+                <a class="addVendorBtn btn btn-primary" href="#/vendorAddEdit" ng-click="abIncrement()">Dodaj firmę</a><br /><br /><br />
+            </variation>
+            <variation id="greenVar">
+                <a class="addVendorBtn addVendorGreen" href="#/vendorAddEdit" ng-click="abIncrement()">Dodaj firmę</a><br /><br /><br />
+            </variation>
+        </experiment>
     </header>
     <div id="container">
         <section class="content">

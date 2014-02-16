@@ -6,6 +6,7 @@ from pyramid.view import (
     view_config,
     view_defaults,
 )
+from pyramid.response import Response
 
 from planevent.decorators import param
 from planevent.views import View
@@ -139,15 +140,15 @@ class ExperimentIncrementView(View):
             return {'error': str(e)}
 
 
-@view_defaults(route_name='experiment_variation', renderer='json')
+@view_defaults(route_name='experiment_variation')
 class ExperimentVariationView(View):
 
     @view_config(request_method='GET')
     @param('name', str, required=True, rest=True)
     def get(self, name):
         try:
-            return ab_service.get_variation(name,
-                                            self.request.session.get('user_id'))
+            return Response(ab_service.get_variation(
+                            name, self.request.session.get('user_id')))
         except ab_service.ABExperimentError as e:
             self.request.response.status = 400
             return {'error': str(e)}

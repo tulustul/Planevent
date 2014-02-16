@@ -160,3 +160,28 @@ planevent.controller('ABTestingManagementController',
     $scope.getExperiments(null, true);
 
 });
+
+planevent.controller('ExperimentController',
+        function($scope, $http) {
+
+    $scope.setVariation = function(element, experiment, variation) {
+        var wrapper = element.children(),
+            childs = wrapper.children();
+        angular.forEach(childs, function(child) {
+            if (child.id !== variation) {
+                child.remove();
+            }
+        });
+
+        $scope.variation = variation;
+        $scope.experiment = experiment;
+
+        $(wrapper).show();
+    };
+
+    $scope.abIncrement = function() {
+        var url = '/api/experiment/' +
+            $scope.experiment + '/' + $scope.variation + '/increment';
+        $http.get(url);
+    };
+});
