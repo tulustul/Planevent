@@ -127,6 +127,8 @@ def activate(experiment_name):
         experiment.started_at = datetime.now()
     experiment.save()
 
+    return experiment
+
 
 def deactivate(experiment_name):
     def choose_winner(experiment):
@@ -154,7 +156,11 @@ def deactivate(experiment_name):
 
     keys = redisdb.redis_db.keys(EXPERIMENT_PATTERN
                                  .format(experiment_name) + '*')
-    redisdb.redis_db.delete(*keys)
+
+    if keys:
+        redisdb.redis_db.delete(*keys)
 
     redisdb.redis_db.set(WINNER.format(experiment_name),
                          experiment.winner_name)
+
+    return experiment

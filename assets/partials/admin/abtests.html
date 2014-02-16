@@ -37,9 +37,9 @@
                 <td data-title="'Konwersje'">{{variation.success_count}}</td>
                 <td data-title="'Sukces'">{{variation.success_count / (variation.receivers_count+1)}}</td>
                 <td>
-                    <button ng-click="removeVariation(editedExperiment, i)">Usuń</button>
-                    <button ng-if="!variation.$edit" ng-click="variation.$edit = true">Edytuj</button>
-                    <button ng-if="variation.$edit" ng-click="variation.$edit = false">Zapisz</button>
+                    <button class="btn" ng-click="removeVariation(editedExperiment, i)">Usuń</button>
+                    <button class="btn" ng-if="!variation.$edit" ng-click="variation.$edit = true">Edytuj</button>
+                    <button class="btn" ng-if="variation.$edit" ng-click="variation.$edit = false">Zapisz</button>
                 </td>
             </tr>
         </table>
@@ -49,11 +49,11 @@
     <table ng-table id="experiments-table" class="table">
 
         <tr ng-repeat="experiment in experiments" ng-click="editExperiment(experiment, $event)" ng-class="{'selected': experiment === editedExperiment}">
-            <td data-title="'Nazwa'">{{experiment.name}}</td>
-            <td data-title="'W przygotowaniu'">{{experiment.in_preparations}}</td>
-            <td data-title="'Rozpoczęty'">{{experiment.started_at}}</td>
-            <td data-title="'Zakończony'">{{experiment.ended_at}}</td>
-            <td data-title="'Aktywny'">{{experiment.active}}</td>
+            <td data-title="'Nazwa'" sortable="'name'">{{experiment.name}}</td>
+            <td data-title="'W przygotowaniu'" sortable="'in_preparations'">{{experiment.in_preparations}}</td>
+            <td data-title="'Rozpoczęty'" sortable="'experiment.started_at'">{{experiment.started_at}}</td>
+            <td data-title="'Zakończony'" sortable="'ended_at'">{{experiment.ended_at}}</td>
+            <td data-title="'Aktywny'" sortable="'active'">{{experiment.active}}</td>
             <td data-title="'Zwycięzca'">{{experiment.winner_name}}</td>
         </tr>
     </table>

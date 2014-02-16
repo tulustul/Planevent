@@ -640,20 +640,22 @@ $galleryHeigth: 500px;
             border-top: none;
         }
 
-        tr {
-            cursor: pointer;
+        tbody {
+            tr {
+                cursor: pointer;
 
-            &.selected {
-                background-color: #A4CCAC !important;
-            }
-            &:nth-child(even) {
-                background-color: #BBB;
-            }
-            &:nth-child(odd) {
-                background-color: #CCC;
-            }
-            &:hover {
-                background-color: #C9CCA4 !important;
+                &.selected {
+                    background-color: #A4CCAC !important;
+                }
+                &:nth-child(even) {
+                    background-color: #BBB;
+                }
+                &:nth-child(odd) {
+                    background-color: #CCC;
+                }
+                &:hover {
+                    background-color: #C9CCA4 !important;
+                }
             }
         }
 

@@ -105,8 +105,7 @@ class ActivateExperimentView(View):
     @param('name', str, required=True, rest=True)
     def get(self, name):
         try:
-            ab_service.activate(name)
-            return 'OK'
+            return ab_service.activate(name)
         except ab_service.ABExperimentError as e:
             self.request.response.status = 400
             return {'error': str(e)}
@@ -119,8 +118,7 @@ class DeactivateExperimentView(View):
     @param('name', str, required=True, rest=True)
     def get(self, name):
         try:
-            ab_service.deactivate(name)
-            return 'OK'
+            return ab_service.deactivate(name)
         except ab_service.ABExperimentError as e:
             self.request.response.status = 400
             return {'error': str(e)}
