@@ -9,8 +9,8 @@
 
     <table id="experiment-edition-temp" style="display:none">
     <tr id="ab-edition-form" ng-show="editedExperiment"><td colspan="6"><section id="ab-edition-form-section">
-        <div>Nazwa: <input type="text" ng-model="editedExperiment.name"></div><br />
-        <div>Opis: <input type="text" ng-model="editedExperiment.description"></div><br />
+        <label>Nazwa: <input type="text" ng-model="editedExperiment.name"></label>
+        <label>Opis: <input type="text" ng-model="editedExperiment.description"></label>
 
         <div class="btn-group">
             <button class="btn btn-primary" ng-click="activate(editedExperiment)" ng-show="!editedExperiment.active">Aktywuj</button>
@@ -21,6 +21,7 @@
 
         <table ng-table id="experiments-variations-table" class="table" ng-show="editedExperiment.variations.length > 0">
             <tr ng-repeat="(i, variation) in editedExperiment.variations">
+
                 <td data-title="'Nazwa'">
                     <span ng-if="!variation.$edit">{{variation.name}}</span>
                     <input ng-if="variation.$edit" type="text" ng-model="variation.name">
@@ -36,6 +37,7 @@
                 <td data-title="'Odbiorcy'">{{variation.receivers_count}}</td>
                 <td data-title="'Konwersje'">{{variation.success_count}}</td>
                 <td data-title="'Sukces'">{{variation.success_count / (variation.receivers_count+1)}}</td>
+
                 <td>
                     <button class="btn" ng-click="removeVariation(editedExperiment, i)">Usuń</button>
                     <button class="btn" ng-if="!variation.$edit" ng-click="variation.$edit = true">Edytuj</button>
@@ -50,7 +52,6 @@
 
         <tr ng-repeat="experiment in experiments" ng-click="editExperiment(experiment, $event)" ng-class="{'selected': experiment === editedExperiment}">
             <td data-title="'Nazwa'" sortable="'name'">{{experiment.name}}</td>
-            <td data-title="'W przygotowaniu'" sortable="'in_preparations'">{{experiment.in_preparations}}</td>
             <td data-title="'Rozpoczęty'" sortable="'experiment.started_at'">{{experiment.started_at}}</td>
             <td data-title="'Zakończony'" sortable="'ended_at'">{{experiment.ended_at}}</td>
             <td data-title="'Aktywny'" sortable="'active'">{{experiment.active}}</td>

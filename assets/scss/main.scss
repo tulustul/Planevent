@@ -13,11 +13,14 @@ $ligth: #EEE;
 
 $background: #BBB, #777, #777, #BBB;
 
-$greenGradient: rgb(130, 228, 84), rgb(219, 255, 174);
 $ligthGradient: #FFF, #EEE;
+$darkGradient: #CCC, #F0F0F0;
+$veryDarkGradient: #BBB, #999;
+
+$greenGradient: rgb(130, 228, 84), rgb(219, 255, 174);
+$greenYellowGradient: rgb(255, 245, 220), #779C78;
 $yellowGradient: white, rgb(255, 245, 220);
 $darkGreenGradient: #EEE, #779C78;
-$darkGradient: #F0F0F0, #CCC;
 
 $break-small: 320px;
 $break-medium: 600px;
@@ -636,7 +639,7 @@ $galleryHeigth: 500px;
         margin-top: 5px;
 
         thead tr {
-            background-color: #AAA !important;
+            @include gradient-background($veryDarkGradient);
         }
 
         td {
@@ -651,13 +654,13 @@ $galleryHeigth: 500px;
                     background-color: #A4CCAC !important;
                 }
                 &:nth-child(even) {
-                    background-color: #BBB;
+                    @include gradient-background($ligthGradient);
                 }
                 &:nth-child(odd) {
-                    background-color: #CCC;
+                    @include gradient-background($darkGradient);
                 }
                 &:hover {
-                    background-color: #C9CCA4 !important;
+                    @include gradient-background($yellowGradient);
                 }
             }
         }
@@ -668,7 +671,8 @@ $galleryHeigth: 500px;
             section {
                 margin: 0px 10px 10px 10px;
                 padding: 10px;
-                background: #A4CCAC;
+                @include gradient-background($greenYellowGradient);
+                box-shadow: inset 0px 2px 11px 0px #494949;
             }
 
             td {
