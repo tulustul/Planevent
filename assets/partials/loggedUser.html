@@ -1,10 +1,10 @@
 <div id="logging" ng-controller="AccountController">
     <div ng-show="loggedUser != undefined"</div>
         <a ng-click="goToProfile()">{{ loggedUser.name }}</a>
-        <a href="/logout" ng-click="logout()">Wyloguj</a>
+        <a class="login-icon fa fa-sign-out" href="/logout" ng-click="logout()"><span class="login-text">Wyloguj</span></a>
     </div>
     <span ng-show="loggedUser == undefined">
-        <a href="/login/google">Google</a>
-        <a href="/login/facebook">Facebook</a>
+        <a class="login-icon fa fa-google-plus" href="/login/google" />
+        <a class="login-icon fa fa-facebook" href="/login/facebook"/>
     </span>
 </div>

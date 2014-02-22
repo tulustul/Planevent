@@ -7,7 +7,7 @@ planevent.controller('MainPageController',
         $scope.categoriesView = 'assets/partials/categoriesView.html';
         $scope.vendorView = 'assets/partials/vendorView.html';
         $scope.searchForm = 'assets/partials/search.html';
-        $scope.loggedUsstatisticsViewerView = 'assets/partials/loggedUser.html';
+        $scope.loggedUserView = 'assets/partials/loggedUser.html';
 
         $scope.categories = globalsService.categories;
     }

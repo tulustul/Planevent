@@ -1,7 +1,10 @@
+@import "fontawesome/font-awesome.scss";
 @import "mixins.scss";
 @import "susy";
 @import "compass/css3/transition";
 @import "compass/css3/transform";
+
+// $fa-font-path:   "/static/font/";
 
 $total-columns  : 12;
 $column-width   : 10em;
@@ -709,5 +712,29 @@ $galleryHeigth: 500px;
 
 #logging {
     float: right;
-    margin: 19px;
+    margin-right: 20px;
+}
+
+$login-button-color: rgb(211, 25, 25);
+.login-icon {
+    font-size: 30px;
+    color: $login-button-color;
+    padding: 5px;
+    border: 2px solid $login-button-color;
+    border-radius: 8px;
+    min-width: 30px;
+    text-align: center;
+
+    &:hover {
+        @include transition(0.5s);
+        text-decoration: none;
+        background-color: $login-button-color;
+        color: white;
+    }
+
+    .login-text {
+        font-size: 15px;
+        display: table-cell;
+        vertical-align: middle;
+    }
 }
