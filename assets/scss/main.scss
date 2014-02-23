@@ -31,14 +31,11 @@ $break-bigger: 800px;
 $break-big: 1200px;
 $break-add-vendor: 450px;
 
-html {
-    font-family: 'Open Sans', arial,sans-serif;
-}
-
 body {
     @include gradient-background($background);
     background-repeat: no-repeat;
     background-attachment: fixed;
+    font-family: 'Open Sans', arial, sans-serif;
 }
 
 h1 {
@@ -714,7 +711,9 @@ $galleryHeigth: 500px;
     margin-right: 20px;
 }
 
-$login-button-color: rgb(211, 25, 25);
+$button-primary-color: rgb(211, 25, 25);
+$button-secondary-color: white;
+$button-background-color: rgba(255, 255, 255, 0);
 
 .button {
     display: inline-block;
@@ -723,9 +722,10 @@ $login-button-color: rgb(211, 25, 25);
         margin: 3px;
         cursor: pointer;
         font-size: 30px;
-        color: $login-button-color;
+        color: $button-primary-color;
+        background-color: $button-background-color;
         padding: 5px;
-        border: 2px solid $login-button-color;
+        border: 2px solid $button-primary-color;
         border-radius: 8px;
         min-width: 30px;
         text-align: center;
@@ -733,13 +733,13 @@ $login-button-color: rgb(211, 25, 25);
         &:hover {
             @include transition(0.5s);
             text-decoration: none;
-            background-color: $login-button-color;
-            color: white;
-
+            background-color: $button-primary-color;
+            color: $button-secondary-color;
         }
 
         .description {
             font-size: 15px;
+            font-family: 'Open Sans', arial, sans-serif;
         }
     }
 }
@@ -749,16 +749,19 @@ $login-button-color: rgb(211, 25, 25);
     vertical-align: middle;
 
     a {
+        padding: 8px 5px;
         &:hover {
+            padding: 0px 5px;
+
             .description {
                 @include transition(0.5s);
-                height: 17px;
+                height: 20px;
             }
         }
 
         .description {
             overflow: hidden;
-            color: white;
+            color: $button-secondary-color;
             height: 0px;
         }
     }
