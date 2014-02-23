@@ -8,7 +8,7 @@
 
 $total-columns  : 12;
 $column-width   : 10em;
-$gutter-width   : 0.5em;
+$gutter-width   : 0.2em;
 $grid-padding   : $gutter-width;
 
 $dark: #CCC;
@@ -402,14 +402,14 @@ section#categories {
     }
 
     .vendor-preview {
-        @include span-columns(5 omega, 10);
+        @include span-columns(2, 10);
 
         @media screen and (max-width: $break-big) {
-            @include span-columns(9 omega, 9);
+            @include span-columns(9, 9);
         }
 
         @media screen and (max-width: $break-bigger) {
-            @include span-columns(12 omega);
+            @include span-columns(12);
         }
     }
 
@@ -426,13 +426,16 @@ section#categories {
 }
 
 .vendor-preview {
-    height: 140px;
-    @include gradient-background($darkGradient);
-    border: 1px solid;
-    margin: 5px 0px;
-    padding: 0px 5px 0px 0px;
+    height: 280px;
+    background-color: white;
+    // @include gradient-background($darkGradient);
+    // border: 1px solid;
+    // margin: 5px 0px;
+    // padding: 0px 5px 0px 0px;
+    padding: 5px;
+    border-top: 4px solid #d31919;
     overflow: hidden;
-    position: relative;
+    // position: relative;
     cursor: pointer;
 
     @media screen and (max-width: $break-small) {
@@ -442,7 +445,12 @@ section#categories {
     }
 
     &:hover {
-        @include gradient-background($yellowGradient);
+        @include transition(0.5s);
+        // @include gradient-background($yellowGradient);
+        border-bottom: 6px solid #d31919;
+        @include transform(scale(1.1));
+        // @include transform(scale(1.1) rotateZ(1deg));
+        box-shadow: 0px 2px 11px 0px black;
     }
 
     &.ng-enter, &.ng-move {
