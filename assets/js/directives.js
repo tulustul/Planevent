@@ -270,3 +270,41 @@ planevent.directive('experiment', function($http) {
         }
     };
 });
+
+planevent.directive('pebutton', function() {
+    return {
+        restrict: 'EA',
+        scope: {
+            'watch': '&watch',
+        },
+        templateUrl: 'assets/partials/directives/button.html',
+
+        link: function(scope, element, attrs) {
+
+            function updateHref() {
+                if ('href' in attrs) {
+                    $('a', element).attr('href', attrs.href);
+                }
+            }
+
+            scope.class_ = '';
+
+            if ('buttonSlide' in attrs) {
+                scope.class_ += '-slide';
+            }
+
+            if ('textPosition' in attrs) {
+                scope.class_ += '-' + attrs.textPosition;
+            }
+
+            scope.icon = attrs.icon;
+            scope.text = attrs.text;
+
+            updateHref();
+
+            if ('watch' in attrs) {
+                scope.$watch(scope.watch, updateHref);
+            }
+        }
+    };
+});

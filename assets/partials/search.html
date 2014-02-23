@@ -1,5 +1,5 @@
 <div id="search-view" ng-controller="SearchController">
-    <button ng-click="toogleSearch()">?</button>
+    <pebutton icon="search" ng-click="toogleSearch()" />
 
     <div id="search-form" ng-show="formVisible">
         Kategoria: <select ng-model="category" ng-options="c.id as c.name for c in categories"></select><br />
@@ -12,6 +12,6 @@
 
         <addressViewer ng-model="location" radius="radius" scale-policy="radius-only" />
 
-        <button ng-click="search()">szukaj</button>
+        <pebutton icon="search" ng-click="search()" text-position="right" text="Szukaj" />
     </div>
 </div>

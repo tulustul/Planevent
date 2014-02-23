@@ -7,6 +7,10 @@ planevent.config(['$routeProvider',
         templateUrl: 'assets/partials/mainView.html',
         controller: 'MainPageController'
     })
+    .when('/playground', {
+        templateUrl: 'assets/partials/playground.html',
+        controller: 'MainPageController'
+    })
 
     .when('/about', {
         templateUrl: 'assets/partials/about.html',

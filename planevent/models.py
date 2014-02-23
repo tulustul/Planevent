@@ -122,6 +122,10 @@ class Subcategory(BaseEntity):
     color = Column(String(6), nullable=False)
     icon_path = Column(String(50))
     category_id = Column(Integer, ForeignKey('category.id'))
+    # TODO
+    # add optional automatic tags
+    # add optional automatic age restriction + bool if age restriction is
+    # validated (in vendor)
 
 
 class AccountLiking(BaseEntity):

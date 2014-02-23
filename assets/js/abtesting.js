@@ -1,5 +1,9 @@
 'use strict';
 
+// TODO
+// Choose random or first variation if server failed to give response.
+// Prevent incrementing variation then.
+
 planevent.service('abTestingService', function($resource) {
 
     this.Experiments = $resource('/api/experiments');
@@ -7,6 +11,8 @@ planevent.service('abTestingService', function($resource) {
     this.Deactivate = $resource('/api/experiment/:name/deactivate');
 
     this.saveABTest = function(abTest, callback) {
+        // TODO
+        // Repeated code. Abstract it.
         var experiment = this.Experiments.save(abTest,
             function() {
                 if (callback !== undefined) {

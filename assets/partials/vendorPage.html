@@ -2,9 +2,9 @@
 
 <div class="vendor-page">
     <div class="navigation">
-        <a href="#/vendors/{{ selectedCategoryId }}">Do listy</a>
-        <a href="#" ng-click="removeVendor()">Usuń</a>
-        <a href="#/vendorAddEdit/{{ vendor.id }}">Edytuj</a>
+        <pebutton icon="arrow-circle-o-left" href="#/vendors/{{ selectedCategory.id }}" text-position="right" text="Do listy" watch="vendor.id"/>
+        <pebutton icon="edit" href="#/vendorAddEdit/{{ vendor.id }}" text-position="right" text="Edytuj" watch="vendor.id" />
+        <pebutton icon="times" href="#" ng-click="removeVendor()" text-position="right" text="Usuń" />
     </div><br />
 
     <div id="vendor-view" ng-include="vendorView" ng-show="fetched"></div>

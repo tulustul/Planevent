@@ -55,7 +55,6 @@ a {
     @include border-box-sizing;
     margin-top: 85px;
     margin-bottom: 45px;
-    overflow: hidden;
 
     @media screen and (max-width: $break-medium) {
         margin-top: 0px;
@@ -367,7 +366,7 @@ section#categories {
     }
 
     .navigation {
-        a {
+        pebutton {
             padding: 0 10px;
             float: right;
 
@@ -716,25 +715,70 @@ $galleryHeigth: 500px;
 }
 
 $login-button-color: rgb(211, 25, 25);
-.login-icon {
-    font-size: 30px;
-    color: $login-button-color;
-    padding: 5px;
-    border: 2px solid $login-button-color;
-    border-radius: 8px;
-    min-width: 30px;
-    text-align: center;
 
-    &:hover {
-        @include transition(0.5s);
-        text-decoration: none;
-        background-color: $login-button-color;
-        color: white;
-    }
+.button {
+    display: inline-block;
 
-    .login-text {
-        font-size: 15px;
-        display: table-cell;
-        vertical-align: middle;
+    a {
+        margin: 3px;
+        cursor: pointer;
+        font-size: 30px;
+        color: $login-button-color;
+        padding: 5px;
+        border: 2px solid $login-button-color;
+        border-radius: 8px;
+        min-width: 30px;
+        text-align: center;
+
+        &:hover {
+            @include transition(0.5s);
+            text-decoration: none;
+            background-color: $login-button-color;
+            color: white;
+
+        }
+
+        .description {
+            font-size: 15px;
+        }
     }
+}
+
+%button-slide {
+    height: 64px;
+    vertical-align: middle;
+
+    a {
+        &:hover {
+            .description {
+                @include transition(0.5s);
+                height: 17px;
+            }
+        }
+
+        .description {
+            overflow: hidden;
+            color: white;
+            height: 0px;
+        }
+    }
+}
+
+.button-right {
+    @extend .button;
+
+    a {
+        display: table;
+
+        .description {
+            display: table-cell;
+            vertical-align: middle;
+            padding-left: 3px;
+        }
+    }
+}
+
+.button-slide {
+    @extend .button;
+    @extend %button-slide;
 }
