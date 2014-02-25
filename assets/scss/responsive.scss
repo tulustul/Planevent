@@ -1,0 +1,138 @@
+@import "globals.scss";
+
+#container {
+    @media screen and (max-width: $break-medium) {
+        margin-top: 0px;
+        padding-left: 0;
+        padding-right: 0;
+        margin-bottom: 5px;
+    }
+}
+
+header {
+    @media screen and (max-width: $break-medium) {
+        position: inherit;
+        width: auto;
+    }
+    h1 {
+        @media screen and (max-width: $break-add-vendor) {
+            float: none;
+        }
+    }
+    .addVendorGreen {
+        @media screen and (max-width: $break-add-vendor) {
+            display: block;
+            white-space: nowrap;
+        }
+    }
+}
+
+footer {
+    @media screen and (max-width: $break-medium) {
+        position: inherit;
+        width: auto;
+    }
+}
+
+.address-viewer {
+    @media screen and (max-width: $break-medium) {
+        width: 190px;
+        height: 190px;
+    }
+}
+
+
+#categories-view {
+    @media screen and (max-width: $break-big) {
+        @include span-columns(3);
+    }
+
+    @media screen and (max-width: $break-bigger) {
+        @include span-columns(12 omega);
+    }
+}
+
+.vendor-page {
+    @media screen and (max-width: $break-big) {
+        @include span-columns(9 omega);
+    }
+
+    @media screen and (max-width: $break-bigger) {
+        @include span-columns(12 omega);
+    }
+}
+
+.related-vendors {
+    @include span-columns(3 omega);
+
+    @media screen and (max-width: $break-big) {
+        @include span-columns(9 omega);
+    }
+
+    @media screen and (max-width: $break-bigger) {
+        @include span-columns(12 omega);
+    }
+}
+
+#vendor-list {
+    @media screen and (max-width: $break-big) {
+        @include span-columns(9 omega);
+    }
+
+    @media screen and (max-width: $break-bigger) {
+        @include span-columns(12 omega);
+    }
+
+    .vendor-preview-wrapper {
+        @media screen and (max-width: $break-big) {
+            @include span-columns(9, 9);
+        }
+
+        @media screen and (max-width: $break-bigger) {
+            @include span-columns(12);
+        }
+    }
+}
+
+article#create-edit {
+    #navigation {
+        li {
+            @media screen and (max-width: $break-medium) {
+                @include span-columns(1, 1);
+                margin: 0;
+                height: 35px;
+                padding-top: 6px;
+                font-weight: bold;
+                font-size: 20px;
+            }
+        }
+    }
+}
+
+section#categories {
+    .checkbox-list {
+        @media screen and (max-width: $break-bigger) {
+            display: block;
+        }
+    }
+    .full-list {
+        @media screen and (max-width: $break-bigger) {
+            display: none;
+        }
+    }
+}
+
+.vendor-preview-wrapper {
+    .vendor-preview {
+        @media screen and (max-width: $break-small) {
+            height: auto;
+            max-height: 300px;
+            text-align: center;
+        }
+        img {
+            @media screen and (max-width: $break-small) {
+                float: none;
+            }
+        }
+    }
+}

@@ -30,6 +30,9 @@ class Vendor(BaseEntity):
     added_at = Column(DateTime)
     updated_at = Column(DateTime)
     promotion = Column(Integer)
+    price_min = Column(Integer)
+    price_max = Column(Integer)
+    preview_image_url = Column(String(150))
 
     address_id = Column(Integer, ForeignKey('address.id'))
     logo_id = Column(Integer, ForeignKey('image.id'), nullable=True)

@@ -88,6 +88,12 @@ def create_test_vendor_tags(vendor, tags, quantity):
         vendor_tag.save()
 
 
+def get_random_preview_image():
+    path = 'static/images/test/preview/'
+    files = os.listdir(path)
+    return '/' + path + random.choice(files)
+
+
 def create_test_vendor(test_instances):
     vendor = models.Vendor()
     vendor.name = random.choice(testdata.vendors['names'])
@@ -97,6 +103,11 @@ def create_test_vendor(test_instances):
     vendor.promotion = random.randrange(1000)
     vendor.address = create_test_address()
     vendor.logo = create_test_logo()
+    if random.random() < 0.9:
+        vendor.price_min = random.randrange(1, 9) * 10**random.randrange(1, 3)
+        if random.random() < 0.7:
+            vendor.price_max = vendor.price_min * random.randrange(2, 4)
+    vendor.preview_image_url = get_random_preview_image()
     create_test_contacts(vendor, random.randrange(6))
     create_test_gallery(vendor, random.randrange(10))
     vendor.save()

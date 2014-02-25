@@ -1,0 +1,251 @@
+@import "globals.scss";
+
+$create-edit-navigation-height: 41px;
+article#create-edit {
+    background: $ligth;
+    border: 1px solid;
+
+    section {
+
+        &.ng-leave {
+            @include transition(0.5s);
+            opacity: 1;
+        }
+
+        &.ng-enter {
+            @include transition(0.5s);
+            @include transition-delay(0.5s);
+            opacity: 0;
+        }
+
+        &.ng-leave-active {
+            opacity: 0;
+        }
+
+        &.ng-enter-active {
+            opacity: 1;
+        }
+
+        #address-form {
+
+            #address-incorrect {
+                color: red;
+            }
+
+            #address-correct {
+                color: green;
+            }
+
+            #validating-address {
+                color: gray;
+            }
+        }
+    }
+
+    #navigation {
+        height: $create-edit-navigation-height;
+        width: 100%;
+        display: table;
+        border-spacing: 7px 0px;
+        margin-bottom: 10px;
+        padding-top: 5px;
+        li {
+            @include span-columns(1, 6);
+            float: none;
+            margin: 11px;
+            padding: 0px;
+            @include gradient-background($darkGradient);
+            cursor: pointer;
+            vertical-align: middle;
+            display: table-cell;
+            text-align: center;
+            height: $create-edit-navigation-height;
+            border: 1px solid;
+            border-bottom: none;
+            &:hover {
+                @include gradient-background($yellowGradient);
+            }
+            &.selected {
+                @include gradient-background($ligthGradient);
+            }
+        }
+    }
+}
+
+section#categories {
+    .checkbox-list {
+        display: none;
+    }
+    .full-list {
+        li {
+            float: left;
+            margin-right: 10px;
+            margin-bottom: 5px;
+            width: 55px;
+            @include gradient-background($darkGradient);
+            cursor: pointer;
+            list-style: none;
+            &:hover {
+                @include gradient-background($yellowGradient);
+            }
+            &.selected {
+                @include gradient-background($darkGreenGradient);
+            }
+            img {
+                height: 40px;
+                margin-left: 9px;
+                margin-top: 2px;
+            }
+            h6 {
+                text-align: center;
+                font-size: 10px;
+                margin: 0px;
+            }
+        }
+    }
+}
+
+#categories-view {
+    @include span-columns(2);
+    #categories {
+        select {
+            width: 100%;
+        }
+        li {
+            width: 100%;
+            img {
+                float: left;
+            }
+            h6 {
+                font-size: 20px;
+                margin: 10px;
+            }
+        }
+    }
+}
+
+.vendor-page {
+    background: $ligth;
+    border: 1px solid;
+    padding: 10px;
+    width: 100%;
+    @include span-columns(7);
+    .navigation {
+        pebutton {
+            padding: 0 10px;
+            float: right;
+
+            &:first-child {
+                float: left;
+            }
+        }
+    }
+}
+
+.related-vendors {
+    @include span-columns(3 omega);
+}
+
+#vendor {
+    padding: 10px;
+}
+
+#vendor-list {
+    @include span-columns(10 omega);
+    .vendor-preview-wrapper {
+        @include span-columns(2, 12);
+    }
+    .loading-message {
+        @include span-columns(12 omega);
+        text-align: center;
+        span {
+            font-size: 40px;
+            line-height: 60px;
+            color: white;
+        }
+    }
+}
+
+.vendor-preview-wrapper {
+    height: 350px;
+    position: relative;
+    .vendor-preview {
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        cursor: pointer;
+        box-shadow: 0 0 5px black;
+        border-top: 4px solid #d31919;
+        .content-wrapper {
+            position: absolute;
+            bottom: 0px;
+            height: 95px;
+            padding: 5px;
+            width: 100%;
+            background-color: white;
+            .content {
+                position: absolute;
+                bottom: 0px;
+                h2 {
+                    font-size: 22px;
+                    overflow: hidden;
+                    padding: 0px;
+                    margin: 0px;
+                }
+                h3 {
+                    font-size: 16px;
+                    margin-top: -18px;
+                    padding: 0px;
+                }
+            }
+        }
+        img {
+            width: 100%;
+            float: left;
+        }
+    }
+    .back {
+        .vendor-preview {
+            .overlay-dark {
+                position: absolute;
+                top: 4px;
+                background-color: rgba(0, 0, 0, 0.7);
+                width: 100%;
+                height: 341px;
+            }
+            .flipped {
+                position: absolute;
+                top: 4px;
+                // @include rotateY(180deg);
+                // @include backface-visibility(visible);
+            }
+            p {
+                position: absolute;
+                top: 4px;
+                color: white;
+                padding: 5px;
+            }
+        }
+    }
+}
+
+#search-view {
+    background: $dark;
+}
+
+#user-profile {
+    $column-width: 3em;
+    @include container;
+    @include border-box-sizing;
+    max-width: 500px;
+    margin: 0 auto;
+    margin-top: 10px;
+    border: 1px #999 solid;
+    background-color: $ligth;
+    padding: 15px;
+}
+
+#logging {
+    float: right;
+    margin-right: 20px;
+}

@@ -1,0 +1,99 @@
+@import "globals.scss";
+
+body {
+    background-image: url("/static/images/backgrounds/squared_metal.png");
+    font-family: 'Open Sans', arial, sans-serif;
+}
+
+h1 {
+    margin: 0px;
+}
+
+a {
+    color: #444;
+}
+
+#container {
+    @include container;
+    @include border-box-sizing;
+    margin-top: 85px;
+    margin-bottom: 45px;
+    .content {
+        #view {
+            position: relative;
+            margin-top: 6px;
+            &.ng-leave {
+                @include transition(0.5s);
+                left: 0;
+            }
+            &.ng-enter {
+                @include transition(0.5s);
+                @include transition-delay(0.5s);
+                left: -100%;
+            }
+            &.ng-leave-active {
+                left: 100%;
+            }
+            &.ng-enter-active {
+                left: 0;
+            }
+        }
+    }
+}
+
+header {
+    clear: both;
+    background-color: $ligth;
+    padding: 10px;
+    position: fixed;
+    top: 0px;
+    z-index: 1;
+    box-shadow: 0px 0px 10px #383838;
+    width: 100%;
+    img {
+        float: left;
+        height: 60px;
+    }
+    h1 {
+        float: left;
+        margin-top: 7px;
+    }
+    .addVendorBtn {
+        position: relative;
+        float: right;
+        margin-right: 40px;
+    }
+    .addVendorGreen {
+        @include gradient-background($greenGradient);
+        font-size: 19px;
+        color: rgb(97, 173, 255);
+        padding: 10px 30px;
+        top: 10px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 6px #888;
+        width: 125px;
+        text-align: center;
+        &:hover {
+            @include gradient-background($yellowGradient);
+            text-decoration: none;
+        }
+    }
+}
+
+footer {
+    clear: both;
+    background-color: $dark;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0px 0px 10px #383838;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    a {
+        padding: 0 45px;
+    }
+}
+
+.address-viewer {
+    height: 300px;
+}

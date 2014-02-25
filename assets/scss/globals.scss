@@ -1,0 +1,30 @@
+@import "susy";
+@import "compass/css3/transition";
+@import "compass/css3/transform";
+
+@import "mixins.scss";
+
+$total-columns  : 12;
+$column-width   : 18em;
+$gutter-width   : 0.2em;
+$grid-padding   : $gutter-width;
+
+$dark: #CCC;
+$ligth: #EEE;
+
+$background: #BBB, #777, #777, #BBB;
+
+$ligthGradient: #FFF, #EEE;
+$darkGradient: #CCC, #F0F0F0;
+$veryDarkGradient: #BBB, #999;
+
+$greenGradient: rgb(130, 228, 84), rgb(219, 255, 174);
+$greenYellowGradient: rgb(255, 245, 220), #779C78;
+$yellowGradient: white, rgb(255, 245, 220);
+$darkGreenGradient: #EEE, #779C78;
+
+$break-small: 320px;
+$break-medium: 600px;
+$break-bigger: 800px;
+$break-big: 1200px;
+$break-add-vendor: 450px;
