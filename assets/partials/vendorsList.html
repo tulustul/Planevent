@@ -9,17 +9,17 @@
                 <div class="front">
                     <div class="vendor-preview">
                         <img ng-src="{{ vendor.preview_image_url }}" alt="vendor logo">
-                        <div class="content-wrapper">
-                            <div class="content">
-                                <h2>{{ vendor.name }}</h2>
-                                <h3>{{ vendor.address.city }}</h3>
-                                <p ng-show="vendor.price_min">
-                                    {{ vendor.price_min }} zł
-                                    <span ng-show="vendor.price_max">
-                                        - {{ vendor.price_max }} zł
-                                    </span>
-                                </p>
-                            </div>
+                        <div class="content top">
+                            <span class="name">{{ vendor.name }}</span>
+                        </div>
+                        <div class="content bottom">
+                            <span class="city">{{ vendor.address.city }}</span>
+                            <span class="price" ng-show="vendor.price_min">
+                                {{ vendor.price_min }} zł
+                                <span ng-show="vendor.price_max">
+                                    - {{ vendor.price_max }} zł
+                                </span>
+                            </span>
                         </div>
                     </div>
                 </div>

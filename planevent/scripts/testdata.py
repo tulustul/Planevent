@@ -173,10 +173,40 @@ vendors = {
         'E.Leclerc Polska',
     ],
     'descriptions': [
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, dicta, "
-        "quasi itaque ullam in quo architecto molestias non pariatur reiciendis"
-        " fugaepe sint minus. Magni vero eius modi dolore deleniti.",
-        'ashdjhas jkdh ajkhsd jkahsd kj',
+        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, dicta, '
+        'quasi itaque ullam in quo architecto molestias non pariatur reiciendis'
+        ' fugaepe sint minus. Magni vero eius modi dolore deleniti.',
+
+        'Miejski Ogród Zoologiczny został założony w 1928 roku. Na powierzchni '
+        '40 ha eksponowanych jest około 5000 zwierząt należących do 500'
+        ' gatunków. Są wśród nich zarówno zwierzęta żyjące w Polsce, jak wydry,'
+        ' niedźwiedzie brunatne, czy bociany, ale też liczne okazy egzotyczne –'
+        ' słonie afrykańskie, żyrafy Rothschilda, nosorożce indyjskie, gibbony,'
+        ' różne gatunki ptaków, gadów i tropikalnych ryb. Większość zwierząt '
+        'można oglądać na wybiegach, a zimą – wewnątrz obiektów. Ptaki można'
+        ' spotkać na terenie całego ZOO. Mieszkają na stawach i w wolierach,'
+        ' ale najwięcej z nich - w ptaszarni, której częścią jest jedyna w'
+        ' Polsce Hala Wolnych Lotów. Najnowszym obiektem jest nowoczesny '
+        'pawilon dla małp człekokształtnych (otwarty we wrześniu 2008); '
+        'mieszka w nim stado szympansów i dwa młode samce goryla. Można je'
+        ' obserwować na dużych, otoczonych wodą wybiegach zewnętrznych, lub'
+        ' na równie dużych wybiegach wewnętrznych – przez szybę. Wszystkie'
+        ' nowe pawilony są przystosowane dla osób niepełnosprawnych. Na terenie'
+        ' ZOO znajduje się kilka punktów gastronomicznych, a także sklepiki z'
+        ' pamiątkami (jeden z nich, prowadzony przez Fundację Panda, mieści'
+        ' się w najstarszym obiekcie w ZOO – pochodzącej z 1928 roku'
+        ' „Chacie pod Strzechą”).',
+
+        'QUADY<br />'
+        'W WARSZAWIE ??? – teraz już tak:<br />'
+        '-położony 25 km od Warszawy (Błonie) – przynowej autostradzie A2<br />'
+        '-powierzchnia 2 ha (4 trasy o zróżnicowanym stopniu trudności)<br />'
+        '-wypożyczalnia markowych quadów Honda trx250 automat i Yamaha Bruin '
+        '350 automat<br />'
+        '-oferta dla dzieci<br />'
+        '-organizujemy imprezy firmowe<br />'
+        '-wieczory kawalerskie i panieńskie<br />'
+        '-Quad Kupon – prezent dla najbliższych'
     ],
 }
 

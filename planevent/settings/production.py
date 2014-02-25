@@ -13,7 +13,7 @@ INI_FILE = 'production.ini'
 
 APP_URL = 'http://planevent-tul.rhcloud.com'
 
-TEST_INSTANCES = 3000
+TEST_INSTANCES = 1000
 
 REDIS = {
     'URL': '127.10.51.3',
