@@ -36,7 +36,7 @@ planevent.controller('CategoriesController',
 planevent.controller('VendorListController',
         function($scope, $location, $routeParams, $rootScope, searchService) {
 
-    var LIMIT = 15;
+    var LIMIT = 25;
 
     searchService.resetParams();
     searchService.params.category = $routeParams.categoryId;
@@ -197,6 +197,7 @@ planevent.controller('AdminPageController',
     $scope.subcategoriesView = 'assets/partials/admin/subcategories.html';
     $scope.statisticsView = 'assets/partials/admin/statistics.html';
     $scope.abTestsView = 'assets/partials/admin/abtests.html';
+    $scope.databaseView = 'assets/partials/admin/database.html';
 
     var Vendor = $resource('/api/vendor/:id');
     var VendorPromotion = $resource('/api/vendor/:id/promotion/:promotion',
@@ -401,4 +402,53 @@ planevent.controller('FirstLoggingController',
             $location.path('/userProfile');
         }
     });
+});
+
+planevent.controller('DatabaseManagementController',
+        function($scope, $http) {
+
+    $scope.updateSchema = function() {
+        $scope.resetMessages();
+        $http.post('/api/database/update')
+            .success(function(msg) {
+                    $scope.addSuccess(msg);
+                })
+            .error(function(msg) {
+                    $scope.addDanger(msg);
+                }
+            );
+    };
+
+    $scope.clearDatabase = function() {
+        $scope.resetMessages();
+        $http.post('/api/database/clear')
+            .success(function(msg) {
+                    $scope.addSuccess(msg);
+                })
+            .error(function(msg) {
+                    $scope.addDanger(msg);
+                }
+            );
+    };
+
+    $scope.generateRandomData = function(quantity) {
+        var iquantity = parseInt(quantity);
+
+        $scope.resetMessages();
+
+        if (isNaN(iquantity)) {
+            $scope.addDanger('Incorrect quantity: ' + quantity);
+            return;
+        }
+
+        $http.post('/api/database/generate', iquantity)
+            .success(function(msg) {
+                    $scope.addSuccess(msg);
+                })
+            .error(function(msg) {
+                    $scope.addDanger(msg);
+                }
+            );
+    };
+
 });

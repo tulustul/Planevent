@@ -224,7 +224,7 @@ $vendor-preview-bottom-border: 6px;
                 .overlay-dark {
                     position: absolute;
                     top: $vendor-preview-top-border;
-                    background-color: rgba(0, 0, 0, 0.7);
+                    background-color: rgba(0, 0, 0, 0.8);
                     width: 100%;
                     height: $vendor-preview-height - $vendor-preview-top-border - $vendor-preview-bottom-border + 1;
                 }

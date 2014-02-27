@@ -33,6 +33,7 @@ class Vendor(BaseEntity):
     price_min = Column(Integer)
     price_max = Column(Integer)
     preview_image_url = Column(String(150))
+    to_complete = Column(Boolean)
 
     address_id = Column(Integer, ForeignKey('address.id'))
     logo_id = Column(Integer, ForeignKey('image.id'), nullable=True)

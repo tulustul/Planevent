@@ -40,6 +40,9 @@
             <tab heading="Testy A/B">
                 <div ng-include="abTestsView"></div>
             </tab>
+            <tab heading="Database">
+                <div ng-include="databaseView"></div>
+            </tab>
         </tabset>
     </section>
 </body>

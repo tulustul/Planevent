@@ -6,6 +6,7 @@ from pyramid.view import (
     view_defaults,
 )
 
+import planevent
 from planevent import (
     models,
     cache,
@@ -227,7 +228,6 @@ class TagsView(View):
         return query.all()
 
     @view_config(request_method='POST')
-    @param('tag_name', str, body=True, required=True)
     def post(self, tag_name):
         tag = models.Tag.query() \
             .filter(models.Tag.name == tag_name).first()
@@ -299,3 +299,52 @@ class SubcategoriesView(View):
         subcategories = models.Subcategory.query().all()
         cache.set((SUBCATEGORIES_KEY), subcategories)
         return subcategories
+
+
+@view_defaults(route_name='csv_migration', renderer='json')
+class CSVMigrationView(View):
+
+    @view_config(request_method='GET')
+    def export(self):
+        pass
+
+    @view_config(request_method='POST')
+    def import_(self):
+        pass
+
+
+@view_defaults(route_name='update_schema', renderer='json')
+class UpdateSchemaView(View):
+
+    @view_config(request_method='POST')
+    def post(self):
+        sql.Base.metadata.create_all(planevent.sql_engine)
+        return 'Database schema updated'
+
+
+@view_defaults(route_name='clear_database', renderer='json')
+class ClearDatabaseView(View):
+
+    @view_config(request_method='POST')
+    def post(self):
+        sql.Base.metadata.drop_all(planevent.sql_engine)
+        sql.Base.metadata.create_all(planevent.sql_engine)
+        return 'Database cleared'
+
+
+@view_defaults(route_name='generate_random_instance', renderer='json')
+class GenerateRandomInstancesView(View):
+
+    @view_config(request_method='POST')
+    @param('quantity', int, body=True)
+    def post(self, quantity):
+        planevent.scripts.initializedb.create_test_instances(quantity)
+        return 'Random data generated'
+
+
+@view_defaults(route_name='list_incomplete', renderer='json')
+class ListIncompleteView(View):
+
+    @view_config(request_method='GET')
+    def get(self):
+        pass

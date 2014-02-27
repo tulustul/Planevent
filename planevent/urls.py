@@ -21,10 +21,18 @@ urls = [
     ('categories', '/api/categories'),
     ('subcategories', '/api/subcategories'),
 
-    #A/B experiments
+    # A/B experiments
     ('experiments', '/api/experiments'),
     ('activate_experiment', '/api/experiment/{name}/activate'),
     ('deactivate_experiment', '/api/experiment/{name}/deactivate'),
     ('experiment_variation', '/api/experiment/{name}/variation'),
     ('experiment_increment', '/api/experiment/{name}/{variation}/increment'),
+
+    # database management
+    ('csv_migration', '/api/database/migration/csv'),
+    ('update_schema', '/api/database/update'),
+    # dev only - disable on production
+    ('clear_database', '/api/database/clear'),
+    ('generate_random_instance', '/api/database/generate'),
+    ('list_incomplete', '/api/database/incomplete'),
 ]

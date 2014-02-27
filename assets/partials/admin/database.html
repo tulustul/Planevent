@@ -1,0 +1,9 @@
+<div ng-controller="DatabaseManagementController">
+    <button class="btn btn-primary" ng-click="">Import CSV</button>
+    <button class="btn btn-primary" ng-click="">Export CSV</button>
+    <button class="btn btn-primary" ng-click="updateSchema()">Update schema</button>
+    <button class="btn btn-primary" ng-click="">List incomplete vendors</button>
+    <button class="btn btn-primary" ng-click="clearDatabase()">Clear database (dev only)</button>
+    <button class="btn btn-primary" ng-click="generateRandomData(quantity)">Generate random instances (dev only)</button>
+    <input type="text" placeholder="How much to generate" ng-model="quantity">
+</div>
