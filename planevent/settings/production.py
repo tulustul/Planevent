@@ -24,4 +24,4 @@ REDIS = {
     'PASSWORD': 'ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5',
 }
 
-PIWIK_URL = 'http://piwik-tul.rhcloud.com/'
+PIWIK_URL = 'piwik-tul.rhcloud.com/'
