@@ -38,7 +38,7 @@ def home_view(request):
     return {'PIWIK_URL': settings.PIWIK_URL}
 
 
-@view_config(route_name='admin', renderer='../templates/admin.pt')
+@view_config(route_name='admin', renderer='../templates/admin.jinja2')
 def admin_view(request):
     return {}
 
