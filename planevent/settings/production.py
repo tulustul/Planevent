@@ -23,3 +23,5 @@ REDIS = {
     'CELERY_DB': 2,
     'PASSWORD': 'ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5',
 }
+
+PIWIK_URL = 'http://piwik-tul.rhcloud.com/'

@@ -19,6 +19,7 @@ from planevent.decorators import (
 from planevent.services import geocode_location
 from planevent.core import sql
 from planevent import auth
+from planevent import settings
 
 
 VENDOR_KEY = 'vendor:{}'
@@ -32,9 +33,9 @@ class View(object):
         self.request = request
 
 
-@view_config(route_name='home', renderer='../templates/index.pt')
+@view_config(route_name='home', renderer='../templates/index.jinja2')
 def home_view(request):
-    return {}
+    return {'PIWIK_URL': settings.PIWIK_URL}
 
 
 @view_config(route_name='admin', renderer='../templates/admin.pt')

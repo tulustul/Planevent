@@ -47,9 +47,6 @@ def main(global_config, **settings):
     json_renderer.add_adapter(datetime.datetime, datetime_adapter)
     config.add_renderer('json', json_renderer)
 
-    config.include('pyramid_chameleon')
-    config.include('pyramid_beaker')
-
     config.add_static_view('static', '../static', cache_max_age=3600)
 
     for url_config in urls:
