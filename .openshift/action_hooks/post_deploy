@@ -1,1 +1,1 @@
-uwsgi production.ini
+uwsgi ${OPENSHIFT_REPO_DIR}production.ini
