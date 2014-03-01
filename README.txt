@@ -15,7 +15,8 @@ Getting Started
 - npm install
 
 To run app
-- pserve development.ini --reload
+# - pserve development.ini --reload
+- uwsgi development.ini
 
 To run tests
 - nosetests

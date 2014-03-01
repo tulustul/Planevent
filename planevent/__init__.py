@@ -29,7 +29,7 @@ def createSQLConnection(settings):
         sql.Base.metadata.bind = sql_engine
 
 
-def main(global_config, **settings):
+def main(global_config, *args_, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     createSQLConnection(get_appsettings(app_settings.INI_FILE))
