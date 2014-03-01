@@ -35,4 +35,7 @@ urls = [
     ('clear_database', '/api/database/clear'),
     ('generate_random_instance', '/api/database/generate'),
     ('list_incomplete', '/api/database/incomplete'),
+
+    # misc
+    ('task_progress', '/api/task/{id}/progress'),
 ]

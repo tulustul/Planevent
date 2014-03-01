@@ -23,6 +23,7 @@ from planevent import (
     settings,
     tasks,
 )
+from planevent.redisdb import redis_db
 
 
 VENDOR_KEY = 'vendor:{}'
@@ -333,6 +334,7 @@ class ClearDatabaseView(View):
     def post(self):
         sql.Base.metadata.drop_all(planevent.sql_engine)
         sql.Base.metadata.create_all(planevent.sql_engine)
+        redis_db.flushall()
         return 'Database cleared'
 
 
@@ -342,16 +344,14 @@ class GenerateRandomInstancesView(View):
     @view_config(request_method='POST')
     @param('quantity', int, body=True)
     def post(self, quantity):
-        # planevent.scripts.initializedb.create_test_instances(quantity)
-        # tasks.generate_random_tasks.spool()
-        # tasks.generate_random_tasks.spool({
-        #     bytes('quantity', 'utf8'): bytes(str(quantity), 'utf8')
-        # })
+        progress_counter = tasks.TaskProgressCounter()
 
-        tasks.generate_random_tasks(quantity)
-        # tasks.send_welcome_email(account=models.Account.get(2))
+        tasks.generate_random_tasks(quantity, progress_counter)
 
-        return 'Random data generation started'
+        return {
+            'message': 'Random data generation started',
+            'progress_counter': progress_counter.id,
+        }
 
 
 @view_defaults(route_name='list_incomplete', renderer='json')
@@ -360,3 +360,24 @@ class ListIncompleteView(View):
     @view_config(request_method='GET')
     def get(self):
         pass
+
+
+@view_defaults(route_name='task_progress', renderer='json')
+class TaskProgressView(View):
+
+    @view_config(request_method='GET')
+    @param('id', int, rest=True)
+    def get(self, id):
+        try:
+            progress, max_ = tasks.TaskProgressCounter.get_progress(id)
+        except ValueError as e:
+            self.request.response.status = 404
+            return {
+                'error': str(e)
+            }
+        else:
+            return {
+                'id': id,
+                'progress': progress,
+                'max': max_,
+            }

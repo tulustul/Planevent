@@ -16,6 +16,7 @@ from planevent import settings as app_settings
 
 os.environ['DEBUG'] = '1'
 
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger('planevent')
 
 sql_engine = None

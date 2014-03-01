@@ -405,7 +405,9 @@ planevent.controller('FirstLoggingController',
 });
 
 planevent.controller('DatabaseManagementController',
-        function($scope, $http) {
+        function($scope, $http, $timeout) {
+
+    $scope.progress = 0;
 
     $scope.updateSchema = function() {
         $scope.resetMessages();
@@ -442,8 +444,21 @@ planevent.controller('DatabaseManagementController',
         }
 
         $http.post('/api/database/generate', iquantity)
-            .success(function(msg) {
-                    $scope.addSuccess(msg);
+            .success(function(response) {
+                    var progressCounter = response.progress_counter;
+                    $scope.addSuccess(response.message);
+
+                    (function progress() {
+                        $http.get('api/task/' + progressCounter + '/progress')
+                            .success(function(response) {
+                                $scope.progress =
+                                    ((response.progress / response.max) * 100)
+                                     .toFixed(1);
+                                if (response.max > response.progress) {
+                                    $timeout(progress, 1000);
+                                }
+                            });
+                    })();
                 })
             .error(function(msg) {
                     $scope.addDanger(msg);

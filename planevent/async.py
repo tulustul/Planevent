@@ -8,6 +8,7 @@ import uwsgi
 from planevent import (
     createSQLConnection,
     settings,
+    redisdb,
 )
 
 
@@ -20,6 +21,7 @@ def _bytes(obj):
 
 def spool_function_wrapper(fun, *args, **kwargs):
     try:
+        redisdb.createConnections()
         createSQLConnection(get_appsettings(settings.INI_FILE))
         with transaction.manager:
             fun(*args, **kwargs)

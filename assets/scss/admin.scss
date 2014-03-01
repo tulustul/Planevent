@@ -1,7 +1,7 @@
 @import "globals.scss";
 
 #admin-panel {
-    $column-width: 3em;
+    $column-width: 4em;
     @include container;
     @include border-box-sizing;
     max-width: 1000px;
