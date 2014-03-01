@@ -1,1 +1,2 @@
+cd ${OPENSHIFT_REPO_DIR}
 uwsgi ${OPENSHIFT_REPO_DIR}production.ini
