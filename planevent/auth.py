@@ -127,6 +127,6 @@ def process_user(provider, provider_user):
     account.save()
 
     if is_new:
-        tasks.send_welcome_email.delay(account)
+        tasks.send_welcome_email(account)
 
     return account, is_new

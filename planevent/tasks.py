@@ -1,28 +1,16 @@
-from celery import Celery
-
-from pyramid.paster import get_appsettings
-
 from planevent import (
     models,
     mailing,
     settings,
-    createSQLConnection,
 )
-
-broker_url = 'redis://:{0}@{1}:{2}/{3}'.format(
-    settings.REDIS['PASSWORD'],
-    settings.REDIS['URL'],
-    settings.REDIS['PORT'],
-    settings.REDIS['CELERY_DB'],
+from planevent.async import (
+    async,
+    cron,
 )
-
-celery = Celery('tasks', broker=broker_url)
-
-# TODO celery beat opens unnecessary connection here
-# createSQLConnection(get_appsettings(settings.INI_FILE))
+from planevent.scripts.initializedb import create_test_instances
 
 
-@celery.task
+@async
 def send_welcome_email(account):
     mailing.send(
         template='welcome',
@@ -33,8 +21,8 @@ def send_welcome_email(account):
     )
 
 
-@celery.task
-def send_recomendations_emails():
+@cron(1, 1, -1, -1, -1)
+def send_recomendations_emails(num):
     accounts = models.Account().all()
 
     for account in accounts:
@@ -44,3 +32,8 @@ def send_recomendations_emails():
             subject='Planevent - dzisiejsze rekomendacje',
             account=account,
         )
+
+
+@async
+def generate_random_tasks(quantity):
+    create_test_instances(quantity)

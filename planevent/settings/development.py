@@ -1,14 +1,3 @@
-from celery.schedules import crontab
-
-CELERY_TIMEZONE = 'Europe/Warsaw'
-
-CELERYBEAT_SCHEDULE = {
-    'send_recomendations_emails': {
-        'task': 'planevent.tasks.send_recomendations_emails',
-        'schedule': crontab(minute=0, hour=2),
-    },
-}
-
 INI_FILE = 'development.ini'
 
 APP_URL = 'http://localhost:8080'
@@ -20,6 +9,5 @@ REDIS = {
     'PORT': 6379,
     'CACHE_DB': 0,
     'DB': 1,
-    'CELERY_DB': 2,
     'PASSWORD': '',
 }

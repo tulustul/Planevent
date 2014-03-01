@@ -18,8 +18,11 @@ from planevent.decorators import (
 )
 from planevent.services import geocode_location
 from planevent.core import sql
-from planevent import auth
-from planevent import settings
+from planevent import (
+    auth,
+    settings,
+    tasks,
+)
 
 
 VENDOR_KEY = 'vendor:{}'
@@ -339,8 +342,16 @@ class GenerateRandomInstancesView(View):
     @view_config(request_method='POST')
     @param('quantity', int, body=True)
     def post(self, quantity):
-        planevent.scripts.initializedb.create_test_instances(quantity)
-        return 'Random data generated'
+        # planevent.scripts.initializedb.create_test_instances(quantity)
+        # tasks.generate_random_tasks.spool()
+        # tasks.generate_random_tasks.spool({
+        #     bytes('quantity', 'utf8'): bytes(str(quantity), 'utf8')
+        # })
+
+        tasks.generate_random_tasks(quantity)
+        # tasks.send_welcome_email(account=models.Account.get(2))
+
+        return 'Random data generation started'
 
 
 @view_defaults(route_name='list_incomplete', renderer='json')

@@ -26,8 +26,6 @@ requires = [
     'requests_oauthlib',
     'jinja2',
     'uwsgi',
-    # 'celery',
-    # 'celery[redis]',
 ]
 
 setup(name='planevent',
