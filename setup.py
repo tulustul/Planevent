@@ -26,6 +26,7 @@ requires = [
     'requests_oauthlib',
     'jinja2',
     'uwsgi',
+    'gspread',
 ]
 
 setup(name='planevent',

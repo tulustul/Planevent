@@ -29,7 +29,7 @@ urls = [
     ('experiment_increment', '/api/experiment/{name}/{variation}/increment'),
 
     # database management
-    ('csv_migration', '/api/database/migration/csv'),
+    ('migration', '/api/database/migration'),
     ('update_schema', '/api/database/update'),
     # dev only - disable on production
     ('clear_database', '/api/database/clear'),
@@ -38,4 +38,5 @@ urls = [
 
     # misc
     ('task_progress', '/api/task/{id}/progress'),
+    ('task_cancel', '/api/task/{id}/cancel'),
 ]

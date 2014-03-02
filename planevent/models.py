@@ -47,6 +47,26 @@ class Vendor(BaseEntity):
                         secondary=VendorTag.__table__,
                         cascade="delete, all")
 
+    def export_dict(self):
+        return {
+            'name': self.name,
+            'description': self.description,
+            'category': self.category.name,
+            'added_at': self.added_at,
+            'updated_at': self.updated_at,
+            'promotion': self.promotion,
+            'price_min': self.price_min,
+            'price_max': self.price_max,
+            'to_complete': self.to_complete,
+            'city': self.address.city,
+            'street': self.address.street,
+            'postal_code': self.address.postal_code,
+            'contacts': '\n'.join([
+                '{}: {} [{}]'.format(c.type, c.value, c.description)
+                for c in self.contacts
+            ]),
+        }
+
 
 class Address(BaseEntity):
     __tablename__ = 'address'

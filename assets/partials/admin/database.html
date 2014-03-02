@@ -1,11 +1,21 @@
-<div ng-controller="DatabaseManagementController">
-    <button class="btn btn-primary" ng-click="">Import CSV</button>
-    <button class="btn btn-primary" ng-click="">Export CSV</button>
-    <button class="btn btn-primary" ng-click="updateSchema()">Update schema</button>
-    <button class="btn btn-primary" ng-click="">List incomplete vendors</button>
-    <button class="btn btn-primary" ng-click="clearDatabase()">Clear database (dev only)</button>
-    <button class="btn btn-primary" ng-click="generateRandomData(quantity)">Generate random instances (dev only)</button>
-    <input type="text" placeholder="How much to generate" ng-model="quantity">
+<div id="database" ng-controller="DatabaseManagementController">
+    <section>
+        <button class="btn btn-primary" ng-click="import()">Import CSV</button>
+        <button class="btn btn-primary" ng-click="export()">Export CSV</button>
+        <button class="btn btn-primary" ng-click="updateSchema()">Update schema</button>
+        <button class="btn btn-primary" ng-click="clearDatabase()">Clear database (dev only)</button>
+        </section>
 
-    <progressbar class="progress-striped active" value="progress">{{ progress }}%</progressbar>
+    <section>
+        <input type="text" placeholder="How much to generate" ng-model="quantity">
+        <button class="btn btn-primary" ng-click="generateRandomData(quantity)">Generate random instances (dev only)</button>
+    </section>
+
+    <section ng-show="task">
+        <progressbar class="progress-striped active" value="task.percentage">{{ task.percentage }}%</progressbar>
+        <span>Task state: {{ task.status }}</span>
+        <span>{{ task.message }}</span>
+        <button class="btn btn-primary" ng-show="isWorking(task)" ng-click="cancelTask(task)">Cancel task</button>
+    </section>
+
 </div>

@@ -24,6 +24,7 @@ from planevent import (
     tasks,
 )
 from planevent.redisdb import redis_db
+from planevent.async import TaskProgressCounter
 
 
 VENDOR_KEY = 'vendor:{}'
@@ -306,16 +307,30 @@ class SubcategoriesView(View):
         return subcategories
 
 
-@view_defaults(route_name='csv_migration', renderer='json')
-class CSVMigrationView(View):
+@view_defaults(route_name='migration', renderer='json')
+class MigrationView(View):
 
     @view_config(request_method='GET')
     def export(self):
-        pass
+        progress_counter = TaskProgressCounter.create()
+
+        tasks.export(progress_counter)
+
+        return {
+            'message': 'Export started',
+            'progress_counter': progress_counter.id,
+        }
 
     @view_config(request_method='POST')
     def import_(self):
-        pass
+        progress_counter = TaskProgressCounter.create()
+
+        tasks.import_(progress_counter)
+
+        return {
+            'message': 'Export started',
+            'progress_counter': progress_counter.id,
+        }
 
 
 @view_defaults(route_name='update_schema', renderer='json')
@@ -344,7 +359,7 @@ class GenerateRandomInstancesView(View):
     @view_config(request_method='POST')
     @param('quantity', int, body=True)
     def post(self, quantity):
-        progress_counter = tasks.TaskProgressCounter()
+        progress_counter = TaskProgressCounter.create()
 
         tasks.generate_random_tasks(quantity, progress_counter)
 
@@ -369,15 +384,30 @@ class TaskProgressView(View):
     @param('id', int, rest=True)
     def get(self, id):
         try:
-            progress, max_ = tasks.TaskProgressCounter.get_progress(id)
+            progress = TaskProgressCounter.get(id)
         except ValueError as e:
             self.request.response.status = 404
-            return {
-                'error': str(e)
-            }
+            return {'error': str(e)}
         else:
             return {
-                'id': id,
-                'progress': progress,
-                'max': max_,
+                'id': progress.id,
+                'progress': progress.progress,
+                'max': progress.max,
+                'status': progress.status,
+                'message': progress.message,
             }
+
+
+@view_defaults(route_name='task_cancel', renderer='json')
+class TaskCancelView(View):
+
+    @view_config(request_method='POST')
+    @param('id', int, rest=True)
+    def post(self, id):
+        try:
+            TaskProgressCounter.cancel(id)
+        except ValueError as e:
+            self.request.response.status = 404
+            return {'error': str(e)}
+        else:
+            return 'Task {} canceled'.format(id)

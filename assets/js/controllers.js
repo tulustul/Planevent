@@ -214,6 +214,7 @@ planevent.controller('AdminPageController',
         $scope.dangers = [];
         $scope.warnings = [];
         $scope.successes = [];
+
     };
     $scope.resetMessages();
 
@@ -227,6 +228,7 @@ planevent.controller('AdminPageController',
 
     $scope.addSuccess = function(msg) {
         $scope.successes[$scope.successes.length] = msg;
+        $scope.message = msg;
     };
 
     $scope.getVendor = function(vendorId) {
@@ -407,7 +409,41 @@ planevent.controller('FirstLoggingController',
 planevent.controller('DatabaseManagementController',
         function($scope, $http, $timeout) {
 
-    $scope.progress = 0;
+    function countProgress(progressCounter) {
+        $scope.taskState = 'Working';
+        (function progress() {
+            $http.get('api/task/' + progressCounter + '/progress')
+                .success(function(response) {
+                    $scope.task = response;
+                    $scope.task.percentage =
+                        ((response.progress / response.max) * 100)
+                         .toFixed(1);
+
+                    if ($scope.isWorking($scope.task)) {
+                        $timeout(progress, 1000);
+                    }
+                });
+        })();
+    }
+
+    $scope.isWorking = function(task) {
+        if (task === undefined || task === null) {
+            return false;
+        }
+        return task.status === 'PENDING' || task.status === 'WORKING';
+    };
+
+    $scope.cancelTask = function(task) {
+        $scope.resetMessages();
+        $http.post('/api/task/' + task.id + '/cancel')
+            .success(function(msg) {
+                    $scope.addSuccess(msg);
+                })
+            .error(function(msg) {
+                    $scope.addDanger(msg);
+                }
+            );
+    };
 
     $scope.updateSchema = function() {
         $scope.resetMessages();
@@ -445,25 +481,38 @@ planevent.controller('DatabaseManagementController',
 
         $http.post('/api/database/generate', iquantity)
             .success(function(response) {
-                    var progressCounter = response.progress_counter;
-                    $scope.addSuccess(response.message);
-
-                    (function progress() {
-                        $http.get('api/task/' + progressCounter + '/progress')
-                            .success(function(response) {
-                                $scope.progress =
-                                    ((response.progress / response.max) * 100)
-                                     .toFixed(1);
-                                if (response.max > response.progress) {
-                                    $timeout(progress, 1000);
-                                }
-                            });
-                    })();
-                })
+                $scope.addSuccess(response.message);
+                countProgress(response.progress_counter);
+            })
             .error(function(msg) {
-                    $scope.addDanger(msg);
-                }
-            );
+                $scope.addDanger(msg);
+            });
+    };
+
+    $scope.export = function() {
+        $scope.resetMessages();
+
+        $http.get('/api/database/migration')
+            .success(function(response) {
+                $scope.addSuccess(response.message);
+                countProgress(response.progress_counter);
+            })
+            .error(function(msg) {
+                $scope.addDanger(msg);
+            });
+    };
+
+    $scope.import = function() {
+        $scope.resetMessages();
+
+        $http.post('/api/database/migration')
+            .success(function(response) {
+                $scope.addSuccess(response.message);
+                countProgress(response.progress_counter);
+            })
+            .error(function(msg) {
+                $scope.addDanger(msg);
+            });
     };
 
 });
