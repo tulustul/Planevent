@@ -228,7 +228,6 @@ planevent.controller('AdminPageController',
 
     $scope.addSuccess = function(msg) {
         $scope.successes[$scope.successes.length] = msg;
-        $scope.message = msg;
     };
 
     $scope.getVendor = function(vendorId) {

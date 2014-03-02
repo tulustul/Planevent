@@ -67,6 +67,20 @@ class Vendor(BaseEntity):
             ]),
         }
 
+    @classmethod
+    def import_dict(cls, vendor_dict):
+        vendor = cls()
+
+        vendor.name = vendor_dict['name']
+        vendor.description = vendor_dict['description']
+        vendor.address = Address(
+            city=vendor_dict['city'],
+            street=vendor_dict['street'],
+            postal_code=vendor_dict['postal_code'],
+        )
+
+        vendor.save()
+
 
 class Address(BaseEntity):
     __tablename__ = 'address'

@@ -4,6 +4,7 @@ __pycache__
 planevent.egg-info
 tmp
 node_modules
+bower_components
 static/app.js
 static/vendor.js
 static/*.css

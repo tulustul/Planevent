@@ -13,14 +13,24 @@ var appJs = {
 };
 var vendorJs = {
     src: [
-        'assets/lib/jquery-1.10.1.js',
-        'assets/lib/angular.js',
-        'assets/lib/**/*.js'
+        'bower_components/jquery/jquery.js',
+        'bower_components/underscore/underscore.js',
+        'bower_components/angular/angular.js',
+        'bower_components/angular-animate/angular-animate.js',
+        'bower_components/angular-resource/angular-resource.js',
+        'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+        'bower_components/angular-file-upload/angular-file-upload.js',
+        'bower_components/angular-route/angular-route.js',
+        'bower_components/ng-table/ng-table.js',
+        'bower_components/ngInfiniteScroll/ng-infinite-scroll.js',
     ],
     dest: 'static/vendor.js'
 };
 var vendorCss = {
-    src: ['assets/lib/**/*.css'],
+    src: [
+        'bower_components/bootstrap/dist/css/bootstrap.css',
+        'bower_components/bootstrap/dist/css/bootstrap-theme.css'
+    ],
     dest: 'static/vendor.css'
 };
 var partials = 'assets/partials/**/*.html';

@@ -49,7 +49,7 @@ def send_recomendations_emails(num):
 @progress_counter
 def generate_random_tasks(quantity, progress_counter):
     progress_counter.message = 'Flushing database'
-    progress_counter.start(quantity)
+    progress_counter.max = quantity
 
     sql.Base.metadata.drop_all(planevent.sql_engine)
     sql.Base.metadata.create_all(planevent.sql_engine)
@@ -69,6 +69,44 @@ def generate_random_tasks(quantity, progress_counter):
     progress_counter.message = '{} entities generated'.format(quantity)
 
 
+Cell = namedtuple('Cell', ['column', 'header', 'field'])
+columns_definitions = [
+    Cell(column='A', header='Nazwa', field='name'),
+    Cell(column='B', header='Opis', field='description'),
+    Cell(column='C', header='url opisu', field='contacts'),
+    Cell(column='D', header='Kategoria', field='categories'),
+    Cell(column='E', header='Podkategoria', field='subcategories'),
+    Cell(column='F', header='Ulica', field='street'),
+    Cell(column='G', header='Miasto', field='city'),
+    Cell(column='H', header='Kod pocztowy', field='postal_code'),
+    Cell(column='I', header='www', field='www'),
+    Cell(column='J', header='[opis www]', field='www_description'),
+    Cell(column='K', header='Dane kontaktowe', field='contacts'),
+    Cell(column='L', header='Youtube', field='youtube'),
+    Cell(column='M', header='Czy darmowe', field='is_free'),
+    Cell(column='N', header='Cena', field='price'),
+    Cell(column='O', header='Link do cennika', field='price_list_url'),
+    Cell(column='P', header='Ilość uczestników', field='participant_count'),
+    Cell(column='Q', header='Ograniczenie wiekowe',
+         field='age_restriction'),
+    Cell(column='R', header='Galeria', field='gallery'),
+    Cell(column='S', header='Facebook', field='facebook'),
+    Cell(column='T', header='Dni-godziny', field='available_at'),
+    Cell(column='U', header='Współrzędne geograficzne',
+         field='coordinates'),
+    Cell(column='V', header='Tagi', field='tags'),
+    Cell(column='W', header='Logo', field='logo'),
+    Cell(column='X', header='Data dodania', field='added_at'),
+    Cell(column='Y', header='Data aktualizacji', field='updated_at'),
+    Cell(column='Z', header='Promocja', field='promotion'),
+    Cell(column='AA', header='Dostępność czasowa',
+         field='available_at_date'),
+]
+
+last_column = columns_definitions[-1].column
+columns_count = len(columns_definitions)
+
+
 @async
 @progress_counter
 def export(progress_counter):
@@ -76,35 +114,18 @@ def export(progress_counter):
 
     progress_counter.message = 'Preparing worksheet'
 
-    Cell = namedtuple('Cell', ['column', 'header', 'field'])
-
-    columns_definitions = [
-        Cell(column='A', header='Nazwa', field='name'),
-        Cell(column='B', header='Opis', field='description'),
-        Cell(column='C', header='Miasto', field='city'),
-        Cell(column='D', header='Ulica', field='street'),
-        Cell(column='E', header='Kod pocztowy', field='postal_code'),
-        Cell(column='F', header='Dane kontaktowe', field='contacts'),
-        # Cell(column='G', header='Nazwa', field='name'),
-        # Cell(column='H', header='Nazwa', field='name'),
-        # Cell(column='I', header='Nazwa', field='name'),
-        # Cell(column='J', header='Nazwa', field='name'),
-        # Cell(column='K', header='Nazwa', field='name'),
-    ]
-
-    last_column = columns_definitions[-1].column
-    columns_count = len(columns_definitions)
-
     CHUNKS = 20
 
     count = models.Vendor.query().count()
-    progress_counter.start(count)
+    progress_counter.max = count
 
     worksheet_name = 'export'
 
     client = gspread.login('planevent.export@gmail.com', 'cocojopre')
 
-    spreadsheet = client.open('planevent-db')
+    spreadsheet = client.open_by_key(
+        '0AunjHEDjOYHUdEhzTWdfcG5vNUZnYk9rRjhyVjJ5MlE'
+    )
 
     try:
         worksheet = spreadsheet.worksheet(worksheet_name)
@@ -140,7 +161,7 @@ def export(progress_counter):
         for i, vendor in enumerate(vendors):
             vendor_dict = vendor.export_dict()
             for j, column in enumerate(columns_definitions):
-                cells[i*columns_count + j].value = vendor_dict[column.field]
+                cells[i*columns_count + j].value = vendor_dict.get(column.field)
 
         worksheet.update_cells(cells)
 
@@ -157,4 +178,52 @@ def export(progress_counter):
 @async
 @progress_counter
 def import_(progress_counter):
-    raise NotImplementedError('NotImplementedError')
+    import gspread
+
+    CHUNKS = 5
+
+    progress_counter.message = 'Clearing database'
+
+    sql.Base.metadata.drop_all(planevent.sql_engine)
+    sql.Base.metadata.create_all(planevent.sql_engine)
+    create_test_categories()
+
+    progress_counter.message = 'Preparing worksheet'
+
+    client = gspread.login('planevent.export@gmail.com', 'cocojopre')
+
+    spreadsheet = client.open_by_key(
+        '0AunjHEDjOYHUdEhzTWdfcG5vNUZnYk9rRjhyVjJ5MlE'
+    )
+
+    worksheet = spreadsheet.worksheet('baza')
+
+    count = worksheet.row_count
+
+    progress_counter.max = count
+
+    progress_counter.message = 'Importing rows'
+
+    offset = 1
+    while offset < count:
+        cells = worksheet.range(
+            'A{}:{}{}'
+            .format(offset + 1, last_column,
+                    min(offset + CHUNKS + 1, count))
+        )
+
+        rows_count = int(len(cells) / columns_count)
+        for i in range(rows_count):
+            vendor_dict = {}
+            for j, column in enumerate(columns_definitions):
+                vendor_dict[column.field] = cells[i*columns_count + j].value
+            models.Vendor.import_dict(vendor_dict)
+
+        offset += rows_count
+
+        if progress_counter.is_canceled():
+            return
+        else:
+            progress_counter.progress = offset
+
+    progress_counter.message = '{} rows imported'.format(count)

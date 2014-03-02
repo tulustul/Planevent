@@ -88,17 +88,19 @@ def progress_counter(mth):
                 break
 
         try:
+            counter.start()
             result = mth(*args, **kwargs)
             if counter:
                 counter.finish()
             return result
         except Exception as e:
             if counter:
+                message = '{} {}'.format(e.__class__.__name__, str(e))
                 logger.info(
                     'Marking task {} progress as failed. Reason: {}'
-                    .format(counter.id, str(e))
+                    .format(counter.id, message)
                 )
-                counter.mark_as_failed(str(e))
+                counter.mark_as_failed(message)
             raise e
     return wrap
 
@@ -170,8 +172,7 @@ class TaskProgressCounter(object):
 
         redis_db.expire(key, 7200)
 
-    def start(self, max_value):
-        self._max = max_value
+    def start(self):
         self.status = self.WORKING
         self._save_progress()
 
@@ -184,6 +185,11 @@ class TaskProgressCounter(object):
     @property
     def max(self):
         return self._max
+
+    @max.setter
+    def max(self, value):
+        self._max = value
+        self._save_progress()
 
     @property
     def progress(self):
