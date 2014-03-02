@@ -50,6 +50,8 @@ Openshift git repo
 -git remote add openshift ssh://52e4eefe4382ecb4e6000037@planevent-tul.rhcloud.com/~/git/planevent.git/
 
 To deploy (from origin working):
+./deploy.sh
+or
 -git checkout master
 -git pull openshift master
 -git pull origin working
