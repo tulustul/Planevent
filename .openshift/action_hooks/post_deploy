@@ -2,6 +2,7 @@
 
 cd ${OPENSHIFT_REPO_DIR}
 
+cp .openshift/nginx.conf $OPENSHIFT_DATA_DIR/nginx/conf/nginx.conf
 
 echo 'Starting uwsgi'
 uwsgi production.ini
