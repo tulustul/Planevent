@@ -1,0 +1,42 @@
+#!/bin/bash
+
+NGINX_DIR="$OPENSHIFT_DATA_DIR/nginx"
+
+LONG_PROCESS=$OPENSHIFT_REPO_DIR/misc/utils/execute_long_process
+CURL="curl -L --progress-bar"
+
+# source $OPENSHIFT_REPO_DIR/misc/utils/color_output
+# source $OPENSHIFT_REPO_DIR/misc/utils/virtualenv
+
+
+# the following functions are used to check if the packages we use in this
+# cartridge are already installed or not, and if they are not, installs them
+function check_nginx_installed() {
+    info_message 'Checking for nginx... '
+    if [ -e $NGINX_DIR ]; then
+        success_message 'nginx is installed!'
+        return
+    fi
+
+    info_message 'Downloading and installing nginx... '
+    local NGINX_DOWNLOAD_FILE="http://nginx.org/download/nginx-1.4.1.tar.gz"
+    local PCRE_DOWNLOAD_FILE="ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.32.tar.gz"
+
+    local NGINX_OUT_DIR="$OPENSHIFT_TMP_DIR/nginx-1.4.1"
+    local PCRE_OUT_DIR="$OPENSHIFT_TMP_DIR/pcre-8.32"
+
+    cd $OPENSHIFT_TMP_DIR
+    $CURL $NGINX_DOWNLOAD_FILE | tar xzf -
+    $CURL $PCRE_DOWNLOAD_FILE | tar xzf -
+
+    cd $NGINX_OUT_DIR
+    $LONG_PROCESS ./configure --prefix=$NGINX_DIR --with-http_ssl_module --with-pcre=$PCRE_OUT_DIR
+    $LONG_PROCESS make -j$NUMBER_OF_PROCESSORS
+    $LONG_PROCESS make install -j$NUMBER_OF_PROCESSORS
+
+    if [ $? -ne 0 ]; then
+        warning_message 'Errors while installing nginx'
+    else
+        success_message 'nginx was successfully installed!'
+    fi
+}
