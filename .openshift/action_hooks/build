@@ -5,10 +5,6 @@ NGINX_DIR="$OPENSHIFT_DATA_DIR/nginx"
 LONG_PROCESS=$OPENSHIFT_REPO_DIR/misc/utils/execute_long_process
 CURL="curl -L --progress-bar"
 
-# source $OPENSHIFT_REPO_DIR/misc/utils/color_output
-# source $OPENSHIFT_REPO_DIR/misc/utils/virtualenv
-
-
 # the following functions are used to check if the packages we use in this
 # cartridge are already installed or not, and if they are not, installs them
 function check_nginx_installed() {
@@ -40,3 +36,5 @@ function check_nginx_installed() {
         success_message 'nginx was successfully installed!'
     fi
 }
+
+check_nginx_installed
