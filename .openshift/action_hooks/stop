@@ -2,7 +2,11 @@
 
 NGINX_PIDFILE=$OPENSHIFT_DATA_DIR/nginx/logs/nginx.pid
 if [ -f $NGINX_PIDFILE ]; then
+    echo 'Stoping nginx'
     $OPENSHIFT_DATA_DIR/nginx/sbin/nginx -s stop
+    echo 'nginx stopped'
 fi
 
+echo 'Stopping uwsgi'
 uwsgi --stop uwsgi.pid
+echo 'uwsgi stopped'
