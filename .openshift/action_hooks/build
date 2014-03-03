@@ -9,7 +9,7 @@ CURL="curl -L --progress-bar"
 function check_nginx_installed() {
     echo 'Checking for nginx... '
     if [ -e $NGINX_DIR ]; then
-        success_message 'nginx is installed!'
+        echo 'nginx is installed!'
         return
     fi
 
