@@ -1,0 +1,8 @@
+#!/bin/bash
+
+NGINX_PIDFILE=$OPENSHIFT_DATA_DIR/nginx/logs/nginx.pid
+if [ -f $NGINX_PIDFILE ]; then
+    $OPENSHIFT_DATA_DIR/nginx/sbin/nginx -s stop
+fi
+
+uwsgi --stop uwsgi.pid
