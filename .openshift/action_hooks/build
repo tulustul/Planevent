@@ -26,8 +26,8 @@ function check_nginx_installed() {
 
     cd $NGINX_OUT_DIR
     ./configure --prefix=$NGINX_DIR --with-http_ssl_module --with-pcre=$PCRE_OUT_DIR
-    make -j$NUMBER_OF_PROCESSORS
-    make install -j$NUMBER_OF_PROCESSORS
+    make
+    make install
 
     if [ $? -ne 0 ]; then
         echo 'Errors while installing nginx'
