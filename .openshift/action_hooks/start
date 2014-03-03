@@ -1,0 +1,3 @@
+cd ${OPENSHIFT_REPO_DIR}
+uwsgi --stop uwsgi.pid
+uwsgi production.ini
