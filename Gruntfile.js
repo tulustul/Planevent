@@ -5,10 +5,14 @@ var banner =
 
 var js = [
     'assets/js/**/*.js',
-    'tmp/**/*.js'
+    'tmp/parials.js'
 ];
 var appJs = {
     src: js,
+    dest: 'static/app.js'
+};
+var appProdJs = {
+    src: 'tmp/**/*.js',
     dest: 'static/app.js'
 };
 var vendorJs = {
@@ -19,7 +23,7 @@ var vendorJs = {
         'bower_components/angular-animate/angular-animate.js',
         'bower_components/angular-resource/angular-resource.js',
         'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-        'bower_components/angular-file-upload/angular-file-upload.js',
+        'bower_components/ng-file-upload/angular-file-upload.js',
         'bower_components/angular-route/angular-route.js',
         'bower_components/ng-table/ng-table.js',
         'bower_components/ngInfiniteScroll/ng-infinite-scroll.js',
@@ -43,8 +47,8 @@ module.exports = function(grunt) {
             options: {
                 banner: banner
             },
-            app: appJs,
-            vendor: vendorJs
+            app: appProdJs,
+            vendor: vendorJs,
         },
 
         concat: {
@@ -61,7 +65,11 @@ module.exports = function(grunt) {
             dev: {
                 options: {
                     sassDir: 'assets/scss',
-                    cssDir: 'static'
+                    cssDir: 'static',
+                    specify: [
+                        'assets/scss/main.scss',
+                        'assets/scss/admin.scss'
+                    ]
                 }
             }
         },
@@ -77,6 +85,29 @@ module.exports = function(grunt) {
             }
         },
 
+        cssmin: {
+            minify: {
+                expand: true,
+                src: 'static/*.css',
+                dest: '.'
+            }
+        },
+
+        ngmin: {
+            app: {
+                expand: true,
+                src: ['assets/js/*.js'],
+                dest: 'tmp'
+            }
+        // ,
+        //     directives: {
+        //         expand: true,
+        //         cwd: 'test/src',
+        //         src: ['directives/**/*.js'],
+        //         dest: 'test/generated'
+        //     }
+        },
+
         watch: {
             js: {
                 files: js.concat([partials]),
@@ -88,15 +119,34 @@ module.exports = function(grunt) {
             }
         },
 
+        clean: ['tmp']
+
     });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    // grunt.loadNpmTasks('grunt-ngmin');
+    grunt.loadNpmTasks('grunt-ngmin');
     grunt.loadNpmTasks('grunt-angular-templates');
     grunt.loadNpmTasks('grunt-contrib-compass');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-clean');
 
-    grunt.registerTask('dev', ['ngtemplates', 'concat', 'compass', 'watch']);
-    grunt.registerTask('prod', ['ngtemplates', 'uglify', 'compass', 'watch']);
+    grunt.registerTask('dev', [
+        'ngtemplates',
+        'concat',
+        'compass',
+        'watch',
+        'clean'
+    ]);
+
+    grunt.registerTask('prod', [
+        'ngtemplates',
+        'concat',
+        'ngmin',
+        'uglify',
+        'compass',
+        'cssmin',
+        'clean'
+    ]);
 };

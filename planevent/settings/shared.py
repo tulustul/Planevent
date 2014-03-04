@@ -43,3 +43,12 @@ MAILGUN_PATH = 'https://api.mailgun.net/v2/sandbox45822.mailgun.org/messages'
 MAILGUN_API_KEY = 'key-0tfk1t9jh842i9e72lbdf-2t44pbse55'
 EMAIL_ADDRESS = 'portal@planevent.com'
 PIWIK_URL = ''
+
+GOOGLE_DOCS_LOGIN = 'planevent.export@gmail.com'
+GOOGLE_DOCS_PASSWORD = 'cocojopre'
+
+GOOGLE_IMPORT_SPREADSHET = '0AunjHEDjOYHUdEhzTWdfcG5vNUZnYk9rRjhyVjJ5MlE'
+GOOGLE_IMPORT_WORKSHEET = 'export'
+
+GOOGLE_EXPORT_SPREADSHET = '0AunjHEDjOYHUdEhzTWdfcG5vNUZnYk9rRjhyVjJ5MlE'
+GOOGLE_EXPORT_WORKSHEET = 'baza'

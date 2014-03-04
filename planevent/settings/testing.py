@@ -2,8 +2,6 @@ INI_FILE = 'testing.ini'
 
 APP_URL = 'http://localhost:8080'
 
-TEST_INSTANCES = 0
-
 REDIS = {
     'URL': 'localhost',
     'PORT': 6379,

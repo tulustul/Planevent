@@ -1,6 +1,6 @@
 'use strict';
 
-planevent.directive('addressviewer', function() {
+angular.module('planevent').directive('addressviewer', function() {
     return {
         restrict: 'EA',
         require: '^ngModel',
@@ -121,7 +121,7 @@ planevent.directive('addressviewer', function() {
     };
 });
 
-planevent.directive('addresssetter', function() {
+angular.module('planevent').directive('addresssetter', function() {
     return {
         restrict: 'EA',
         require: '^ngModel',
@@ -206,7 +206,7 @@ planevent.directive('addresssetter', function() {
     };
 });
 
-planevent.directive('gallery', function() {
+angular.module('planevent').directive('gallery', function() {
     return {
         restrict: 'EA',
         require: '^ngModel',
@@ -244,7 +244,7 @@ planevent.directive('gallery', function() {
     };
 });
 
-planevent.directive('experiment', function($http) {
+angular.module('planevent').directive('experiment', function($http) {
     return {
         restrict: 'EA',
         require: '^experiment',
@@ -271,7 +271,7 @@ planevent.directive('experiment', function($http) {
     };
 });
 
-planevent.directive('pebutton', function() {
+angular.module('planevent').directive('pebutton', function() {
     return {
         restrict: 'EA',
         scope: {

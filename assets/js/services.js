@@ -1,6 +1,6 @@
 'use strict';
 
-planevent.service('searchService', function($resource) {
+angular.module('planevent').service('searchService', function($resource) {
 
     this.Vendors = $resource('/api/vendors/search');
 
@@ -25,7 +25,7 @@ planevent.service('searchService', function($resource) {
     };
 });
 
-planevent.service('accountService', function($resource) {
+angular.module('planevent').service('accountService', function($resource) {
 
     var LoggedUser = $resource('/api/user/logged');
 
@@ -57,7 +57,7 @@ planevent.service('accountService', function($resource) {
     };
 });
 
-planevent.factory('globalsService',
+angular.module('planevent').factory('globalsService',
     function($routeParams, $resource) {
 
     var Categories = $resource('/api/categories');

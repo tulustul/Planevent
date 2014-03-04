@@ -1,7 +1,7 @@
 /*jshint camelcase: false */
 'use strict';
 
-planevent.controller('MainPageController',
+angular.module('planevent').controller('MainPageController',
     function($scope, globalsService) {
         $scope.mainView = 'assets/partials/mainView.html';
         $scope.categoriesView = 'assets/partials/categoriesView.html';
@@ -13,7 +13,7 @@ planevent.controller('MainPageController',
     }
 );
 
-planevent.controller('CategoriesController',
+angular.module('planevent').controller('CategoriesController',
     function($scope, $location, $routeParams) {
         var categoryId = parseInt($routeParams.categoryId);
         for (var i in $scope.categories) {
@@ -33,7 +33,7 @@ planevent.controller('CategoriesController',
     }
 );
 
-planevent.controller('VendorListController',
+angular.module('planevent').controller('VendorListController',
         function($scope, $location, $routeParams, $rootScope, searchService) {
 
     var LIMIT = 25;
@@ -69,7 +69,7 @@ planevent.controller('VendorListController',
     $scope.loadMore();
 });
 
-planevent.controller('VendorPageController',
+angular.module('planevent').controller('VendorPageController',
         function($scope, $resource, $routeParams, globalsService) {
     var Vendor = $resource('/api/vendor/:id');
     $scope.vendorDoesNotExists = false;
@@ -95,7 +95,7 @@ planevent.controller('VendorPageController',
 
 });
 
-planevent.controller('VendorAddEditController',
+angular.module('planevent').controller('VendorAddEditController',
     function($scope, $resource, $routeParams, $location, $upload,
              globalsService) {
 
@@ -189,7 +189,7 @@ planevent.controller('VendorAddEditController',
     }
 );
 
-planevent.controller('AdminPageController',
+angular.module('planevent').controller('AdminPageController',
         function($scope, $resource) {
 
     $scope.vendorPromotionView = 'assets/partials/admin/vendorPromotion.html';
@@ -279,7 +279,7 @@ planevent.controller('AdminPageController',
     };
 });
 
-planevent.controller('RelatedVendorsController',
+angular.module('planevent').controller('RelatedVendorsController',
         function($scope, $resource) {
 
     var VendorsSearch = $resource('/api/vendors/search');
@@ -308,7 +308,7 @@ planevent.controller('RelatedVendorsController',
 
 });
 
-planevent.controller('SearchController',
+angular.module('planevent').controller('SearchController',
         function($scope, $location, searchService) {
 
     $scope.formVisible = false;
@@ -332,7 +332,7 @@ planevent.controller('SearchController',
     };
 });
 
-planevent.controller('AccountController',
+angular.module('planevent').controller('AccountController',
         function($scope, $location, accountService, globalsService) {
 
     $scope.informationView = 'assets/partials/profile/information.html';
@@ -391,7 +391,7 @@ planevent.controller('AccountController',
     };
 });
 
-planevent.controller('FirstLoggingController',
+angular.module('planevent').controller('FirstLoggingController',
         function($scope, $location, accountService) {
 
     accountService.getAccount(function(loggedUser) {
@@ -405,7 +405,7 @@ planevent.controller('FirstLoggingController',
     });
 });
 
-planevent.controller('DatabaseManagementController',
+angular.module('planevent').controller('DatabaseManagementController',
         function($scope, $http, $timeout) {
 
     function countProgress(progressCounter) {

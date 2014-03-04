@@ -15,7 +15,7 @@ class MailException(Exception):
     pass
 
 
-def send(template, to, subject, **kwargs):
+def send_mail(template, to, subject, **kwargs):
 
     if isinstance(to, str):
         to = [to]

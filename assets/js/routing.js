@@ -1,7 +1,6 @@
 'use strict';
 
-planevent.config(['$routeProvider',
-                 function($routeProvider) {
+angular.module('planevent').config(function($routeProvider) {
     $routeProvider
     .when('/', {
         templateUrl: 'assets/partials/mainView.html',
@@ -57,4 +56,4 @@ planevent.config(['$routeProvider',
     })
 
     .otherwise({redirectTo: '/'});
-}]);
+});

@@ -22,6 +22,7 @@ from planevent import (
     auth,
     settings,
     tasks,
+    migration,
 )
 from planevent.redisdb import redis_db
 from planevent.async import TaskProgressCounter
@@ -314,7 +315,7 @@ class MigrationView(View):
     def export(self):
         progress_counter = TaskProgressCounter.create()
 
-        tasks.export(progress_counter)
+        migration.export(progress_counter)
 
         return {
             'message': 'Export started',
@@ -325,7 +326,7 @@ class MigrationView(View):
     def import_(self):
         progress_counter = TaskProgressCounter.create()
 
-        tasks.import_(progress_counter)
+        migration.import_(progress_counter)
 
         return {
             'message': 'Export started',

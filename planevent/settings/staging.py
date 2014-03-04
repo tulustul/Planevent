@@ -1,6 +1,6 @@
-INI_FILE = 'production.ini'
+INI_FILE = 'staging.ini'
 
-APP_URL = 'http://planevent-tul.rhcloud.com'
+APP_URL = 'http://staging1planevent-tul.rhcloud.com'
 
 REDIS = {
     'URL': '127.10.51.3',
@@ -9,5 +9,3 @@ REDIS = {
     'DB': 1,
     'PASSWORD': 'ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5',
 }
-
-PIWIK_URL = 'piwik-tul.rhcloud.com/'

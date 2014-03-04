@@ -4,7 +4,7 @@
 // Choose random or first variation if server failed to give response.
 // Prevent incrementing variation then.
 
-planevent.service('abTestingService', function($resource) {
+angular.module('planevent').service('abTestingService', function($resource) {
 
     this.Experiments = $resource('/api/experiments');
     this.Activate = $resource('/api/experiment/:name/activate');
@@ -72,7 +72,7 @@ planevent.service('abTestingService', function($resource) {
 
 });
 
-planevent.controller('ABTestingManagementController',
+angular.module('planevent').controller('ABTestingManagementController',
         function($scope, abTestingService) {
 
     $scope.activeFilter = null;
@@ -167,7 +167,7 @@ planevent.controller('ABTestingManagementController',
 
 });
 
-planevent.controller('ExperimentController',
+angular.module('planevent').controller('ExperimentController',
         function($scope, $http) {
 
     $scope.setVariation = function(element, experiment, variation) {
