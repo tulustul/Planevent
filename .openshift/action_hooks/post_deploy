@@ -2,7 +2,14 @@
 
 cd ${OPENSHIFT_REPO_DIR}
 
-cp .openshift/nginx.conf $OPENSHIFT_DATA_DIR/nginx/conf/nginx.conf
+if grep -Fxq "production" instance
+then
+    echo 'production instance'
+    cp .openshift/nginx.conf $OPENSHIFT_DATA_DIR/nginx/conf/nginx.conf
+else
+    echo 'staging instance'
+    cp .openshift/nginx-staging.conf $OPENSHIFT_DATA_DIR/nginx/conf/nginx.conf
+fi
 
 echo 'Starting uwsgi'
 uwsgi production.ini

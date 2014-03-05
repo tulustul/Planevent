@@ -1,8 +1,27 @@
 #!/bin/sh
+
 git checkout master
 git pull openshift master
 git pull origin working
+
+rm instance
+
+if [ "$1" = "production" ]
+then
+    REMOTE = openshift
+    echo 'production' >> instance
+    grunt prod
+else
+    REMOTE = openshift-staging
+    echo 'staging' >> instance
+    grunt staging
+fi
+
 git add -A
 git commit -m "adding statics for openshift"
-git push openshift master
+git push $REMOTE master
+
+rm instance
+echo 'development' >> instance
+
 git checkout working
