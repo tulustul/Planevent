@@ -99,13 +99,6 @@ module.exports = function(grunt) {
                 src: ['assets/js/*.js'],
                 dest: 'tmp'
             }
-        // ,
-        //     directives: {
-        //         expand: true,
-        //         cwd: 'test/src',
-        //         src: ['directives/**/*.js'],
-        //         dest: 'test/generated'
-        //     }
         },
 
         watch: {
