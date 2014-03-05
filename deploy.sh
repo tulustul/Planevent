@@ -8,17 +8,18 @@ rm instance
 
 if [ "$1" = "production" ]
 then
-    REMOTE = openshift
+    REMOTE=openshift
     echo 'production' >> instance
     grunt prod
 else
-    REMOTE = openshift-staging
+    REMOTE=openshift-staging
     echo 'staging' >> instance
     grunt staging
 fi
 
 git add -A
 git commit -m "adding statics for openshift"
+echo git push $REMOTE master
 git push $REMOTE master
 
 rm instance
