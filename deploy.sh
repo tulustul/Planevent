@@ -22,7 +22,4 @@ git commit -m "adding statics for openshift"
 echo git push $REMOTE master
 git push $REMOTE master
 
-rm instance
-echo 'development' >> instance
-
 git checkout working
