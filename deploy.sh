@@ -14,7 +14,6 @@ then
 else
     REMOTE=openshift-staging
     echo 'staging' >> instance
-    grunt staging
 fi
 
 git add -A
