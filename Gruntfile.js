@@ -125,13 +125,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-clean');
 
-    grunt.registerTask('staging', [
-        'ngtemplates',
-        'concat',
-        'compass',
-        'clean'
-    ]);
-
     grunt.registerTask('dev', [
         'ngtemplates',
         'concat',
