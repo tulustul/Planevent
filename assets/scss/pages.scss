@@ -176,6 +176,7 @@ $vendor-preview-bottom-border: 6px;
     width: $vendor-preview-width;
     height: $vendor-preview-height;
     position: relative;
+    margin: 10px;
     .vendor-preview {
         width: 100%;
         height: $vendor-preview-height - $vendor-preview-bottom-border;

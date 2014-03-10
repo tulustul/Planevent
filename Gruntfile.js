@@ -26,7 +26,7 @@ var vendorJs = {
         'bower_components/ng-file-upload/angular-file-upload.js',
         'bower_components/angular-route/angular-route.js',
         'bower_components/ng-table/ng-table.js',
-        'bower_components/ngInfiniteScroll/ng-infinite-scroll.js',
+        // 'bower_components/ngInfiniteScroll/ng-infinite-scroll.js',
     ],
     dest: 'static/vendor.js'
 };
@@ -103,7 +103,7 @@ module.exports = function(grunt) {
 
         watch: {
             js: {
-                files: js.concat([partials]),
+                files: ['assets/js/**/*.js'].concat([partials]),
                 tasks: ['ngtemplates', 'concat']
             },
             scss: {

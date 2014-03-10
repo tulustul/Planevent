@@ -7,9 +7,9 @@ angular.module('planevent').directive('addressviewer', function() {
         templateUrl: 'assets/partials/directives/addressViewer.html',
         link: function(scope, element, attrs) {
             var map,
-                position,
-                radiusMarker,
-                positionMarker;
+            position,
+            radiusMarker,
+            positionMarker;
 
             function addRadius(map, center, radius) {
                 var circleOptions = {
@@ -37,7 +37,7 @@ angular.module('planevent').directive('addressviewer', function() {
 
             function updatePosition() {
                 var address = scope.$eval(attrs.ngModel),
-                    scaleRadiusOnly = attrs.scalePolicy === 'radius-only';
+                scaleRadiusOnly = attrs.scalePolicy === 'radius-only';
                 position = new google.maps.LatLng(52, 19);
                 scope.address = address;
 
@@ -47,7 +47,7 @@ angular.module('planevent').directive('addressviewer', function() {
 
                 if (address && address.validated) {
                     position = new google.maps.LatLng(
-                            address.latitude, address.longitude);
+                                                      address.latitude, address.longitude);
 
                     positionMarker = new google.maps.Marker({
                         position: position,
@@ -66,7 +66,7 @@ angular.module('planevent').directive('addressviewer', function() {
 
             function updateRadius(zoom) {
                 var address = scope.$eval(attrs.ngModel),
-                    radius = scope.$eval(attrs.radius);
+                radius = scope.$eval(attrs.radius);
 
                 if (radius === undefined) {
                     return;
@@ -92,31 +92,31 @@ angular.module('planevent').directive('addressviewer', function() {
 
             initMap();
             scope.$watchCollection(
-                '[' + attrs.ngModel + '.longitude,' +
-                attrs.ngModel + '.latitude]',
-                updatePosition);
+                                   '[' + attrs.ngModel + '.longitude,' +
+                                   attrs.ngModel + '.latitude]',
+                                   updatePosition);
 
             scope.$watch(
-                attrs.radius,
-                updateRadius
-            );
+                         attrs.radius,
+                         updateRadius
+                         );
 
             scope.$watch(
-                attrs.radius,
-                updateRadius
-            );
+                         attrs.radius,
+                         updateRadius
+                         );
 
             var viewerElement = $('.address-viewer', element);
             scope.$watch(
-                function() {
-                    return viewerElement.is(':visible');
-                },
-                function() {
-                    var center = map.getCenter();
-                    google.maps.event.trigger(map, 'resize');
-                    map.setCenter(center);
-                }
-            );
+                         function() {
+                            return viewerElement.is(':visible');
+                        },
+                        function() {
+                            var center = map.getCenter();
+                            google.maps.event.trigger(map, 'resize');
+                            map.setCenter(center);
+                        }
+                        );
         }
     };
 });
@@ -134,9 +134,9 @@ angular.module('planevent').directive('addresssetter', function() {
 
             function parseResponse(result) {
                 var type, component,
-                    street = ' ',
-                    location = result.geometry.location,
-                    address_components = result.address_components;
+                street = ' ',
+                location = result.geometry.location,
+                address_components = result.address_components;
 
                 address.formatted = result.formatted_address;
 
@@ -187,9 +187,9 @@ angular.module('planevent').directive('addresssetter', function() {
                 scope.validatingLocation = true;
                 var geocoder = new google.maps.Geocoder();
                 geocoder.geocode(
-                    {'address': scope.addressString},
-                    geocodeCallback
-                );
+                                 {'address': scope.addressString},
+                                 geocodeCallback
+                                 );
             };
 
             function geocodeCallback(results, status) {
@@ -224,14 +224,14 @@ angular.module('planevent').directive('gallery', function() {
 
                 $scope.showPrev = function () {
                     $scope._Index =
-                        ($scope._Index > 0) ? --$scope._Index :
-                        $scope.gallery.length - 1;
+                    ($scope._Index > 0) ? --$scope._Index :
+                    $scope.gallery.length - 1;
                 };
 
                 $scope.showNext = function () {
                     $scope._Index =
-                        ($scope._Index < $scope.gallery.length - 1) ?
-                        ++$scope._Index : 0;
+                    ($scope._Index < $scope.gallery.length - 1) ?
+                    ++$scope._Index : 0;
                 };
 
                 $scope.showPhoto = function (index) {
@@ -255,8 +255,8 @@ angular.module('planevent').directive('experiment', function($http) {
         compile: function() {
             return function(scope, element, attrs) {
                 var experiment = attrs.id,
-                    storageKey = 'planevent:experiment:' + experiment,
-                    variation = localStorage.getItem(storageKey);
+                storageKey = 'planevent:experiment:' + experiment,
+                variation = localStorage.getItem(storageKey);
                 if (variation === null) {
                     var url = '/api/experiment/' + attrs.id + '/variation';
                     $http.get(url).success(function(variation) {
@@ -308,3 +308,66 @@ angular.module('planevent').directive('pebutton', function() {
         }
     };
 });
+
+
+/* ng-infinite-scroll - v1.0.0 - 2013-02-23 */
+/* patched version - fixed getting viewport height */
+var mod;
+
+mod = angular.module('infinite-scroll', []);
+
+mod.directive('infiniteScroll', function($rootScope, $window, $timeout) {
+    return {
+        link: function(scope, elem, attrs) {
+            var checkWhenEnabled, handler, scrollDistance, scrollEnabled;
+            $window = angular.element($window);
+            scrollDistance = 0;
+            if (attrs.infiniteScrollDistance !== null) {
+                scope.$watch(attrs.infiniteScrollDistance, function(value) {
+                    return scrollDistance = parseInt(value, 10);
+                });
+            }
+            scrollEnabled = true;
+            checkWhenEnabled = false;
+            if (attrs.infiniteScrollDisabled !== null) {
+                scope.$watch(attrs.infiniteScrollDisabled, function(value) {
+                    scrollEnabled = !value;
+                    if (scrollEnabled && checkWhenEnabled) {
+                        checkWhenEnabled = false;
+                        return handler();
+                    }
+                });
+            }
+            handler = function() {
+                var elementBottom, remaining, shouldScroll, windowBottom;
+                windowBottom = window.innerHeight + $window.scrollTop();
+                elementBottom = elem.offset().top + elem.height();
+                remaining = elementBottom - windowBottom;
+                shouldScroll = remaining <= window.innerHeight * scrollDistance;
+                if (shouldScroll && scrollEnabled) {
+                    if ($rootScope.$$phase) {
+                        return scope.$eval(attrs.infiniteScroll);
+                    } else {
+                        return scope.$apply(attrs.infiniteScroll);
+                    }
+                } else if (shouldScroll) {
+                    return checkWhenEnabled = true;
+                }
+            };
+            $window.on('scroll', handler);
+            scope.$on('$destroy', function() {
+                return $window.off('scroll', handler);
+            });
+            return $timeout((function() {
+                if (attrs.infiniteScrollImmediateCheck) {
+                    if (scope.$eval(attrs.infiniteScrollImmediateCheck)) {
+                        return handler();
+                    }
+                } else {
+                    return handler();
+                }
+            }), 0);
+        }
+    };
+}
+);

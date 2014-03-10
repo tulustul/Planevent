@@ -39,7 +39,8 @@ angular.module('planevent').config(function($routeProvider) {
 
     .when('/vendors/:categoryId', {
         templateUrl: 'assets/partials/vendorsList.html',
-        controller: 'VendorListController'
+        controller: 'VendorListController',
+        reloadOnSearch: false
     })
     .when('/vendor/:vendorId', {
         templateUrl: 'assets/partials/vendorPage.html',

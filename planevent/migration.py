@@ -62,16 +62,19 @@ def connect_to_spreadsheet(key):
 
 @async
 @progress_counter
-def export(progress_counter):
+def export(spreadsheet_name, worksheet_name, progress_counter):
+    spreadsheet_name = spreadsheet_name or settings.GOOGLE_IMPORT_SPREADSHET
+    worksheet_name = worksheet_name or settings.GOOGLE_IMPORT_WORKSHEET
+
     progress_counter.message = 'Preparing worksheet'
 
     count = models.Vendor.query().count()
     progress_counter.max = count
 
-    spreadsheet = connect_to_spreadsheet(settings.GOOGLE_EXPORT_SPREADSHET)
+    spreadsheet = connect_to_spreadsheet(spreadsheet_name)
 
     try:
-        worksheet = spreadsheet.worksheet(settings.GOOGLE_EXPORT_WORKSHEET)
+        worksheet = spreadsheet.worksheet(worksheet_name)
     except gspread.WorksheetNotFound:
         pass
     else:
@@ -122,9 +125,13 @@ def export(progress_counter):
 
 @async
 @progress_counter
-def import_(progress_counter):
-    spreadsheet = connect_to_spreadsheet(settings.GOOGLE_EXPORT_SPREADSHET)
-    worksheet = spreadsheet.worksheet('baza')
+def import_(spreadsheet_name, worksheet_name, progress_counter):
+    spreadsheet_name = spreadsheet_name or settings.GOOGLE_IMPORT_SPREADSHET
+    worksheet_name = worksheet_name or settings.GOOGLE_IMPORT_WORKSHEET
+
+    spreadsheet = connect_to_spreadsheet(spreadsheet_name)
+    worksheet = spreadsheet.worksheet(worksheet_name)
+
     count = worksheet.row_count
     progress_counter.max = count
     progress_counter.message = 'Importing rows'
@@ -175,7 +182,7 @@ def vendor_export(vendor):
 
 
 def vendor_import(vendor_dict):
-    vendor = models.Vendor
+    vendor = models.Vendor()
 
     vendor.name = vendor_dict['name']
     vendor.description = vendor_dict['description']

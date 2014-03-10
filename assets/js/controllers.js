@@ -61,8 +61,11 @@ angular.module('planevent').controller('VendorListController',
             if (moreVendors.length < LIMIT) {
                 $scope.noMoreData = true;
             }
+            moreVendors[0].name += ' FIRST';
             $scope.vendors = _.union($scope.vendors, moreVendors);
             $scope.waitingForMore = false;
+            $location.url($location.path() +
+                           '?page=' + searchService.params.offset / LIMIT);
         });
     };
     $scope.clearVendors();
@@ -425,6 +428,42 @@ angular.module('planevent').controller('DatabaseManagementController',
         })();
     }
 
+    $scope.migrations = {
+        'import': {
+            name: 'import',
+            exec: function(spreadsheetName, worksheetName) {
+                $scope.resetMessages();
+
+                $http.post('/api/database/migration', {
+                    spreadsheet: spreadsheetName,
+                    worksheet: worksheetName,
+                })
+                .success(function(response) {
+                    $scope.addSuccess(response.message);
+                    countProgress(response.progress_counter);
+                })
+                .error(function(msg) {
+                    $scope.addDanger(msg);
+                });
+            }
+        },
+        'export': {
+            name: 'export',
+            exec: function() {
+                $scope.resetMessages();
+
+                $http.get('/api/database/migration')
+                .success(function(response) {
+                    $scope.addSuccess(response.message);
+                    countProgress(response.progress_counter);
+                })
+                .error(function(msg) {
+                    $scope.addDanger(msg);
+                });
+            }
+        }
+    };
+
     $scope.isWorking = function(task) {
         if (task === undefined || task === null) {
             return false;
@@ -487,31 +526,4 @@ angular.module('planevent').controller('DatabaseManagementController',
                 $scope.addDanger(msg);
             });
     };
-
-    $scope.export = function() {
-        $scope.resetMessages();
-
-        $http.get('/api/database/migration')
-            .success(function(response) {
-                $scope.addSuccess(response.message);
-                countProgress(response.progress_counter);
-            })
-            .error(function(msg) {
-                $scope.addDanger(msg);
-            });
-    };
-
-    $scope.import = function() {
-        $scope.resetMessages();
-
-        $http.post('/api/database/migration')
-            .success(function(response) {
-                $scope.addSuccess(response.message);
-                countProgress(response.progress_counter);
-            })
-            .error(function(msg) {
-                $scope.addDanger(msg);
-            });
-    };
-
 });

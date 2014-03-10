@@ -26,6 +26,10 @@ from planevent import (
 )
 from planevent.redisdb import redis_db
 from planevent.async import TaskProgressCounter
+from planevent.scripts.initializedb import (
+    create_test_categories,
+    create_test_tags,
+)
 
 
 VENDOR_KEY = 'vendor:{}'
@@ -312,10 +316,12 @@ class SubcategoriesView(View):
 class MigrationView(View):
 
     @view_config(request_method='GET')
-    def export(self):
+    @param('spreadsheet', str)
+    @param('worksheet', str)
+    def export(self, spreadsheet, worksheet):
         progress_counter = TaskProgressCounter.create()
 
-        migration.export(progress_counter)
+        migration.export(spreadsheet, worksheet, progress_counter)
 
         return {
             'message': 'Export started',
@@ -323,10 +329,18 @@ class MigrationView(View):
         }
 
     @view_config(request_method='POST')
-    def import_(self):
+    @param('spreadsheet', str)
+    @param('worksheet', str)
+    def import_(self, spreadsheet, worksheet):
+        sql.Base.metadata.drop_all(planevent.sql_engine)
+        sql.Base.metadata.create_all(planevent.sql_engine)
+
+        categories, subcategories = create_test_categories()
+        tags = create_test_tags()
+
         progress_counter = TaskProgressCounter.create()
 
-        migration.import_(progress_counter)
+        migration.import_(spreadsheet, worksheet, progress_counter)
 
         return {
             'message': 'Export started',
