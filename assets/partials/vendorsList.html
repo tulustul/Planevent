@@ -1,43 +1,16 @@
 <div ng-include="searchForm"></div>
 <div id="categories-view" ng-include="categoriesView"></div>
-<div id="vendor-list" infinite-scroll="loadMore()" infinite-scroll-distance="1">
-    <a href="#/vendor/{{ vendor.id }}" ng-repeat="vendor in vendors">
 
-        <figure class="vendor-preview-wrapper">
-            <div class="flipper">
+<infinitescroll id="vendor-list"
+        page-size="20"
+        distance="1"
+        fetch-function="loadMore()">
+    <vendorpreview vendor="vendor" ng-repeat="vendor in vendors"/>
+</infinitescroll>
 
-                <div class="front">
-                    <div class="vendor-preview">
-                        <img ng-src="{{ vendor.preview_image_url }}" alt="vendor logo">
-                        <div class="content top">
-                            <span class="name">{{ vendor.name }}</span>
-                        </div>
-                        <div class="content bottom">
-                            <span class="city">{{ vendor.address.city }}</span>
-                            <span class="price" ng-show="vendor.price_min">
-                                {{ vendor.price_min }} zł
-                                <span ng-show="vendor.price_max">
-                                    - {{ vendor.price_max }} zł
-                                </span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="back">
-                    <div class="vendor-preview">
-                        <img class="flipped" ng-src="{{ vendor.preview_image_url }}" alt="vendor logo">
-                        <div class="overlay-dark" />
-                        <p>{{ vendor.description }}</p>
-                    </div>
-                </div>
-
-            </div>
-        </figure>
-
-    </a>
-    <div class="loading-message">
+<!--     <div class="loading-message">
         <span ng-show="waitingForMore">Wczytywanie...</span>
         <span ng-show="noMoreData">Nie ma już więcej firm :(</span>
     </div>
 </div>
+ -->

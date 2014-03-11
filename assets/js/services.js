@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('planevent').service('searchService', function($resource) {
+angular.module('planevent').service('searchService',
+        function($http, $resource) {
 
     this.Vendors = $resource('/api/vendors/search');
 
@@ -12,6 +13,7 @@ angular.module('planevent').service('searchService', function($resource) {
             range: 50,
             offset: 0,
             limit: 15,
+            // count: false
         };
     };
     this.resetParams();
@@ -22,6 +24,15 @@ angular.module('planevent').service('searchService', function($resource) {
             callback(moreVendors);
         });
         this.params.offset += quantity;
+    };
+
+    this.count = function(callback) {
+        this.params.count = true;
+        $http.get('/api/vendors/search', this.params)
+        .success(function(count) {
+            callback(count);
+        });
+        this.params.count = false;
     };
 });
 

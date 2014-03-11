@@ -244,7 +244,8 @@ angular.module('planevent').directive('gallery', function() {
     };
 });
 
-angular.module('planevent').directive('experiment', function($http) {
+angular.module('planevent').directive('experiment',
+        function($http) {
     return {
         restrict: 'EA',
         require: '^experiment',
@@ -309,21 +310,25 @@ angular.module('planevent').directive('pebutton', function() {
     };
 });
 
-
-/* ng-infinite-scroll - v1.0.0 - 2013-02-23 */
-/* patched version - fixed getting viewport height */
-var mod;
-
-mod = angular.module('infinite-scroll', []);
-
-mod.directive('infiniteScroll', function($rootScope, $window, $timeout) {
+/* Basing on ng-infinite-scroll - v1.0.0 */
+angular.module('planevent').directive('infinitescroll',
+        function($window, $rootScope, $timeout, searchService) {
     return {
+        restrict: 'EA',
+        scope: '=',
+        transclude: true,
+        templateUrl: 'assets/partials/directives/infiniteScroll.html',
+
         link: function(scope, elem, attrs) {
+            // searchService.count(function(count) {
+            //     scope.count = count;
+            // });
+
             var checkWhenEnabled, handler, scrollDistance, scrollEnabled;
             $window = angular.element($window);
             scrollDistance = 0;
-            if (attrs.infiniteScrollDistance !== null) {
-                scope.$watch(attrs.infiniteScrollDistance, function(value) {
+            if (attrs.distance !== null) {
+                scope.$watch(attrs.distance, function(value) {
                     return scrollDistance = parseInt(value, 10);
                 });
             }
@@ -346,9 +351,9 @@ mod.directive('infiniteScroll', function($rootScope, $window, $timeout) {
                 shouldScroll = remaining <= window.innerHeight * scrollDistance;
                 if (shouldScroll && scrollEnabled) {
                     if ($rootScope.$$phase) {
-                        return scope.$eval(attrs.infiniteScroll);
+                        return scope.$eval(attrs.fetchFunction);
                     } else {
-                        return scope.$apply(attrs.infiniteScroll);
+                        return scope.$apply(attrs.fetchFunction);
                     }
                 } else if (shouldScroll) {
                     return checkWhenEnabled = true;
@@ -369,5 +374,14 @@ mod.directive('infiniteScroll', function($rootScope, $window, $timeout) {
             }), 0);
         }
     };
-}
-);
+});
+
+angular.module('planevent').directive('vendorpreview', function() {
+    return {
+        restrict: 'EA',
+        scope: {
+            'vendor': '=vendor',
+        },
+        templateUrl: 'assets/partials/directives/vendorPreview.html',
+    };
+});

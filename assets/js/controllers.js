@@ -61,7 +61,6 @@ angular.module('planevent').controller('VendorListController',
             if (moreVendors.length < LIMIT) {
                 $scope.noMoreData = true;
             }
-            moreVendors[0].name += ' FIRST';
             $scope.vendors = _.union($scope.vendors, moreVendors);
             $scope.waitingForMore = false;
             $location.url($location.path() +
