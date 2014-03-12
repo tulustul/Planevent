@@ -13,27 +13,26 @@ angular.module('planevent').service('searchService',
             range: 50,
             offset: 0,
             limit: 15,
-            // count: false
         };
     };
     this.resetParams();
 
-    this.loadMore = function(quantity, callback) {
-        this.params.limit = quantity;
-        var moreVendors = this.Vendors.query(this.params, function() {
-            callback(moreVendors);
+    // this.loadMore = function(quantity, callback) {
+    //     this.params.limit = quantity;
+    //     var response = this.Vendors.get(this.params, function() {
+    //         callback(response.total_count, response.vendors);
+    //     });
+    //     this.params.offset += quantity;
+    // };
+
+    this.fetch = function(offset, limit, callback) {
+        this.params.offset = offset;
+        this.params.limit = limit;
+        var response = this.Vendors.get(this.params, function() {
+            callback(response.total_count, response.vendors);
         });
-        this.params.offset += quantity;
     };
 
-    this.count = function(callback) {
-        this.params.count = true;
-        $http.get('/api/vendors/search', this.params)
-        .success(function(count) {
-            callback(count);
-        });
-        this.params.count = false;
-    };
 });
 
 angular.module('planevent').service('accountService', function($resource) {

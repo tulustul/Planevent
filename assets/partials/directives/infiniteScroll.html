@@ -1,2 +1,16 @@
-<div ng-transclude></div>
-<div>{{ count }}</div>
+<div class="infinite-scroll">
+    <div class="pagination">
+        <div>{{ totalCount }}</div>
+        <div ng-repeat="page in pages" ng-click="fetchPage(page)" ng-class="{ loaded: page >= minLoadedOffset && page <= maxLoadedOffset, current: page == currentPage }">{{ page }}</div>
+        <div>JUMP</div>
+        <div>{{currentPage}}</div>
+    </div>
+    <div class="manual-loader" ng-click="loadPrevious()" ng-show="!topIsLoaded">Wczytaj wcześniejsze</div>
+    <div class="content" ng-transclude></div>
+    <div class="manual-loader" ng-click="loadNext()" ng-show="!bottomIsLoaded && manualNextLoading">Wczytaj kolejne</div>
+
+    <div class="loading-message">
+        <span ng-show="waitingForMore">Wczytywanie...</span>
+        <span ng-show="bottomIsLoaded">Nie ma już więcej ofert :(</span>
+    </div>
+</div>

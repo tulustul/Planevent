@@ -1,16 +1,11 @@
 <div ng-include="searchForm"></div>
 <div id="categories-view" ng-include="categoriesView"></div>
 
-<infinitescroll id="vendor-list"
+<infinitescroll
+        id="vendor-list"
         page-size="20"
         distance="1"
-        fetch-function="loadMore()">
-    <vendorpreview vendor="vendor" ng-repeat="vendor in vendors"/>
+        auto-scroll-limit="200",
+        fetch-function="fetch">
+    <vendorpreview vendor="vendor" ng-repeat="vendor in entities" />
 </infinitescroll>
-
-<!--     <div class="loading-message">
-        <span ng-show="waitingForMore">Wczytywanie...</span>
-        <span ng-show="noMoreData">Nie ma już więcej firm :(</span>
-    </div>
-</div>
- -->

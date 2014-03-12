@@ -178,3 +178,40 @@ $galleryHeigth: 500px;
         }
     }
 }
+
+.infinite-scroll {
+    .pagination {
+        float: right;
+        background-color: white;
+        position: fixed;
+        right: 10px;
+        div {
+            padding: 2px 4px;
+            &.loaded {
+                background-color: #ccc;
+            }
+            &.current {
+                background-color: #999;
+            }
+            &:hover {
+                background-color: gray;
+            }
+        }
+    }
+    .content {
+        &:after {
+            content: " ";
+            display: block;
+            clear: both;
+        }
+    }
+     .manual-loader {
+        background-color: white;
+        font-size: 20px;
+        padding: 10px;
+        width: 50%;
+        min-width: 250px;
+        margin: 0px auto;
+        text-align: center;
+     }
+}

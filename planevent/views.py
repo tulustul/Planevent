@@ -138,9 +138,8 @@ class SearchVendorsView(View):
     @param('exclude_vendor_id', int)
     @param('offset', int, default=0)
     @param('limit', int, default=10)
-    @param('count', bool, default=False)
     def get(self, category, tags, location, range, exclude_vendor_id, offset,
-            limit, count):
+            limit):
 
         query = sql.DBSession.query(models.Vendor.id)
 
@@ -166,16 +165,19 @@ class SearchVendorsView(View):
 
         query = query.order_by(models.Vendor.promotion.desc())
 
-        if count:
-            return query.count()
+        total_count = query.count()
 
-        else:
-            vendors_ids = [
-                t[0] for t in query.limit(limit).offset(offset).all()
-            ]
+        vendors_ids = [
+            t[0] for t in query.limit(limit).offset(offset).all()
+        ]
 
-            return models.Vendor.query('address', 'logo') \
-                .filter(models.Vendor.id.in_(vendors_ids)).all()
+        vendors = models.Vendor.query('address', 'logo') \
+            .filter(models.Vendor.id.in_(vendors_ids)).all()
+
+        return {
+            'total_count': total_count,
+            'vendors': vendors,
+        }
 
 
 @view_defaults(route_name='vendors', renderer='json')

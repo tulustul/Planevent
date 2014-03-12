@@ -36,7 +36,7 @@ angular.module('planevent').controller('CategoriesController',
 angular.module('planevent').controller('VendorListController',
         function($scope, $location, $routeParams, $rootScope, searchService) {
 
-    var LIMIT = 25;
+    // var LIMIT = 25;
 
     searchService.resetParams();
     searchService.params.category = $routeParams.categoryId;
@@ -51,24 +51,30 @@ angular.module('planevent').controller('VendorListController',
         $scope.noMoreData = false;
     };
 
-    $scope.loadMore = function() {
-        if ($scope.waitingForMore || $scope.noMoreData) {
-            return;
-        }
-        $scope.waitingForMore = true;
+    // $scope.loadMore = function() {
+    //     if ($scope.waitingForMore || $scope.noMoreData) {
+    //         return;
+    //     }
+    //     $scope.waitingForMore = true;
 
-        searchService.loadMore(LIMIT, function(moreVendors) {
-            if (moreVendors.length < LIMIT) {
-                $scope.noMoreData = true;
-            }
-            $scope.vendors = _.union($scope.vendors, moreVendors);
-            $scope.waitingForMore = false;
-            $location.url($location.path() +
-                           '?page=' + searchService.params.offset / LIMIT);
-        });
+    //     searchService.loadMore(LIMIT, function(total_count, moreVendors) {
+    //         $scope.total_count = total_count;
+    //         if (moreVendors.length < LIMIT) {
+    //             $scope.noMoreData = true;
+    //         }
+    //         $scope.vendors = _.union($scope.vendors, moreVendors);
+    //         $scope.waitingForMore = false;
+    //         $location.url($location.path() +
+    //                        '?page=' + searchService.params.offset / LIMIT);
+    //     });
+    // };
+
+    $scope.fetch = function(offset, limit, callback) {
+        searchService.fetch(offset, limit, callback);
     };
+
     $scope.clearVendors();
-    $scope.loadMore();
+    // $scope.loadMore();
 });
 
 angular.module('planevent').controller('VendorPageController',

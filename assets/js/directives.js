@@ -47,7 +47,8 @@ angular.module('planevent').directive('addressviewer', function() {
 
                 if (address && address.validated) {
                     position = new google.maps.LatLng(
-                                                      address.latitude, address.longitude);
+                        address.latitude, address.longitude
+                    );
 
                     positionMarker = new google.maps.Marker({
                         position: position,
@@ -312,7 +313,76 @@ angular.module('planevent').directive('pebutton', function() {
 
 /* Basing on ng-infinite-scroll - v1.0.0 */
 angular.module('planevent').directive('infinitescroll',
-        function($window, $rootScope, $timeout, searchService) {
+        function($window, $rootScope, $timeout) {
+
+    function fetchingLogic(scope, attrs) {
+        var minLoadedOffset = 0,
+            maxLoadedOffset = 0,
+            autoScroolLimit = parseInt(attrs.autoScrollLimit),
+            pageSize = parseInt(attrs.pageSize),
+            fetchFunction = scope.$eval(attrs.fetchFunction);
+
+        scope.entities = [];
+        scope.pages = [];
+        scope.topIsLoaded = true;
+        scope.bottomIsLoaded = false;
+        scope.manualNextLoading = false;
+        scope.waitingForMore = false;
+        scope.minLoadedOffset = minLoadedOffset;
+        scope.maxLoadedOffset = maxLoadedOffset;
+        scope.currentPage = 0;
+
+        function generatePages() {
+            scope.pages = _.range(0, scope.totalCount, pageSize);
+        }
+
+        function fetchEntities(offset, limit, callback) {
+            scope.waitingForMore = true;
+            fetchFunction(offset, limit,
+                    function(totalCount, entities) {
+                scope.totalCount = totalCount;
+                callback(entities);
+                scope.topIsLoaded = minLoadedOffset === 0;
+                scope.bottomIsLoaded = maxLoadedOffset === scope.totalCount;
+                scope.manualNextLoading =
+                    (maxLoadedOffset - minLoadedOffset) > autoScroolLimit;
+                scope.waitingForMore = false;
+                scope.minLoadedOffset = minLoadedOffset;
+                scope.maxLoadedOffset = maxLoadedOffset;
+                generatePages();
+            });
+        }
+
+        scope.fetchPage = function(page) {
+            if (page >= minLoadedOffset && page <= maxLoadedOffset) {
+                var top = (page - minLoadedOffset) * 50;
+                var body = $('html, body');
+                body.animate({scrollTop: top}, 600, 'linear', function() {
+                });
+            } else {
+                minLoadedOffset = page;
+                fetchEntities(minLoadedOffset, pageSize, function(entities) {
+                    scope.entities = entities;
+                    maxLoadedOffset = minLoadedOffset + entities.length;
+                });
+            }
+        };
+        scope.loadPrevious = function() {
+            var newMinLoadedOffset = _.max([0, minLoadedOffset - pageSize]);
+            var limit = minLoadedOffset - newMinLoadedOffset;
+            minLoadedOffset = newMinLoadedOffset;
+            fetchEntities(minLoadedOffset, limit, function(entities) {
+                scope.entities = _.union(entities, scope.entities);
+            });
+        };
+        scope.loadNext = function() {
+            fetchEntities(maxLoadedOffset, pageSize, function(entities) {
+                scope.entities = _.union(scope.entities, entities);
+                maxLoadedOffset += entities.length;
+            });
+        };
+    }
+
     return {
         restrict: 'EA',
         scope: '=',
@@ -320,16 +390,15 @@ angular.module('planevent').directive('infinitescroll',
         templateUrl: 'assets/partials/directives/infiniteScroll.html',
 
         link: function(scope, elem, attrs) {
-            // searchService.count(function(count) {
-            //     scope.count = count;
-            // });
+            fetchingLogic(scope, attrs);
 
             var checkWhenEnabled, handler, scrollDistance, scrollEnabled;
             $window = angular.element($window);
             scrollDistance = 0;
             if (attrs.distance !== null) {
                 scope.$watch(attrs.distance, function(value) {
-                    return scrollDistance = parseInt(value, 10);
+                    scrollDistance = parseInt(value, 10);
+                    return scrollDistance;
                 });
             }
             scrollEnabled = true;
@@ -344,19 +413,24 @@ angular.module('planevent').directive('infinitescroll',
                 });
             }
             handler = function() {
+
                 var elementBottom, remaining, shouldScroll, windowBottom;
                 windowBottom = window.innerHeight + $window.scrollTop();
                 elementBottom = elem.offset().top + elem.height();
                 remaining = elementBottom - windowBottom;
                 shouldScroll = remaining <= window.innerHeight * scrollDistance;
-                if (shouldScroll && scrollEnabled) {
-                    if ($rootScope.$$phase) {
-                        return scope.$eval(attrs.fetchFunction);
-                    } else {
-                        return scope.$apply(attrs.fetchFunction);
-                    }
+
+                scope.currentPage = parseInt($window.scrollTop() / 1000) * 20 +
+                    scope.minLoadedOffset;
+                scope.$apply();
+
+                if (shouldScroll && scrollEnabled &&
+                        !scope.manualNextLoading && !scope.waitingForMore &&
+                        !scope.bottomIsLoaded) {
+                    scope.loadNext();
                 } else if (shouldScroll) {
-                    return checkWhenEnabled = true;
+                    checkWhenEnabled = true;
+                    return checkWhenEnabled;
                 }
             };
             $window.on('scroll', handler);
