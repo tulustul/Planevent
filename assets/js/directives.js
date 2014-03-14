@@ -328,15 +328,15 @@ angular.module('planevent').directive('infinitescroll',
                 autoScroolLimit = parseInt(attrs.autoScrollLimit),
                 fetchFunction = scope.$eval(attrs.fetchFunction),
                 offset = parseInt($routeParams.offset),
-                minLoadedOffset = 0,
-                maxLoadedOffset = 0,
                 loadingPrevious = false,
-                checkWhenEnabled, scrollDistance, scrollEnabled;
+                checkWhenEnabled, scrollDistance, scrollEnabled,
+                minLoadedOffset, maxLoadedOffset;
 
-            if (offset !== undefined) {
-                minLoadedOffset = offset;
-                maxLoadedOffset = offset;
+            if (isNaN(offset)) {
+                offset = 0;
             }
+            minLoadedOffset = offset;
+            maxLoadedOffset = offset;
 
             scope.entities = [];
             scope.pages = [];
