@@ -7,6 +7,7 @@ if [ -f $NGINX_PIDFILE ]; then
     echo 'nginx stopped'
 fi
 
+cd ${OPENSHIFT_REPO_DIR}
 echo 'Stopping uwsgi'
 uwsgi --stop uwsgi.pid
 echo 'uwsgi stopped'
