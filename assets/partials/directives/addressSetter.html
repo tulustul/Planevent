@@ -5,7 +5,7 @@
         Kod pocztowy: <input type="text" ng-model="address.postal_code" ng-blur="validateAddress()"><br />
     </div>
     <div ng-show="type == 'simple'">
-        {{ locationLabel }}: <input type="text" ng-model="addressString" ng-blur="validateAddress()"><br />
+        {{ locationLabel }} <input type="text" ng-model="addressString" ng-blur="validateAddress()" placeholder="Lokalizacja"><br />
     </div>
 
     <div ng-show="locationComplete">

@@ -4,3 +4,30 @@
     background: -moz-linear-gradient($colors);
     background: linear-gradient($colors);
 }
+
+@mixin ng-show($maxHeight) {
+    &.ng-hide-add {
+        @include transition(0.5s);
+        display: block !important;
+        @include transform-origin(right top 0);
+        @include transform(scaleY(1));
+        max-height: $maxHeight;
+    }
+    &.ng-hide-add-active {
+        @include transform-origin(right top 0);
+        @include transform(scaleY(0));
+        max-height: 0px;
+    }
+    &.ng-hide-remove {
+        @include transition(0.5s);
+        display: block !important;
+        @include transform(scaleY(0));
+        @include transform-origin(right top 0);
+        max-height: 0px;
+    }
+    &.ng-hide-remove-active {
+        @include transform-origin(right top 0);
+        @include transform(scaleY(1));
+        max-height: $maxHeight;
+    }
+}

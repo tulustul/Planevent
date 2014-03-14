@@ -18,22 +18,30 @@ var appProdJs = {
 var vendorJs = {
     src: [
         'bower_components/jquery/jquery.js',
+        'bower_components/jquery-ui/ui/jquery-ui.js',
+        // 'bower_components/jquery-ui/ui/jquery.ui.core.js',
+        // 'bower_components/jquery-ui/ui/jquery.ui.widget.js',
+        // 'bower_components/jquery-ui/ui/jquery.ui.slider.js',
+
         'bower_components/underscore/underscore.js',
+
         'bower_components/angular/angular.js',
         'bower_components/angular-animate/angular-animate.js',
         'bower_components/angular-resource/angular-resource.js',
-        'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-        'bower_components/ng-file-upload/angular-file-upload.js',
         'bower_components/angular-route/angular-route.js',
-        'bower_components/ng-table/ng-table.js',
-        // 'bower_components/ngInfiniteScroll/ng-infinite-scroll.js',
+
+        'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+        'bower_components/angular-ui-slider/src/slider.js',
+        'bower_components/ng-file-upload/angular-file-upload.js',
+        'bower_components/ng-table/ng-table.js'
     ],
     dest: 'static/vendor.js'
 };
 var vendorCss = {
     src: [
         'bower_components/bootstrap/dist/css/bootstrap.css',
-        'bower_components/bootstrap/dist/css/bootstrap-theme.css'
+        'bower_components/bootstrap/dist/css/bootstrap-theme.css',
+        'bower_components/jquery-ui/themes/base/jquery-ui.css'
     ],
     dest: 'static/vendor.css'
 };

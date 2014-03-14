@@ -29,6 +29,12 @@ a {
     color: #444;
 }
 
+.clear {
+    content: " ";
+    display: block;
+    clear: both;
+}
+
 #container {
     @include container;
     @include border-box-sizing;

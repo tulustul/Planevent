@@ -1,9 +1,6 @@
 @import "globals.scss";
 
 /* BUTTON */
-$button-primary-color: rgb(211, 25, 25);
-$button-secondary-color: white;
-$button-background-color: rgba(255, 255, 255, 0);
 .button {
     display: inline-block;
     a {
@@ -180,21 +177,39 @@ $galleryHeigth: 500px;
 }
 
 .infinite-scroll {
+    margin-right: 80px;
     .pagination {
         float: right;
         background-color: white;
         position: fixed;
         right: 10px;
-        div {
-            padding: 2px 4px;
-            &.loaded {
-                background-color: #ccc;
-            }
-            &.current {
-                background-color: #999;
-            }
-            &:hover {
-                background-color: gray;
+        border-radius: 0px;
+        ul {
+            border-right: 4px solid $dominant;
+            padding: 0px;
+            margin-bottom: 0px;
+            width: 70px;
+            li {
+                padding: 5px 8px;
+                list-style: none;
+                cursor: pointer;
+                text-align: center;
+                &.loaded {
+                    background-color: #ECECEC;
+                    border-left: 3px solid $dominant;
+                }
+                &.current {
+                    font-weight: 600;
+                }
+                .fa {
+                    color: $dominant;
+                }
+                &:hover {
+                    background-color: #DCDCDC;
+                    .pageNumber {
+                        border-bottom: 2px solid $dominant;
+                    }
+                }
             }
         }
     }
@@ -213,5 +228,11 @@ $galleryHeigth: 500px;
         min-width: 250px;
         margin: 0px auto;
         text-align: center;
+        &:hover {
+            cursor: pointer;
+            span {
+                border-bottom: 2px solid $dominant;
+            }
+        }
      }
 }

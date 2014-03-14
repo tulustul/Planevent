@@ -1,11 +1,11 @@
 <div ng-include="searchForm"></div>
-<div id="categories-view" ng-include="categoriesView"></div>
 
 <infinitescroll
         id="vendor-list"
         page-size="20"
         distance="1"
         auto-scroll-limit="200",
+        element-size="vendorPreviewSize()"
         fetch-function="fetch">
     <vendorpreview vendor="vendor" ng-repeat="vendor in entities" />
 </infinitescroll>

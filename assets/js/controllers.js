@@ -36,8 +36,6 @@ angular.module('planevent').controller('CategoriesController',
 angular.module('planevent').controller('VendorListController',
         function($scope, $location, $routeParams, $rootScope, searchService) {
 
-    // var LIMIT = 25;
-
     searchService.resetParams();
     searchService.params.category = $routeParams.categoryId;
 
@@ -47,34 +45,27 @@ angular.module('planevent').controller('VendorListController',
 
     $scope.clearVendors = function() {
         $scope.vendors = [];
-        $scope.waitingForMore = false;
+        $scope.waitingForMoreTop = false;
+        $scope.waitingForMoreBottom = false;
         $scope.noMoreData = false;
     };
 
-    // $scope.loadMore = function() {
-    //     if ($scope.waitingForMore || $scope.noMoreData) {
-    //         return;
-    //     }
-    //     $scope.waitingForMore = true;
-
-    //     searchService.loadMore(LIMIT, function(total_count, moreVendors) {
-    //         $scope.total_count = total_count;
-    //         if (moreVendors.length < LIMIT) {
-    //             $scope.noMoreData = true;
-    //         }
-    //         $scope.vendors = _.union($scope.vendors, moreVendors);
-    //         $scope.waitingForMore = false;
-    //         $location.url($location.path() +
-    //                        '?page=' + searchService.params.offset / LIMIT);
-    //     });
-    // };
+    $scope.vendorPreviewSize = function() {
+        var previewElem = $('.vendor-preview-wrapper').first();
+        if (previewElem.length === 0) {
+            return {width: 1, height: 1};
+        }
+        return {
+            width: previewElem.outerWidth(true),
+            height: previewElem.outerHeight(true)
+        };
+    };
 
     $scope.fetch = function(offset, limit, callback) {
         searchService.fetch(offset, limit, callback);
     };
 
     $scope.clearVendors();
-    // $scope.loadMore();
 });
 
 angular.module('planevent').controller('VendorPageController',
@@ -323,6 +314,7 @@ angular.module('planevent').controller('SearchController',
     $scope.tags = '';
     $scope.location = {};
     $scope.radius = 30;
+    $scope.prizeRange = [50, 200];
 
     $scope.toogleSearch = function() {
         $scope.formVisible = !$scope.formVisible;
