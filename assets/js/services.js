@@ -6,29 +6,32 @@ angular.module('planevent').service('searchService',
     this.Vendors = $resource('/api/vendors/search');
 
     this.resetParams = function() {
-        this.params = {
-            category: 0,
-            tags: [],
-            location: '',
-            range: 50,
-            offset: 0,
-            limit: 15,
-        };
+        this.categoryEnabled = false;
+        this.locationEnabled = false;
+        this.priceEnabled = false;
+        this.params = {};
     };
     this.resetParams();
 
-    // this.loadMore = function(quantity, callback) {
-    //     this.params.limit = quantity;
-    //     var response = this.Vendors.get(this.params, function() {
-    //         callback(response.total_count, response.vendors);
-    //     });
-    //     this.params.offset += quantity;
-    // };
-
     this.fetch = function(offset, limit, callback) {
-        this.params.offset = offset;
-        this.params.limit = limit;
-        var response = this.Vendors.get(this.params, function() {
+        var params = {offset: offset, limit: limit},
+            response;
+
+        if (this.categoryEnabled) {
+            params.category = this.params.category;
+        }
+
+        if (this.locationEnabled) {
+            params.location = this.params.location;
+            params.range = this.params.range;
+        }
+
+        if (this.priceEnabled) {
+            params.price_min = this.params.price_min;
+            params.price_max = this.params.price_max;
+        }
+
+        response = this.Vendors.get(params, function() {
             callback(response.total_count, response.vendors);
         });
     };

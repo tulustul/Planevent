@@ -30,6 +30,8 @@ var vendorJs = {
         'bower_components/angular-resource/angular-resource.js',
         'bower_components/angular-route/angular-route.js',
 
+        'bower_components/angucomplete/angucomplete.js',
+        'bower_components/ngAutocomplete/src/ngAutocomplete.js',
         'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
         'bower_components/angular-ui-slider/src/slider.js',
         'bower_components/ng-file-upload/angular-file-upload.js',
@@ -41,7 +43,8 @@ var vendorCss = {
     src: [
         'bower_components/bootstrap/dist/css/bootstrap.css',
         'bower_components/bootstrap/dist/css/bootstrap-theme.css',
-        'bower_components/jquery-ui/themes/base/jquery-ui.css'
+        'bower_components/jquery-ui/themes/base/jquery-ui.css',
+        'bower_components/angucomplete/angucomplete.css',
     ],
     dest: 'static/vendor.css'
 };

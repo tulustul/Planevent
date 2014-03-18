@@ -9,7 +9,8 @@ angular.module('planevent').directive('addressviewer', function() {
             var map,
             position,
             radiusMarker,
-            positionMarker;
+            positionMarker,
+            searchMarkers = [];
 
             function addRadius(map, center, radius) {
                 var circleOptions = {
@@ -91,21 +92,36 @@ angular.module('planevent').directive('addressviewer', function() {
                 }
             }
 
+            function updateMarkers() {
+                var vendor, position, i;
+
+                for (i = 0; i < searchMarkers.length; i++ ) {
+                    searchMarkers[i].setMap(null);
+                }
+                searchMarkers.length = 0;
+
+                for (i in scope.entities) {
+                    vendor =  scope.entities[i];
+                    position = new google.maps.LatLng(
+                        vendor.address.latitude,
+                        vendor.address.longitude
+                    );
+                    searchMarkers.push(new google.maps.Marker({
+                        position: position,
+                        map: map,
+                        title: vendor.address.formatted
+                    }));
+                }
+            }
+
             initMap();
             scope.$watchCollection(
                                    '[' + attrs.ngModel + '.longitude,' +
                                    attrs.ngModel + '.latitude]',
                                    updatePosition);
 
-            scope.$watch(
-                         attrs.radius,
-                         updateRadius
-                         );
-
-            scope.$watch(
-                         attrs.radius,
-                         updateRadius
-                         );
+            scope.$watch(attrs.radius, updateRadius);
+            scope.$watch('entities', updateMarkers);
 
             var viewerElement = $('.address-viewer', element);
             scope.$watch(
@@ -128,16 +144,20 @@ angular.module('planevent').directive('addresssetter', function() {
         require: '^ngModel',
         templateUrl: 'assets/partials/directives/addressSetter.html',
         link: function(scope, element, attrs) {
-            var address;
+            var address = scope.$eval(attrs.ngModel);
 
             scope.locationLabel = attrs.label;
             scope.type = attrs.type;
 
             function parseResponse(result) {
+                if (result === undefined) {
+                    return;
+                }
+
                 var type, component,
-                street = ' ',
-                location = result.geometry.location,
-                address_components = result.address_components;
+                    street = ' ',
+                    location = result.geometry.location,
+                    address_components = result.address_components;
 
                 address.formatted = result.formatted_address;
 
@@ -158,8 +178,12 @@ angular.module('planevent').directive('addresssetter', function() {
                     address.street = street;
                 }
 
-                address.latitude = location.d;
-                address.longitude = location.e;
+                address.latitude = location.k;
+                address.longitude = location.A;
+
+                address.validated = true;
+
+                scope[attrs.ngModel] = address;
             }
 
             function processMultilineAddress() {
@@ -203,6 +227,10 @@ angular.module('planevent').directive('addresssetter', function() {
                 }
                 scope.$apply();
             }
+
+            scope.$watch('details', function() {
+                parseResponse(scope.details);
+            });
         }
     };
 });
@@ -400,6 +428,22 @@ angular.module('planevent').directive('infinitescroll',
                 });
             };
 
+            function reset(resetOffset) {
+                scope.entities = [];
+                if (resetOffset === false) {
+                    minLoadedOffset = offset;
+                } else {
+                    minLoadedOffset = 0;
+                }
+                maxLoadedOffset = 0;
+                fetchEntities(0, pageSize, function(entities) {
+                    scope.entities = entities;
+                    maxLoadedOffset += entities.length;
+                    return 0;
+                });
+            }
+            scope[attrs.resetFunctionName] = reset;
+
             function generatePages() {
                 scope.pages = _.range(0, scope.totalCount, pageSize);
             }
@@ -474,7 +518,7 @@ angular.module('planevent').directive('infinitescroll',
                     scope.$apply();
                 }
 
-                $location.url($location.path() + '?offset=' + page);
+                $location.search('offset', page);
             }
 
             function handler() {

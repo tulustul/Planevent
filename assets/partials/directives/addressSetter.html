@@ -4,8 +4,18 @@
         Miasto: <input type="text" ng-model="address.city" ng-blur="validateAddress()"><br />
         Kod pocztowy: <input type="text" ng-model="address.postal_code" ng-blur="validateAddress()"><br />
     </div>
+
     <div ng-show="type == 'simple'">
-        {{ locationLabel }} <input type="text" ng-model="addressString" ng-blur="validateAddress()" placeholder="Lokalizacja"><br />
+        <span ng-show="details" class="validation fa fa-check" />
+        <div ng-class="{'input-wrapper': details}">
+            <input
+                type="text"
+                placeholder="Lokalizacja"
+                ng-model="address.formatted"
+                ng-autocomplete
+                options="{country: 'pl', types: 'geocode'}"
+                details="details">
+        </div>
     </div>
 
     <div ng-show="locationComplete">

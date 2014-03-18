@@ -7,56 +7,69 @@
         <pebutton id="searchButton" icon="search" ng-click="search()" />
         <div class="searchField">
             <input type="text" placeholder="Szukaj">
+            <!-- <angucomplete
+              placeholder="Szukaj"
+              pause="100"
+              localdata="searchTags"
+              searchFields="name"
+              titlefield="name"
+              selectedobject="selectedSearchTags" /> -->
         </div>
     </div>
 
-    <section id="advanced" ng-show="advanced">
-        <div class="searchFilter" ng-click="searchCategory=!searchCategory">
-            <span class="fa" ng-class="{'fa-angle-down': !searchCategory, 'fa-angle-up': searchCategory}"></span>
+    <section class="slideAnimation2" ng-show="!bigMap">
+        <div class="searchFilter" ng-click="categoryEnabled=!categoryEnabled">
+            <span class="fa" ng-class="{'fa-angle-down': !categoryEnabled, 'fa-angle-up': categoryEnabled}"></span>
             Kategoria
-            <span class="fa" ng-class="{'fa-angle-down': !searchCategory, 'fa-angle-up': searchCategory}"></span>
-            <span class="fa" ng-class="{'fa-check-square-o': searchCategory, 'fa-square-o': !searchCategory}"></span>
+            <span class="fa" ng-class="{'fa-angle-down': !categoryEnabled, 'fa-angle-up': categoryEnabled}"></span>
+            <span class="fa" ng-class="{'fa-check-square-o': categoryEnabled, 'fa-square-o': !categoryEnabled}"></span>
         </div>
-        <div class="formField" ng-show="searchCategory">
+        <div class="formField slideAnimation" ng-show="categoryEnabled">
             <select ng-model="category" ng-options="c.id as c.name for c in categories"></select>
         </div>
 
-        <div class="searchFilter" ng-click="searchLocation=!searchLocation">
-            <span class="fa" ng-class="{'fa-angle-down': !searchLocation, 'fa-angle-up': searchLocation}"></span>
+        <div class="searchFilter" ng-click="locationEnabled=!locationEnabled">
+            <span class="fa" ng-class="{'fa-angle-down': !locationEnabled, 'fa-angle-up': locationEnabled}"></span>
             Lokalizacja
-            <span class="fa" ng-class="{'fa-angle-down': !searchLocation, 'fa-angle-up': searchLocation}"></span>
-            <span class="fa" ng-class="{'fa-check-square-o': searchLocation, 'fa-square-o': !searchLocation}"></span>
+            <span class="fa" ng-class="{'fa-angle-down': !locationEnabled, 'fa-angle-up': locationEnabled}"></span>
+            <span class="fa" ng-class="{'fa-check-square-o': locationEnabled, 'fa-square-o': !locationEnabled}"></span>
         </div>
-        <div class="formField" ng-show="searchLocation">
+        <div class="formField slideAnimation" ng-show="locationEnabled">
             <addressSetter ng-model="location" type="simple"></addressSetter>
-            Zasięg szukania:
+                Zasięg szukania:
             <div ui-slider min="1" max="50" step="1" ng-model="radius"></div>
             <span>{{ radius }}km</span>
         </div>
 
-        <div class="searchFilter" ng-click="searchPrice=!searchPrice">
-            <span class="fa" ng-class="{'fa-angle-down': !searchPrice, 'fa-angle-up': searchPrice}"></span>
+        <div class="searchFilter" ng-click="priceEnabled=!priceEnabled">
+            <span class="fa" ng-class="{'fa-angle-down': !priceEnabled, 'fa-angle-up': priceEnabled}"></span>
             Cena
-            <span class="fa" ng-class="{'fa-angle-down': !searchPrice, 'fa-angle-up': searchPrice}"></span>
-            <span class="fa" ng-class="{'fa-check-square-o': searchPrice, 'fa-square-o': !searchPrice}"></span>
+            <span class="fa" ng-class="{'fa-angle-down': !priceEnabled, 'fa-angle-up': priceEnabled}"></span>
+            <span class="fa" ng-class="{'fa-check-square-o': priceEnabled, 'fa-square-o': !priceEnabled}"></span>
         </div>
-        <div class="formField" ng-show="searchPrice">
-            <div ui-slider="{range: true}" min="0" max="1000" step="10" ng-model="prizeRange"></div>
+        <div class="formField slideAnimation" ng-show="priceEnabled">
+            <div ui-slider="{range: true}" min="0" max="1000" step="10" ng-model="priceRange"></div>
             <div class="price">
-                <input type="text" ng-model="prizeRange[0]" />zł -
-                <input type="text" ng-model="prizeRange[1]" />zł
+                <input type="text" ng-model="priceRange[0]" />zł -
+                <input type="text" ng-model="priceRange[1]" />zł
             </div>
-    </section>
+        </div>
 
-    <section ng-show="mapVisible">
-        <addressViewer ng-model="location" radius="radius" scale-policy="radius-only" ng-class="{bigAddressViewer: bigMap, smallAddressViewer: !bigMap}" />
+        <div class="searchFilter" ng-click="mapVisible=!mapVisible">
+            <span class="fa" ng-class="{'fa-angle-down': !mapVisible, 'fa-angle-up': mapVisible}"></span>
+            Mapa
+            <span class="fa" ng-class="{'fa-angle-down': !mapVisible, 'fa-angle-up': mapVisible}"></span>
+            <span class="fa" ng-class="{'fa-check-square-o': mapVisible, 'fa-square-o': !mapVisible}"></span>
+        </div>
+    </section>
+    <div class="formField slideAnimation" ng-show="mapVisible">
         <pebutton icon="search-plus" text-position="right" text="Duża mapa" ng-click="bigMap=!bigMap" ng-show="!bigMap"></pebutton>
         <pebutton icon="search-minus" text-position="right" text="Mała mapa" ng-click="bigMap=!bigMap" ng-show="bigMap"></pebutton>
-    </section>
-
-    <div class="toogleButtons">
-        <div class="toogleButton" ng-click="advanced=!advanced">Opcje<span class="fa fa-square-o" ng-show="!advanced" /><span class="fa fa-check-square-o" ng-show="advanced" /></div>
-        <div class="toogleButton" ng-click="mapVisible=!mapVisible">Mapa<span class="fa fa-square-o" ng-show="!mapVisible" /><span class="fa fa-check-square-o" ng-show="mapVisible" /></div>
-        <div class="clear"></div>
+        <addressViewer
+            ng-model="location"
+            radius="radius"
+            scale-policy="radius-only"
+            markers-model=""
+            ng-class="{bigAddressViewer: bigMap, smallAddressViewer: !bigMap}" ></addressViewer>
     </div>
 </div>

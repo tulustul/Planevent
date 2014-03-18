@@ -136,10 +136,12 @@ class SearchVendorsView(View):
     @param('location', str)
     @param('range', int)
     @param('exclude_vendor_id', int)
+    @param('price_min', int)
+    @param('price_max', int)
     @param('offset', int, default=0)
     @param('limit', int, default=10)
-    def get(self, category, tags, location, range, exclude_vendor_id, offset,
-            limit):
+    def get(self, category, tags, location, range, exclude_vendor_id, price_min,
+            price_max, offset, limit):
 
         query = sql.DBSession.query(models.Vendor.id)
 
@@ -152,6 +154,12 @@ class SearchVendorsView(View):
 
         if exclude_vendor_id:
             query = query.filter(models.Vendor.id != exclude_vendor_id)
+
+        if price_min is not None:
+            query = query.filter(models.Vendor.price_min >= price_min)
+
+        if price_max is not None:
+            query = query.filter(models.Vendor.price_max <= price_max)
 
         if location:
             latlng = geocode_location(location)
@@ -225,13 +233,25 @@ class GalleryView(View):
 class TagsAutocompleteView(View):
 
     @view_config(request_method='GET')
-    @param('tag', str, required=True, rest=True)
-    @param('limit', int, default=10)
-    def get(self, tag, limit):
-        query = models.Tag.query() \
-            .filter(models.Tag.name.like('%'+tag+'%')) \
-            .order_by(models.Tag.references_count.desc()) \
-            .limit(limit)
+    @param('tag', str, required=False)
+    # @param('limit', int, default=10)
+    def get(self, tag):
+        query = models.Tag.query()
+            # .order_by(models.Tag.references_count.desc()) \
+            # .limit(limit)
+        if tag:
+            query = query.filter(models.Tag.name.like('%'+tag+'%'))
+
+        return query.all()
+
+
+@view_defaults(route_name='tag_names', renderer='json')
+class TagsNamesView(View):
+
+    @view_config(request_method='GET')
+    def get(self):
+        query = models.Tag.query()
+        # return [tag.name for tag in query.all()]
         return query.all()
 
 

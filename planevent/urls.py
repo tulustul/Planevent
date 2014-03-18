@@ -17,7 +17,8 @@ urls = [
     ('image', '/api/image'),
     ('gallery', '/api/gallery'),
     ('tags', '/api/tags'),
-    ('tag_autocomplete', '/api/tags/autocomplete/{tag}'),
+    ('tag_autocomplete', '/api/tags/autocomplete'),
+    ('tag_names', '/api/tags/names'),
     ('categories', '/api/categories'),
     ('subcategories', '/api/subcategories'),
 

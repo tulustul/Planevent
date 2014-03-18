@@ -25,13 +25,14 @@ categories = {
 }
 
 tags = [
-    'kuchnia polska',
-    'kuchnia francuska',
-    'kuchnia włoska',
-    'kuchnia chińska',
-    'kuchnia japońska',
-    'kuchnia rosyjska',
-    'kuchnia meksykańska',
+    'kuchnia',
+    'polska',
+    'francuska',
+    'włoska',
+    'chińska',
+    'japońska',
+    'rosyjska',
+    'meksykańska',
     'kajaki',
     'gokarty',
     'paintball',

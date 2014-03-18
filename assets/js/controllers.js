@@ -43,13 +43,6 @@ angular.module('planevent').controller('VendorListController',
         $location.path('/vendor/' + vendor.id);
     };
 
-    $scope.clearVendors = function() {
-        $scope.vendors = [];
-        $scope.waitingForMoreTop = false;
-        $scope.waitingForMoreBottom = false;
-        $scope.noMoreData = false;
-    };
-
     $scope.vendorPreviewSize = function() {
         var previewElem = $('.vendor-preview-wrapper').first();
         if (previewElem.length === 0) {
@@ -64,8 +57,6 @@ angular.module('planevent').controller('VendorListController',
     $scope.fetch = function(offset, limit, callback) {
         searchService.fetch(offset, limit, callback);
     };
-
-    $scope.clearVendors();
 });
 
 angular.module('planevent').controller('VendorPageController',
@@ -308,28 +299,75 @@ angular.module('planevent').controller('RelatedVendorsController',
 });
 
 angular.module('planevent').controller('SearchController',
-        function($scope, $location, searchService) {
+        function($scope, $location, $http, $routeParams, searchService) {
 
-    $scope.formVisible = false;
+    $scope.categoryEnabled = false;
+    $scope.locationEnabled = false;
+    $scope.priceEnabled = false;
+
     $scope.tags = '';
     $scope.location = {};
     $scope.radius = 30;
-    $scope.prizeRange = [50, 200];
+    $scope.priceRange = [0, 200];
+
+    if ('price_min' in $routeParams) {
+        $scope.priceEnabled = true;
+        $scope.priceRange[0] = parseInt($routeParams.price_min);
+    }
+    if ('price_max' in $routeParams) {
+        $scope.priceEnabled = true;
+        $scope.priceRange[1] = parseInt($routeParams.price_max);
+    }
+    if ('category' in $routeParams) {
+        $scope.categoryEnabled = true;
+        $scope.category = parseInt($routeParams.category);
+    }
+    // if ('lat' in $routeParams && 'lon' in $routeParams &&
+            // 'location' in $routeParams) {
+    if ('location' in $routeParams) {
+        $scope.locationEnabled = true;
+        $scope.location.formatted = $routeParams.location;
+        // $scope.location.latitude = $routeParams.lat;
+        // $scope.location.longitude = $routeParams.lon;
+    }
+
+
+    $scope.searchTags = [];
+    $http.get('api/tags/names').success(function(tags) {
+        $scope.searchTags = tags;
+    });
 
     $scope.toogleSearch = function() {
         $scope.formVisible = !$scope.formVisible;
     };
 
-    $scope.search = function() {
+    $scope.search = function(resetOffset) {
         searchService.resetParams();
-        searchService.params.category = $scope.category;
-        searchService.params.tags = $scope.tags;
-        searchService.params.location = $scope.location.formatted;
-        searchService.params.range = $scope.radius;
 
-        $scope.clearVendors();
-        $scope.loadMore();
+        searchService.categoryEnabled = $scope.categoryEnabled;
+        searchService.locationEnabled = $scope.locationEnabled;
+        searchService.priceEnabled = $scope.priceEnabled;
+
+        // searchService.params.tags = $scope.tags;
+
+        if ($scope.categoryEnabled) {
+            searchService.params.category = $scope.category;
+        }
+
+        if ($scope.locationEnabled) {
+            searchService.params.location = $scope.location.formatted;
+            searchService.params.range = $scope.radius;
+        }
+
+        if ($scope.priceEnabled) {
+            searchService.params.price_min = $scope.priceRange[0];
+            searchService.params.price_max = $scope.priceRange[1];
+        }
+        $location.search(searchService.params);
+
+        $scope.resetSearch(resetOffset);
     };
+    $scope.search(false);
 });
 
 angular.module('planevent').controller('AccountController',
