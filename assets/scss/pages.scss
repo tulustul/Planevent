@@ -270,93 +270,98 @@ vendorpreview {
     }
 }
 
-#search-view {
-    @include span-columns(2);
-    background: white;
-    margin-top: 10px;
+#search-view-wrapper {
+    max-height: 100%;
     position: fixed;
-    #searchButton {
-        float: right;
-    }
-    .formTitle {
-        font-size: 23px;
-        text-align: center;
-        border-top: 5px solid $dominant;
-        margin-bottom: -7px;
-    }
-    .searchField {
-        padding: 3px;
-        padding-right: 50px;
-        margin-top: 3px;
-        height: 50px;
-        input {
-            width: 100%;
-            margin-top: 4px;
+    // overflow-y: auto;
+    z-index: 10;
+    margin-top: 10px;
+    @include span-columns(2);
+    #search-view {
+        background: white;
+        #searchButton {
+            float: right;
         }
-    }
-    .searchFilter {
-        text-align: center;
-        background-color: $dominant;
-        color: white;
-        padding: 3px;
-        font-size: 17px;
-        cursor: pointer;
-        border-top: 2px solid $button-primary-color;
-        padding-left: 40px;
-        &:hover {
-            @include transition(0.5s);
-            text-decoration: none;
-            background-color: $button-secondary-color;
-            color: $button-primary-color;
+        .formTitle {
+            font-size: 23px;
+            text-align: center;
+            border-top: 5px solid $dominant;
+            margin-bottom: -7px;
         }
-        .fa {
-            padding: 0px 10px;
-            font-size: 20px;
-            &:last-child {
-                float: right;
-            }
-        }
-    }
-    .formField {
-        padding: 5px 5px;
-        border-top: 2px solid $dominant;
-        text-align: center;
-        input {
-            width: 100%;
+        .searchField {
+            padding: 3px;
+            padding-right: 50px;
             margin-top: 3px;
-        }
-        .ui-slider {
-            margin: 3px 7px;
-        }
-        &:last-child {
-            padding: 0px;
-        }
-    }
-    input {
-        height: 35px;
-        padding-left: 7px;
-    }
-    .price {
-        input {
-            width: 50px;
-            height: 25px;
-        }
-    }
-    addressviewer {
-        &.bigAddressViewer {
-            .address-viewer {
-                width: 1000px;
-                height: 600px;
-                border: 4px solid $dominant;
-                border-left: none;
-                @include transition(0.7s);
+            height: 50px;
+            input {
+                width: 100%;
+                margin-top: 4px;
             }
         }
-        &.smallAddressViewer {
-            .address-viewer {
+        .searchFilter {
+            text-align: center;
+            background-color: $dominant;
+            color: white;
+            padding: 3px;
+            font-size: 17px;
+            cursor: pointer;
+            border-top: 2px solid $button-primary-color;
+            padding-left: 40px;
+            &:hover {
+                @include transition(0.5s);
+                text-decoration: none;
+                background-color: $button-secondary-color;
+                color: $button-primary-color;
+            }
+            .fa {
+                padding: 0px 10px;
+                font-size: 20px;
+                &:last-child {
+                    float: right;
+                }
+            }
+        }
+        .formField {
+            padding: 5px 5px;
+            border-top: 2px solid $dominant;
+            text-align: center;
+            input {
                 width: 100%;
-                height: 300px;
-                @include transition(0.7s);
+                margin-top: 3px;
+            }
+            .ui-slider {
+                margin: 3px 7px;
+            }
+            &:last-child {
+                padding: 0px;
+            }
+        }
+        input {
+            height: 35px;
+            padding-left: 7px;
+        }
+        .price {
+            input {
+                width: 50px;
+                height: 25px;
+            }
+        }
+        addressviewer {
+            &.bigAddressViewer {
+                .address-viewer {
+                    width: 1000px;
+                    height: 600px;
+                    border: 4px solid $dominant;
+                    border-left: none;
+                    @include transition(0.5s);
+                }
+            }
+            &.smallAddressViewer {
+                .address-viewer {
+                    width: 100%;
+                    height: 300px;
+                    @include transition(0.5s);
+                }
             }
         }
     }

@@ -1,23 +1,24 @@
-<div id="search-view" ng-controller="SearchController">
-    <div class="formTitle">
-        Szukajka
-    </div>
-
-    <div>
-        <pebutton id="searchButton" icon="search" ng-click="search()" />
-        <div class="searchField">
-            <input type="text" placeholder="Szukaj">
-            <!-- <angucomplete
-              placeholder="Szukaj"
-              pause="100"
-              localdata="searchTags"
-              searchFields="name"
-              titlefield="name"
-              selectedobject="selectedSearchTags" /> -->
-        </div>
-    </div>
-
+<div id="search-view-wrapper" ng-controller="SearchController">
+<div id="search-view">
     <section class="slideAnimation2" ng-show="!bigMap">
+        <div class="formTitle">
+            Szukajka
+        </div>
+
+        <div>
+            <pebutton id="searchButton" icon="search" ng-click="search()"></pebutton>
+            <div class="searchField">
+                <input type="text" placeholder="Szukaj">
+                <!-- <angucomplete
+                  placeholder="Szukaj"
+                  pause="100"
+                  localdata="searchTags"
+                  searchFields="name"
+                  titlefield="name"
+                  selectedobject="selectedSearchTags" /> -->
+            </div>
+        </div>
+
         <div class="searchFilter" ng-click="categoryEnabled=!categoryEnabled">
             <span class="fa" ng-class="{'fa-angle-down': !categoryEnabled, 'fa-angle-up': categoryEnabled}"></span>
             Kategoria
@@ -63,13 +64,28 @@
         </div>
     </section>
     <div class="formField slideAnimation" ng-show="mapVisible">
-        <pebutton icon="search-plus" text-position="right" text="Duża mapa" ng-click="bigMap=!bigMap" ng-show="!bigMap"></pebutton>
-        <pebutton icon="search-minus" text-position="right" text="Mała mapa" ng-click="bigMap=!bigMap" ng-show="bigMap"></pebutton>
+        <pebutton
+            icon="search-plus"
+            text-position="right"
+            text="Duża mapa"
+            ng-click="bigMap=true; updateMap(0.5)"
+            ng-show="!bigMap">
+        </pebutton>
+        <pebutton
+            icon="search-minus"
+            text-position="right"
+            text="Mała mapa"
+            ng-click="bigMap=false; updateMap(0.5)"
+            ng-show="bigMap">
+            </pebutton>
         <addressViewer
             ng-model="location"
             radius="radius"
             scale-policy="radius-only"
             markers-model=""
-            ng-class="{bigAddressViewer: bigMap, smallAddressViewer: !bigMap}" ></addressViewer>
+            update-function-name="updateMap"
+            ng-class="{bigAddressViewer: bigMap, smallAddressViewer: !bigMap}" >
+        </addressViewer>
     </div>
+</div>
 </div>

@@ -178,36 +178,42 @@ $galleryHeigth: 500px;
 
 .infinite-scroll {
     margin-right: 80px;
-    .pagination {
-        float: right;
-        background-color: white;
+    .pagination-wrapper {
+        right: 20px;
+        bottom: 80px;
+        top: 80px;
         position: fixed;
-        right: 10px;
-        border-radius: 0px;
-        ul {
-            border-right: 4px solid $dominant;
-            padding: 0px;
-            margin-bottom: 0px;
-            width: 70px;
-            li {
-                padding: 5px 8px;
-                list-style: none;
-                cursor: pointer;
-                text-align: center;
-                &.loaded {
-                    background-color: #ECECEC;
-                    border-left: 3px solid $dominant;
-                }
-                &.current {
-                    font-weight: 600;
-                }
-                .fa {
-                    color: $dominant;
-                }
-                &:hover {
-                    background-color: #DCDCDC;
-                    .pageNumber {
-                        border-bottom: 2px solid $dominant;
+        .pagination {
+            float: right;
+            background-color: white;
+            border-radius: 0px;
+            overflow-y: auto;
+            max-height: 100%;
+            width: 100px;
+            ul {
+                border-right: 4px solid $dominant;
+                padding: 0px;
+                margin-bottom: 0px;
+                li {
+                    padding: 5px 8px;
+                    list-style: none;
+                    cursor: pointer;
+                    text-align: center;
+                    &.loaded {
+                        background-color: #ECECEC;
+                        border-left: 3px solid $dominant;
+                    }
+                    &.current {
+                        font-weight: 600;
+                    }
+                    .fa {
+                        color: $dominant;
+                    }
+                    &:hover {
+                        background-color: #DCDCDC;
+                        .pageNumber {
+                            border-bottom: 2px solid $dominant;
+                        }
                     }
                 }
             }

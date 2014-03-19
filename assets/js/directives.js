@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('planevent').directive('addressviewer', function() {
+angular.module('planevent').directive('addressviewer', function($timeout) {
     return {
         restrict: 'EA',
         require: '^ngModel',
@@ -93,7 +93,7 @@ angular.module('planevent').directive('addressviewer', function() {
             }
 
             function updateMarkers() {
-                var vendor, position, i;
+                var vendor, position, cluster, i;
 
                 for (i = 0; i < searchMarkers.length; i++ ) {
                     searchMarkers[i].setMap(null);
@@ -108,10 +108,23 @@ angular.module('planevent').directive('addressviewer', function() {
                     );
                     searchMarkers.push(new google.maps.Marker({
                         position: position,
-                        map: map,
-                        title: vendor.address.formatted
+                        title: vendor.name + ' ' + vendor.address.formatted
                     }));
                 }
+
+                cluster = new MarkerClusterer(map, searchMarkers);
+            }
+
+            function updateMap(time) {
+                var center = map.getCenter();
+                $timeout(function() {
+                    google.maps.event.trigger(map, 'resize');
+                    map.setCenter(center);
+                }, time*1000);
+            }
+
+            if ('updateFunctionName' in attrs) {
+                scope[attrs.updateFunctionName] = updateMap;
             }
 
             initMap();

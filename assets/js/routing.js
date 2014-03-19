@@ -2,10 +2,10 @@
 
 angular.module('planevent').config(function($routeProvider) {
     $routeProvider
-    .when('/', {
-        templateUrl: 'assets/partials/mainView.html',
-        controller: 'MainPageController'
-    })
+    // .when('/', {
+    //     templateUrl: 'assets/partials/mainView.html',
+    //     controller: 'MainPageController'
+    // })
     .when('/playground', {
         templateUrl: 'assets/partials/playground.html',
         controller: 'MainPageController'
@@ -56,5 +56,5 @@ angular.module('planevent').config(function($routeProvider) {
         controller: 'VendorAddEditController'
     })
 
-    .otherwise({redirectTo: '/'});
+    .otherwise({redirectTo: '/vendors/search'});
 });
