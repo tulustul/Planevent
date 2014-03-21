@@ -10,6 +10,7 @@ angular.module('planevent').directive('addressviewer', function($timeout) {
             position,
             radiusMarker,
             positionMarker,
+            cluster,
             searchMarkers = [];
 
             function addRadius(map, center, radius) {
@@ -93,7 +94,7 @@ angular.module('planevent').directive('addressviewer', function($timeout) {
             }
 
             function updateMarkers() {
-                var vendor, position, cluster, i;
+                var vendor, position, i;
 
                 for (i = 0; i < searchMarkers.length; i++ ) {
                     searchMarkers[i].setMap(null);
@@ -112,7 +113,17 @@ angular.module('planevent').directive('addressviewer', function($timeout) {
                     }));
                 }
 
-                cluster = new MarkerClusterer(map, searchMarkers);
+                if (cluster !== undefined) {
+                    cluster.clearMarkers();
+                } else {
+                    cluster = new MarkerClusterer(map);
+                }
+
+                cluster.addMarkers(searchMarkers);
+            }
+
+            function clearMarkers() {
+                cluster.setMap(null);
             }
 
             function updateMap(time) {
@@ -125,6 +136,10 @@ angular.module('planevent').directive('addressviewer', function($timeout) {
 
             if ('updateFunctionName' in attrs) {
                 scope[attrs.updateFunctionName] = updateMap;
+            }
+
+            if ('clearMarkersFunctionName' in attrs) {
+                scope[attrs.clearMarkersFunctionName] = clearMarkers;
             }
 
             initMap();

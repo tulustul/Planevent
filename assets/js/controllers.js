@@ -330,7 +330,11 @@ angular.module('planevent').controller('SearchController',
         // $scope.location.latitude = $routeParams.lat;
         // $scope.location.longitude = $routeParams.lon;
     }
-
+    if ('range' in $routeParams) {
+        $scope.radius = $routeParams.range;
+        // $scope.location.latitude = $routeParams.lat;
+        // $scope.location.longitude = $routeParams.lon;
+    }
 
     $scope.searchTags = [];
     $http.get('api/tags/names').success(function(tags) {

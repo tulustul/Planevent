@@ -6,7 +6,7 @@
         </div>
 
         <div>
-            <pebutton id="searchButton" icon="search" ng-click="search()"></pebutton>
+            <pebutton id="searchButton" icon="search" ng-click="search();clearMap();"></pebutton>
             <div class="searchField">
                 <input type="text" placeholder="Szukaj">
                 <!-- <angucomplete
@@ -84,6 +84,7 @@
             scale-policy="radius-only"
             markers-model=""
             update-function-name="updateMap"
+            clear-markers-function-name="clearMap"
             ng-class="{bigAddressViewer: bigMap, smallAddressViewer: !bigMap}" >
         </addressViewer>
     </div>
