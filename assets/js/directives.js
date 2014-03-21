@@ -123,7 +123,7 @@ angular.module('planevent').directive('addressviewer', function($timeout) {
             }
 
             function clearMarkers() {
-                cluster.setMap(null);
+                cluster.clearMarkers();
             }
 
             function updateMap(time) {
