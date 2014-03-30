@@ -1,6 +1,14 @@
 /*jshint camelcase: false */
 'use strict';
 
+angular.module('planevent').controller('HomePageController',
+    function($scope) {
+        $scope.registrationLandingPage =
+            'assets/partials/registrationLandingPage.html';
+        $scope.promotedView = 'assets/partials/promotedView.html';
+    }
+);
+
 angular.module('planevent').controller('MainPageController',
     function($scope, globalsService) {
         $scope.mainView = 'assets/partials/mainView.html';
@@ -446,6 +454,33 @@ angular.module('planevent').controller('FirstLoggingController',
         }
     });
 });
+
+
+angular.module('planevent').controller('RegistrationController',
+        function($scope, authService) {
+
+    $scope.email = '';
+    $scope.password = '';
+
+    $scope.register = function(email, password) {
+        authService.register(email, password);
+    };
+
+});
+
+
+angular.module('planevent').controller('LoginController',
+        function($scope, authService) {
+
+    $scope.email = '';
+    $scope.password = '';
+
+    $scope.login = function(email, password) {
+        authService.login(email, password);
+    };
+
+});
+
 
 angular.module('planevent').controller('DatabaseManagementController',
         function($scope, $http, $timeout) {

@@ -1,4 +1,5 @@
 import json
+import re
 
 import requests
 from jinja2 import Environment, FileSystemLoader
@@ -10,12 +11,25 @@ from planevent import (
 
 env = Environment(loader=FileSystemLoader('templates/mails'))
 
+MAIL_REGEX = '^.+@.+\..{2,3}$'
+
 
 class MailException(Exception):
     pass
 
 
+class InvalidEmail(MailException):
+    pass
+
+
+def validate_email(email):
+    if not re.match(MAIL_REGEX, email):
+        raise InvalidEmail()
+
+
 def send_mail(template, to, subject, **kwargs):
+
+    validate_email(to)
 
     if isinstance(to, str):
         to = [to]

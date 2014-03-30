@@ -38,6 +38,19 @@ angular.module('planevent').service('searchService',
 
 });
 
+angular.module('planevent').service('authService', function($http) {
+
+    this.register = function(email, password) {
+        $http.post('/api/register', email + ':' + password)
+        .success(function(response) {
+            alert(JSON.stringify(response));
+        })
+        .error(function(response) {
+            alert(JSON.stringify(response));
+        });
+    };
+});
+
 angular.module('planevent').service('accountService', function($resource) {
 
     var LoggedUser = $resource('/api/user/logged');

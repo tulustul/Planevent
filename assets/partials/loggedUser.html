@@ -1,10 +1,24 @@
 <div id="logging" ng-controller="AccountController">
+
     <div ng-show="loggedUser != undefined"</div>
-        <a ng-click="goToProfile()">{{ loggedUser.name }}</a>
-        <pebutton href="/logout" ng-click="logout()" icon="sign-out" text="Wyloguj" button-slide />
+        <pebutton ng-click="showProfileActions=!showProfileActions" icon="user" text-model="loggedUser.name" text-position="right" />
+        <div id="profileActions" class="login-menu" ng-show="showProfileActions">
+            <pebutton ng-click="goToProfile()" icon="cog" text="Ustawienia" text-position="right" />
+            <pebutton href="/logout" ng-click="logout()" icon="sign-out" text="Wyloguj" text-position="right" />
+        </div>
     </div>
-    <span ng-show="loggedUser == undefined">
-        <pebutton href="/login/google" icon="google-plus" />
-        <pebutton href="/login/facebook" icon="facebook" />
-    </span>
+
+    <div ng-show="loggedUser == undefined">
+        <pebutton icon="sign-in" text="Zaloguj" text-position="right" ng-click="showLoginForm = !showLoginForm"></pebutton>
+        <div class="login-menu login-form" ng-show="showLoginForm">
+            <div class="register"><pebutton icon="edit" text="Zarejestruj się" text-position="right"></pebutton></div>
+            <pebutton href="/login/facebook" icon="facebook" text="Zaloguj przez Facebook" text-position="right" />
+            <pebutton href="/login/google" icon="google-plus" text="Zaloguj przez Google+" text-position="right" />
+            <h4>Zaloguj przez email:</h4>
+            <input type="text" placeholder="Email">
+            <input type="text" placeholder="Hasło">
+            <pebutton icon="sign-in" text="Zaloguj się" text-position="right" />
+        </div>
+    </div>
+
 </div>

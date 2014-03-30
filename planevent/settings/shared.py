@@ -1,5 +1,7 @@
 from collections import namedtuple
 
+SECRET_KEY = '_rrlq7qpzm44$i^$rorarqzec&u+0e^%669ff9l_ao$dga2ta6'
+
 OAuthData = namedtuple(
     'OAuthData', [
         'client_id',
@@ -52,3 +54,6 @@ GOOGLE_IMPORT_WORKSHEET = 'baza'
 
 GOOGLE_EXPORT_SPREADSHET = '0AunjHEDjOYHUdGU3MjdiYktOa1dxbi1XTEtMNFMtSEE'
 GOOGLE_EXPORT_WORKSHEET = 'export'
+
+RECALL_PASSWORD_TOKEN_EXPIRATION_TIME = 60  # in minutes
+MINIMUM_PASSWORD_LENGTH = 5

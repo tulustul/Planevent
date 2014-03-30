@@ -30,12 +30,7 @@ def _get_oauth2_callback_url(request, provider):
     return request.route_url('oauth2_callback', provider=provider)
 
 
-def logout(request):
-    request.session['user_id'] = None
-    return request.route_url('home')
-
-
-def login(request, provider):
+def login_oauth(request, provider):
     provider_settings = settings.OAUTH[provider]
 
     oauth = OAuth2Session(
@@ -51,7 +46,7 @@ def login(request, provider):
     return authorization_url
 
 
-def process_callback(request, provider):
+def process_oauth_callback(request, provider):
     provider_settings = settings.OAUTH[provider]
 
     oauth = OAuth2Session(
@@ -75,7 +70,7 @@ def process_callback(request, provider):
     response = oauth.get(provider_settings.user_info_url)
     provider_user = json.loads(response.content.decode('utf8'))
 
-    account, is_new = process_user(provider, provider_user)
+    account, is_new = process_oauth_user(provider, provider_user)
 
     request.session['user_id'] = account.id
 
@@ -85,7 +80,7 @@ def process_callback(request, provider):
         return request.route_url('home')
 
 
-def process_user(provider, provider_user):
+def process_oauth_user(provider, provider_user):
 
     def fill_user_fields(account, provider_user, provider_settings):
         def fill_user_field(field):
@@ -106,14 +101,9 @@ def process_user(provider, provider_user):
 
     is_new = False
     if not account:
-        account = models.Account(
+        account = models.Account.create(
             origin_id=provider_user['id'],
             provider=provider,
-            created_at=datetime.datetime.now(),
-            login_count=0,
-            settings=models.AccountSettings(
-                address=models.Address(),
-            ),
         )
         is_new = True
 

@@ -382,4 +382,72 @@ vendorpreview {
 #logging {
     float: right;
     margin-right: 20px;
+    .login-menu {
+        position: absolute;
+        right: 20px;
+        width: 245px;
+        background-color: white;
+        padding: 7px 0px;
+        text-align: center;
+        border: 2px solid $dominant;
+        a {
+            width: 220px;
+        }
+
+        &.ng-leave {
+            @include transition(0.5s);
+            opacity: 1;
+        }
+
+        &.ng-enter {
+            @include transition(0.5s);
+            @include transition-delay(0.5s);
+            opacity: 0;
+        }
+
+        &.ng-leave-active {
+            opacity: 0;
+        }
+
+        &.ng-enter-active {
+            opacity: 1;
+        }
+    }
+}
+
+.login-form {
+    .register {
+        border-bottom: 2px solid $dominant;
+        padding-bottom: 9px;
+        margin-bottom: 9px;
+    }
+    input {
+        height: 30px;
+        width: 220px;
+        padding-left: 5px;
+        margin: 5px 0px;
+    }
+    h4 {
+        border-top: 2px solid $dominant;
+        padding-top: 9px;
+    }
+}
+
+#registrationLandingPage {
+    background-color: white;
+    max-width: 1300px;
+    margin: 0px auto;
+    section {
+        float: left;
+        width: 23%;
+        margin: 20px;
+        &:last-of-type {
+            width: 220px;
+        }
+        .icon-header {
+            width: 100%;
+            text-align: center;
+            font-size: 60px;
+        }
+    }
 }

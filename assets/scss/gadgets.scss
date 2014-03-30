@@ -20,6 +20,10 @@
             background-color: $button-primary-color;
             color: $button-secondary-color;
         }
+        &:active {
+            background-color: $button-primary-color;
+            color: $button-secondary-color;
+        }
         .description {
             font-size: 15px;
             font-family: 'Open Sans', arial, sans-serif;

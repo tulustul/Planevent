@@ -1,0 +1,32 @@
+<article id="registrationLandingPage">
+
+    <section>
+        <span class="icon-header fa fa-map-marker"></span>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores, quam, sit, optio, hic vero amet molestias officiis minima commodi iusto tenetur sed facilis quae autem corporis ullam magnam veritatis! Sequi!
+    </section>
+
+    <section>
+        <span class="icon-header fa fa-heart"></span>
+        Sapiente, fuga, molestiae deleniti placeat odio quis pariatur eveniet ut rem tempora earum quo deserunt amet quam cumque sed aut vel hic vero mollitia ab id iusto ipsam velit delectus impedit quae nam incidunt adipisci at. Consequatur, voluptas amet laborum
+        provident sequi dicta a nemo. Neque, inventore, aperiam, rerum adipisci aut porro commodi consectetur unde eaque molestiae labore alias minus animi ullam fugiat dolore voluptates aliquam!
+    </section>
+
+    <section>
+        <span class="icon-header fa fa-thumbs-o-up"></span>
+        harum voluptate illo architecto deleniti tempore porro placeat minus sapiente praesentium quaerat cum quas consectetur omnis iste expedita magnam sed unde dicta eveniet consequuntur natus necessitatibus fugit dolor beatae quibusdam optio veritatis illum
+        quasi voluptatum autem sint! Officiis, ad.
+    </section>
+
+    <section class="login-form" ng-controller="RegistrationController">
+        <pebutton href="/login/facebook" icon="facebook" text="Zaloguj przez Facebook" text-position="right" />
+        <pebutton href="/login/google" icon="google-plus" text="Zaloguj przez Google+" text-position="right" />
+        <h4>Zaloguj przez email:</h4>
+        <input type="text" placeholder="Email" ng-model="email">
+        <input type="password" placeholder="Hasło" ng-model="password">
+        <div class="register">
+            <pebutton icon="edit" text="Zarejestruj się" text-position="right" ng-click="register(email, password)"></pebutton>
+        </div>
+    </section>
+
+    <div class="clear"></div>
+</article>

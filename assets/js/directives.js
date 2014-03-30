@@ -345,6 +345,10 @@ angular.module('planevent').directive('pebutton', function() {
                 }
             }
 
+            function updateText() {
+                scope.text = scope.$eval(attrs.textModel);
+            }
+
             scope.class_ = '';
 
             if ('buttonSlide' in attrs) {
@@ -362,6 +366,10 @@ angular.module('planevent').directive('pebutton', function() {
 
             if ('watch' in attrs) {
                 scope.$watch(scope.watch, updateHref);
+            }
+
+            if ('textModel' in attrs) {
+                scope.$watch('loggedUser', updateText);
             }
         }
     };

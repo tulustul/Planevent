@@ -1,3 +1,11 @@
+import hashlib
+import os
+import uuid
+from datetime import (
+    datetime,
+    timedelta,
+)
+
 from sqlalchemy import (
     Column,
     Integer,
@@ -12,6 +20,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 from planevent.core.sql import BaseEntity
+from planevent import settings
 
 
 class VendorTag(BaseEntity):
@@ -85,10 +94,16 @@ class Tag(BaseEntity):
 
 
 class Account(BaseEntity):
+    class Type:
+        NORMAL = 1
+        EDITOR = 2
+        ADMIN = 3
+
+    class PasswordToShort(Exception):
+        pass
+
     __tablename__ = 'account'
-    origin_id = Column(String(21), nullable=False)
-    provider = Column(String(50), nullable=False)
-    name = Column(String(50), nullable=False)
+    name = Column(String(50))
     email = Column(String(50), nullable=False)
     first_name = Column(String(50))
     last_name = Column(String(50))
@@ -97,10 +112,65 @@ class Account(BaseEntity):
     created_at = Column(DateTime)
     last_login = Column(DateTime)
     login_count = Column(Integer, default=0)
+    role = Column(Integer, default=Type.NORMAL)
     settings_id = Column(Integer, ForeignKey('account_settings.id'))
+    credentials_id = Column(Integer, ForeignKey('account_credentials.id'))
 
+    credentials = relationship('AccountCrendentials', cascade="delete, all")
     settings = relationship('AccountSettings', cascade="delete, all")
     likings = relationship('AccountLiking', cascade="delete, all")
+
+    @classmethod
+    def create(cls, **kwargs):
+        return cls(
+            created_at=datetime.now(),
+            login_count=0,
+            settings=AccountSettings(
+                address=Address(),
+            ),
+            credentials=AccountCrendentials(),
+            **kwargs
+        )
+
+    @classmethod
+    def get_by_email(cls, email, *relations):
+        return cls.query(*relations) \
+            .filter(cls.email == email) \
+            .first()
+
+    def _generate_password_hash(self, password):
+        hash = hashlib.sha256()
+        hash.update((password + self.credentials.password_salt).encode('utf8'))
+        return hash.digest()
+
+    def set_password(self, password):
+        if len(password) < settings.MINIMUM_PASSWORD_LENGTH:
+            raise self.PasswordToShort()
+
+        salt = hashlib.sha256()
+        salt.update(os.urandom(32))
+        self.credentials.password_salt = salt.hexdigest()
+        self.credentials.password_hash = self._generate_password_hash(password)
+
+    def check_password(self, password):
+        return self._generate_password_hash(password) == \
+            self.crendentials.password_hash
+
+    def recall_password(self):
+        self.credentials.recall_token = uuid.uuid4().hex
+        self.credentials.recall_token_expiry = datetime.now() + timedelta(
+            hours=settings.RECALL_PASSWORD_TOKEN_EXPIRATION_TIME
+        )
+
+
+class AccountCrendentials(BaseEntity):
+    __tablename__ = 'account_credentials'
+    origin_id = Column(String(50))
+    provider = Column(String(50))
+    password_hash = Column(String(50))
+    password_salt = Column(String(50))
+    recall_token = Column(String(50))
+    recall_token_expiry = Column(DateTime)
 
 
 class AccountSettings(BaseEntity):

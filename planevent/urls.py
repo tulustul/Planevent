@@ -3,9 +3,13 @@ urls = [
     ('admin', '/admin'),
 
     # login handlers
+    ('register', '/api/register'),
+    ('login', '/login'),
     ('login_oauth2', '/login/{provider}'),
     ('oauth2_callback', '/login/{provider}/callback'),
     ('logout', '/logout'),
+    ('password_recall', 'api/recall_password'),
+    ('password_recall_callback', '/password_recall_callback'),
 
     # api
     ('vendor', '/api/vendor/{id}'),

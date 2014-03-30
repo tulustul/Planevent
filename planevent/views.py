@@ -25,6 +25,7 @@ from planevent import (
     migration,
 )
 from planevent.redisdb import redis_db
+from planevent.services.mailing import InvalidEmail
 from planevent.async import TaskProgressCounter
 from planevent.scripts.initializedb import (
     create_test_categories,
@@ -42,6 +43,11 @@ class View(object):
     def __init__(self, request):
         self.request = request
 
+    def response(self, code=200, message=None, **kwargs):
+        self.request.response.status = code
+        kwargs['message'] = message
+        return kwargs
+
 
 @view_config(route_name='home', renderer='../templates/index.jinja2')
 def home_view(request):
@@ -53,13 +59,50 @@ def admin_view(request):
     return {}
 
 
-@view_defaults(route_name='login_oauth2')
+@view_defaults(route_name='register', renderer='json')
+class RegisterView(View):
+
+    @view_config(request_method='POST')
+    @param('credentials', str, required=True, body=True)
+    def post(self, credentials):
+        email, password = credentials.split(':', 1)
+        try:
+            auth.register(self.request, email, password)
+        except auth.EmailAlreadyTaken:
+            return self.response(409, 'email_already_taken')
+        except InvalidEmail:
+            return self.response(400, 'invalid_email')
+        except models.Account.PasswordToShort:
+            return self.response(
+                400,
+                'password_to_short',
+                mimimum_length=settings.MINIMUM_PASSWORD_LENGTH,
+            )
+        else:
+            return self.response(201, 'account_created')
+
+
+@view_defaults(route_name='login', renderer='json')
 class LoginView(View):
+
+    @view_config(request_method='POST')
+    @param('username', str, required=True)
+    @param('email', str, required=True)
+    def post(self, username, email):
+        return HTTPFound(
+            location=auth.login(self.request, username, email)
+        )
+
+
+@view_defaults(route_name='login_oauth2')
+class LoginOAuthView(View):
 
     @view_config(request_method='GET')
     @param('provider', str, required=True, rest=True)
     def get(self, provider):
-        return HTTPFound(location=auth.login(self.request, provider))
+        return HTTPFound(
+            location=auth.login_oauth(self.request, provider)
+        )
 
 
 @view_defaults(route_name='oauth2_callback', renderer='json')
@@ -68,14 +111,16 @@ class OAuth2CallbackView(View):
     @view_config(request_method='GET')
     @param('provider', str, required=True, rest=True)
     def get(self, provider):
-        return HTTPFound(location=auth.process_callback(self.request, provider))
+        return HTTPFound(
+            location=auth.process_oauth_callback(self.request, provider)
+        )
 
 
 @view_defaults(route_name='logout')
 class LogoutView(View):
 
-    @view_config(request_method='GET')
-    def get(self):
+    @view_config(request_method='POST')
+    def post(self):
         return HTTPFound(location=auth.logout(self.request))
 
 
