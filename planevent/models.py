@@ -141,7 +141,7 @@ class Account(BaseEntity):
     def _generate_password_hash(self, password):
         hash = hashlib.sha256()
         hash.update((password + self.credentials.password_salt).encode('utf8'))
-        return hash.digest()
+        return hash.hexdigest()
 
     def set_password(self, password):
         if len(password) < settings.MINIMUM_PASSWORD_LENGTH:
@@ -154,9 +154,9 @@ class Account(BaseEntity):
 
     def check_password(self, password):
         return self._generate_password_hash(password) == \
-            self.crendentials.password_hash
+            self.credentials.password_hash
 
-    def recall_password(self):
+    def generate_recall_password_token(self):
         self.credentials.recall_token = uuid.uuid4().hex
         self.credentials.recall_token_expiry = datetime.now() + timedelta(
             hours=settings.RECALL_PASSWORD_TOKEN_EXPIRATION_TIME
@@ -167,8 +167,8 @@ class AccountCrendentials(BaseEntity):
     __tablename__ = 'account_credentials'
     origin_id = Column(String(50))
     provider = Column(String(50))
-    password_hash = Column(String(50))
-    password_salt = Column(String(50))
+    password_hash = Column(String(64))
+    password_salt = Column(String(64))
     recall_token = Column(String(50))
     recall_token_expiry = Column(DateTime)
 

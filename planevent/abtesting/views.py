@@ -64,10 +64,7 @@ class ExperimentView(View):
     def post(self, experiment):
         unique_names_count = len({v.name for v in experiment.variations})
         if unique_names_count < len(experiment.variations):
-            self.request.response.status = 409
-            return {
-                'error': 'Variations must have unique names'
-            }
+            return self.response(409, 'Variations must have unique names')
 
         if experiment.id is None:
             experiment.created_at = datetime.now()
@@ -84,18 +81,15 @@ class ExperimentView(View):
             experiment.ended_at = original_experiment.ended_at
 
         if not experiment.in_preparations:
-            self.request.response.status = 409
-            return {
-                'error': 'Cannot edit experiment which was previously activated'
-            }
+            return self.reponse(
+                409,
+                'Cannot edit experiment which was previously activated'
+            )
 
         try:
             experiment.save()
         except IntegrityError as e:
-            self.request.response.status = 409
-            return {
-                'error': 'Data integrity error: ' + str(e)
-            }
+            return self.reponse(409, 'Data integrity error: ' + str(e))
         return experiment
 
 
@@ -108,8 +102,7 @@ class ActivateExperimentView(View):
         try:
             return ab_service.activate(name)
         except ab_service.ABExperimentError as e:
-            self.request.response.status = 400
-            return {'error': str(e)}
+            return self.reponse(400, str(e))
 
 
 @view_defaults(route_name='deactivate_experiment', renderer='json')
@@ -121,8 +114,7 @@ class DeactivateExperimentView(View):
         try:
             return ab_service.deactivate(name)
         except ab_service.ABExperimentError as e:
-            self.request.response.status = 400
-            return {'error': str(e)}
+            return self.reponse(400, str(e))
 
 
 @view_defaults(route_name='experiment_increment', renderer='json')
@@ -136,8 +128,7 @@ class ExperimentIncrementView(View):
             ab_service.increment_success(name, variation)
             return 'OK'
         except ab_service.ABExperimentError as e:
-            self.request.response.status = 400
-            return {'error': str(e)}
+            return self.reponse(400, str(e))
 
 
 @view_defaults(route_name='experiment_variation')
@@ -150,5 +141,4 @@ class ExperimentVariationView(View):
             return Response(ab_service.get_variation(
                             name, self.request.session.get('user_id')))
         except ab_service.ABExperimentError as e:
-            self.request.response.status = 400
-            return {'error': str(e)}
+            return self.reponse(400, str(e))

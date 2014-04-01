@@ -86,12 +86,15 @@ class RegisterView(View):
 class LoginView(View):
 
     @view_config(request_method='POST')
-    @param('username', str, required=True)
-    @param('email', str, required=True)
-    def post(self, username, email):
-        return HTTPFound(
-            location=auth.login(self.request, username, email)
-        )
+    @param('credentials', str, required=True, body=True)
+    def post(self, credentials):
+        email, password = credentials.split(':', 1)
+        try:
+            auth.try_login(self.request, email, password)
+        except (InvalidEmail, auth.InvalidCredentials):
+            return self.response(400, 'invalid_credentials')
+        else:
+            return self.response(200, 'logged_in')
 
 
 @view_defaults(route_name='login_oauth2')
@@ -116,12 +119,23 @@ class OAuth2CallbackView(View):
         )
 
 
-@view_defaults(route_name='logout')
+@view_defaults(route_name='logout', renderer='json')
 class LogoutView(View):
 
     @view_config(request_method='POST')
     def post(self):
-        return HTTPFound(location=auth.logout(self.request))
+        auth.logout(self.request)
+        return self.response(200, 'logged_out')
+
+
+@view_defaults(route_name='password_recall', renderer='json')
+class PasswordRecallView(View):
+
+    @view_config(request_method='POST')
+    @param('email', str, required=True, body=True)
+    def post(self, email):
+        auth.recall_password_callback(email)
+        return self.response(200, 'mail_sent')
 
 
 @view_defaults(route_name='vendor', renderer='json')

@@ -8,16 +8,17 @@
         </div>
     </div>
 
-    <div ng-show="loggedUser == undefined">
+    <div ng-show="loggedUser == undefined" ng-controller="LoginController">
         <pebutton icon="sign-in" text="Zaloguj" text-position="right" ng-click="showLoginForm = !showLoginForm"></pebutton>
         <div class="login-menu login-form" ng-show="showLoginForm">
-            <div class="register"><pebutton icon="edit" text="Zarejestruj się" text-position="right"></pebutton></div>
             <pebutton href="/login/facebook" icon="facebook" text="Zaloguj przez Facebook" text-position="right" />
             <pebutton href="/login/google" icon="google-plus" text="Zaloguj przez Google+" text-position="right" />
             <h4>Zaloguj przez email:</h4>
-            <input type="text" placeholder="Email">
-            <input type="text" placeholder="Hasło">
-            <pebutton icon="sign-in" text="Zaloguj się" text-position="right" />
+            <input type="text" placeholder="Email" ng-model="email">
+            <input type="password" placeholder="Hasło" ng-model="password">
+            <pebutton icon="sign-in" text="Zaloguj się" text-position="right" ng-click="login(email, password)" />
+            <span>Zarejestruj się</span>
+            <span>Zapomniałem hasła</span>
         </div>
     </div>
 

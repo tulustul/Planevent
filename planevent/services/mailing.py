@@ -34,7 +34,7 @@ def send_mail(template, to, subject, **kwargs):
     if isinstance(to, str):
         to = [to]
 
-    template = env.get_template(template + '.pt')
+    template = env.get_template(template + '.jinja2')
     mail_body = template.render(**kwargs)
 
     response = requests.post(

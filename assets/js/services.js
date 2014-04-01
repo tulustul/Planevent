@@ -49,6 +49,16 @@ angular.module('planevent').service('authService', function($http) {
             alert(JSON.stringify(response));
         });
     };
+
+    this.login = function(email, password) {
+        $http.post('/api/login', email + ':' + password)
+        .success(function(response) {
+            alert(JSON.stringify(response));
+        })
+        .error(function(response) {
+            alert(JSON.stringify(response));
+        });
+    };
 });
 
 angular.module('planevent').service('accountService', function($resource) {

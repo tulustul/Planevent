@@ -465,6 +465,18 @@ angular.module('planevent').controller('RegistrationController',
     $scope.register = function(email, password) {
         authService.register(email, password);
     };
+});
+
+
+angular.module('planevent').controller('LoginController',
+        function($scope, authService) {
+
+    $scope.email = '';
+    $scope.password = '';
+
+    $scope.login = function(email, password) {
+        authService.login(email, password);
+    };
 
 });
 

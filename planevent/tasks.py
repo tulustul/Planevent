@@ -36,6 +36,7 @@ def send_password_recall_email(account):
         to=account.email,
         subject='Planevent - przypomnienie hasła',
         account=account,
+        app_url=settings.APP_URL,
     )
 
 
