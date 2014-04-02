@@ -73,6 +73,7 @@ def racall_password(email):
 
 
 def recall_password_callback(email):
+    mailing.validate_email(email)
     account = models.Account.get_by_email(email, 'credentials')
     if account:
         account.generate_recall_password_token()

@@ -383,7 +383,8 @@ angular.module('planevent').controller('SearchController',
 });
 
 angular.module('planevent').controller('AccountController',
-        function($scope, $location, accountService, globalsService) {
+        function($scope, $location, accountService, authService,
+                 globalsService) {
 
     $scope.informationView = 'assets/partials/profile/information.html';
     $scope.settingsView = 'assets/partials/profile/settings.html';
@@ -412,6 +413,10 @@ angular.module('planevent').controller('AccountController',
             });
         });
     });
+
+    $scope.loguot = function() {
+        authService.logout();
+    };
 
     $scope.goToProfile = function() {
         $location.path('/userProfile');
@@ -473,22 +478,39 @@ angular.module('planevent').controller('LoginController',
 
     $scope.email = '';
     $scope.password = '';
+    $scope.message = '';
+    $scope.form = '';
+    $scope.waiting = false;
 
     $scope.login = function(email, password) {
-        authService.login(email, password);
+        $scope.waiting = true;
+        $scope.message = '';
+
+        authService.login(email, password)
+        .success(function(response) {
+            $scope.waiting = false;
+            alert(response);
+        })
+        .error(function(response) {
+            $scope.waiting = false;
+            $scope.message = response.message;
+        });
     };
 
-});
+    $scope.sendRecallEmail = function(email) {
+        $scope.waiting = true;
 
-
-angular.module('planevent').controller('LoginController',
-        function($scope, authService) {
-
-    $scope.email = '';
-    $scope.password = '';
-
-    $scope.login = function(email, password) {
-        authService.login(email, password);
+        authService.sendRecallEmail(email)
+        .success(function(response) {
+            $scope.waiting = false;
+            $scope.showLoginForm = true;
+            $scope.showRecallForm = false;
+            $scope.message = response.message;
+        })
+        .error(function(response) {
+            $scope.waiting = false;
+            $scope.message = response.message;
+        });
     };
 
 });

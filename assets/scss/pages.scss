@@ -421,6 +421,20 @@ vendorpreview {
         padding-bottom: 9px;
         margin-bottom: 9px;
     }
+    .login-error {
+        color: $dominant;
+    }
+    .login-success {
+        color: $success;
+    }
+    .login-link {
+        display: block;
+        cursor: pointer;
+        font-size: 17px;
+        width: 100% !important;
+        padding: 2px;
+        color: $dominant;
+    }
     input {
         height: 30px;
         width: 220px;
@@ -428,8 +442,10 @@ vendorpreview {
         margin: 5px 0px;
     }
     h4 {
-        border-top: 2px solid $dominant;
         padding-top: 9px;
+        &:first-of-type {
+            border-top: 2px solid $dominant;
+        }
     }
 }
 

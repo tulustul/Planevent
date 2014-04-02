@@ -9,16 +9,27 @@
     </div>
 
     <div ng-show="loggedUser == undefined" ng-controller="LoginController">
-        <pebutton icon="sign-in" text="Zaloguj" text-position="right" ng-click="showLoginForm = !showLoginForm"></pebutton>
+        <pebutton icon="sign-in" text="Zaloguj" text-position="right" ng-click="showLoginForm = !showLoginForm; showRecallForm = false;"></pebutton>
         <div class="login-menu login-form" ng-show="showLoginForm">
             <pebutton href="/login/facebook" icon="facebook" text="Zaloguj przez Facebook" text-position="right" />
             <pebutton href="/login/google" icon="google-plus" text="Zaloguj przez Google+" text-position="right" />
             <h4>Zaloguj przez email:</h4>
             <input type="text" placeholder="Email" ng-model="email">
             <input type="password" placeholder="Hasło" ng-model="password">
-            <pebutton icon="sign-in" text="Zaloguj się" text-position="right" ng-click="login(email, password)" />
-            <span>Zarejestruj się</span>
-            <span>Zapomniałem hasła</span>
+            <pebutton icon="sign-in" text="Zaloguj się" text-position="right" ng-click="login(email, password)" ng-show="!waiting" />
+            <h3 class="fa fa-sun-o fa-spin" ng-show="waiting"></h3>
+            <h4 class="login-error" ng-show="message == 'invalid_credentials'">Niepoprawny login lub hasło</h4>
+            <h4 class="login-error" ng-show="message == 'unknown_error'">Niepoprawny login lub hasło</h4>
+            <h4 class="login-success" ng-show="message == 'mail_sent'">Wysłano email z przypomnieniem</h4>
+            <a class="login-link">Zarejestruj się</a>
+            <a class="login-link" ng-click="showRecallForm=true; showLoginForm=false;">Zapomniałem hasła</a>
+        </div>
+        <div class="login-menu login-form" ng-show="showRecallForm">
+            <pebutton icon="arrow-left" text="Wróc do logowania" text-position="right" ng-click="showLoginForm=true; showRecallForm=false;" />
+            <input type="text" placeholder="Email" ng-model="email">
+            <h3 class="fa fa-sun-o fa-spin" ng-show="waiting"></h3>
+            <pebutton icon="envelope-o" ng-show="!waiting" text="Wyślij email z przypomnieniem" text-position="right" ng-click="sendRecallEmail(email)" />
+            <h4 class="login-error" ng-show="message == 'invalid_email'">Niepoprawny email</h4>
         </div>
     </div>
 

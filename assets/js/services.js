@@ -51,13 +51,21 @@ angular.module('planevent').service('authService', function($http) {
     };
 
     this.login = function(email, password) {
-        $http.post('/api/login', email + ':' + password)
+        return $http.post('/api/login', email + ':' + password);
+    };
+
+    this.logout = function() {
+        $http.post('/api/logout')
         .success(function(response) {
             alert(JSON.stringify(response));
         })
         .error(function(response) {
             alert(JSON.stringify(response));
         });
+    };
+
+    this.sendRecallEmail = function(email) {
+        return $http.post('/api/recall_password', email);
     };
 });
 

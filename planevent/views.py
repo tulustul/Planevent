@@ -134,7 +134,10 @@ class PasswordRecallView(View):
     @view_config(request_method='POST')
     @param('email', str, required=True, body=True)
     def post(self, email):
-        auth.recall_password_callback(email)
+        try:
+            auth.recall_password_callback(email)
+        except InvalidEmail:
+            return self.response(400, 'invalid_email')
         return self.response(200, 'mail_sent')
 
 
