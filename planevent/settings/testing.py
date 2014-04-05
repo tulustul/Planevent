@@ -6,6 +6,6 @@ REDIS = {
     'URL': 'localhost',
     'PORT': 6379,
     'CACHE_DB': 0,
-    'DB': 1,
+    'DB': 15,
     'PASSWORD': '',
 }

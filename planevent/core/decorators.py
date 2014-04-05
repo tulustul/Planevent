@@ -7,7 +7,7 @@ import logging
 
 from PIL import Image
 
-from planevent.models import BaseEntity
+from planevent.core.sql import BaseEntity
 
 
 def param(name, type_, body=False, rest=False, required=False, default=None):

@@ -1,7 +1,7 @@
 import json
 import datetime
 
-from planevent import models
+from planevent.core.sql import BaseEntity
 from planevent import redisdb
 
 
@@ -10,7 +10,7 @@ class PlaneventJsonEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, datetime.datetime):
             return obj.isoformat()
-        elif isinstance(obj, models.BaseEntity):
+        elif isinstance(obj, BaseEntity):
             return obj.__json__()
         return json.JSONEncoder.default(self, obj)
 

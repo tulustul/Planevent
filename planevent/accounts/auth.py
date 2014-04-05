@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from planevent import (
+from planevent.accounts import (
     models,
     tasks,
 )

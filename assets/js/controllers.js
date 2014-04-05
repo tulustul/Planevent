@@ -512,7 +512,6 @@ angular.module('planevent').controller('LoginController',
             $scope.message = response.message;
         });
     };
-
 });
 
 

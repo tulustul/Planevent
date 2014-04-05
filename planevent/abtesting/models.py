@@ -7,7 +7,6 @@ from sqlalchemy import (
     Boolean,
     ForeignKey,
 )
-
 from sqlalchemy.orm import relationship
 
 from planevent.core.sql import BaseEntity

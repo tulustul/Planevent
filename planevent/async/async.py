@@ -5,10 +5,13 @@ from functools import wraps
 
 import transaction
 from pyramid.paster import get_appsettings
-from uwsgidecorators import cron
-import uwsgi
+try:
+    from uwsgidecorators import cron as uwsgi_cron
+    import uwsgi
+except ImportError:
+    uwsgi = None
 
-from planevent.redisdb import redis_db
+from planevent.core.redisdb import redis_db
 from planevent import (
     createSQLConnection,
     settings,
@@ -49,10 +52,7 @@ def manage_spool_request(vars):
     return spool_function_wrapper(spool_function, *args, **kwargs)
 
 
-uwsgi.spooler = manage_spool_request
-
-
-class async(object):
+class UWSGIAsync(object):
 
     def __call__(self, *args, **kwargs):
         arguments = self.base_dict
@@ -76,6 +76,28 @@ class async(object):
         self.base_dict = {
             _bytes('spool_function'): fun_name
         }
+
+
+def fake_async(mth):
+    return mth
+
+
+class FakeCron(object):
+
+    def __call__(self, *args, **kwargs):
+        return self.f
+
+    def __init__(self, f, *args):
+        self.f = f
+
+
+if uwsgi:
+    uwsgi.spooler = manage_spool_request
+    async = UWSGIAsync
+    cron = uwsgi_cron
+else:
+    async = fake_async
+    cron = FakeCron
 
 
 def progress_counter(mth):

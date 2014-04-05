@@ -9,9 +9,11 @@ from sqlalchemy import engine_from_config
 from pyramid.paster import get_appsettings
 
 
-from planevent.core import sql
+from planevent.core import (
+    sql,
+    redisdb,
+)
 from planevent.urls import urls
-from planevent import redisdb
 from planevent import settings as app_settings
 
 os.environ['DEBUG'] = '1'

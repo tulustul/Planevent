@@ -1,4 +1,5 @@
 import redis
+
 from planevent import settings
 
 redis_cache = None

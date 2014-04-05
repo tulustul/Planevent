@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 import random
 
-from planevent import redisdb
+from planevent.core import redisdb
 from planevent.abtesting.models import Experiment
 
 EXPERIMENT_PATTERN = 'experiment:{}'

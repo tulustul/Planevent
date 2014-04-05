@@ -3,7 +3,7 @@ from collections import namedtuple
 from geopy import geocoders
 import logging
 
-from planevent import cache
+from planevent.core import cache
 
 LOCATION_KEY = 'location:{}'
 

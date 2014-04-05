@@ -1,9 +1,12 @@
 from collections import namedtuple
 import json
 
-from planevent.tests import PlaneventTest
-from planevent.abtesting import models
-from planevent import abtesting
+import planevent.core.tests_base
+from planevent.core.tests_base import PlaneventTest
+from planevent.abtesting import (
+    models,
+    service,
+)
 
 
 class ABTestingTestCase(PlaneventTest):
@@ -216,7 +219,7 @@ class VariationTestCase(ABTestingTestCase):
 
         self.get('/api/experiment/test1/deactivate')
 
-        winner = abtesting.get_winner('test1')
+        winner = service.get_winner('test1')
 
         self.assertEquals(winner, 'var1')
 

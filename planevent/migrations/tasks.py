@@ -1,49 +1,23 @@
-from collections import namedtuple
-
 import gspread
 
+import planevent
 from planevent import (
     settings,
-    models,
+    sql,
 )
+from planevent.offers import models
 from planevent.async import (
     async,
     progress_counter,
 )
+from planevent.scripts.initializedb import (
+    create_test_vendor,
+    create_test_categories,
+    create_test_tags,
+    TestInstances,
+)
+from planevent.migrations.data_definition import columns_definitions
 
-Cell = namedtuple('Cell', ['column', 'header', 'field'])
-columns_definitions = [
-    Cell(column='A', header='Nazwa', field='name'),
-    Cell(column='B', header='Opis', field='description'),
-    Cell(column='C', header='url opisu', field='contacts'),
-    Cell(column='D', header='Kategoria', field='categories'),
-    Cell(column='E', header='Podkategoria', field='subcategories'),
-    Cell(column='F', header='Ulica', field='street'),
-    Cell(column='G', header='Miasto', field='city'),
-    Cell(column='H', header='Kod pocztowy', field='postal_code'),
-    Cell(column='I', header='www', field='www'),
-    Cell(column='J', header='[opis www]', field='www_description'),
-    Cell(column='K', header='Dane kontaktowe', field='contacts'),
-    Cell(column='L', header='Youtube', field='youtube'),
-    Cell(column='M', header='Czy darmowe', field='is_free'),
-    Cell(column='N', header='Cena', field='price'),
-    Cell(column='O', header='Link do cennika', field='price_list_url'),
-    Cell(column='P', header='Ilość uczestników', field='participant_count'),
-    Cell(column='Q', header='Ograniczenie wiekowe',
-         field='age_restriction'),
-    Cell(column='R', header='Galeria', field='gallery'),
-    Cell(column='S', header='Facebook', field='facebook'),
-    Cell(column='T', header='Dni-godziny', field='available_at'),
-    Cell(column='U', header='Współrzędne geograficzne',
-         field='coordinates'),
-    Cell(column='V', header='Tagi', field='tags'),
-    Cell(column='W', header='Logo', field='logo'),
-    Cell(column='X', header='Data dodania', field='added_at'),
-    Cell(column='Y', header='Data aktualizacji', field='updated_at'),
-    Cell(column='Z', header='Promocja', field='promotion'),
-    Cell(column='AA', header='Dostępność czasowa',
-         field='available_at_date'),
-]
 
 CHUNKS = 10
 
@@ -58,6 +32,41 @@ def connect_to_spreadsheet(key):
     )
 
     return client.open_by_key(key)
+
+
+def vendor_export(vendor):
+    return {
+        'name': vendor.name,
+        'description': vendor.description,
+        'category': vendor.category.name,
+        'added_at': vendor.added_at,
+        'updated_at': vendor.updated_at,
+        'promotion': vendor.promotion,
+        'price_min': vendor.price_min,
+        'price_max': vendor.price_max,
+        'to_complete': vendor.to_complete,
+        'city': vendor.address.city,
+        'street': vendor.address.street,
+        'postal_code': vendor.address.postal_code,
+        'contacts': '\n'.join([
+            '{}: {} [{}]'.format(c.type, c.value, c.description)
+            for c in vendor.contacts
+        ]),
+    }
+
+
+def vendor_import(vendor_dict):
+    vendor = models.Vendor()
+
+    vendor.name = vendor_dict['name']
+    vendor.description = vendor_dict['description']
+    vendor.address = models.Address(
+        city=vendor_dict['city'],
+        street=vendor_dict['street'],
+        postal_code=vendor_dict['postal_code'],
+    )
+
+    vendor.save()
 
 
 @async
@@ -160,36 +169,26 @@ def import_(spreadsheet_name, worksheet_name, progress_counter):
     progress_counter.message = '{} rows imported'.format(count)
 
 
-def vendor_export(vendor):
-    return {
-        'name': vendor.name,
-        'description': vendor.description,
-        'category': vendor.category.name,
-        'added_at': vendor.added_at,
-        'updated_at': vendor.updated_at,
-        'promotion': vendor.promotion,
-        'price_min': vendor.price_min,
-        'price_max': vendor.price_max,
-        'to_complete': vendor.to_complete,
-        'city': vendor.address.city,
-        'street': vendor.address.street,
-        'postal_code': vendor.address.postal_code,
-        'contacts': '\n'.join([
-            '{}: {} [{}]'.format(c.type, c.value, c.description)
-            for c in vendor.contacts
-        ]),
-    }
+@async
+@progress_counter
+def generate_random_tasks(quantity, progress_counter):
+    progress_counter.message = 'Flushing database'
+    progress_counter.max = quantity
 
+    sql.Base.metadata.drop_all(planevent.sql_engine)
+    sql.Base.metadata.create_all(planevent.sql_engine)
+    categories, subcategories = create_test_categories()
+    tags = create_test_tags()
 
-def vendor_import(vendor_dict):
-    vendor = models.Vendor()
+    progress_counter.message = 'Generating entities'
+    for i in range(quantity):
+        create_test_vendor(TestInstances(tags, categories, subcategories))
 
-    vendor.name = vendor_dict['name']
-    vendor.description = vendor_dict['description']
-    vendor.address = models.Address(
-        city=vendor_dict['city'],
-        street=vendor_dict['street'],
-        postal_code=vendor_dict['postal_code'],
-    )
+        if i % 10 == 0:
+            if progress_counter.is_canceled():
+                return
+            else:
+                progress_counter.progress += 10
 
-    vendor.save()
+    progress_counter.message = '{} entities generated'.format(quantity)
+

@@ -4,8 +4,8 @@ import datetime
 from oauthlib.common import urldecode
 from requests_oauthlib import OAuth2Session
 
-from planevent import (
-    settings,
+from planevent import settings
+from planevent.accounts import (
     models,
     tasks,
 )

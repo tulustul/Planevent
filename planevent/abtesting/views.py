@@ -8,10 +8,10 @@ from pyramid.view import (
 )
 from pyramid.response import Response
 
-from planevent.decorators import param
-from planevent.views import View
+from planevent.core.decorators import param
+from planevent.core.views import View
 from planevent.abtesting import (
-    service as ab_service,
+    service,
     models,
 )
 
@@ -33,10 +33,10 @@ class ExperimentView(View):
         experiments = self.get_experiments(1)
         for experiment in experiments:
             for variation in experiment.variations:
-                variation.receivers_count = ab_service.get_receivers_count(
+                variation.receivers_count = service.get_receivers_count(
                     experiment.name, variation.name)
 
-                variation.success_count = ab_service.get_success_count(
+                variation.success_count = service.get_success_count(
                     experiment.name, variation.name)
 
         return experiments
@@ -81,7 +81,7 @@ class ExperimentView(View):
             experiment.ended_at = original_experiment.ended_at
 
         if not experiment.in_preparations:
-            return self.reponse(
+            return self.response(
                 409,
                 'Cannot edit experiment which was previously activated'
             )
@@ -89,7 +89,7 @@ class ExperimentView(View):
         try:
             experiment.save()
         except IntegrityError as e:
-            return self.reponse(409, 'Data integrity error: ' + str(e))
+            return self.response(409, 'Data integrity error: ' + str(e))
         return experiment
 
 
@@ -100,9 +100,9 @@ class ActivateExperimentView(View):
     @param('name', str, required=True, rest=True)
     def get(self, name):
         try:
-            return ab_service.activate(name)
-        except ab_service.ABExperimentError as e:
-            return self.reponse(400, str(e))
+            return service.activate(name)
+        except service.ABExperimentError as e:
+            return self.response(400, str(e))
 
 
 @view_defaults(route_name='deactivate_experiment', renderer='json')
@@ -112,9 +112,9 @@ class DeactivateExperimentView(View):
     @param('name', str, required=True, rest=True)
     def get(self, name):
         try:
-            return ab_service.deactivate(name)
-        except ab_service.ABExperimentError as e:
-            return self.reponse(400, str(e))
+            return service.deactivate(name)
+        except service.ABExperimentError as e:
+            return self.response(400, str(e))
 
 
 @view_defaults(route_name='experiment_increment', renderer='json')
@@ -125,20 +125,21 @@ class ExperimentIncrementView(View):
     @param('variation', str, required=True, rest=True)
     def get(self, name, variation):
         try:
-            ab_service.increment_success(name, variation)
+            service.increment_success(name, variation)
             return 'OK'
-        except ab_service.ABExperimentError as e:
-            return self.reponse(400, str(e))
+        except service.ABExperimentError as e:
+            return self.response(400, str(e))
 
 
-@view_defaults(route_name='experiment_variation')
+@view_defaults(route_name='experiment_variation', renderer='json')
 class ExperimentVariationView(View):
 
     @view_config(request_method='GET')
     @param('name', str, required=True, rest=True)
     def get(self, name):
         try:
-            return Response(ab_service.get_variation(
-                            name, self.request.session.get('user_id')))
-        except ab_service.ABExperimentError as e:
-            return self.reponse(400, str(e))
+            return service.get_variation(
+                name, self.request.session.get('user_id')
+            )
+        except service.ABExperimentError as e:
+            return self.response(400, str(e))
