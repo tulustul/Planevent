@@ -30,6 +30,7 @@ class PlaneventTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.transaction.rollback()
+        sql.Base.metadata.drop_all(cls.connection)
         cls.connection.close()
 
     def setUp(self):

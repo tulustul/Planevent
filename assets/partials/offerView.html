@@ -1,0 +1,24 @@
+<section id="offer">
+    <h2>{{ offer.name }}</h2>
+    <img ng-src="{{ offer.logo.path }}" alt="offer logo">
+    <h5>Kategoria: {{ offer.category.name }}</h5>
+    <p>{{ offer.description }}</p>
+
+    <span>
+        {{ offer.address.street }},
+        {{ offer.address.city }}
+        {{ offer.address.postal_code }}
+    </span>
+
+    <h5>Dodano: {{ offer.added_at }}</h5>
+    <h5>Tagi: <span ng-repeat="tag in offer.tags">{{tag.name}}, </span></h5>
+
+    <li ng-repeat="contact in offer.contacts">
+        {{ contact.value }} - {{ contact.description }}
+    </li>
+
+    <addressviewer ng-model="offer.address" />
+
+    <gallery ng-model="offer.gallery" />
+
+</section>

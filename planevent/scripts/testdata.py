@@ -72,7 +72,7 @@ addresses = {
     ],
 }
 
-vendors = {
+offers = {
     'names': [
         'PKN Orlen',
         'GK Grupy Lotos',

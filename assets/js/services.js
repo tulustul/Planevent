@@ -3,7 +3,7 @@
 angular.module('planevent').service('searchService',
         function($http, $resource) {
 
-    this.Vendors = $resource('/api/vendors/search');
+    this.Offers = $resource('/api/offers/search');
 
     this.resetParams = function() {
         this.categoryEnabled = false;
@@ -31,8 +31,8 @@ angular.module('planevent').service('searchService',
             params.price_max = this.params.price_max;
         }
 
-        response = this.Vendors.get(params, function() {
-            callback(response.total_count, response.vendors);
+        response = this.Offers.get(params, function() {
+            callback(response.total_count, response.offers);
         });
     };
 

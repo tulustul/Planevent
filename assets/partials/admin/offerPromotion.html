@@ -1,0 +1,15 @@
+<div>
+    <label>Offer id:</label>
+    <input placeholder="Offer id" type="text" ng-model="offerId" ng-change="getOffer(offerId)">
+</div>
+
+<div ng-show="offer">
+
+    <label>Offer:</label>
+    <strong>{{ offer.name }}</strong>
+
+    <label>Promotion value:</label>
+    <input type="text" ng-model="offer.promotion">
+
+    <div class="btn-wrapper"><button class="btn btn-primary" ng-click="savePromotion(offerId)">Save promotion</button></div>
+</div>

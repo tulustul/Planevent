@@ -15,12 +15,12 @@ header {
         width: auto;
     }
     h1 {
-        @media screen and (max-width: $break-add-vendor) {
+        @media screen and (max-width: $break-add-offer) {
             float: none;
         }
     }
-    .addVendorGreen {
-        @media screen and (max-width: $break-add-vendor) {
+    .addOfferGreen {
+        @media screen and (max-width: $break-add-offer) {
             display: block;
             white-space: nowrap;
         }
@@ -52,7 +52,7 @@ footer {
     }
 }
 
-.vendor-page {
+.offer-page {
     @media screen and (max-width: $break-big) {
         @include span-columns(9 omega);
     }
@@ -62,7 +62,7 @@ footer {
     }
 }
 
-.related-vendors {
+.related-offers {
     @include span-columns(3 omega);
 
     @media screen and (max-width: $break-big) {
@@ -74,7 +74,7 @@ footer {
     }
 }
 
-#vendor-list {
+#offer-list {
     @media screen and (max-width: $break-big) {
         @include span-columns(9 omega);
     }
@@ -83,7 +83,7 @@ footer {
         @include span-columns(12 omega);
     }
 
-    .vendor-preview-wrapper {
+    .offer-preview-wrapper {
         @media screen and (max-width: $break-big) {
             @include span-columns(9, 9);
         }
@@ -122,8 +122,8 @@ section#categories {
     }
 }
 
-.vendor-preview-wrapper {
-    .vendor-preview {
+.offer-preview-wrapper {
+    .offer-preview {
         @media screen and (max-width: $break-small) {
             height: auto;
             max-height: 300px;

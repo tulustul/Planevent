@@ -124,7 +124,7 @@ section#categories {
     }
 }
 
-.vendor-page {
+.offer-page {
     background: $ligth;
     border: 1px solid;
     padding: 10px;
@@ -142,17 +142,17 @@ section#categories {
     }
 }
 
-.related-vendors {
+.related-offers {
     @include span-columns(3 omega);
 }
 
-#vendor {
+#offer {
     padding: 10px;
 }
 
-#vendor-list {
+#offer-list {
     @include span-columns(10 omega);
-    .vendor-preview-wrapper {
+    .offer-preview-wrapper {
         @include span-columns(2, 12);
     }
     .loading-message {
@@ -166,11 +166,11 @@ section#categories {
     }
 }
 
-$vendor-preview-width: 210px;
-$vendor-preview-height: 250px;
-$vendor-preview-top-border: 4px;
-$vendor-preview-bottom-border: 6px;
-vendorpreview {
+$offer-preview-width: 210px;
+$offer-preview-height: 250px;
+$offer-preview-top-border: 4px;
+$offer-preview-bottom-border: 6px;
+offerpreview {
     &.ng-leave {
         @include transition(0.5s);
         opacity: 1;
@@ -193,20 +193,20 @@ vendorpreview {
     &.ng-enter-active {
         opacity: 1;
     }
-    .vendor-preview-wrapper {
-        min-width: $vendor-preview-width;
-        max-width: $vendor-preview-width;
-        width: $vendor-preview-width;
-        height: $vendor-preview-height;
+    .offer-preview-wrapper {
+        min-width: $offer-preview-width;
+        max-width: $offer-preview-width;
+        width: $offer-preview-width;
+        height: $offer-preview-height;
         position: relative;
         margin: 10px;
         // z-index: -1;
-            .vendor-preview {
+            .offer-preview {
             width: 100%;
-            height: $vendor-preview-height - $vendor-preview-bottom-border;
+            height: $offer-preview-height - $offer-preview-bottom-border;
             background-color: white;
             cursor: pointer;
-            border-top: $vendor-preview-top-border solid $dominant;
+            border-top: $offer-preview-top-border solid $dominant;
             overflow: hidden;
             .content {
                 position: absolute;
@@ -245,22 +245,22 @@ vendorpreview {
                 box-shadow: 0 0 5px black;
             }
             .back {
-                .vendor-preview {
+                .offer-preview {
                     .overlay-dark {
                         position: absolute;
-                        top: $vendor-preview-top-border;
+                        top: $offer-preview-top-border;
                         background-color: rgba(0, 0, 0, 0.8);
                         width: 100%;
-                        height: $vendor-preview-height - $vendor-preview-top-border - $vendor-preview-bottom-border + 1;
+                        height: $offer-preview-height - $offer-preview-top-border - $offer-preview-bottom-border + 1;
                     }
                     .flipped {
                         position: absolute;
-                        top: $vendor-preview-top-border;
+                        top: $offer-preview-top-border;
                         @include rotateY(180deg);
                     }
                     p {
                         position: absolute;
-                        top: $vendor-preview-top-border;
+                        top: $offer-preview-top-border;
                         color: white;
                         padding: 5px;
                     }

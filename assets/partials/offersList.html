@@ -1,12 +1,12 @@
 <div ng-include="searchForm"></div>
 
 <infinitescroll
-        id="vendor-list"
+        id="offer-list"
         page-size="20"
         distance="1"
         auto-scroll-limit="200",
-        element-size="vendorPreviewSize()"
+        element-size="offerPreviewSize()"
         reset-function-name="resetSearch"
         fetch-function="fetch">
-    <vendorpreview vendor="vendor" ng-repeat="vendor in entities" />
+    <offerpreview offer="offer" ng-repeat="offer in entities" />
 </infinitescroll>

@@ -1,4 +1,4 @@
-INI_FILE = 'development.ini'
+INI_FILE = 'testing.ini'
 
 APP_URL = 'http://localhost:8080'
 

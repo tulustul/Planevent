@@ -4,10 +4,10 @@ from planevent.offers import models
 
 class OffersBaseTestCase(PlaneventTest):
 
-    def create_vendor(self, name='test vendor', **kwargs):
-        vendor = models.Vendor(name=name, **kwargs)
-        vendor.save()
-        return vendor
+    def create_offer(self, name='test offer', **kwargs):
+        offer = models.Offer(name=name, **kwargs)
+        offer.save()
+        return offer
 
     def create_tag(self, name, references_count=0):
         tag = models.Tag(name=name, references_count=references_count)
@@ -15,32 +15,32 @@ class OffersBaseTestCase(PlaneventTest):
         return tag
 
 
-class VendorViewTestCase(OffersBaseTestCase):
+class OfferViewTestCase(OffersBaseTestCase):
 
     def test_get(self):
-        vendor = self.create_vendor('test vendor')
+        offer = self.create_offer('test offer')
 
-        data = self.get('/api/vendor/' + str(vendor.id))
+        data = self.get('/api/offer/' + str(offer.id))
 
-        self.assertEqual(data['name'], vendor.name)
+        self.assertEqual(data['name'], offer.name)
 
     def test_get_not_existing(self):
-        self.get('/api/vendor/12', status=404)
+        self.get('/api/offer/12', status=404)
 
     def test_deletion(self):
-        vendor = self.create_vendor()
-        self.delete('/api/vendor/' + str(vendor.id))
-        self.get('/api/vendor/' + str(vendor.id), status=404)
+        offer = self.create_offer()
+        self.delete('/api/offer/' + str(offer.id))
+        self.get('/api/offer/' + str(offer.id), status=404)
 
     def test_deletion_not_existing(self):
-        self.delete('/api/vendor/123', status=404)
+        self.delete('/api/offer/123', status=404)
 
 
-class VendorsViewTestCase(OffersBaseTestCase):
+class OffersViewTestCase(OffersBaseTestCase):
 
     def setUp(self):
         super().setUp()
-        self.create_vendor()
+        self.create_offer()
 
     def get_default(self):
         pass
@@ -61,7 +61,7 @@ class VendorsViewTestCase(OffersBaseTestCase):
         pass
 
 
-class RelatedVendorsTestCase(OffersBaseTestCase):
+class RelatedOffersTestCase(OffersBaseTestCase):
 
     def test_get(self):
         pass

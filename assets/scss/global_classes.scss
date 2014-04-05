@@ -80,12 +80,12 @@ header {
         float: left;
         margin-top: 7px;
     }
-    .addVendorBtn {
+    .addOfferBtn {
         position: relative;
         float: right;
         margin-right: 40px;
     }
-    .addVendorGreen {
+    .addOfferGreen {
         @include gradient-background($greenGradient);
         font-size: 19px;
         color: rgb(97, 173, 255);

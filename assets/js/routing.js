@@ -41,24 +41,24 @@ angular.module('planevent').config(function($routeProvider) {
         controller: 'FirstLoggingController'
     })
 
-    .when('/vendors/search', {
-        templateUrl: 'assets/partials/vendorsList.html',
-        controller: 'VendorListController',
+    .when('/offers/search', {
+        templateUrl: 'assets/partials/offersList.html',
+        controller: 'OfferListController',
         reloadOnSearch: false
     })
-    .when('/vendor/:vendorId', {
-        templateUrl: 'assets/partials/vendorPage.html',
-        controller: 'VendorPageController'
+    .when('/offer/:offerId', {
+        templateUrl: 'assets/partials/offerPage.html',
+        controller: 'OfferPageController'
     })
 
-    .when('/vendorAddEdit', {
-        templateUrl: 'assets/partials/vendorAddEdit/main.html',
-        controller: 'VendorAddEditController'
+    .when('/offerAddEdit', {
+        templateUrl: 'assets/partials/offerAddEdit/main.html',
+        controller: 'OfferAddEditController'
     })
-    .when('/vendorAddEdit/:vendorId', {
-        templateUrl: 'assets/partials/vendorAddEdit/main.html',
-        controller: 'VendorAddEditController'
+    .when('/offerAddEdit/:offerId', {
+        templateUrl: 'assets/partials/offerAddEdit/main.html',
+        controller: 'OfferAddEditController'
     })
 
-    .otherwise({redirectTo: '/vendors/search'});
+    .otherwise({redirectTo: '/offers/search'});
 });

@@ -13,11 +13,11 @@ urls = [
     ('logged_user', '/api/user/logged'),
 
     # api
-    ('vendor', '/api/vendor/{id}'),
-    ('related_vendors', '/api/vendor/{id}/related'),
-    ('vendor_promotion', '/api/vendor/{id}/promotion/{promotion}'),
-    ('vendors', '/api/vendors'),
-    ('vendors_search', '/api/vendors/search'),
+    ('offer', '/api/offer/{id}'),
+    ('related_offers', '/api/offer/{id}/related'),
+    ('offer_promotion', '/api/offer/{id}/promotion/{promotion}'),
+    ('offers', '/api/offers'),
+    ('offers_search', '/api/offers/search'),
     ('image', '/api/image'),
     ('gallery', '/api/gallery'),
     ('tags', '/api/tags'),

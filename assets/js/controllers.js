@@ -13,7 +13,7 @@ angular.module('planevent').controller('MainPageController',
     function($scope, globalsService) {
         $scope.mainView = 'assets/partials/mainView.html';
         $scope.categoriesView = 'assets/partials/categoriesView.html';
-        $scope.vendorView = 'assets/partials/vendorView.html';
+        $scope.offerView = 'assets/partials/offerView.html';
         $scope.searchForm = 'assets/partials/search.html';
         $scope.loggedUserView = 'assets/partials/loggedUser.html';
 
@@ -36,23 +36,23 @@ angular.module('planevent').controller('CategoriesController',
             if (category !== undefined) {
                 $scope.selectedCategory = category;
             }
-            $location.path('/vendors/' + $scope.selectedCategory.id);
+            $location.path('/offers/' + $scope.selectedCategory.id);
         };
     }
 );
 
-angular.module('planevent').controller('VendorListController',
+angular.module('planevent').controller('OfferListController',
         function($scope, $location, $routeParams, $rootScope, searchService) {
 
     searchService.resetParams();
     searchService.params.category = $routeParams.categoryId;
 
-    $scope.goToVendor = function(vendor) {
-        $location.path('/vendor/' + vendor.id);
+    $scope.goToOffer = function(offer) {
+        $location.path('/offer/' + offer.id);
     };
 
-    $scope.vendorPreviewSize = function() {
-        var previewElem = $('.vendor-preview-wrapper').first();
+    $scope.offerPreviewSize = function() {
+        var previewElem = $('.offer-preview-wrapper').first();
         if (previewElem.length === 0) {
             return {width: 1, height: 1};
         }
@@ -67,19 +67,19 @@ angular.module('planevent').controller('VendorListController',
     };
 });
 
-angular.module('planevent').controller('VendorPageController',
+angular.module('planevent').controller('OfferPageController',
         function($scope, $resource, $routeParams, globalsService) {
-    var Vendor = $resource('/api/vendor/:id');
-    $scope.vendorDoesNotExists = false;
+    var Offer = $resource('/api/offer/:id');
+    $scope.offerDoesNotExists = false;
     $scope.otherError = false;
-    var vendor = Vendor.get({id: $routeParams.vendorId},
+    var offer = Offer.get({id: $routeParams.offerId},
         function(){
             $scope.fetched = true;
-            $scope.vendor = vendor;
+            $scope.offer = offer;
         },
         function(response){
             if (response.status === 404) {
-                $scope.vendorDoesNotExists = true;
+                $scope.offerDoesNotExists = true;
             } else {
                 $scope.otherError = true;
             }
@@ -87,13 +87,13 @@ angular.module('planevent').controller('VendorPageController',
     );
     $scope.categories = globalsService.categories;
 
-    $scope.removeVendor = function() {
-        Vendor.remove({id: $scope.vendor.id});
+    $scope.removeOffer = function() {
+        Offer.remove({id: $scope.offer.id});
     };
 
 });
 
-angular.module('planevent').controller('VendorAddEditController',
+angular.module('planevent').controller('OfferAddEditController',
     function($scope, $resource, $routeParams, $location, $upload,
              globalsService) {
 
@@ -101,64 +101,64 @@ angular.module('planevent').controller('VendorAddEditController',
         $scope.validatingLocation = false;
         $scope.categories = globalsService.categories;
         $scope.contactTypes = globalsService.contactTypes;
-        $scope.vendorView = 'assets/partials/vendorView.html';
+        $scope.offerView = 'assets/partials/offerView.html';
 
-        if ($routeParams.vendorId === undefined) {
-            $scope.vendor = {gallery: [], address: {}};
+        if ($routeParams.offerId === undefined) {
+            $scope.offer = {gallery: [], address: {}};
         } else {
-            var Vendor = $resource('/api/vendor/:id');
-            $scope.vendor = Vendor.get({id: $routeParams.vendorId}, function() {
-                var address = $scope.vendor.address;
+            var Offer = $resource('/api/offer/:id');
+            $scope.offer = Offer.get({id: $routeParams.offerId}, function() {
+                var address = $scope.offer.address;
                 $scope.locationComplete = address.city && address.street;
             });
         }
 
         $scope.goTo = function(section) {
             $scope.step = section;
-            $scope.section = 'assets/partials/vendorAddEdit/' +
+            $scope.section = 'assets/partials/offerAddEdit/' +
                 section + '.html';
         };
 
         $scope.submit = function() {
-            var Vendors = $resource('/api/vendors');
-            var vendor = Vendors.save($scope.vendor , function() {
-                $location.path('/vendor/' + vendor.id);
+            var Offers = $resource('/api/offers');
+            var offer = Offers.save($scope.offer , function() {
+                $location.path('/offer/' + offer.id);
             });
         };
 
         $scope.addContact = function() {
-            var contacts = $scope.vendor.contacts;
+            var contacts = $scope.offer.contacts;
             if (contacts === undefined) {
-                contacts = $scope.vendor.contacts = [];
+                contacts = $scope.offer.contacts = [];
             }
             contacts[contacts.length] = {};
         };
 
         $scope.removeContact = function(contactNo) {
-            $scope.vendor.contacts.splice(contactNo, 1);
+            $scope.offer.contacts.splice(contactNo, 1);
         };
 
         $scope.addTag = function() {
-            var tags = $scope.vendor.tags;
+            var tags = $scope.offer.tags;
             if (tags === undefined) {
-                tags = $scope.vendor.tags = [];
+                tags = $scope.offer.tags = [];
             }
             tags[tags.length] = {};
         };
 
         $scope.removeTag = function(tagNo) {
-            $scope.vendor.tags.splice(tagNo, 1);
+            $scope.offer.tags.splice(tagNo, 1);
         };
 
         $scope.uploadLogo = function(files) {
             uploadImages(files, 'api/image', function(data) {
-                $scope.vendor.logo = {path: data.path};
+                $scope.offer.logo = {path: data.path};
             });
         };
 
         $scope.uploadGallery = function(files) {
             uploadImages(files, 'api/gallery', function(data) {
-                var gallery = $scope.vendor.gallery;
+                var gallery = $scope.offer.gallery;
                 gallery[gallery.length] = {path: data.path};
             });
         };
@@ -190,21 +190,21 @@ angular.module('planevent').controller('VendorAddEditController',
 angular.module('planevent').controller('AdminPageController',
         function($scope, $resource) {
 
-    $scope.vendorPromotionView = 'assets/partials/admin/vendorPromotion.html';
+    $scope.offerPromotionView = 'assets/partials/admin/offerPromotion.html';
     $scope.categoriesView = 'assets/partials/admin/categories.html';
     $scope.subcategoriesView = 'assets/partials/admin/subcategories.html';
     $scope.statisticsView = 'assets/partials/admin/statistics.html';
     $scope.abTestsView = 'assets/partials/admin/abtests.html';
     $scope.databaseView = 'assets/partials/admin/database.html';
 
-    var Vendor = $resource('/api/vendor/:id');
-    var VendorPromotion = $resource('/api/vendor/:id/promotion/:promotion',
+    var Offer = $resource('/api/offer/:id');
+    var OfferPromotion = $resource('/api/offer/:id/promotion/:promotion',
         {id:'@id', promotion: '@promotion'}
     );
 
-    $scope.vendor = undefined;
+    $scope.offer = undefined;
     $scope.saved = false;
-    $scope.vendorDoesNotExists = false;
+    $scope.offerDoesNotExists = false;
     $scope.unknownError = false;
 
 
@@ -228,23 +228,23 @@ angular.module('planevent').controller('AdminPageController',
         $scope.successes[$scope.successes.length] = msg;
     };
 
-    $scope.getVendor = function(vendorId) {
+    $scope.getOffer = function(offerId) {
         $scope.resetMessages();
 
-        $scope.vendor = undefined;
+        $scope.offer = undefined;
         $scope.saved = false;
         $scope.unknownError = false;
 
-        if (vendorId === '') {
+        if (offerId === '') {
             return;
         }
 
-        $scope.vendor = Vendor.get({id: vendorId},
+        $scope.offer = Offer.get({id: offerId},
             function(){},
             function(response){
-                $scope.vendor = undefined;
+                $scope.offer = undefined;
                 if (response.status === 404) {
-                    $scope.addDanger('Vendor does not exists!');
+                    $scope.addDanger('Offer does not exists!');
                 } else {
                     $scope.addDanger('Unknown error');
                 }
@@ -252,23 +252,23 @@ angular.module('planevent').controller('AdminPageController',
         );
     };
 
-    $scope.savePromotion = function(vendorId) {
+    $scope.savePromotion = function(offerId) {
         $scope.resetMessages();
 
-        if ($scope.vendor === undefined) {
+        if ($scope.offer === undefined) {
             return;
         }
-        VendorPromotion.save({
-                id: vendorId,
-                promotion: $scope.vendor.promotion
+        OfferPromotion.save({
+                id: offerId,
+                promotion: $scope.offer.promotion
             },
             function(){
                 $scope.saved = true;
-                $scope.addSuccess('Vendor saved');
+                $scope.addSuccess('Offer saved');
             },
             function(response){
                 if (response.status === 404) {
-                    $scope.addDanger('Vendor does not exists!');
+                    $scope.addDanger('Offer does not exists!');
                 } else {
                     $scope.addDanger('Unknown error');
                 }
@@ -277,31 +277,31 @@ angular.module('planevent').controller('AdminPageController',
     };
 });
 
-angular.module('planevent').controller('RelatedVendorsController',
+angular.module('planevent').controller('RelatedOffersController',
         function($scope, $resource) {
 
-    var VendorsSearch = $resource('/api/vendors/search');
+    var OffersSearch = $resource('/api/offers/search');
 
-    $scope.$watch('vendor', function() {
-        if ($scope.vendor === undefined) {
+    $scope.$watch('offer', function() {
+        if ($scope.offer === undefined) {
             return;
         }
 
-        var tags_ids = _.map($scope.vendor.tags, function(tag) {
+        var tags_ids = _.map($scope.offer.tags, function(tag) {
             return tag.id;
         });
 
         var params = {
-            category: $scope.vendor.category.id,
-            exclude_vendor_id: $scope.vendor.id,
+            category: $scope.offer.category.id,
+            exclude_offer_id: $scope.offer.id,
             tags: tags_ids,
             range: 50,
             limit: 5
         };
 
-        params.location = $scope.vendor.address.city;
+        params.location = $scope.offer.address.city;
 
-        $scope.relatedVendors = VendorsSearch.query(params);
+        $scope.relatedOffers = OffersSearch.query(params);
     });
 
 });

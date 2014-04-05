@@ -94,7 +94,7 @@ angular.module('planevent').directive('addressviewer', function($timeout) {
             }
 
             function updateMarkers() {
-                var vendor, position, i;
+                var offer, position, i;
 
                 for (i = 0; i < searchMarkers.length; i++ ) {
                     searchMarkers[i].setMap(null);
@@ -102,14 +102,14 @@ angular.module('planevent').directive('addressviewer', function($timeout) {
                 searchMarkers.length = 0;
 
                 for (i in scope.entities) {
-                    vendor =  scope.entities[i];
+                    offer =  scope.entities[i];
                     position = new google.maps.LatLng(
-                        vendor.address.latitude,
-                        vendor.address.longitude
+                        offer.address.latitude,
+                        offer.address.longitude
                     );
                     searchMarkers.push(new google.maps.Marker({
                         position: position,
-                        title: vendor.name + ' ' + vendor.address.formatted
+                        title: offer.name + ' ' + offer.address.formatted
                     }));
                 }
 
@@ -296,7 +296,7 @@ angular.module('planevent').directive('gallery', function() {
                 };
             }
 
-            $scope.$watchCollection('vendor', init);
+            $scope.$watchCollection('offer', init);
         }
     };
 });
@@ -593,12 +593,12 @@ angular.module('planevent').directive('infinitescroll',
     };
 });
 
-angular.module('planevent').directive('vendorpreview', function() {
+angular.module('planevent').directive('offerpreview', function() {
     return {
         restrict: 'EA',
         scope: {
-            'vendor': '=vendor',
+            'offer': '=offer',
         },
-        templateUrl: 'assets/partials/directives/vendorPreview.html',
+        templateUrl: 'assets/partials/directives/offerPreview.html',
     };
 });

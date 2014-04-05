@@ -14,16 +14,16 @@ from sqlalchemy.orm import relationship
 from planevent.core.sql import BaseEntity
 
 
-class VendorTag(BaseEntity):
-    __tablename__ = 'vendor_tags'
-    vendor_id = Column(Integer, ForeignKey('vendor.id'))
+class OfferTag(BaseEntity):
+    __tablename__ = 'offer_tags'
+    offer_id = Column(Integer, ForeignKey('offer.id'))
     tag_id = Column(Integer, ForeignKey('tag.id'))
 
     tag = relationship('Tag', cascade="delete, all")
 
 
-class Vendor(BaseEntity):
-    __tablename__ = 'vendor'
+class Offer(BaseEntity):
+    __tablename__ = 'offer'
     name = Column(String(150))
     description = Column(Text)
     category_id = Column(Integer, ForeignKey('category.id'))
@@ -44,7 +44,7 @@ class Vendor(BaseEntity):
     logo = relationship("Image", cascade="delete, all")
     gallery = relationship("ImageGallery", cascade="delete, all")
     tags = relationship('Tag',
-                        secondary=VendorTag.__table__,
+                        secondary=OfferTag.__table__,
                         cascade="delete, all")
 
 
@@ -61,7 +61,7 @@ class Address(BaseEntity):
 
 class Contact(BaseEntity):
     __tablename__ = 'contact'
-    vendor_id = Column(Integer, ForeignKey('vendor.id'))
+    offer_id = Column(Integer, ForeignKey('offer.id'))
     type = Column(Integer)
     value = Column(String(50))
     description = Column(Text)
@@ -75,7 +75,7 @@ class Image(BaseEntity):
 class ImageGallery(BaseEntity):
     __tablename__ = 'image_gallery'
     path = Column(String(50))
-    vendor_id = Column(Integer, ForeignKey('vendor.id'))
+    offer_id = Column(Integer, ForeignKey('offer.id'))
 
 
 class Tag(BaseEntity):
@@ -102,4 +102,4 @@ class Subcategory(BaseEntity):
     # TODO
     # add optional automatic tags
     # add optional automatic age restriction + bool if age restriction is
-    # validated (in vendor)
+    # validated (in offer)

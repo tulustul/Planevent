@@ -19,92 +19,92 @@ from planevent.core import (
 from planevent.core.views import View
 
 
-VENDOR_KEY = 'vendor:{}'
+VENDOR_KEY = 'offer:{}'
 CATEGORIES_KEY = 'categories'
 SUBCATEGORIES_KEY = 'subcategories'
 
 
-@view_defaults(route_name='vendor', renderer='json')
-class VendorView(View):
+@view_defaults(route_name='offer', renderer='json')
+class OfferView(View):
 
-    @time_profiler('VendorView')
+    @time_profiler('OfferView')
     @view_config(request_method='GET')
     @param('id', int, required=True, rest=True)
     def get(self, id):
-        vendor = cache.get((VENDOR_KEY, id), models.Vendor)
-        if vendor:
-            return vendor
+        offer = cache.get((VENDOR_KEY, id), models.Offer)
+        if offer:
+            return offer
 
-        vendor = models.Vendor.get(id, '*')
-        if not vendor:
+        offer = models.Offer.get(id, '*')
+        if not offer:
             self.request.response.status = 404
-            return {'error': 'No vendor with id ' + str(id)}
-        cache.set((VENDOR_KEY, id), vendor)
-        return vendor
+            return {'error': 'No offer with id ' + str(id)}
+        cache.set((VENDOR_KEY, id), offer)
+        return offer
 
     @view_config(request_method='DELETE')
     @param('id', int, required=True, rest=True)
     def delete(self, id):
-        vendor = models.Vendor.get(id)
-        if not vendor:
+        offer = models.Offer.get(id)
+        if not offer:
             self.request.response.status = 404
-            return {'error': 'No vendor with id ' + str(id)}
-        models.Vendor.delete(id)
-        cache.delete((VENDOR_KEY, vendor.id))
+            return {'error': 'No offer with id ' + str(id)}
+        models.Offer.delete(id)
+        cache.delete((VENDOR_KEY, offer.id))
         return {'message': 'deleted', 'id': id}
 
 
-@view_defaults(route_name='vendor_promotion', renderer='json')
-class VendorPromotionView(View):
+@view_defaults(route_name='offer_promotion', renderer='json')
+class OfferPromotionView(View):
 
     @view_config(request_method='POST')
     @param('id', int, required=True, rest=True)
     @param('promotion', int, required=True, rest=True)
     def post(self, id, promotion):
-        vendor = models.Vendor.get(id)
-        if not vendor:
+        offer = models.Offer.get(id)
+        if not offer:
             self.request.response.status = 404
-            return {'error': 'No vendor with id ' + str(id)}
-        vendor.promotion = promotion
-        vendor.save()
-        cache.set((VENDOR_KEY, vendor.id), vendor)
+            return {'error': 'No offer with id ' + str(id)}
+        offer.promotion = promotion
+        offer.save()
+        cache.set((VENDOR_KEY, offer.id), offer)
         return {'message': 'saved', 'id': id, 'promotion': promotion}
 
 
-@view_defaults(route_name='vendors_search', renderer='json')
-class SearchVendorsView(View):
+@view_defaults(route_name='offers_search', renderer='json')
+class SearchOffersView(View):
 
-    @time_profiler('SearchVendorsView')
+    @time_profiler('SearchOffersView')
     @view_config(request_method='GET')
     @param('category', int, default=0)
     @param('tags', list)
     @param('location', str)
     @param('range', int)
-    @param('exclude_vendor_id', int)
+    @param('exclude_offer_id', int)
     @param('price_min', int)
     @param('price_max', int)
     @param('offset', int, default=0)
     @param('limit', int, default=10)
-    def get(self, category, tags, location, range, exclude_vendor_id, price_min,
+    def get(self, category, tags, location, range, exclude_offer_id, price_min,
             price_max, offset, limit):
 
-        query = sql.DBSession.query(models.Vendor.id)
+        query = sql.DBSession.query(models.Offer.id)
 
         if category != 0:
-            query = query.filter(models.Vendor.category_id == category)
+            query = query.filter(models.Offer.category_id == category)
 
         if tags:
-            query = query.join(models.VendorTag) \
-                .filter(models.VendorTag.tag_id.in_(tags))
+            query = query.join(models.OfferTag) \
+                .filter(models.OfferTag.tag_id.in_(tags))
 
-        if exclude_vendor_id:
-            query = query.filter(models.Vendor.id != exclude_vendor_id)
+        if exclude_offer_id:
+            query = query.filter(models.Offer.id != exclude_offer_id)
 
         if price_min is not None:
-            query = query.filter(models.Vendor.price_min >= price_min)
+            query = query.filter(models.Offer.price_min >= price_min)
 
         if price_max is not None:
-            query = query.filter(models.Vendor.price_max <= price_max)
+            query = query.filter(models.Offer.price_max <= price_max)
 
         if location:
             latlng = geocode_location(location)
@@ -116,44 +116,44 @@ class SearchVendorsView(View):
                     .filter(models.Address.latitude.between(
                         latlng.lat-range, latlng.lat+range))
 
-        query = query.order_by(models.Vendor.promotion.desc())
+        query = query.order_by(models.Offer.promotion.desc())
 
         total_count = query.count()
 
-        vendors_ids = [
+        offers_ids = [
             t[0] for t in query.limit(limit).offset(offset).all()
         ]
 
-        vendors = models.Vendor.query('address', 'logo') \
-            .filter(models.Vendor.id.in_(vendors_ids)).all()
+        offers = models.Offer.query('address', 'logo') \
+            .filter(models.Offer.id.in_(offers_ids)).all()
 
         return {
             'total_count': total_count,
-            'vendors': vendors,
+            'offers': offers,
         }
 
 
-@view_defaults(route_name='vendors', renderer='json')
-class VendorsView(View):
+@view_defaults(route_name='offers', renderer='json')
+class OffersView(View):
 
     @view_config(request_method='POST')
-    @param('vendor', models.Vendor, body=True, required=True)
-    def post(self, vendor):
-        original_vendor = cache.get((VENDOR_KEY, vendor.id), models.Vendor)
-        if not original_vendor:
-            original_vendor = models.Vendor.get(vendor.id)
+    @param('offer', models.Offer, body=True, required=True)
+    def post(self, offer):
+        original_offer = cache.get((VENDOR_KEY, offer.id), models.Offer)
+        if not original_offer:
+            original_offer = models.Offer.get(offer.id)
 
-        if original_vendor:
-            vendor.promotion = original_vendor.promotion
+        if original_offer:
+            offer.promotion = original_offer.promotion
 
         now = datetime.datetime.now()
-        if not vendor.added_at:
-            vendor.added_at = now
+        if not offer.added_at:
+            offer.added_at = now
         else:
-            vendor.updated_at = now
-        vendor.save()
-        cache.set((VENDOR_KEY, vendor.id), vendor)
-        return vendor
+            offer.updated_at = now
+        offer.save()
+        cache.set((VENDOR_KEY, offer.id), offer)
+        return offer
 
 
 @view_defaults(route_name='image', renderer='json')

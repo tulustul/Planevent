@@ -58,32 +58,32 @@ def create_test_logo():
     return image
 
 
-def create_test_gallery(vendor, quantity):
+def create_test_gallery(offer, quantity):
     for i in range(quantity):
         image = models.ImageGallery()
         image.path = '/static/images/test/gallery/' + \
             str(random.randrange(40)) + '.jpg'
-        vendor.gallery.append(image)
+        offer.gallery.append(image)
 
 
-def create_test_contacts(vendor, quantity):
+def create_test_contacts(offer, quantity):
     for i in range(quantity):
         contact = models.Contact()
         contact_data = random.choice(testdata.contacts)
         contact.type = contact_data['type']
         contact.value = random.choice(contact_data['values'])
         contact.description = random.choice(testdata.contact_descriptions)
-        vendor.contacts.append(contact)
+        offer.contacts.append(contact)
 
 
-def create_test_vendor_tags(vendor, tags, quantity):
+def create_test_offer_tags(offer, tags, quantity):
     tags_sample = random.sample(tags, quantity)
     for i in range(quantity):
-        vendor_tag = models.VendorTag(
-            vendor_id=vendor.id,
+        offer_tag = models.OfferTag(
+            offer_id=offer.id,
             tag=tags_sample[i],
         )
-        vendor_tag.save()
+        offer_tag.save()
 
 
 def get_random_preview_image():
@@ -92,25 +92,25 @@ def get_random_preview_image():
     return '/' + path + random.choice(files)
 
 
-def create_test_vendor(test_instances):
-    vendor = models.Vendor()
-    vendor.name = random.choice(testdata.vendors['names'])
-    vendor.description = random.choice(testdata.vendors['descriptions'])
-    vendor.category = random.choice(test_instances.categories)
-    vendor.added_at = datetime.datetime.now()
-    vendor.promotion = random.randrange(1000)
-    vendor.address = create_test_address()
-    vendor.logo = create_test_logo()
+def create_test_offer(test_instances):
+    offer = models.Offer()
+    offer.name = random.choice(testdata.offers['names'])
+    offer.description = random.choice(testdata.offers['descriptions'])
+    offer.category = random.choice(test_instances.categories)
+    offer.added_at = datetime.datetime.now()
+    offer.promotion = random.randrange(1000)
+    offer.address = create_test_address()
+    offer.logo = create_test_logo()
     if random.random() < 0.9:
-        vendor.price_min = random.randrange(1, 9) * 10**random.randrange(1, 3)
+        offer.price_min = random.randrange(1, 9) * 10**random.randrange(1, 3)
         if random.random() < 0.7:
-            vendor.price_max = vendor.price_min * random.randrange(2, 4)
-    vendor.preview_image_url = get_random_preview_image()
-    create_test_contacts(vendor, random.randrange(6))
-    create_test_gallery(vendor, random.randrange(10))
-    vendor.save()
-    create_test_vendor_tags(vendor, test_instances.tags, random.randrange(6))
-    vendor.save()
+            offer.price_max = offer.price_min * random.randrange(2, 4)
+    offer.preview_image_url = get_random_preview_image()
+    create_test_contacts(offer, random.randrange(6))
+    create_test_gallery(offer, random.randrange(10))
+    offer.save()
+    create_test_offer_tags(offer, test_instances.tags, random.randrange(6))
+    offer.save()
 
 
 def create_test_categories():
@@ -148,7 +148,7 @@ def create_test_instances(quantity):
     categories, subcategories = create_test_categories()
     tags = create_test_tags()
     for i in range(quantity):
-        create_test_vendor(TestInstances(tags, categories, subcategories))
+        create_test_offer(TestInstances(tags, categories, subcategories))
 
 
 def generate_random_color():

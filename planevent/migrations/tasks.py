@@ -11,7 +11,7 @@ from planevent.async import (
     progress_counter,
 )
 from planevent.scripts.initializedb import (
-    create_test_vendor,
+    create_test_offer,
     create_test_categories,
     create_test_tags,
     TestInstances,
@@ -34,39 +34,39 @@ def connect_to_spreadsheet(key):
     return client.open_by_key(key)
 
 
-def vendor_export(vendor):
+def offer_export(offer):
     return {
-        'name': vendor.name,
-        'description': vendor.description,
-        'category': vendor.category.name,
-        'added_at': vendor.added_at,
-        'updated_at': vendor.updated_at,
-        'promotion': vendor.promotion,
-        'price_min': vendor.price_min,
-        'price_max': vendor.price_max,
-        'to_complete': vendor.to_complete,
-        'city': vendor.address.city,
-        'street': vendor.address.street,
-        'postal_code': vendor.address.postal_code,
+        'name': offer.name,
+        'description': offer.description,
+        'category': offer.category.name,
+        'added_at': offer.added_at,
+        'updated_at': offer.updated_at,
+        'promotion': offer.promotion,
+        'price_min': offer.price_min,
+        'price_max': offer.price_max,
+        'to_complete': offer.to_complete,
+        'city': offer.address.city,
+        'street': offer.address.street,
+        'postal_code': offer.address.postal_code,
         'contacts': '\n'.join([
             '{}: {} [{}]'.format(c.type, c.value, c.description)
-            for c in vendor.contacts
+            for c in offer.contacts
         ]),
     }
 
 
-def vendor_import(vendor_dict):
-    vendor = models.Vendor()
+def offer_import(offer_dict):
+    offer = models.Offer()
 
-    vendor.name = vendor_dict['name']
-    vendor.description = vendor_dict['description']
-    vendor.address = models.Address(
-        city=vendor_dict['city'],
-        street=vendor_dict['street'],
-        postal_code=vendor_dict['postal_code'],
+    offer.name = offer_dict['name']
+    offer.description = offer_dict['description']
+    offer.address = models.Address(
+        city=offer_dict['city'],
+        street=offer_dict['street'],
+        postal_code=offer_dict['postal_code'],
     )
 
-    vendor.save()
+    offer.save()
 
 
 @async
@@ -77,7 +77,7 @@ def export(spreadsheet_name, worksheet_name, progress_counter):
 
     progress_counter.message = 'Preparing worksheet'
 
-    count = models.Vendor.query().count()
+    count = models.Offer.query().count()
     progress_counter.max = count
 
     spreadsheet = connect_to_spreadsheet(spreadsheet_name)
@@ -105,7 +105,7 @@ def export(spreadsheet_name, worksheet_name, progress_counter):
 
     offset = 0
     while offset < count:
-        vendors = models.Vendor.query() \
+        offers = models.Offer.query() \
             .limit(CHUNKS) \
             .offset(offset) \
             .all()
@@ -116,14 +116,14 @@ def export(spreadsheet_name, worksheet_name, progress_counter):
                     min(offset + CHUNKS + 2, count + 1))
         )
 
-        for i, vendor in enumerate(vendors):
-            vendor_dict = vendor_export(vendor)
+        for i, offer in enumerate(offers):
+            offer_dict = offer_export(offer)
             for j, column in enumerate(columns_definitions):
-                cells[i*columns_count + j].value = vendor_dict.get(column.field)
+                cells[i*columns_count + j].value = offer_dict.get(column.field)
 
         worksheet.update_cells(cells)
 
-        offset += len(vendors)
+        offset += len(offers)
         if progress_counter.is_canceled():
             return
         else:
@@ -155,10 +155,10 @@ def import_(spreadsheet_name, worksheet_name, progress_counter):
 
         rows_count = int(len(cells) / columns_count)
         for i in range(rows_count):
-            vendor_dict = {}
+            offer_dict = {}
             for j, column in enumerate(columns_definitions):
-                vendor_dict[column.field] = cells[i*columns_count + j].value
-            vendor_import(vendor_dict)
+                offer_dict[column.field] = cells[i*columns_count + j].value
+            offer_import(offer_dict)
 
         offset += rows_count
         if progress_counter.is_canceled():
@@ -182,7 +182,7 @@ def generate_random_tasks(quantity, progress_counter):
 
     progress_counter.message = 'Generating entities'
     for i in range(quantity):
-        create_test_vendor(TestInstances(tags, categories, subcategories))
+        create_test_offer(TestInstances(tags, categories, subcategories))
 
         if i % 10 == 0:
             if progress_counter.is_canceled():
