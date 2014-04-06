@@ -17,14 +17,16 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 from planevent.core.sql import BaseEntity
+from planevent.core.models import Address
 from planevent import settings
 
 
 class Account(BaseEntity):
-    class Type:
-        NORMAL = 1
-        EDITOR = 2
-        ADMIN = 3
+    class Role:
+        ANONYMOUS = 1
+        NORMAL = 2
+        EDITOR = 3
+        ADMIN = 4
 
     class PasswordToShort(Exception):
         pass
@@ -39,7 +41,7 @@ class Account(BaseEntity):
     created_at = Column(DateTime)
     last_login = Column(DateTime)
     login_count = Column(Integer, default=0)
-    role = Column(Integer, default=Type.NORMAL)
+    role = Column(Integer, default=Role.NORMAL)
     settings_id = Column(Integer, ForeignKey('account_settings.id'))
     credentials_id = Column(Integer, ForeignKey('account_credentials.id'))
 

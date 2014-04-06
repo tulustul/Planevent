@@ -3,8 +3,8 @@
     <div ng-show="loggedUser != undefined"</div>
         <pebutton ng-click="showProfileActions=!showProfileActions" icon="user" text-model="loggedUser.name" text-position="right" />
         <div id="profileActions" class="login-menu" ng-show="showProfileActions">
-            <pebutton ng-click="goToProfile()" icon="cog" text="Ustawienia" text-position="right" />
-            <pebutton href="/logout" ng-click="logout()" icon="sign-out" text="Wyloguj" text-position="right" />
+            <pebutton href="#/userProfile" icon="cog" text="Ustawienia" text-position="right" />
+            <pebutton ng-click="logout()" icon="sign-out" text="Wyloguj" text-position="right" />
         </div>
     </div>
 

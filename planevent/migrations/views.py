@@ -5,7 +5,11 @@ from pyramid.view import (
 
 import planevent
 from planevent.core.views import View
-from planevent.core.decorators import param
+from planevent.accounts.models import Account
+from planevent.core.decorators import (
+    param,
+    permission,
+)
 from planevent.core import sql
 from planevent.core.redisdb import redis_db
 from planevent.async import TaskProgressCounter
@@ -20,6 +24,7 @@ from planevent.migrations import tasks
 class MigrationView(View):
 
     @view_config(request_method='GET')
+    @permission(Account.Role.ADMIN)
     @param('spreadsheet', str)
     @param('worksheet', str)
     def export(self, spreadsheet, worksheet):
@@ -33,6 +38,7 @@ class MigrationView(View):
         }
 
     @view_config(request_method='POST')
+    @permission(Account.Role.ADMIN)
     @param('spreadsheet', str)
     @param('worksheet', str)
     def import_(self, spreadsheet, worksheet):
@@ -56,6 +62,7 @@ class MigrationView(View):
 class UpdateSchemaView(View):
 
     @view_config(request_method='POST')
+    @permission(Account.Role.ADMIN)
     def post(self):
         sql.Base.metadata.create_all(planevent.sql_engine)
         return 'Database schema updated'
@@ -65,6 +72,7 @@ class UpdateSchemaView(View):
 class ClearDatabaseView(View):
 
     @view_config(request_method='POST')
+    @permission(Account.Role.ADMIN)
     def post(self):
         sql.Base.metadata.drop_all(planevent.sql_engine)
         sql.Base.metadata.create_all(planevent.sql_engine)
@@ -76,6 +84,7 @@ class ClearDatabaseView(View):
 class GenerateRandomInstancesView(View):
 
     @view_config(request_method='POST')
+    @permission(Account.Role.ADMIN)
     @param('quantity', int, body=True)
     def post(self, quantity):
         progress_counter = TaskProgressCounter.create()

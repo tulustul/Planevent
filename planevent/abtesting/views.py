@@ -6,9 +6,12 @@ from pyramid.view import (
     view_config,
     view_defaults,
 )
-from pyramid.response import Response
 
-from planevent.core.decorators import param
+from planevent.accounts.models import Account
+from planevent.core.decorators import (
+    param,
+    permission,
+)
 from planevent.core.views import View
 from planevent.abtesting import (
     service,
@@ -45,6 +48,7 @@ class ExperimentView(View):
         return self.get_experiments(0)
 
     @view_config(request_method='GET')
+    @permission(Account.Role.ADMIN)
     @param('offset', int, default=0)
     @param('limit', int, default=10)
     @param('active', int, required=None, default=None)
@@ -60,6 +64,7 @@ class ExperimentView(View):
             return self.get_active() + self.get_inactive()
 
     @view_config(request_method='POST', renderer='json')
+    @permission(Account.Role.ADMIN)
     @param('experiment', models.Experiment, body=True, required=True)
     def post(self, experiment):
         unique_names_count = len({v.name for v in experiment.variations})
@@ -97,6 +102,7 @@ class ExperimentView(View):
 class ActivateExperimentView(View):
 
     @view_config(request_method='GET')
+    @permission(Account.Role.ADMIN)
     @param('name', str, required=True, rest=True)
     def get(self, name):
         try:
@@ -109,6 +115,7 @@ class ActivateExperimentView(View):
 class DeactivateExperimentView(View):
 
     @view_config(request_method='GET')
+    @permission(Account.Role.ADMIN)
     @param('name', str, required=True, rest=True)
     def get(self, name):
         try:

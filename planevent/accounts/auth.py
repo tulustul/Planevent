@@ -32,6 +32,7 @@ def _login(request, account):
     account.login_count += 1
     account.save()
     request.session['user_id'] = account.id
+    request.session['user_role'] = account.role
 
 
 def register(request, email, password):

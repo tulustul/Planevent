@@ -6,10 +6,12 @@ from pyramid.view import (
 )
 
 from planevent.offers import models
+from planevent.accounts.models import Account
 from planevent.core.decorators import (
     param,
     image_upload,
     time_profiler,
+    permission,
 )
 from planevent.services import geocode_location
 from planevent.core import (
@@ -58,6 +60,7 @@ class OfferView(View):
 class OfferPromotionView(View):
 
     @view_config(request_method='POST')
+    @permission(Account.Role.ADMIN)
     @param('id', int, required=True, rest=True)
     @param('promotion', int, required=True, rest=True)
     def post(self, id, promotion):

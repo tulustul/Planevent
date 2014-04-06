@@ -7,7 +7,80 @@ import logging
 
 from PIL import Image
 
+# from pyramid.view import (
+#     view_config,
+#     view_defaults,
+# )
+from pyramid.exceptions import Forbidden
+
 from planevent.core.sql import BaseEntity
+# import planevent
+
+
+# def view(route_name, renderer='json', **kwargs):
+#     def wrap_http_verb(cls, verb):
+#         if hasattr(cls, verb):
+#             fun = getattr(cls, verb)
+#             # view_config_decorator = view_config(request_method=verb.upper())
+#             # setattr(cls, verb, view_config_decorator(fun))
+
+#             # view_config_decorator = view_config(route_name='home', request_method='GET', renderer='../templates/index.jinja2')
+#             # cls.get = view_config_decorator(cls.get)
+
+#     def decorator(cls):
+#         import pdb;pdb.set_trace()
+#         view_defaults_decorator = view_defaults(
+#             route_name=route_name,
+#             renderer=renderer,
+#             **kwargs
+#         )
+
+#         decorated_class = view_defaults_decorator(cls)
+
+#         for http_verb in ['get', 'post', 'put', 'delete']:
+#             wrap_http_verb(decorated_class, http_verb)
+
+#         return decorated_class
+
+#     return decorator
+
+
+# class view(object):
+#     HTTP_VERBS = ['get', 'post', 'put', 'delete']
+
+#     def __init__(self, route_name, renderer='json', **kwargs):
+#         self.settings = dict(
+#             route_name=route_name,
+#             renderer=renderer,
+#             **kwargs
+#         )
+
+#     def register_http_verb(self, cls, verb):
+#         if hasattr(cls, verb):
+#             fun = getattr(cls, verb)
+
+#             planevent.config.add_view(
+#                 fun,
+#                 request_method=verb.upper(),
+#                 **self.settings
+#             )
+
+#     def __call__(self, cls):
+#         for http_verb in self.HTTP_VERBS:
+#             self.register_http_verb(cls, http_verb)
+#         return cls
+
+
+def permission(permission):
+    '''Can decorate only View verb '''
+    def decorator(mth):
+        @wraps(mth)
+        def wrap(self, *args, **kwargs):
+            if self.get_user_role() < permission:
+                raise Forbidden()
+            return mth(self, *args, **kwargs)
+        return wrap
+    return decorator
 
 
 def param(name, type_, body=False, rest=False, required=False, default=None):

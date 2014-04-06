@@ -22,6 +22,7 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger('planevent')
 
 sql_engine = None
+config = None
 
 
 def createSQLConnection(settings):
@@ -35,6 +36,8 @@ def createSQLConnection(settings):
 def main(global_config, *args_, **settings):
     """ This function returns a Pyramid WSGI application.
     """
+    global config
+
     createSQLConnection(get_appsettings(app_settings.INI_FILE))
     redisdb.createConnections()
 

@@ -5,7 +5,8 @@ from planevent import (
     settings,
     sql,
 )
-from planevent.offers import models
+from planevent.offers import models as offers_models
+from planevent.accounts import models as account_models
 from planevent.async import (
     async,
     progress_counter,
@@ -56,11 +57,11 @@ def offer_export(offer):
 
 
 def offer_import(offer_dict):
-    offer = models.Offer()
+    offer = offers_models.Offer()
 
     offer.name = offer_dict['name']
     offer.description = offer_dict['description']
-    offer.address = models.Address(
+    offer.address = offers_models.Address(
         city=offer_dict['city'],
         street=offer_dict['street'],
         postal_code=offer_dict['postal_code'],
@@ -77,7 +78,7 @@ def export(spreadsheet_name, worksheet_name, progress_counter):
 
     progress_counter.message = 'Preparing worksheet'
 
-    count = models.Offer.query().count()
+    count = offers_models.Offer.query().count()
     progress_counter.max = count
 
     spreadsheet = connect_to_spreadsheet(spreadsheet_name)
@@ -105,7 +106,7 @@ def export(spreadsheet_name, worksheet_name, progress_counter):
 
     offset = 0
     while offset < count:
-        offers = models.Offer.query() \
+        offers = offers_models.Offer.query() \
             .limit(CHUNKS) \
             .offset(offset) \
             .all()
@@ -177,6 +178,15 @@ def generate_random_tasks(quantity, progress_counter):
 
     sql.Base.metadata.drop_all(planevent.sql_engine)
     sql.Base.metadata.create_all(planevent.sql_engine)
+
+    admin = account_models.Account.create(
+        name='Admin',
+        email=settings.ADMIN_EMAIL,
+        role=account_models.Account.Role.ADMIN,
+    )
+    admin.set_password(settings.ADMIN_PASSWORD)
+    admin.save()
+
     categories, subcategories = create_test_categories()
     tags = create_test_tags()
 

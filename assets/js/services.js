@@ -40,6 +40,9 @@ angular.module('planevent').service('searchService',
 
 angular.module('planevent').service('authService', function($http) {
 
+    var self = this;
+    this.loggedUser = null;
+
     this.register = function(email, password) {
         $http.post('/api/register', email + ':' + password)
         .success(function(response) {
@@ -51,13 +54,16 @@ angular.module('planevent').service('authService', function($http) {
     };
 
     this.login = function(email, password) {
-        return $http.post('/api/login', email + ':' + password);
+        return $http.post('/api/login', email + ':' + password)
+        .success(function(account) {
+            self.loggedUser = account;
+        });
     };
 
     this.logout = function() {
         $http.post('/api/logout')
-        .success(function(response) {
-            alert(JSON.stringify(response));
+        .success(function() {
+            self.loggedUser = null;
         })
         .error(function(response) {
             alert(JSON.stringify(response));

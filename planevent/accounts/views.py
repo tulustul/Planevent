@@ -8,7 +8,10 @@ from planevent.accounts import (
     models,
     auth,
 )
-from planevent.core.decorators import param
+from planevent.core.decorators import (
+    param,
+    permission,
+)
 from planevent.core.views import View
 from planevent.services.mailing import InvalidEmail
 from planevent import settings
@@ -49,7 +52,7 @@ class LoginView(View):
         except (InvalidEmail, auth.InvalidCredentials):
             return self.response(400, 'invalid_credentials')
         else:
-            return self.response(200, 'logged_in')
+            return models.Account.get_by_email(email)
 
 
 @view_defaults(route_name='login_oauth2')
@@ -78,6 +81,7 @@ class OAuth2CallbackView(View):
 class LogoutView(View):
 
     @view_config(request_method='POST')
+    @permission(models.Account.Role.NORMAL)
     def post(self):
         auth.logout(self.request)
         return self.response(200, 'logged_out')
@@ -100,6 +104,7 @@ class PasswordRecallView(View):
 class LoggedUserView(View):
 
     @view_config(request_method='GET')
+    @permission(models.Account.Role.NORMAL)
     def get(self):
         user_id = self.request.session.get('user_id')
         if user_id:
@@ -117,10 +122,7 @@ class LoggedUserView(View):
     def post(self, account):
         user_id = self.request.session.get('user_id')
         if account.id != user_id:
-            self.request.response.status = 401
-            return {
-                'error': 'Can edit only owned account'
-            }
+            return self.response(401, 'Can edit only owned account')
 
         account.save()
         return account

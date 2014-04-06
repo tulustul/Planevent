@@ -3,7 +3,11 @@ from pyramid.view import (
     view_defaults,
 )
 
-from planevent.core.decorators import param
+from planevent.accounts.models import Account
+from planevent.core.decorators import (
+    param,
+    permission,
+)
 from planevent.core.views import View
 from planevent.async import TaskProgressCounter
 
@@ -12,6 +16,7 @@ from planevent.async import TaskProgressCounter
 class ListIncompleteView(View):
 
     @view_config(request_method='GET')
+    @permission(Account.Role.ADMIN)
     def get(self):
         pass
 
@@ -20,6 +25,7 @@ class ListIncompleteView(View):
 class TaskProgressView(View):
 
     @view_config(request_method='GET')
+    @permission(Account.Role.ADMIN)
     @param('id', int, rest=True)
     def get(self, id):
         try:
@@ -41,6 +47,7 @@ class TaskProgressView(View):
 class TaskCancelView(View):
 
     @view_config(request_method='POST')
+    @permission(Account.Role.ADMIN)
     @param('id', int, rest=True)
     def post(self, id):
         try:

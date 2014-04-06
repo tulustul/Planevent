@@ -42,7 +42,7 @@ angular.module('planevent').controller('CategoriesController',
 );
 
 angular.module('planevent').controller('OfferListController',
-        function($scope, $location, $routeParams, $rootScope, searchService) {
+        function($scope, $location, $routeParams, searchService) {
 
     searchService.resetParams();
     searchService.params.category = $routeParams.categoryId;
@@ -391,8 +391,10 @@ angular.module('planevent').controller('AccountController',
     $scope.likingsView = 'assets/partials/profile/likings.html';
 
     $scope.accountSaved = false;
+    $scope.loggedUser = null;
 
     accountService.getAccount(function(loggedUser) {
+
         $scope.loggedUser = loggedUser;
 
         if (loggedUser === undefined) {
@@ -414,12 +416,9 @@ angular.module('planevent').controller('AccountController',
         });
     });
 
-    $scope.loguot = function() {
+    $scope.logout = function() {
         authService.logout();
-    };
-
-    $scope.goToProfile = function() {
-        $location.path('/userProfile');
+        $scope.loggedUser = null;
     };
 
     $scope.saveAccount = function() {
@@ -487,9 +486,9 @@ angular.module('planevent').controller('LoginController',
         $scope.message = '';
 
         authService.login(email, password)
-        .success(function(response) {
+        .success(function(account) {
             $scope.waiting = false;
-            alert(response);
+            $scope.loggedUser = account;
         })
         .error(function(response) {
             $scope.waiting = false;

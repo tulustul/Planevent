@@ -6,10 +6,10 @@ angular.module('planevent').config(function($routeProvider) {
     //     templateUrl: 'assets/partials/mainView.html',
     //     controller: 'MainPageController'
     // })
-    .when('/', {
-        templateUrl: 'assets/partials/homePage.html',
-        controller: 'HomePageController'
-    })
+    // .when('/', {
+    //     templateUrl: 'assets/partials/homePage.html',
+    //     controller: 'HomePageController'
+    // })
     .when('/playground', {
         templateUrl: 'assets/partials/playground.html',
         controller: 'MainPageController'

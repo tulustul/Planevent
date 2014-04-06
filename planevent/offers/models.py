@@ -12,6 +12,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 from planevent.core.sql import BaseEntity
+from planevent.core.models import Address
 
 
 class OfferTag(BaseEntity):
@@ -46,17 +47,6 @@ class Offer(BaseEntity):
     tags = relationship('Tag',
                         secondary=OfferTag.__table__,
                         cascade="delete, all")
-
-
-class Address(BaseEntity):
-    __tablename__ = 'address'
-    street = Column(String(50), default='')
-    city = Column(String(50), default='')
-    postal_code = Column(String(6), default='')
-    formatted = Column(String(50), default='')
-    longitude = Column(Float)
-    latitude = Column(Float)
-    validated = Column(Boolean, default=False)
 
 
 class Contact(BaseEntity):
