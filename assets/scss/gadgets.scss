@@ -14,6 +14,7 @@
         border-radius: 8px;
         min-width: 30px;
         text-align: center;
+        display: table;
         &:hover {
             @include transition(0.5s);
             text-decoration: none;
@@ -25,6 +26,9 @@
             color: $button-secondary-color;
         }
         .description {
+            display: table-cell;
+            vertical-align: middle;
+            padding-left: 3px;
             font-size: 15px;
             font-family: 'Open Sans', arial, sans-serif;
         }
@@ -49,19 +53,19 @@
         }
     }
 }
-.button-right {
+.button-bottom {
     @extend .button;
     a {
-        display: table;
+        display: inline-block;
         .description {
-            display: table-cell;
-            vertical-align: middle;
-            padding-left: 3px;
+            display: block;
+            vertical-align: none;
+            padding-left: 0px;
         }
     }
 }
 .button-slide {
-    @extend .button;
+    @extend .button-bottom;
     @extend %button-slide;
 }
 

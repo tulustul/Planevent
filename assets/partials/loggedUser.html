@@ -1,35 +1,39 @@
-<div id="logging" ng-controller="AccountController">
+<div id="logging" ng-controller="AccountController" ng-switch on="loggedUser">
 
-    <div ng-show="loggedUser != undefined"</div>
-        <pebutton ng-click="showProfileActions=!showProfileActions" icon="user" text-model="loggedUser.name" text-position="right" />
-        <div id="profileActions" class="login-menu" ng-show="showProfileActions">
-            <pebutton href="#/userProfile" icon="cog" text="Ustawienia" text-position="right" />
-            <pebutton ng-click="logout()" icon="sign-out" text="Wyloguj" text-position="right" />
-        </div>
-    </div>
-
-    <div ng-show="loggedUser == undefined" ng-controller="LoginController">
-        <pebutton icon="sign-in" text="Zaloguj" text-position="right" ng-click="showLoginForm = !showLoginForm; showRecallForm = false;"></pebutton>
+    <div ng-switch-when="null" ng-controller="LoginController">
+        <pebutton icon="sign-in" ng-click="showLoginForm = !showLoginForm; showRecallForm = false;">Zaloguj</pebutton>
         <div class="login-menu login-form" ng-show="showLoginForm">
-            <pebutton href="/login/facebook" icon="facebook" text="Zaloguj przez Facebook" text-position="right" />
-            <pebutton href="/login/google" icon="google-plus" text="Zaloguj przez Google+" text-position="right" />
-            <h4>Zaloguj przez email:</h4>
-            <input type="text" placeholder="Email" ng-model="email">
-            <input type="password" placeholder="Hasło" ng-model="password">
-            <pebutton icon="sign-in" text="Zaloguj się" text-position="right" ng-click="login(email, password)" ng-show="!waiting" />
-            <h3 class="fa fa-sun-o fa-spin" ng-show="waiting"></h3>
-            <h4 class="login-error" ng-show="message == 'invalid_credentials'">Niepoprawny login lub hasło</h4>
-            <h4 class="login-error" ng-show="message == 'unknown_error'">Niepoprawny login lub hasło</h4>
+            <pebutton href="/login/facebook" icon="facebook">Zaloguj przez Facebook</pebutton>
+            <pebutton href="/login/google" icon="google-plus">Zaloguj przez Google+</pebutton>
+
+            <form name="loginForm" ng-submit="login(email, password)">
+                <h4>Zaloguj przez email:</h4>
+                <input type="email" placeholder="Email" ng-model="email" required>
+                <input type="password" placeholder="Hasło" ng-model="password" minlength="3" required>
+                <h4 class="login-error" ng-show="message == 'invalid_credentials' || message == 'unknown_error'">Niepoprawny login lub hasło</h4>
+                <input type="submit" value="Zaloguj się" ng-show="!waiting">
+                <h3 class="fa fa-sun-o fa-spin" ng-show="waiting"></h3>
+            </form>
+
             <h4 class="login-success" ng-show="message == 'mail_sent'">Wysłano email z przypomnieniem</h4>
+
             <a class="login-link">Zarejestruj się</a>
             <a class="login-link" ng-click="showRecallForm=true; showLoginForm=false;">Zapomniałem hasła</a>
         </div>
         <div class="login-menu login-form" ng-show="showRecallForm">
-            <pebutton icon="arrow-left" text="Wróc do logowania" text-position="right" ng-click="showLoginForm=true; showRecallForm=false;" />
+            <pebutton icon="arrow-left" ng-click="showLoginForm=true; showRecallForm=false;">Wróc do logowania</pebutton>
             <input type="text" placeholder="Email" ng-model="email">
             <h3 class="fa fa-sun-o fa-spin" ng-show="waiting"></h3>
-            <pebutton icon="envelope-o" ng-show="!waiting" text="Wyślij email z przypomnieniem" text-position="right" ng-click="sendRecallEmail(email)" />
+            <pebutton icon="envelope-o" ng-show="!waiting" ng-click="sendRecallEmail(email)">Wyślij email z przypomnieniem</pebutton>
             <h4 class="login-error" ng-show="message == 'invalid_email'">Niepoprawny email</h4>
+        </div>
+    </div>
+
+    <div ng-switch-default>
+        <pebutton ng-click="showProfileActions=!showProfileActions" icon="user">{{ loggedUser.name }}</pebutton>
+        <div id="profileActions" class="login-menu" ng-show="showProfileActions">
+            <pebutton href="#/userProfile" icon="cog">Ustawienia</pebutton>
+            <pebutton ng-click="logout()" icon="sign-out">Wyloguj</pebutton>
         </div>
     </div>
 

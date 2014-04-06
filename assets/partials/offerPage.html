@@ -2,9 +2,9 @@
 
 <div class="offer-page">
     <div class="navigation">
-        <pebutton icon="arrow-circle-o-left" href="#/offers/{{ selectedCategory.id }}" text-position="right" text="Do listy" watch="offer.id"/>
-        <pebutton icon="edit" href="#/offerAddEdit/{{ offer.id }}" text-position="right" text="Edytuj" watch="offer.id" />
-        <pebutton icon="times" href="#" ng-click="removeOffer()" text-position="right" text="Usuń" />
+        <pebutton icon="arrow-circle-o-left" href="#/offers/{{ selectedCategory.id }}" watch="offer.id">Do listy</pebutton>
+        <pebutton icon="edit" href="#/offerAddEdit/{{ offer.id }}" watch="offer.id">Edytuj</pebutton>
+        <pebutton icon="times" href="#" ng-click="removeOffer()">Usuń</pebutton>
     </div><br />
 
     <div id="offer-view" ng-include="offerView" ng-show="fetched"></div>

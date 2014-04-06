@@ -383,7 +383,7 @@ angular.module('planevent').controller('SearchController',
 });
 
 angular.module('planevent').controller('AccountController',
-        function($scope, $location, accountService, authService,
+        function($scope, $location, $rootScope, accountService, authService,
                  globalsService) {
 
     $scope.informationView = 'assets/partials/profile/information.html';
@@ -391,11 +391,11 @@ angular.module('planevent').controller('AccountController',
     $scope.likingsView = 'assets/partials/profile/likings.html';
 
     $scope.accountSaved = false;
-    $scope.loggedUser = null;
+    $rootScope.loggedUser = null;
 
     accountService.getAccount(function(loggedUser) {
 
-        $scope.loggedUser = loggedUser;
+        $rootScope.loggedUser = loggedUser;
 
         if (loggedUser === undefined) {
             $location.path('/');
@@ -403,7 +403,7 @@ angular.module('planevent').controller('AccountController',
         }
 
         globalsService.getCategories(function(categories) {
-            var likingsIds = $scope.loggedUser.likingsIds;
+            var likingsIds = $rootScope.loggedUser.likingsIds;
             $scope.availableCategories = _.map(categories, function(c) {
                 // TODO list of ids instead of field injection
                 c.available = true;
@@ -418,19 +418,19 @@ angular.module('planevent').controller('AccountController',
 
     $scope.logout = function() {
         authService.logout();
-        $scope.loggedUser = null;
+        $rootScope.loggedUser = null;
     };
 
     $scope.saveAccount = function() {
         $scope.accountSaved = false;
-        accountService.saveAccount($scope.loggedUser, function(account) {
-            $scope.loggedUser = account;
+        accountService.saveAccount($rootScope.loggedUser, function(account) {
+            $rootScope.loggedUser = account;
         });
         $scope.accountSaved = true;
     };
 
     $scope.addLiking = function(subcategory, level) {
-        var likings = $scope.loggedUser.likings;
+        var likings = $rootScope.loggedUser.likings;
         likings[likings.length] = {
             subcategory: subcategory,
             level: level
@@ -439,7 +439,7 @@ angular.module('planevent').controller('AccountController',
     };
 
     $scope.removeLiking = function(liking) {
-        var likings = $scope.loggedUser.likings;
+        var likings = $rootScope.loggedUser.likings;
         likings.splice(likings.indexOf(liking), 1);
         liking.subcategory.available = true;
     };
@@ -449,7 +449,7 @@ angular.module('planevent').controller('FirstLoggingController',
         function($scope, $location, accountService) {
 
     accountService.getAccount(function(loggedUser) {
-        $scope.loggedUser = loggedUser;
+        $rootScope.loggedUser = loggedUser;
 
         if (loggedUser === undefined) {
             $location.path('/');
@@ -473,7 +473,7 @@ angular.module('planevent').controller('RegistrationController',
 
 
 angular.module('planevent').controller('LoginController',
-        function($scope, authService) {
+        function($scope, $rootScope, authService) {
 
     $scope.email = '';
     $scope.password = '';
@@ -488,7 +488,7 @@ angular.module('planevent').controller('LoginController',
         authService.login(email, password)
         .success(function(account) {
             $scope.waiting = false;
-            $scope.loggedUser = account;
+            $rootScope.loggedUser = account;
         })
         .error(function(response) {
             $scope.waiting = false;

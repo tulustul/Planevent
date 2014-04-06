@@ -336,6 +336,7 @@ angular.module('planevent').directive('pebutton', function() {
             'watch': '&watch',
         },
         templateUrl: 'assets/partials/directives/button.html',
+        transclude: true,
 
         link: function(scope, element, attrs) {
 

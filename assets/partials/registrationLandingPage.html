@@ -18,13 +18,13 @@
     </section>
 
     <section class="login-form" ng-controller="RegistrationController">
-        <pebutton href="/login/facebook" icon="facebook" text="Zaloguj przez Facebook" text-position="right" />
-        <pebutton href="/login/google" icon="google-plus" text="Zaloguj przez Google+" text-position="right" />
+        <pebutton href="/login/facebook" icon="facebook">Zaloguj przez Facebook</pebutton>
+        <pebutton href="/login/google" icon="google-plus">Zaloguj przez Google+</pebutton>
         <h4>Zaloguj przez email:</h4>
         <input type="text" placeholder="Email" ng-model="email">
         <input type="password" placeholder="Hasło" ng-model="password">
         <div class="register">
-            <pebutton icon="edit" text="Zarejestruj się" text-position="right" ng-click="register(email, password)"></pebutton>
+            <pebutton icon="edit" ng-click="register(email, password)">Zarejestruj się</pebutton>
         </div>
     </section>
 
