@@ -1,3 +1,5 @@
+import json
+
 from sqlalchemy import (
     Column,
     Float,
@@ -6,6 +8,11 @@ from sqlalchemy import (
 )
 
 from planevent.core.sql import BaseEntity
+
+
+class Json(dict):
+    def __init__(self, s):
+        super().__init__(json.loads(s))
 
 
 class Address(BaseEntity):

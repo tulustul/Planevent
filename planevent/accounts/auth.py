@@ -19,6 +19,14 @@ class EmailAlreadyTaken(AuthException):
     pass
 
 
+class InvalidToken(AuthException):
+    pass
+
+
+class TokenExpired(AuthException):
+    pass
+
+
 def _authenticate_account(account, password):
     if not account:
         raise InvalidCredentials()
@@ -66,19 +74,31 @@ def change_password(email, old_password, new_password):
     account.save()
 
 
-def racall_password(email):
-    account = models.Account.get_by_email(email, 'credentials')
-    account.forget_password()
-    account.save()
-    tasks.send_password_recall_email(account)
-
-
-def recall_password_callback(email):
+def recall_password(email):
     mailing.validate_email(email)
     account = models.Account.get_by_email(email, 'credentials')
     if account:
         account.generate_recall_password_token()
         tasks.send_password_recall_email(account)
+
+
+def recall_password_callback(token, new_password):
+    account = models.Account.query('credentials') \
+        .filter(models.AccountCrendentials.recall_token == token) \
+        .first()
+
+    if account is None:
+        raise InvalidToken()
+
+    if datetime.now() > account.credentials.recall_token_expiry:
+        raise TokenExpired()
+
+    account.set_password(new_password)
+
+    account.credentials.recall_token = None
+    account.credentials.recall_token_expiry = None
+
+    account.save()
 
 
 def try_login(request, email, password):
@@ -89,3 +109,4 @@ def try_login(request, email, password):
 
 def logout(request):
     request.session['user_id'] = None
+    request.session['user_role'] = None

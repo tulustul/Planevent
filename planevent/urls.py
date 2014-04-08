@@ -8,8 +8,9 @@ urls = [
     ('login_oauth2', '/login/{provider}'),
     ('oauth2_callback', '/login/{provider}/callback'),
     ('logout', '/api/logout'),
-    ('password_recall', 'api/recall_password'),
-    ('password_recall_callback', '/password_recall_callback'),
+    ('change_password', '/api/change_password'),
+    ('password_recall', '/api/recall_password'),
+    ('password_recall_callback', '/api/recall_password_callback'),
     ('logged_user', '/api/user/logged'),
 
     # api

@@ -6,7 +6,7 @@
             <pebutton href="/login/facebook" icon="facebook">Zaloguj przez Facebook</pebutton>
             <pebutton href="/login/google" icon="google-plus">Zaloguj przez Google+</pebutton>
 
-            <form name="loginForm" ng-submit="login(email, password)">
+            <form name="loginForm" ng-submit="login(email, password)" autocomplete>
                 <h4>Zaloguj przez email:</h4>
                 <input type="email" placeholder="Email" ng-model="email" required>
                 <input type="password" placeholder="Hasło" ng-model="password" minlength="3" required>

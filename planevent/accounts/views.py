@@ -23,7 +23,11 @@ class RegisterView(View):
     @view_config(request_method='POST')
     @param('credentials', str, required=True, body=True)
     def post(self, credentials):
-        email, password = credentials.split(':', 1)
+        try:
+            email, password = credentials.split(':', 1)
+        except:
+            return self.response(400, 'invalid_body')
+
         try:
             auth.register(self.request, email, password)
         except auth.EmailAlreadyTaken:
@@ -46,7 +50,10 @@ class LoginView(View):
     @view_config(request_method='POST')
     @param('credentials', str, required=True, body=True)
     def post(self, credentials):
-        email, password = credentials.split(':', 1)
+        try:
+            email, password = credentials.split(':', 1)
+        except:
+            return self.response(400, 'invalid_body')
         try:
             auth.try_login(self.request, email, password)
         except (InvalidEmail, auth.InvalidCredentials):
@@ -87,6 +94,24 @@ class LogoutView(View):
         return self.response(200, 'logged_out')
 
 
+@view_defaults(route_name='change_password', renderer='json')
+class ChangePasswordView(View):
+
+    @view_config(request_method='POST')
+    @param('credentials', str, required=True, body=True)
+    def post(self, credentials):
+        try:
+            email, old_password, new_password = credentials.split(':', 2)
+        except ValueError:
+            return self.response(400, 'invalid_body')
+
+        try:
+            auth.change_password(email, old_password, new_password)
+        except (InvalidEmail, auth.InvalidCredentials):
+            return self.response(400, 'invalid_credentials')
+        return self.response(200, 'password_changed')
+
+
 @view_defaults(route_name='password_recall', renderer='json')
 class PasswordRecallView(View):
 
@@ -94,10 +119,36 @@ class PasswordRecallView(View):
     @param('email', str, required=True, body=True)
     def post(self, email):
         try:
-            auth.recall_password_callback(email)
+            auth.recall_password(email)
         except InvalidEmail:
             return self.response(400, 'invalid_email')
         return self.response(200, 'mail_sent')
+
+
+@view_defaults(route_name='password_recall_callback', renderer='json')
+class PasswordRecallCallbackView(View):
+
+    @view_config(request_method='POST')
+    @param('credentials', str, required=True, body=True)
+    def post(self, credentials):
+        try:
+            token, new_password = credentials.split(':', 1)
+        except ValueError:
+            return self.response(400, 'invalid_body')
+
+        try:
+            auth.recall_password_callback(token, new_password)
+        except auth.InvalidToken:
+            return self.response(400, 'invalid_token')
+        except auth.TokenExpired:
+            return self.response(400, 'token_expired')
+        except models.Account.PasswordToShort:
+            return self.response(
+                400,
+                'password_to_short',
+                mimimum_length=settings.MINIMUM_PASSWORD_LENGTH,
+            )
+        return self.response(200, 'password_set')
 
 
 @view_defaults(route_name='logged_user', renderer='json')

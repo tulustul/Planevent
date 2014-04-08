@@ -1,7 +1,6 @@
 from collections import namedtuple
 import json
 
-import planevent.core.tests_base
 from planevent.core.tests_base import PlaneventTest
 from planevent.abtesting import (
     models,
