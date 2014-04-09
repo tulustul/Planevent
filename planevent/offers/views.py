@@ -18,7 +18,9 @@ from planevent.core import (
     sql,
     cache,
 )
+from planevent.offers import service
 from planevent.core.views import View
+from planevent.core.models import Address
 
 
 VENDOR_KEY = 'offer:{}'
@@ -34,14 +36,16 @@ class OfferView(View):
     @param('id', int, required=True, rest=True)
     def get(self, id):
         offer = cache.get((VENDOR_KEY, id), models.Offer)
-        if offer:
-            return offer
+        if offer is None:
+            offer = models.Offer.get(id, '*')
+            if offer:
+                cache.set((VENDOR_KEY, id), offer)
 
-        offer = models.Offer.get(id, '*')
         if not offer:
-            self.request.response.status = 404
-            return {'error': 'No offer with id ' + str(id)}
-        cache.set((VENDOR_KEY, id), offer)
+            return self.response(404, 'No offer with id {}'.format(id))
+
+        service.increment_view_count(offer, self.request)
+
         return offer
 
     @view_config(request_method='DELETE')
@@ -49,8 +53,7 @@ class OfferView(View):
     def delete(self, id):
         offer = models.Offer.get(id)
         if not offer:
-            self.request.response.status = 404
-            return {'error': 'No offer with id ' + str(id)}
+            return self.response(404, 'No offer with id {}'.format(id))
         models.Offer.delete(id)
         cache.delete((VENDOR_KEY, offer.id))
         return {'message': 'deleted', 'id': id}
@@ -66,8 +69,7 @@ class OfferPromotionView(View):
     def post(self, id, promotion):
         offer = models.Offer.get(id)
         if not offer:
-            self.request.response.status = 404
-            return {'error': 'No offer with id ' + str(id)}
+            return self.response(404, 'No offer with id {}'.format(id))
         offer.promotion = promotion
         offer.save()
         cache.set((VENDOR_KEY, offer.id), offer)
@@ -113,10 +115,10 @@ class SearchOffersView(View):
             latlng = geocode_location(location)
             if latlng:
                 range /= 111.12
-                query = query.join(models.Address) \
-                    .filter(models.Address.longitude.between(
+                query = query.join(Address) \
+                    .filter(Address.longitude.between(
                         latlng.lng-range, latlng.lng+range)) \
-                    .filter(models.Address.latitude.between(
+                    .filter(Address.latitude.between(
                         latlng.lat-range, latlng.lat+range))
 
         query = query.order_by(models.Offer.promotion.desc())

@@ -60,3 +60,5 @@ MINIMUM_PASSWORD_LENGTH = 5
 
 ADMIN_EMAIL = 'tulfm@poczta.fm'
 ADMIN_PASSWORD = 'admin'
+
+OFFER_VIEW_INCREMENT_DELAY = 5  # in minutes

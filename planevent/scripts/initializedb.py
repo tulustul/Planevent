@@ -17,6 +17,7 @@ from pyramid.scripts.common import parse_vars
 from planevent import settings
 from planevent.offers import models
 from planevent.core import sql
+from planevent.core.models import Address
 import planevent.scripts.testdata as testdata
 
 
@@ -39,7 +40,7 @@ def usage(argv):
 def create_test_address():
     city = random.choice(testdata.addresses['cities'])
 
-    address = models.Address()
+    address = Address()
     address.street = random.choice(testdata.addresses['streets'])
     address.city = city['name']
     address.postal_code = str(random.randrange(10, 100)) + '-' + \

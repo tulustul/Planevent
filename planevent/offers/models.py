@@ -1,7 +1,6 @@
 from sqlalchemy import (
     Column,
     Integer,
-    Float,
     Text,
     String,
     DateTime,
@@ -12,7 +11,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 from planevent.core.sql import BaseEntity
-from planevent.core.models import Address
+from planevent import redisdb
 
 
 class OfferTag(BaseEntity):
@@ -24,6 +23,8 @@ class OfferTag(BaseEntity):
 
 
 class Offer(BaseEntity):
+    VIEW_COUNT = 'offerviewcount:{}'  # .format(offer_id)
+
     __tablename__ = 'offer'
     name = Column(String(150))
     description = Column(Text)
@@ -47,6 +48,13 @@ class Offer(BaseEntity):
     tags = relationship('Tag',
                         secondary=OfferTag.__table__,
                         cascade="delete, all")
+
+    @property
+    def views_count(self):
+        return redisdb.redis_db.get(self.VIEW_COUNT.format(self.id))
+
+    def increment_views_count(self):
+        redisdb.redis_db.incr(self.VIEW_COUNT.format(self.id))
 
 
 class Contact(BaseEntity):
