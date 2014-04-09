@@ -389,11 +389,15 @@ angular.module('planevent').controller('AccountController',
     $scope.informationView = 'assets/partials/profile/information.html';
     $scope.settingsView = 'assets/partials/profile/settings.html';
     $scope.likingsView = 'assets/partials/profile/likings.html';
+    $scope.changePasswordView = 'assets/partials/profile/changePassword.html';
 
     $scope.accountSaved = false;
     $rootScope.loggedUser = null;
 
-    accountService.getAccount(function(loggedUser) {
+    $scope.waiting = false;
+
+    authService.getLoggedUser()
+    .success(function(loggedUser) {
 
         $rootScope.loggedUser = loggedUser;
 
@@ -442,6 +446,22 @@ angular.module('planevent').controller('AccountController',
         var likings = $rootScope.loggedUser.likings;
         likings.splice(likings.indexOf(liking), 1);
         liking.subcategory.available = true;
+    };
+
+    $scope.changePassword = function(oldPassword, newPassword) {
+        $scope.waiting = true;
+
+        authService.changePassword(oldPassword, newPassword)
+        .success(function(response) {
+            $scope.message = response.message;
+            $scope.waiting = false;
+        })
+        .error(function(response) {
+            $scope.waiting = false;
+            $scope.message = response.message;
+        });
+
+
     };
 });
 

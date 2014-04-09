@@ -43,6 +43,13 @@ angular.module('planevent').service('authService', function($http) {
     var self = this;
     this.loggedUser = null;
 
+    this.getLoggedUser = function() {
+        return $http.get('/api/user/logged')
+        .success(function(loggedUser) {
+            self.loggedUser = loggedUser;
+        });
+    };
+
     this.register = function(email, password) {
         $http.post('/api/register', email + ':' + password)
         .success(function(response) {
@@ -73,6 +80,13 @@ angular.module('planevent').service('authService', function($http) {
     this.sendRecallEmail = function(email) {
         return $http.post('/api/recall_password', email);
     };
+
+    this.changePassword = function(oldPassword, newPassword) {
+        return $http.post(
+            '/api/change_password',
+            self.loggedUser.email + ':' + oldPassword + ':' + newPassword
+        );
+    };
 });
 
 angular.module('planevent').service('accountService', function($resource) {
@@ -93,12 +107,6 @@ angular.module('planevent').service('accountService', function($resource) {
         computeLikedSubcategoriesIds(account);
         callback(account);
     }
-
-    this.getAccount = function(callback) {
-        var loggedUser = LoggedUser.get({}, function() {
-            restCallback(loggedUser, callback);
-        });
-    };
 
     this.saveAccount = function(account, callback) {
         var loggedUser = LoggedUser.save(account, function() {
