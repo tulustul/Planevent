@@ -76,8 +76,8 @@ def permission(permission):
     def decorator(mth):
         @wraps(mth)
         def wrap(self, *args, **kwargs):
-            # if self.get_user_role() < permission:
-            #     raise Forbidden()
+            if self.get_user_role() < permission:
+                raise Forbidden()
             return mth(self, *args, **kwargs)
         return wrap
     return decorator

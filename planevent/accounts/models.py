@@ -11,6 +11,7 @@ from sqlalchemy import (
     Integer,
     String,
     DateTime,
+    Boolean,
     ForeignKey,
 )
 
@@ -42,6 +43,8 @@ class Account(BaseEntity):
     last_login = Column(DateTime)
     login_count = Column(Integer, default=0)
     role = Column(Integer, default=Role.NORMAL)
+    password_protected = Column(Boolean, default=False)
+
     settings_id = Column(Integer, ForeignKey('account_settings.id'))
     credentials_id = Column(Integer, ForeignKey('account_credentials.id'))
 
@@ -87,6 +90,7 @@ class Account(BaseEntity):
         salt.update(os.urandom(32))
         self.credentials.password_salt = salt.hexdigest()
         self.credentials.password_hash = self._generate_password_hash(password)
+        self.password_protected = True
 
     def check_password(self, password):
         return self._generate_password_hash(password) == \

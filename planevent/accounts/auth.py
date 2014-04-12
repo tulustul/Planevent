@@ -31,7 +31,7 @@ def _authenticate_account(account, password):
     if not account:
         raise InvalidCredentials()
 
-    if not account.check_password(password):
+    if account.password_protected and not account.check_password(password):
         raise InvalidCredentials()
 
 
