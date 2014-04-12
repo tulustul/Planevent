@@ -51,12 +51,9 @@ angular.module('planevent').service('authService', function($http) {
     };
 
     this.register = function(email, password) {
-        $http.post('/api/register', email + ':' + password)
-        .success(function(response) {
-            alert(JSON.stringify(response));
-        })
-        .error(function(response) {
-            alert(JSON.stringify(response));
+        return $http.post('/api/register', email + ':' + password)
+        .success(function(account) {
+            self.loggedUser = account;
         });
     };
 
@@ -71,9 +68,6 @@ angular.module('planevent').service('authService', function($http) {
         $http.post('/api/logout')
         .success(function() {
             self.loggedUser = null;
-        })
-        .error(function(response) {
-            alert(JSON.stringify(response));
         });
     };
 

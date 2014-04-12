@@ -10,14 +10,22 @@ angular.module('planevent').controller('HomePageController',
 );
 
 angular.module('planevent').controller('MainPageController',
-    function($scope, globalsService) {
+    function($scope, globalsService, searchService) {
         $scope.mainView = 'assets/partials/mainView.html';
         $scope.categoriesView = 'assets/partials/categoriesView.html';
         $scope.offerView = 'assets/partials/offerView.html';
         $scope.searchForm = 'assets/partials/search.html';
         $scope.loggedUserView = 'assets/partials/loggedUser.html';
+        $scope.promotedOffersView = 'assets/partials/promotedOffers.html';
 
         $scope.categories = globalsService.categories;
+
+        $scope.getPromotedOffers = function() {
+            searchService.resetParams();
+            searchService.params.category = $routeParams.categoryId;
+            searchService.fetch(offset, limit, callback);
+
+        }
     }
 );
 
@@ -479,19 +487,6 @@ angular.module('planevent').controller('FirstLoggingController',
     });
 });
 
-
-angular.module('planevent').controller('RegistrationController',
-        function($scope, authService) {
-
-    $scope.email = '';
-    $scope.password = '';
-
-    $scope.register = function(email, password) {
-        authService.register(email, password);
-    };
-});
-
-
 angular.module('planevent').controller('LoginController',
         function($scope, $rootScope, authService) {
 
@@ -500,6 +495,7 @@ angular.module('planevent').controller('LoginController',
     $scope.message = '';
     $scope.form = '';
     $scope.waiting = false;
+    $scope.registration = false;
 
     $scope.login = function(email, password) {
         $scope.waiting = true;
@@ -525,6 +521,21 @@ angular.module('planevent').controller('LoginController',
             $scope.showLoginForm = true;
             $scope.showRecallForm = false;
             $scope.message = response.message;
+        })
+        .error(function(response) {
+            $scope.waiting = false;
+            $scope.message = response.message;
+        });
+    };
+
+    $scope.register = function(email, password) {
+        $scope.waiting = true;
+        $scope.message = '';
+
+        authService.register(email, password)
+        .success(function(account) {
+            $scope.waiting = false;
+            $rootScope.loggedUser = account;
         })
         .error(function(response) {
             $scope.waiting = false;

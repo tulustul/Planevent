@@ -45,7 +45,6 @@ def _login(request, account):
 
 def register(request, email, password):
     mailing.validate_email(email)
-
     account = models.Account.get_by_email(email)
 
     if account:
@@ -64,6 +63,8 @@ def register(request, email, password):
     _login(request, account)
 
     tasks.send_welcome_email(account)
+
+    return account
 
 
 def change_password(email, old_password, new_password):

@@ -3,21 +3,33 @@
     <div ng-switch-when="null" ng-controller="LoginController">
         <pebutton icon="sign-in" ng-click="showLoginForm = !showLoginForm; showRecallForm = false;">Zaloguj</pebutton>
         <div class="login-menu login-form" ng-show="showLoginForm">
-            <pebutton href="/login/facebook" icon="facebook">Zaloguj przez Facebook</pebutton>
-            <pebutton href="/login/google" icon="google-plus">Zaloguj przez Google+</pebutton>
+            <pebutton icon="arrow-left" ng-click="registration = false" ng-show="registration">Wróć do logowania</pebutton>
+            <h4 ng-show="registration">Rejestracja</h4>
+            <pebutton href="/login/facebook" icon="facebook">
+                <span ng-show="!registration">Zaloguj przez Facebook</span>
+                <span ng-show="registration">Zarejestruj przez Facebook</span>
+            </pebutton>
+            <pebutton href="/login/google" icon="google-plus">
+                <span ng-show="!registration">Zaloguj przez Google+</span>
+                <span ng-show="registration">Zarejestruj przez Google+</span>
+            </pebutton>
 
-            <form name="loginForm" ng-submit="login(email, password)" autocomplete>
-                <h4>Zaloguj przez email:</h4>
+            <form name="loginForm" ng-submit="registration ? register(email, password) : login(email, password)" autocomplete>
+                <h4 ng-show="!registration">Zaloguj przez email:</h4>
+                <h4 ng-show="registration">Zarejestruj przez email:</h4>
                 <input type="email" placeholder="Email" ng-model="email" required>
                 <input type="password" placeholder="Hasło" ng-model="password" minlength="3" required>
                 <h4 class="login-error" ng-show="message == 'invalid_credentials' || message == 'unknown_error'">Niepoprawny login lub hasło</h4>
-                <input type="submit" value="Zaloguj się" ng-show="!waiting">
+                <h4 class="login-error" ng-show="message == 'password_too_short'">Hasło jest za krótkie</h4>
+                <h4 class="login-error" ng-show="message == 'email_already_taken'">Email jest już zajęty</h4>
+                <h4 class="login-error" ng-show="message == 'invalid_email'">Niepoprawny email</h4>
+                <input type="submit" value="{{ registration ? 'Zarejestruj się' : 'Zaloguj się' }}" ng-show="!waiting">
                 <h3 class="fa fa-sun-o fa-spin" ng-show="waiting"></h3>
             </form>
 
             <h4 class="login-success" ng-show="message == 'mail_sent'">Wysłano email z przypomnieniem</h4>
 
-            <a class="login-link">Zarejestruj się</a>
+            <a class="login-link" ng-click="registration = true;" ng-show="!registration">Zarejestruj się</a>
             <a class="login-link" ng-click="showRecallForm=true; showLoginForm=false;">Zapomniałem hasła</a>
         </div>
         <div class="login-menu login-form" ng-show="showRecallForm">

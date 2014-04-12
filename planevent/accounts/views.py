@@ -29,7 +29,7 @@ class RegisterView(View):
             return self.response(400, 'invalid_body')
 
         try:
-            auth.register(self.request, email, password)
+            return auth.register(self.request, email, password)
         except auth.EmailAlreadyTaken:
             return self.response(409, 'email_already_taken')
         except InvalidEmail:
@@ -40,8 +40,6 @@ class RegisterView(View):
                 'password_to_short',
                 mimimum_length=settings.MINIMUM_PASSWORD_LENGTH,
             )
-        else:
-            return self.response(201, 'account_created')
 
 
 @view_defaults(route_name='login', renderer='json')

@@ -81,7 +81,7 @@ class SearchOffersView(View):
 
     @time_profiler('SearchOffersView')
     @view_config(request_method='GET')
-    @param('category', int, default=0)
+    @param('category', str, default=0)
     @param('tags', list)
     @param('location', str)
     @param('range', int)
@@ -95,8 +95,13 @@ class SearchOffersView(View):
 
         query = sql.DBSession.query(models.Offer.id)
 
-        if category != 0:
-            query = query.filter(models.Offer.category_id == category)
+        if category is not None:
+            if ',' in category:
+                categories = [int(c) for c in category.split(',')]
+                query = query.filter(models.Offer.category_id in categories)
+            else:
+                category = int(category)
+                query = query.filter(models.Offer.category_id == category)
 
         if tags:
             query = query.join(models.OfferTag) \
