@@ -477,14 +477,32 @@ angular.module('planevent').controller('FirstLoggingController',
         function($scope, $location, accountService) {
 
     accountService.getAccount(function(loggedUser) {
-        $rootScope.loggedUser = loggedUser;
-
         if (loggedUser === undefined) {
             $location.path('/');
         } else if (loggedUser.login_count > 1) {
             $location.path('/userProfile');
         }
     });
+});
+
+angular.module('planevent').controller('PasswordRecallCallbackController',
+        function($scope, $routeParams, authService) {
+
+    $scope.password = '';
+
+    $scope.changePassword = function(password) {
+        $scope.waiting = true;
+
+        authService.changePasswordFromToken($routeParams.token, password)
+        .success(function(response) {
+            $scope.waiting = false;
+            $scope.message = response.message;
+        })
+        .error(function(response) {
+            $scope.waiting = false;
+            $scope.message = response.message;
+        });
+    };
 });
 
 angular.module('planevent').controller('LoginController',

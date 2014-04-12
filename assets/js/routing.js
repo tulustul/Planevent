@@ -6,6 +6,10 @@ angular.module('planevent').config(function($routeProvider) {
         templateUrl: 'assets/partials/mainView.html',
         controller: 'MainPageController'
     })
+    .when('/password_recall_callback', {
+        templateUrl: 'assets/partials/passwordRecallCallback.html',
+        controller: 'PasswordRecallCallbackController'
+    })
     // .when('/', {
     //     templateUrl: 'assets/partials/homePage.html',
     //     controller: 'HomePageController'
@@ -60,5 +64,5 @@ angular.module('planevent').config(function($routeProvider) {
         controller: 'OfferAddEditController'
     })
 
-    .otherwise({redirectTo: '/offers/search'});
+    .otherwise({redirectTo: '/'});
 });

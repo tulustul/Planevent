@@ -81,6 +81,13 @@ angular.module('planevent').service('authService', function($http) {
             self.loggedUser.email + ':' + oldPassword + ':' + newPassword
         );
     };
+
+    this.changePasswordFromToken = function(token, password) {
+        return $http.post(
+            '/api/recall_password_callback',
+            token + ':' + password
+        );
+    };
 });
 
 angular.module('planevent').service('accountService', function($resource) {
