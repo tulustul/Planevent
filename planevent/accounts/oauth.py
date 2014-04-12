@@ -8,6 +8,7 @@ from planevent import settings
 from planevent.accounts import (
     models,
     tasks,
+    auth,
 )
 
 
@@ -72,7 +73,7 @@ def process_oauth_callback(request, provider):
 
     account, is_new = process_oauth_user(provider, provider_user)
 
-    request.session['user_id'] = account.id
+    auth._login(request, account)
 
     if is_new:
         return request.route_url('home') + '#/userProfile/firstLogging'
@@ -90,31 +91,21 @@ def process_oauth_user(provider, provider_user):
         fill_user_field('name')
         fill_user_field('first_name')
         fill_user_field('last_name')
-        fill_user_field('email')
         fill_user_field('gender')
         fill_user_field('link')
 
-    account = models.Account.query() \
-        .filter(models.Account.provider == provider) \
-        .filter(models.Account.origin_id == provider_user['id']) \
-        .first()
+    account = models.Account.get_by_provider(provider, provider_user['id'])
 
     is_new = False
     if not account:
-        account = models.Account.create(
-            origin_id=provider_user['id'],
-            provider=provider,
-        )
+        account = models.Account.create(email=provider_user['email'])
+        account.credentials.origin_id = provider_user['id'],
+        account.credentials.provider = provider,
         is_new = True
 
     provider_settings = settings.OAUTH[provider]
 
     fill_user_fields(account, provider_user, provider_settings)
-
-    account.last_login = datetime.datetime.now()
-    account.login_count += 1
-
-    account.save()
 
     if is_new:
         tasks.send_welcome_email(account)

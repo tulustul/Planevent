@@ -7,6 +7,7 @@ from pyramid.view import (
 from planevent.accounts import (
     models,
     auth,
+    oauth,
 )
 from planevent.core.decorators import (
     param,
@@ -67,7 +68,7 @@ class LoginOAuthView(View):
     @param('provider', str, required=True, rest=True)
     def get(self, provider):
         return HTTPFound(
-            location=auth.login_oauth(self.request, provider)
+            location=oauth.login_oauth(self.request, provider)
         )
 
 
@@ -78,7 +79,7 @@ class OAuth2CallbackView(View):
     @param('provider', str, required=True, rest=True)
     def get(self, provider):
         return HTTPFound(
-            location=auth.process_oauth_callback(self.request, provider)
+            location=oauth.process_oauth_callback(self.request, provider)
         )
 
 

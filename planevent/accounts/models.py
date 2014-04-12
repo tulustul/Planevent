@@ -67,6 +67,13 @@ class Account(BaseEntity):
             .filter(cls.email == email) \
             .first()
 
+    @classmethod
+    def get_by_provider(cls, provider_name, id_in_provider):
+        return cls.query() \
+            .filter(AccountCrendentials.provider == provider_name) \
+            .filter(AccountCrendentials.origin_id == id_in_provider) \
+            .first()
+
     def _generate_password_hash(self, password):
         hash = hashlib.sha256()
         hash.update((password + self.credentials.password_salt).encode('utf8'))
