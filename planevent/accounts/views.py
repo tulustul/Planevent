@@ -99,8 +99,12 @@ class ChangePasswordView(View):
     @view_config(request_method='POST')
     @param('credentials', str, required=True, body=True)
     def post(self, credentials):
+        email = self.get_user_email()
+        if not email:
+            return self.response(403, 'not_logged_in')
+
         try:
-            email, old_password, new_password = credentials.split(':', 2)
+            old_password, new_password = credentials.split(':', 1)
         except ValueError:
             return self.response(400, 'invalid_body')
 
@@ -108,6 +112,7 @@ class ChangePasswordView(View):
             auth.change_password(email, old_password, new_password)
         except (InvalidEmail, auth.InvalidCredentials):
             return self.response(400, 'invalid_credentials')
+
         return self.response(200, 'password_changed')
 
 
@@ -156,7 +161,7 @@ class LoggedUserView(View):
     @view_config(request_method='GET')
     @permission(models.Account.Role.NORMAL)
     def get(self):
-        user_id = self.request.session.get('user_id')
+        user_id = self.get_user_id()
         if user_id:
             return models.Account.get(
                 user_id,
@@ -170,7 +175,7 @@ class LoggedUserView(View):
     @view_config(request_method='POST')
     @param('account', models.Account, body=True, required=True)
     def post(self, account):
-        user_id = self.request.session.get('user_id')
+        user_id = self.get_user_id()
         if account.id != user_id:
             return self.response(401, 'Can edit only owned account')
 

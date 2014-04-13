@@ -23,15 +23,21 @@ class View(object):
             kwargs['message'] = message
         return kwargs
 
-    def get_user(self):
-        return Account.get(self.request.session.get('user_id'))
+    def get_user_dict(self):
+        return self.request.session.get('user')
+
+    def _get_user_field(self, field, default_value=None):
+        user = self.get_user_dict()
+        return user[field] if user else default_value
+
+    def get_user_id(self):
+        return self._get_user_field('id')
 
     def get_user_role(self):
-        user_role = self.request.session.get('user_role')
-        if user_role:
-            return user_role
-        else:
-            return Account.Role.ANONYMOUS
+        return self._get_user_field('role', Account.Role.ANONYMOUS)
+
+    def get_user_email(self):
+        return self._get_user_field('email')
 
 
 @view_config(route_name='home', renderer='../templates/index.jinja2')

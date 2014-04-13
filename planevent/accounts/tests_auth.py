@@ -188,6 +188,10 @@ class PasswordRecallCallbackTestCase(PlaneventTest):
 
 
 class ChangePasswordTestCase(PlaneventTest):
+
+    USER_ROLE = Account.Role.NORMAL
+    USER_EMAIL = TEST_EMAIL
+
     NEW_PASSWORD = 'new_password'
 
     def test_change_password(self):
@@ -198,7 +202,7 @@ class ChangePasswordTestCase(PlaneventTest):
 
         result = self.post(
             '/api/change_password',
-            '{}:{}:{}'.format(TEST_EMAIL, TEST_PASSWORD, self.NEW_PASSWORD)
+            '{}:{}'.format(TEST_PASSWORD, self.NEW_PASSWORD)
         )
 
         self.assertEquals(result['message'], 'password_changed')

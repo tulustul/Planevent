@@ -6,6 +6,7 @@ from planevent.abtesting import (
     models,
     service,
 )
+from planevent.accounts.models import Account
 
 
 class ABTestingTestCase(PlaneventTest):
@@ -48,6 +49,8 @@ class ABTestingTestCase(PlaneventTest):
 
 
 class ManagingTestCase(ABTestingTestCase):
+
+    USER_ROLE = Account.Role.ADMIN
 
     def test_post(self):
         experiment = self.create_and_post_experiment('test2', [
@@ -113,6 +116,8 @@ class ManagingTestCase(ABTestingTestCase):
 
 class GettingListTestCase(ABTestingTestCase):
 
+    USER_ROLE = Account.Role.ADMIN
+
     def setUp(self):
         super().setUp()
         self.create_and_post_experiment('test1', [
@@ -152,6 +157,8 @@ class GettingListTestCase(ABTestingTestCase):
 
 class ActivationTestCase(ABTestingTestCase):
 
+    USER_ROLE = Account.Role.ADMIN
+
     def setUp(self):
         super().setUp()
         self.create_and_post_experiment('test1', [
@@ -183,6 +190,8 @@ class ActivationTestCase(ABTestingTestCase):
 
 
 class VariationTestCase(ABTestingTestCase):
+
+    USER_ROLE = Account.Role.ADMIN
 
     def setUp(self):
         super().setUp()

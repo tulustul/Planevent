@@ -39,8 +39,9 @@ def _login(request, account):
     account.last_login = datetime.now()
     account.login_count += 1
     account.save()
-    request.session['user_id'] = account.id
-    request.session['user_role'] = account.role
+    # request.session['user_id'] = account.id
+    # request.session['user_role'] = account.role
+    request.session['user'] = account.serialize()
 
 
 def register(request, email, password):
@@ -109,5 +110,6 @@ def try_login(request, email, password):
 
 
 def logout(request):
-    request.session['user_id'] = None
-    request.session['user_role'] = None
+    # request.session['user_id'] = None
+    # request.session['user_role'] = None
+    del request.session['user']

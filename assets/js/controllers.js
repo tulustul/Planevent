@@ -431,6 +431,7 @@ angular.module('planevent').controller('AccountController',
     $scope.logout = function() {
         authService.logout();
         $rootScope.loggedUser = null;
+        $location.path('/');
     };
 
     $scope.saveAccount = function() {

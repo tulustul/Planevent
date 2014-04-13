@@ -78,7 +78,7 @@ angular.module('planevent').service('authService', function($http) {
     this.changePassword = function(oldPassword, newPassword) {
         return $http.post(
             '/api/change_password',
-            self.loggedUser.email + ':' + oldPassword + ':' + newPassword
+            oldPassword + ':' + newPassword
         );
     };
 
