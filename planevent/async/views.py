@@ -1,33 +1,26 @@
-from pyramid.view import (
-    view_config,
-    view_defaults,
-)
-
-from planevent.accounts.models import Account
 from planevent.core.decorators import (
-    param,
     permission,
+    route,
+    Rest,
 )
 from planevent.core.views import View
+from planevent.accounts.models import Account
 from planevent.async import TaskProgressCounter
 
 
-@view_defaults(route_name='list_incomplete', renderer='json')
+@route('list_incomplete')
 class ListIncompleteView(View):
 
-    @view_config(request_method='GET')
     @permission(Account.Role.ADMIN)
     def get(self):
         pass
 
 
-@view_defaults(route_name='task_progress', renderer='json')
+@route('task_progress')
 class TaskProgressView(View):
 
-    @view_config(request_method='GET')
     @permission(Account.Role.ADMIN)
-    @param('id', int, rest=True)
-    def get(self, id):
+    def get(self, id: Rest(int)):
         try:
             progress = TaskProgressCounter.get(id)
         except ValueError as e:
@@ -43,13 +36,11 @@ class TaskProgressView(View):
             }
 
 
-@view_defaults(route_name='task_cancel', renderer='json')
+@route('task_cancel')
 class TaskCancelView(View):
 
-    @view_config(request_method='POST')
     @permission(Account.Role.ADMIN)
-    @param('id', int, rest=True)
-    def post(self, id):
+    def post(self, id: Rest(int)):
         try:
             TaskProgressCounter.cancel(id)
         except ValueError as e:

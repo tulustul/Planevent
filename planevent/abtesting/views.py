@@ -2,15 +2,12 @@ from datetime import datetime
 
 from sqlalchemy.exc import IntegrityError
 
-from pyramid.view import (
-    view_config,
-    view_defaults,
-)
-
 from planevent.accounts.models import Account
 from planevent.core.decorators import (
-    param,
     permission,
+    route,
+    Rest,
+    Body,
 )
 from planevent.core.views import View
 from planevent.abtesting import (
@@ -19,7 +16,7 @@ from planevent.abtesting import (
 )
 
 
-@view_defaults(route_name='experiments', renderer='json')
+@route('experiments')
 class ExperimentView(View):
 
     def get_experiments(self, active):
@@ -47,12 +44,8 @@ class ExperimentView(View):
     def get_inactive(self):
         return self.get_experiments(0)
 
-    @view_config(request_method='GET')
     @permission(Account.Role.ADMIN)
-    @param('offset', int, default=0)
-    @param('limit', int, default=10)
-    @param('active', int, required=None, default=None)
-    def get(self, offset, limit, active):
+    def get(self, offset: int=0, limit: int=10, active: int=None):
         self.offset = offset
         self.limit = limit
 
@@ -63,10 +56,8 @@ class ExperimentView(View):
         else:
             return self.get_active() + self.get_inactive()
 
-    @view_config(request_method='POST', renderer='json')
     @permission(Account.Role.ADMIN)
-    @param('experiment', models.Experiment, body=True, required=True)
-    def post(self, experiment):
+    def post(self, experiment: Body(models.Experiment)):
         unique_names_count = len({v.name for v in experiment.variations})
         if unique_names_count < len(experiment.variations):
             return self.response(409, 'Variations must have unique names')
@@ -98,39 +89,32 @@ class ExperimentView(View):
         return experiment
 
 
-@view_defaults(route_name='activate_experiment', renderer='json')
+@route('activate_experiment')
 class ActivateExperimentView(View):
 
-    @view_config(request_method='GET')
     @permission(Account.Role.ADMIN)
-    @param('name', str, required=True, rest=True)
-    def get(self, name):
+    def get(self, name: Rest(str)):
         try:
             return service.activate(name)
         except service.ABExperimentError as e:
             return self.response(400, str(e))
 
 
-@view_defaults(route_name='deactivate_experiment', renderer='json')
+@route('deactivate_experiment')
 class DeactivateExperimentView(View):
 
-    @view_config(request_method='GET')
     @permission(Account.Role.ADMIN)
-    @param('name', str, required=True, rest=True)
-    def get(self, name):
+    def get(self, name: Rest(str)):
         try:
             return service.deactivate(name)
         except service.ABExperimentError as e:
             return self.response(400, str(e))
 
 
-@view_defaults(route_name='experiment_increment', renderer='json')
+@route('experiment_increment')
 class ExperimentIncrementView(View):
 
-    @view_config(request_method='GET')
-    @param('name', str, required=True, rest=True)
-    @param('variation', str, required=True, rest=True)
-    def get(self, name, variation):
+    def get(self, name: Rest(str), variation: Rest(str)):
         try:
             service.increment_success(name, variation)
             return 'OK'
@@ -138,12 +122,10 @@ class ExperimentIncrementView(View):
             return self.response(400, str(e))
 
 
-@view_defaults(route_name='experiment_variation', renderer='json')
+@route('experiment_variation')
 class ExperimentVariationView(View):
 
-    @view_config(request_method='GET')
-    @param('name', str, required=True, rest=True)
-    def get(self, name):
+    def get(self, name: Rest(str)):
         try:
             return service.get_variation(
                 name, self.request.session.get('user_id')

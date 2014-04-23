@@ -1,17 +1,14 @@
 import datetime
 
-from pyramid.view import (
-    view_config,
-    view_defaults,
-)
-
 from planevent.offers import models
 from planevent.accounts.models import Account
 from planevent.core.decorators import (
-    param,
     image_upload,
     time_profiler,
     permission,
+    route,
+    Rest,
+    Body,
 )
 from planevent.services import geocode_location
 from planevent.core import (
@@ -28,13 +25,11 @@ CATEGORIES_KEY = 'categories'
 SUBCATEGORIES_KEY = 'subcategories'
 
 
-@view_defaults(route_name='offer', renderer='json')
+@route('offer')
 class OfferView(View):
 
     @time_profiler('OfferView')
-    @view_config(request_method='GET')
-    @param('id', int, required=True, rest=True)
-    def get(self, id):
+    def get(self, id: Rest(int)):
         offer = cache.get((VENDOR_KEY, id), models.Offer)
         if offer is None:
             offer = models.Offer.get(id, '*')
@@ -48,9 +43,7 @@ class OfferView(View):
 
         return offer
 
-    @view_config(request_method='DELETE')
-    @param('id', int, required=True, rest=True)
-    def delete(self, id):
+    def delete(self, id: Rest(int)):
         offer = models.Offer.get(id)
         if not offer:
             return self.response(404, 'No offer with id {}'.format(id))
@@ -59,14 +52,16 @@ class OfferView(View):
         return {'message': 'deleted', 'id': id}
 
 
-@view_defaults(route_name='offer_promotion', renderer='json')
+@route('offer_promotion')
 class OfferPromotionView(View):
 
-    @view_config(request_method='POST')
     @permission(Account.Role.ADMIN)
-    @param('id', int, required=True, rest=True)
-    @param('promotion', int, required=True, rest=True)
-    def post(self, id, promotion):
+    def post(
+        self,
+        id: Rest(int),
+        promotion: Rest(int),
+    ):
+
         offer = models.Offer.get(id)
         if not offer:
             return self.response(404, 'No offer with id {}'.format(id))
@@ -76,22 +71,22 @@ class OfferPromotionView(View):
         return {'message': 'saved', 'id': id, 'promotion': promotion}
 
 
-@view_defaults(route_name='offers_search', renderer='json')
+@route('offers_search')
 class SearchOffersView(View):
 
     @time_profiler('SearchOffersView')
-    @view_config(request_method='GET')
-    @param('category', int, default=0)
-    @param('tags', list)
-    @param('location', str)
-    @param('range', int)
-    @param('exclude_offer_id', int)
-    @param('price_min', int)
-    @param('price_max', int)
-    @param('offset', int, default=0)
-    @param('limit', int, default=10)
-    def get(self, category, tags, location, range, exclude_offer_id, price_min,
-            price_max, offset, limit):
+    def get(
+        self,
+        category: int=None,
+        tags: list=None,
+        location: str=None,
+        range: int=None,
+        exclude_offer_id: int=None,
+        price_min: int=None,
+        price_max: int=None,
+        offset: int=0,
+        limit: int=10,
+    ):
 
         query = sql.DBSession.query(models.Offer.id)
 
@@ -117,9 +112,9 @@ class SearchOffersView(View):
                 range /= 111.12
                 query = query.join(Address) \
                     .filter(Address.longitude.between(
-                        latlng.lng-range, latlng.lng+range)) \
+                        latlng.lng - range, latlng.lng + range)) \
                     .filter(Address.latitude.between(
-                        latlng.lat-range, latlng.lat+range))
+                        latlng.lat - range, latlng.lat + range))
 
         query = query.order_by(models.Offer.promotion.desc())
 
@@ -138,12 +133,10 @@ class SearchOffersView(View):
         }
 
 
-@view_defaults(route_name='offers', renderer='json')
+@route('offers')
 class OffersView(View):
 
-    @view_config(request_method='POST')
-    @param('offer', models.Offer, body=True, required=True)
-    def post(self, offer):
+    def post(self, offer: Body(models.Offer)):
         original_offer = cache.get((VENDOR_KEY, offer.id), models.Offer)
         if not original_offer:
             original_offer = models.Offer.get(offer.id)
@@ -161,64 +154,54 @@ class OffersView(View):
         return offer
 
 
-@view_defaults(route_name='image', renderer='json')
+@route('image')
 class ImageView(View):
 
-    @view_config(request_method='POST')
     @image_upload('static/images/uploads/logos/', size=(200, 200))
     def post(self, image_path):
         return {'path': image_path}
 
 
-@view_defaults(route_name='gallery', renderer='json')
+@route('gallery')
 class GalleryView(View):
 
-    @view_config(request_method='POST')
     @image_upload('static/images/uploads/galleries/', size=(800, 500))
     def post(self, image_path):
         return {'path': image_path}
 
 
-@view_defaults(route_name='tag_autocomplete', renderer='json')
+@route('tag_autocomplete')
 class TagsAutocompleteView(View):
 
-    @view_config(request_method='GET')
-    @param('tag', str, required=False)
-    # @param('limit', int, default=10)
-    def get(self, tag):
+    def get(self, tag: str=None):
         query = models.Tag.query()
             # .order_by(models.Tag.references_count.desc()) \
             # .limit(limit)
         if tag:
-            query = query.filter(models.Tag.name.like('%'+tag+'%'))
+            query = query.filter(models.Tag.name.like('%' + tag + '%'))
 
         return query.all()
 
 
-@view_defaults(route_name='tag_names', renderer='json')
+@route('tag_names')
 class TagsNamesView(View):
 
-    @view_config(request_method='GET')
     def get(self):
         query = models.Tag.query()
         # return [tag.name for tag in query.all()]
         return query.all()
 
 
-@view_defaults(route_name='tags', renderer='json')
+@route('tags')
 class TagsView(View):
 
-    @view_config(request_method='GET')
-    @param('limit', int, default=10)
-    @param('offset', int, default=0)
-    def get(self, limit, offset):
+    def get(self, limit: int=10, offset: int=0):
         query = models.Tag.query() \
             .order_by(models.Tag.references_count.desc()) \
             .limit(limit).offset(offset)
         return query.all()
 
-    @view_config(request_method='POST')
-    def post(self, tag_name):
+    def post(self, tag_name: str):
         tag = models.Tag.query() \
             .filter(models.Tag.name == tag_name).first()
         if tag:
@@ -233,10 +216,9 @@ class TagsView(View):
         return tag
 
 
-@view_defaults(route_name='categories', renderer='json')
+@route('categories')
 class CategoriesView(View):
 
-    @view_config(request_method='GET')
     def get(self):
         categories = cache.get(CATEGORIES_KEY)
         if categories:
@@ -247,10 +229,9 @@ class CategoriesView(View):
         return categories
 
 
-@view_defaults(route_name='subcategories', renderer='json')
+@route('subcategories')
 class SubcategoriesView(View):
 
-    @view_config(request_method='GET')
     def get(self):
         subcategories = cache.get((SUBCATEGORIES_KEY))
         if subcategories:
@@ -259,3 +240,26 @@ class SubcategoriesView(View):
         subcategories = models.Subcategory.query().all()
         cache.set((SUBCATEGORIES_KEY), subcategories)
         return subcategories
+
+
+@route('offers_promoted')
+class PromotedCategoriesOffersView(View):
+
+    def get(self, limit_per_category: int=8, categories_limit: int=4):
+        user_dict = self.get_user_dict()
+
+        if user_dict:
+            categories = self.getRandomLikedCategories(
+                user_dict,
+                categories_limit
+            )
+        else:
+            categories = self.getRandomCategories(categories_limit)
+
+        result = {}
+        for category in categories:
+            result[category.name] = models.Offer.query() \
+                .filter(models.Offer.category_id == category.id) \
+                .order_by(models.Offer.promotion)
+
+        return result

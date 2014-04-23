@@ -7,68 +7,126 @@ import logging
 
 from PIL import Image
 
-# from pyramid.view import (
-#     view_config,
-#     view_defaults,
-# )
 from pyramid.exceptions import Forbidden
 
 from planevent.core.sql import BaseEntity
-# import planevent
+import planevent
 
 
-# def view(route_name, renderer='json', **kwargs):
-#     def wrap_http_verb(cls, verb):
-#         if hasattr(cls, verb):
-#             fun = getattr(cls, verb)
-#             # view_config_decorator = view_config(request_method=verb.upper())
-#             # setattr(cls, verb, view_config_decorator(fun))
-
-#             # view_config_decorator = view_config(route_name='home', request_method='GET', renderer='../templates/index.jinja2')
-#             # cls.get = view_config_decorator(cls.get)
-
-#     def decorator(cls):
-#         import pdb;pdb.set_trace()
-#         view_defaults_decorator = view_defaults(
-#             route_name=route_name,
-#             renderer=renderer,
-#             **kwargs
-#         )
-
-#         decorated_class = view_defaults_decorator(cls)
-
-#         for http_verb in ['get', 'post', 'put', 'delete']:
-#             wrap_http_verb(decorated_class, http_verb)
-
-#         return decorated_class
-
-#     return decorator
+class Param(object):
+    def __init__(self, type_):
+        self.type_ = type_
 
 
-# class view(object):
-#     HTTP_VERBS = ['get', 'post', 'put', 'delete']
+class Rest(Param):
+    pass
 
-#     def __init__(self, route_name, renderer='json', **kwargs):
-#         self.settings = dict(
-#             route_name=route_name,
-#             renderer=renderer,
-#             **kwargs
-#         )
 
-#     def register_http_verb(self, cls, verb):
-#         if hasattr(cls, verb):
-#             fun = getattr(cls, verb)
+class Body(Param):
+    pass
 
-#             planevent.config.add_view(
-#                 fun,
-#                 request_method=verb.upper(),
-#                 **self.settings
-#             )
 
-#     def __call__(self, cls):
-#         for http_verb in self.HTTP_VERBS:
-#             self.register_http_verb(cls, http_verb)
-#         return cls
+class Query(Param):
+    pass
+
+
+class Template(object):
+    def __init__(self, template_path):
+        self.template_path = template_path
+
+
+class Json(object):
+    pass
+
+
+class route(object):
+    HTTP_VERBS = ['get', 'post', 'put', 'delete']
+
+    def __init__(self, route_name, **kwargs):
+        self.route_name = route_name
+        self.kwargs = kwargs
+
+    def __call__(self, cls):
+        for verb in self.HTTP_VERBS:
+            if hasattr(cls, verb):
+                self.process_annotations(cls, verb)
+                self.wrap_http_verb(cls, verb)
+        return cls
+
+    def get_renderer(self):
+        if isinstance(self.response_config, Json):
+            return 'json'
+        elif isinstance(self.response_config, Template):
+            template_path = self.response_config.template_path
+            return '../templates/{}.jinja2'.format(template_path)
+
+    def wrap_http_verb(self, cls, verb):
+        if hasattr(cls, verb):
+            mth = getattr(cls, verb)
+            planevent.config.add_view(
+                cls, attr=mth.__name__,
+                route_name=self.route_name,
+                request_method=verb.upper(),
+                renderer=self.get_renderer(),
+                **self.kwargs
+            )
+
+    def process_annotations(self, cls, verb):
+        mth = getattr(cls, verb)
+
+        annotions = mth.__annotations__
+
+        if 'return' in annotions:
+            self.response_config = annotions.pop('return')
+        else:
+            self.response_config = Json()
+
+        for arg_name, param in annotions.items():
+            if not isinstance(param, Param):
+                param = Query(param)
+            decorator = param_decorator(arg_name, param)
+            mth = decorator(mth)
+
+        setattr(cls, verb, mth)
+
+
+def param_decorator(name, param):
+    def decorator(mth):
+        @wraps(mth)
+        def wrap(self, *args, **kwargs):
+            param_type = param.type_
+            param_class = param.__class__
+
+            if param_class == Body:
+                param_value = self.request.body.decode("utf-8")
+            elif param_class == Rest:
+                param_value = self.request.matchdict.get(name)
+            elif param_class == Query:
+                param_value = self.request.params.get(name)
+            else:
+                raise TypeError(
+                    'Unknown param class: {}'
+                    .format(param_class.__name__)
+                )
+
+            if param_value is not None:
+                try:
+                    if issubclass(param_type, BaseEntity):
+                        param_value = param_type().deserialize(
+                            json.loads(param_value)
+                        )
+                    else:
+                        param_value = param_type(param_value)
+                except Exception as e:
+                    raise TypeError(
+                        'Cannot cast param {} to type {}. {}. \nParam: {}'
+                        .format(name, param_type.__name__, e, param_value)
+                    )
+                kwargs[name] = param_value
+
+            return mth(self, *args, **kwargs)
+        return wrap
+    return decorator
 
 
 def permission(permission):
@@ -78,38 +136,6 @@ def permission(permission):
         def wrap(self, *args, **kwargs):
             if self.get_user_role() < permission:
                 raise Forbidden()
-            return mth(self, *args, **kwargs)
-        return wrap
-    return decorator
-
-
-def param(name, type_, body=False, rest=False, required=False, default=None):
-    def decorator(mth):
-        @wraps(mth)
-        def wrap(self, *args, **kwargs):
-            if body:
-                param_value = self.request.body.decode("utf-8")
-            else:
-                params = self.request.matchdict if rest else self.request.params
-                param_value = params.get(name)
-            if param_value is None:
-                if required:
-                    raise ValueError('Missing request param: ' + name)
-                param_value = default
-            else:
-                try:
-                    if issubclass(type_, BaseEntity):
-                        param_value = type_().deserialize(
-                            json.loads(param_value)
-                        )
-                    else:
-                        param_value = type_(param_value)
-                except Exception as e:
-                    raise TypeError(
-                        'Cannot cast param {} to type {}. {}. \nParam: {}'
-                        .format(name, type_.__name__, e, param_value)
-                    )
-            kwargs[name] = param_value
             return mth(self, *args, **kwargs)
         return wrap
     return decorator
@@ -148,13 +174,13 @@ class image_upload(object):
 def time_profiler(profile_name):
     def decorator(mth):
         @wraps(mth)
-        def wrap(*args):
+        def wrap(*args, **kwargs):
             startTime = time.time()
-            result = mth(*args)
+            result = mth(*args, **kwargs)
             endTime = time.time()
             timeCount = endTime - startTime
             logging.info(profile_name + ' ' + mth.__name__ + ' time: \t'
-                         + '%.2f' % (timeCount*1000) + ' ms')
+                         + '%.2f' % (timeCount * 1000) + ' ms')
             return result
         return wrap
     return decorator

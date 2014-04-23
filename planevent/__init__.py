@@ -14,7 +14,10 @@ from planevent.core import (
     redisdb,
 )
 from planevent.urls import urls
-from planevent import settings as app_settings
+from planevent import (
+    settings as app_settings,
+    monkey,
+)
 
 os.environ['DEBUG'] = '1'
 

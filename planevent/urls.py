@@ -19,6 +19,7 @@ urls = [
     ('offer_promotion', '/api/offer/{id}/promotion/{promotion}'),
     ('offers', '/api/offers'),
     ('offers_search', '/api/offers/search'),
+    ('offers_promoted', '/api/offers/promoted'),
     ('image', '/api/image'),
     ('gallery', '/api/gallery'),
     ('tags', '/api/tags'),

@@ -1,8 +1,4 @@
 from pyramid.httpexceptions import HTTPFound
-from pyramid.view import (
-    view_config,
-    view_defaults,
-)
 
 from planevent.accounts import (
     models,
@@ -10,20 +6,20 @@ from planevent.accounts import (
     oauth,
 )
 from planevent.core.decorators import (
-    param,
     permission,
+    route,
+    Rest,
+    Body,
 )
 from planevent.core.views import View
 from planevent.services.mailing import InvalidEmail
 from planevent import settings
 
 
-@view_defaults(route_name='register', renderer='json')
+@route('register')
 class RegisterView(View):
 
-    @view_config(request_method='POST')
-    @param('credentials', str, required=True, body=True)
-    def post(self, credentials):
+    def post(self, credentials: Body(str)):
         try:
             email, password = credentials.split(':', 1)
         except:
@@ -43,12 +39,10 @@ class RegisterView(View):
             )
 
 
-@view_defaults(route_name='login', renderer='json')
+@route('login')
 class LoginView(View):
 
-    @view_config(request_method='POST')
-    @param('credentials', str, required=True, body=True)
-    def post(self, credentials):
+    def post(self, credentials: Body(str)):
         try:
             email, password = credentials.split(':', 1)
         except:
@@ -61,44 +55,37 @@ class LoginView(View):
             return models.Account.get_by_email(email)
 
 
-@view_defaults(route_name='login_oauth2')
+@route('login_oauth2')
 class LoginOAuthView(View):
 
-    @view_config(request_method='GET')
-    @param('provider', str, required=True, rest=True)
-    def get(self, provider):
+    def get(self, provider: Rest(str)):
         return HTTPFound(
             location=oauth.login_oauth(self.request, provider)
         )
 
 
-@view_defaults(route_name='oauth2_callback', renderer='json')
+@route('oauth2_callback')
 class OAuth2CallbackView(View):
 
-    @view_config(request_method='GET')
-    @param('provider', str, required=True, rest=True)
-    def get(self, provider):
+    def get(self, provider: Rest(str)):
         return HTTPFound(
             location=oauth.process_oauth_callback(self.request, provider)
         )
 
 
-@view_defaults(route_name='logout', renderer='json')
+@route('logout')
 class LogoutView(View):
 
-    @view_config(request_method='POST')
     @permission(models.Account.Role.NORMAL)
     def post(self):
         auth.logout(self.request)
         return self.response(200, 'logged_out')
 
 
-@view_defaults(route_name='change_password', renderer='json')
+@route('change_password')
 class ChangePasswordView(View):
 
-    @view_config(request_method='POST')
-    @param('credentials', str, required=True, body=True)
-    def post(self, credentials):
+    def post(self, credentials: Body(str)):
         email = self.get_user_email()
         if not email:
             return self.response(403, 'not_logged_in')
@@ -116,12 +103,10 @@ class ChangePasswordView(View):
         return self.response(200, 'password_changed')
 
 
-@view_defaults(route_name='password_recall', renderer='json')
+@route('password_recall')
 class PasswordRecallView(View):
 
-    @view_config(request_method='POST')
-    @param('email', str, required=True, body=True)
-    def post(self, email):
+    def post(self, email: Body(str)):
         try:
             auth.recall_password(email)
         except InvalidEmail:
@@ -129,12 +114,10 @@ class PasswordRecallView(View):
         return self.response(200, 'mail_sent')
 
 
-@view_defaults(route_name='password_recall_callback', renderer='json')
+@route('password_recall_callback')
 class PasswordRecallCallbackView(View):
 
-    @view_config(request_method='POST')
-    @param('credentials', str, required=True, body=True)
-    def post(self, credentials):
+    def post(self, credentials: Body(str)):
         try:
             token, new_password = credentials.split(':', 1)
         except ValueError:
@@ -155,10 +138,9 @@ class PasswordRecallCallbackView(View):
         return self.response(200, 'password_set')
 
 
-@view_defaults(route_name='logged_user', renderer='json')
+@route('logged_user')
 class LoggedUserView(View):
 
-    @view_config(request_method='GET')
     @permission(models.Account.Role.NORMAL)
     def get(self):
         user_id = self.get_user_id()
@@ -172,9 +154,7 @@ class LoggedUserView(View):
             )
         return
 
-    @view_config(request_method='POST')
-    @param('account', models.Account, body=True, required=True)
-    def post(self, account):
+    def post(self, account: Body(models.Account)):
         user_id = self.get_user_id()
         if account.id != user_id:
             return self.response(401, 'Can edit only owned account')

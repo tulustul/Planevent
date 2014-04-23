@@ -1,15 +1,11 @@
-from pyramid.view import (
-    view_config,
-    view_defaults,
-)
-
 import planevent
-from planevent.core.views import View
 from planevent.accounts.models import Account
 from planevent.core.decorators import (
-    param,
     permission,
+    route,
+    Body,
 )
+from planevent.core.views import View
 from planevent.core import sql
 from planevent.core.redisdb import redis_db
 from planevent.async import TaskProgressCounter
@@ -20,14 +16,11 @@ from planevent.scripts.initializedb import (
 from planevent.migrations import tasks
 
 
-@view_defaults(route_name='migration', renderer='json')
+@route('migration')
 class MigrationView(View):
 
-    @view_config(request_method='GET')
     @permission(Account.Role.ADMIN)
-    @param('spreadsheet', str)
-    @param('worksheet', str)
-    def export(self, spreadsheet, worksheet):
+    def export(self, spreadsheet: str, worksheet: str):
         progress_counter = TaskProgressCounter.create()
 
         tasks.export(spreadsheet, worksheet, progress_counter)
@@ -37,11 +30,8 @@ class MigrationView(View):
             'progress_counter': progress_counter.id,
         }
 
-    @view_config(request_method='POST')
     @permission(Account.Role.ADMIN)
-    @param('spreadsheet', str)
-    @param('worksheet', str)
-    def import_(self, spreadsheet, worksheet):
+    def import_(self, spreadsheet: str, worksheet: str):
         sql.Base.metadata.drop_all(planevent.sql_engine)
         sql.Base.metadata.create_all(planevent.sql_engine)
 
@@ -58,20 +48,18 @@ class MigrationView(View):
         }
 
 
-@view_defaults(route_name='update_schema', renderer='json')
+@route('update_schema')
 class UpdateSchemaView(View):
 
-    @view_config(request_method='POST')
     @permission(Account.Role.ADMIN)
     def post(self):
         sql.Base.metadata.create_all(planevent.sql_engine)
         return 'Database schema updated'
 
 
-@view_defaults(route_name='clear_database', renderer='json')
+@route('clear_database')
 class ClearDatabaseView(View):
 
-    @view_config(request_method='POST')
     @permission(Account.Role.ADMIN)
     def post(self):
         sql.Base.metadata.drop_all(planevent.sql_engine)
@@ -80,13 +68,11 @@ class ClearDatabaseView(View):
         return 'Database cleared'
 
 
-@view_defaults(route_name='generate_random_instance', renderer='json')
+@route('generate_random_instance')
 class GenerateRandomInstancesView(View):
 
-    @view_config(request_method='POST')
     @permission(Account.Role.ADMIN)
-    @param('quantity', int, body=True)
-    def post(self, quantity):
+    def post(self, quantity: Body(int)):
         progress_counter = TaskProgressCounter.create()
 
         tasks.generate_random_tasks(quantity, progress_counter)

@@ -9,7 +9,11 @@ from planevent import (
     settings,
 )
 from planevent.accounts.models import Account
-from planevent.core.decorators import permission
+from planevent.core.decorators import (
+    permission,
+    route,
+    Template,
+)
 
 
 class View(object):
@@ -40,15 +44,16 @@ class View(object):
         return self._get_user_field('email')
 
 
-@view_config(route_name='home', renderer='../templates/index.jinja2')
-def home_view(self):
-    return {'PIWIK_URL': settings.PIWIK_URL}
+@route('home')
+class HomeView(View):
+    def get(self) -> Template('index'):
+        return {'PIWIK_URL': settings.PIWIK_URL}
 
 
+@route('admin')
 class AdminView(View):
-    @view_config(route_name='admin', renderer='../templates/admin.jinja2')
     @permission(Account.Role.ADMIN)
-    def get(self):
+    def get(self) -> Template('admin'):
         return {}
 
 
