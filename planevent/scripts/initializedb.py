@@ -16,6 +16,7 @@ from pyramid.scripts.common import parse_vars
 
 from planevent import settings
 from planevent.offers import models
+from planevent.categories import models as categories_models
 from planevent.core import sql
 from planevent.core.models import Address
 import planevent.scripts.testdata as testdata
@@ -117,7 +118,7 @@ def create_test_offer(test_instances):
 def create_test_categories():
     categories_list, subcategories_list = [], []
     for category_name, subcategories in testdata.categories.items():
-        category = models.Category(
+        category = categories_models.Category(
             name=category_name,
             color=generate_random_color(),
             icon_path='/static/images/icons/question.png',
@@ -125,7 +126,7 @@ def create_test_categories():
         categories_list.append(category)
         category.save()
         for subcategory_name in subcategories:
-            subcategory = models.Subcategory(
+            subcategory = categories_models.Subcategory(
                 name=subcategory_name,
                 color=generate_random_color(),
                 icon_path='/static/images/icons/question.png',

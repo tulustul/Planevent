@@ -216,45 +216,19 @@ class TagsView(View):
         return tag
 
 
-@route('categories')
-class CategoriesView(View):
-
-    def get(self):
-        categories = cache.get(CATEGORIES_KEY)
-        if categories:
-            return categories
-
-        categories = models.Category.query('subcategories').all()
-        cache.set(CATEGORIES_KEY, categories)
-        return categories
-
-
-@route('subcategories')
-class SubcategoriesView(View):
-
-    def get(self):
-        subcategories = cache.get((SUBCATEGORIES_KEY))
-        if subcategories:
-            return subcategories
-
-        subcategories = models.Subcategory.query().all()
-        cache.set((SUBCATEGORIES_KEY), subcategories)
-        return subcategories
-
-
 @route('offers_promoted')
 class PromotedCategoriesOffersView(View):
 
     def get(self, limit_per_category: int=8, categories_limit: int=4):
-        user_dict = self.get_user_dict()
+        # user_dict = self.get_user_dict()
 
-        if user_dict:
-            categories = self.getRandomLikedCategories(
-                user_dict,
-                categories_limit
-            )
-        else:
-            categories = self.getRandomCategories(categories_limit)
+        # if user_dict:
+        #     categories = self.getRandomLikedCategories(
+        #         user_dict,
+        #         categories_limit
+        #     )
+        # else:
+        categories = self.getRandomCategories(categories_limit)
 
         result = {}
         for category in categories:
