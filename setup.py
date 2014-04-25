@@ -9,7 +9,7 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
     CHANGES = f.read()
 
 requires = [
-    'pyramid',
+    'pyramid==1.5',
     'pyramid_tm',
     'pyramid_jinja2',
     'pyramid_beaker',
@@ -27,6 +27,7 @@ requires = [
     'jinja2',
     'uwsgi',
     'gspread',
+    'WebOb>=1.3.1',
 ]
 
 setup(name='planevent',

@@ -7,17 +7,17 @@ from pyramid.config import Configurator
 from pyramid.renderers import JSON
 from sqlalchemy import engine_from_config
 from pyramid.paster import get_appsettings
+from pyramid.paster import get_app
+from webtest import TestApp
 
 
 from planevent.core import (
     sql,
     redisdb,
 )
+from planevent.core.tests_base import PlaneventTest
 from planevent.urls import urls
-from planevent import (
-    settings as app_settings,
-    monkey,
-)
+from planevent import settings as app_settings
 
 os.environ['DEBUG'] = '1'
 
@@ -64,3 +64,23 @@ def main(global_config, *args_, **settings):
     config.scan()
 
     return config.make_wsgi_app()
+
+
+# Ugly hack, it should not be here, rather somewhere around
+# planevent.core.tests_base. Unfortunately only this package is common for all
+# tests.
+def setup_module():
+    PlaneventTest.app = TestApp(get_app(app_settings.INI_FILE))
+
+    PlaneventTest.connection = sql_engine.connect()
+    PlaneventTest.transaction = PlaneventTest.connection.begin()
+    sql.Base.metadata.drop_all(PlaneventTest.connection)
+    sql.Base.metadata.create_all(PlaneventTest.connection)
+
+    redisdb.createConnections()
+
+
+def teardown_module():
+    PlaneventTest.transaction.rollback()
+    sql.Base.metadata.drop_all(PlaneventTest.connection)
+    PlaneventTest.connection.close()

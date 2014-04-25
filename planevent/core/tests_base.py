@@ -2,12 +2,8 @@ import unittest
 import json
 from unittest.mock import patch
 
-from pyramid.paster import get_app
-from webtest import TestApp
 from sqlalchemy.orm.session import Session
 
-import planevent
-from planevent import settings
 from planevent.core import (
     sql,
     cache,
@@ -22,23 +18,6 @@ class PlaneventTest(unittest.TestCase):
     USER_EMAIL = 'test@example.com'
     USER_ROLE = Account.Role.ANONYMOUS
     USER_FIELDS = {}
-
-    @classmethod
-    def setUpClass(cls):
-        cls.app = TestApp(get_app(settings.INI_FILE))
-
-        cls.connection = planevent.sql_engine.connect()
-        cls.transaction = cls.connection.begin()
-        sql.Base.metadata.drop_all(cls.connection)
-        sql.Base.metadata.create_all(cls.connection)
-
-        redisdb.createConnections()
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.transaction.rollback()
-        sql.Base.metadata.drop_all(cls.connection)
-        cls.connection.close()
 
     def setUp(self):
         self.__transaction = self.connection.begin_nested()
