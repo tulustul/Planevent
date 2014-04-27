@@ -1,4 +1,5 @@
 import datetime
+import random
 
 from planevent.offers import models
 from planevent.accounts.models import Account
@@ -18,7 +19,7 @@ from planevent.core import (
 from planevent.offers import service
 from planevent.core.views import View
 from planevent.core.models import Address
-
+from planevent.categories import service as categories_service
 
 VENDOR_KEY = 'offer:{}'
 CATEGORIES_KEY = 'categories'
@@ -219,6 +220,10 @@ class TagsView(View):
 @route('offers_promoted')
 class PromotedCategoriesOffersView(View):
 
+    def get_random_categories(self, categories_limit):
+        categories = categories_service.get_all_categories()
+        return random.sample(categories, categories_limit)
+
     def get(self, limit_per_category: int=8, categories_limit: int=4):
         # user_dict = self.get_user_dict()
 
@@ -228,12 +233,14 @@ class PromotedCategoriesOffersView(View):
         #         categories_limit
         #     )
         # else:
-        categories = self.getRandomCategories(categories_limit)
+        categories = self.get_random_categories(categories_limit)
 
         result = {}
         for category in categories:
             result[category.name] = models.Offer.query() \
                 .filter(models.Offer.category_id == category.id) \
-                .order_by(models.Offer.promotion)
+                .order_by(models.Offer.promotion) \
+                .limit(limit_per_category) \
+                .all()
 
         return result
