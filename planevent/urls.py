@@ -46,4 +46,8 @@ urls = [
     # misc
     ('task_progress', '/api/task/{id}/progress'),
     ('task_cancel', '/api/task/{id}/cancel'),
+
+    # seo
+    ('seo_offer', '/offers/{id}'),
+
 ]

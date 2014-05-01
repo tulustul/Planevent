@@ -1,6 +1,10 @@
 'use strict';
 
-angular.module('planevent').config(function($routeProvider) {
+angular.module('planevent').config(
+        function($locationProvider, $routeProvider) {
+
+    $locationProvider.html5Mode(true);
+
     $routeProvider
     // .when('/', {
     //     templateUrl: 'assets/partials/mainView.html',
@@ -10,10 +14,10 @@ angular.module('planevent').config(function($routeProvider) {
         templateUrl: 'assets/partials/passwordRecallCallback.html',
         controller: 'PasswordRecallCallbackController'
     })
-    .when('/', {
-        templateUrl: 'assets/partials/homePage.html',
-        controller: 'HomePageController'
-    })
+    // .when('/', {
+    //     templateUrl: 'assets/partials/homePage.html',
+    //     controller: 'HomePageController'
+    // })
     .when('/playground', {
         templateUrl: 'assets/partials/playground.html',
         controller: 'MainPageController'
@@ -50,7 +54,7 @@ angular.module('planevent').config(function($routeProvider) {
         controller: 'OfferListController',
         reloadOnSearch: false
     })
-    .when('/offer/:offerId', {
+    .when('/offers/:offerId', {
         templateUrl: 'assets/partials/offerPage.html',
         controller: 'OfferPageController'
     })
@@ -64,5 +68,5 @@ angular.module('planevent').config(function($routeProvider) {
         controller: 'OfferAddEditController'
     })
 
-    .otherwise({redirectTo: '/'});
+    .otherwise({redirectTo: '/offers/search'});
 });

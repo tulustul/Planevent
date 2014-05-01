@@ -6,9 +6,10 @@ import time
 import logging
 
 from PIL import Image
-
+from pyramid.httpexceptions import HTTPFound
 from pyramid.exceptions import Forbidden
 
+from planevent.patches import robot_detection
 from planevent.core.sql import BaseEntity
 import planevent
 
@@ -49,9 +50,12 @@ class route(object):
     def __call__(self, cls):
         for verb in self.HTTP_VERBS:
             if hasattr(cls, verb):
-                self.process_annotations(cls, verb)
-                self.wrap_http_verb(cls, verb)
+                self.process_method(cls, verb)
         return cls
+
+    def process_method(self, cls, verb):
+        self.process_annotations(cls, verb)
+        self.wrap_http_verb(cls, verb)
 
     def get_renderer(self):
         if isinstance(self.response_config, Json):
@@ -88,6 +92,26 @@ class route(object):
             mth = decorator(mth)
 
         setattr(cls, verb, mth)
+
+
+class seo_route(route):
+    def process_method(self, cls, verb):
+        super().process_method(cls, verb)
+        mth = getattr(cls, verb)
+        mth = seo_view_decorator(mth)
+        setattr(cls, verb, mth)
+
+
+def seo_view_decorator(mth):
+    @wraps(mth)
+    def wrap(self, *args, **kwargs):
+        if not robot_detection.is_robot(self.request.user_agent):
+            return HTTPFound(
+                location='/#{}?{}'
+                .format(self.request.path, self.request.query_string)
+            )
+        return mth(self, *args, **kwargs)
+    return wrap
 
 
 def param_decorator(name, param):
