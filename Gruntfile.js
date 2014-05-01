@@ -17,7 +17,7 @@ var appProdJs = {
 };
 var vendorJs = {
     src: [
-        'bower_components/jquery/jquery.js',
+        'bower_components/jquery/dist/jquery.js',
         'bower_components/jquery-ui/ui/jquery-ui.js',
         // 'bower_components/jquery-ui/ui/jquery.ui.core.js',
         // 'bower_components/jquery-ui/ui/jquery.ui.widget.js',
@@ -35,7 +35,9 @@ var vendorJs = {
         'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
         'bower_components/angular-ui-slider/src/slider.js',
         'bower_components/ng-file-upload/angular-file-upload.js',
-        'bower_components/ng-table/ng-table.js'
+        'bower_components/ng-table/ng-table.js',
+        'bower_components/flexslider/jquery.flexslider.js',
+        'bower_components/angular-flexslider/angular-flexslider.js'
     ],
     dest: 'static/vendor.js'
 };
@@ -45,6 +47,7 @@ var vendorCss = {
         'bower_components/bootstrap/dist/css/bootstrap-theme.css',
         'bower_components/jquery-ui/themes/base/jquery-ui.css',
         'bower_components/angucomplete/angucomplete.css',
+        'bower_components/flexslider/flexslider.css'
     ],
     dest: 'static/vendor.css'
 };

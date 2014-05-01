@@ -15,7 +15,7 @@ class CategoriesView(View):
     CATEGORIES_KEY = 'categories'
 
     def get(self):
-        return service.get_all_categories()
+        return service.get_all_categories('*')
 
     def post(self, category: Body(Category)):
         category.save()

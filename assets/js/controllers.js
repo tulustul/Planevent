@@ -683,3 +683,14 @@ angular.module('planevent').controller('DatabaseManagementController',
             });
     };
 });
+
+angular.module('planevent').controller('PromotedOffersController',
+        function($scope, offersService) {
+
+    $scope.mySlides = ['asdasd','asdasd','asdasd','asdasd','asdasd'];
+
+    offersService.getPromotedOffers()
+    .success(function(promotedOffers) {
+        $scope.promotedOffers = promotedOffers;
+    });
+});

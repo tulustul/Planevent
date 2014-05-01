@@ -150,7 +150,7 @@ section#categories {
     padding: 10px;
 }
 
-#offer-list {
+.offer-list {
     @include span-columns(10 omega);
     .offer-preview-wrapper {
         @include span-columns(2, 12);
@@ -473,4 +473,11 @@ offerpreview {
     width: 250px;
     background: white;
     padding: 10px;
+}
+
+#promoted-offers {
+    background-color: red;
+    .category {
+        background-color: white;
+    }
 }

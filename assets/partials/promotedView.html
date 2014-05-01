@@ -1,1 +1,25 @@
-<offerpreview offer="offer" ng-repeat="offer in promotedEntities" />
+<!-- <div ng-include="searchForm"></div> -->
+
+<div ng-controller="PromotedOffersController">
+
+    <flex-slider slide="s in mySlides">
+        <li>
+            <!-- <img ng-src="{{s}}"> -->
+            <h1>{{s}}</h1>
+        </li>
+    </flex-slider>
+
+    <!-- <div id="promoted-offers"> -->
+    <div>
+        <!-- <section class="category offer-list" ng-repeat="section in promotedOffers"> -->
+        <section ng-repeat="section in promotedOffers">
+            <!-- <h2>{{ section.category.name }}</h2> -->
+            <flex-slider slide="offer in section.offers">
+                <li>
+                    <img src="{{ offer.preview_image_url }}" style="width:100px">
+                    <!-- <offerpreview offer="offer"></offerpreview> -->
+                </li>
+            </flex-slider>
+        </section>
+    </div>
+</div>

@@ -235,12 +235,16 @@ class PromotedCategoriesOffersView(View):
         # else:
         categories = self.get_random_categories(categories_limit)
 
-        result = {}
+        result = []
         for category in categories:
-            result[category.name] = models.Offer.query() \
+            offers = models.Offer.query() \
                 .filter(models.Offer.category_id == category.id) \
                 .order_by(models.Offer.promotion) \
                 .limit(limit_per_category) \
                 .all()
+            result.append({
+                'category': category,
+                'offers': offers,
+            })
 
         return result

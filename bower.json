@@ -9,14 +9,15 @@
     "ng-file-upload": "*",
     "ng-table": "*",
     "ngInfiniteScroll": "*",
-    "jquery": "~1.10.1",
+    "jquery": "~2.1.0",
     "jquery-ui": "~1.10.4",
     "bootstrap": "~3.1.1",
     "underscore": "~1.5.2",
     "angular-bootstrap": "~0.10.0",
     "angular-ui-slider": "*",
     "ngAutocomplete": "~1.0.0",
-    "angucomplete": "*"
+    "angucomplete": "*",
+    "angular-flexslider": "*"
   },
   "devDependencies": {}
 }

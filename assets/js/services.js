@@ -38,6 +38,19 @@ angular.module('planevent').service('searchService',
 
 });
 
+angular.module('planevent').service('offersService',
+    function($resource, $http) {
+
+    // var Offers = $resource('/api/offers');
+    // var PromotedOffers = $resource('/api/offers/promoted');
+
+    this.getPromotedOffers = function() {
+        return $http.get('/api/offers/promoted');
+    };
+});
+
+
+
 angular.module('planevent').service('authService', function($http) {
 
     var self = this;
@@ -120,7 +133,6 @@ angular.module('planevent').factory('globalsService',
     function($routeParams, $resource) {
 
     var Categories = $resource('/api/categories');
-    var Subcategories = $resource('/api/subcategories');
 
     var lastContactTypeId = 0;
     function makeContactType(name) {
@@ -133,7 +145,6 @@ angular.module('planevent').factory('globalsService',
 
     var service = {
         categories: Categories.query(),
-        subcategories: Subcategories.query(),
         contactTypes: [
             makeContactType('www'),
             makeContactType('email'),
@@ -151,3 +162,4 @@ angular.module('planevent').factory('globalsService',
 
     return service;
 });
+
