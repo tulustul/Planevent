@@ -476,7 +476,11 @@ offerpreview {
 }
 
 #promoted-offers {
-    background-color: red;
+    @include span-columns(10 omega);
+    .flex-control-nav {
+        top: -30px;
+        height: 11px;
+    }
     .category {
         background-color: white;
     }

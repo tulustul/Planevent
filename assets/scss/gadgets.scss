@@ -79,15 +79,6 @@ $galleryHeigth: 500px;
         min-width: 80px;
         min-height: 100px;
     }
-    .flex-direction-nav a {
-        height: 60px;
-        &.flex-next {
-            background-image: url("/static/images/next.png");
-        }
-        &.flex-prev {
-            background-image: url("/static/images/prev.png");
-        }
-    }
     .image-outer-wrapper {
         text-align: center;
         .image-middle-wrapper {
@@ -215,5 +206,15 @@ $galleryHeigth: 500px;
         color: #41BB07;
         float: right;
         margin-top: 4px;
+    }
+}
+
+.flex-direction-nav a {
+    height: 60px;
+    &.flex-next {
+        background-image: url("/static/images/next.png");
+    }
+    &.flex-prev {
+        background-image: url("/static/images/prev.png");
     }
 }
