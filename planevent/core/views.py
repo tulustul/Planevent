@@ -53,7 +53,7 @@ class HomeView(View):
 
 @route('admin')
 class AdminView(View):
-    @permission(Account.Role.ADMIN)
+    # @permission(Account.Role.ADMIN)
     def get(self) -> Template('admin'):
         return {}
 
