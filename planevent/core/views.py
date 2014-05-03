@@ -3,6 +3,7 @@ from pyramid.view import (
     forbidden_view_config,
     notfound_view_config,
 )
+from pyramid.httpexceptions import HTTPFound
 from pyramid.response import Response
 
 from planevent import (
@@ -59,7 +60,9 @@ class AdminView(View):
 
 @notfound_view_config()
 def notfound(request):
-    return Response('Not found, dude!', status='404 Not Found')
+    return HTTPFound(
+        location='/#{}?{}'.format(request.path, request.query_string)
+    )
 
 
 @forbidden_view_config()
