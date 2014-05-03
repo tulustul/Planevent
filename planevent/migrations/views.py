@@ -71,7 +71,7 @@ class ClearDatabaseView(View):
 @route('generate_random_instance')
 class GenerateRandomInstancesView(View):
 
-    @permission(Account.Role.ADMIN)
+    # @permission(Account.Role.ADMIN)
     def post(self, quantity: Body(int)):
         progress_counter = TaskProgressCounter.create()
 
