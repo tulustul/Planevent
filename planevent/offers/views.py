@@ -225,19 +225,11 @@ class PromotedCategoriesOffersView(View):
         return random.sample(categories, categories_limit)
 
     def get(self, limit_per_category: int=8, categories_limit: int=4):
-        # user_dict = self.get_user_dict()
-
-        # if user_dict:
-        #     categories = self.getRandomLikedCategories(
-        #         user_dict,
-        #         categories_limit
-        #     )
-        # else:
         categories = self.get_random_categories(categories_limit)
 
         result = []
         for category in categories:
-            offers = models.Offer.query() \
+            offers = models.Offer.query('address') \
                 .filter(models.Offer.category_id == category.id) \
                 .order_by(models.Offer.promotion) \
                 .limit(limit_per_category) \

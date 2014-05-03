@@ -353,6 +353,10 @@ angular.module('planevent').controller('SearchController',
         $scope.searchTags = tags;
     });
 
+    $scope.isOnSearchPage = function() {
+        return $location.path() === '/offers/search';
+    };
+
     $scope.toogleSearch = function() {
         $scope.formVisible = !$scope.formVisible;
     };
@@ -379,11 +383,17 @@ angular.module('planevent').controller('SearchController',
             searchService.params.price_min = $scope.priceRange[0];
             searchService.params.price_max = $scope.priceRange[1];
         }
-        $location.search(searchService.params);
 
-        $scope.resetSearch(resetOffset);
+        if (!$scope.isOnSearchPage()) {
+            $location.path('/offers/search');
+        } else {
+            $scope.resetSearch(resetOffset);
+        }
+        $location.search(searchService.params);
     };
-    $scope.search(false);
+    if ($scope.isOnSearchPage()) {
+        $scope.search(false);
+    }
 });
 
 angular.module('planevent').controller('AccountController',
@@ -686,5 +696,11 @@ angular.module('planevent').controller('PromotedOffersController',
     offersService.getPromotedOffers()
     .success(function(promotedOffers) {
         $scope.promotedOffers = promotedOffers;
+
+        var entities = [];
+        _.forEach(promotedOffers, function(category) {
+            entities = entities.concat(category.offers);
+        });
+        $scope.entities = entities;
     });
 });
