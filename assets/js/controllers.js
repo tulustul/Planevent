@@ -159,23 +159,19 @@ angular.module('planevent').controller('OfferAddEditController',
         };
 
         $scope.uploadLogo = function(files) {
-            uploadImages(files, 'api/image', function(data) {
+            uploadImages(files, '/api/image', function(data) {
                 $scope.offer.logo = {path: data.path};
             });
         };
 
         $scope.uploadGallery = function(files) {
-            uploadImages(files, 'api/gallery', function(data) {
+            uploadImages(files, '/api/gallery', function(data) {
                 var gallery = $scope.offer.gallery;
                 gallery[gallery.length] = {path: data.path};
             });
         };
 
         function uploadImages(files, api, callback) {
-            function successHandler(data) { //, status, headers, config
-                callback(data);
-            }
-
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
                 $scope.upload = $upload.upload({
@@ -185,7 +181,7 @@ angular.module('planevent').controller('OfferAddEditController',
                 // }).progress(function(evt) {
                     // console.log('percent: ' + parseInt(100.0 *
                                    //evt.loaded / evt.total));
-                }).success(successHandler);
+                }).success(callback);
                 //.error(...)
                 //.then(success, error, progress);
             }

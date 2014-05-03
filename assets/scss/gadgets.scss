@@ -70,80 +70,35 @@
 }
 
 $galleryHeigth: 500px;
-.gallery {
-    max-height: $galleryHeigth;
-    margin: 10px auto;
-    text-align: center;
-    border: 2px solid;
-    @include perspective(1000px);
-    @include transform-style(preserve-3d);
-    .gallery-wrapper {
-        width: 100%;
-        padding-bottom: 75%;
-        .slide {
-            position: absolute;
-            max-height: $galleryHeigth;
-            width: 100%;
-            div {
-                position: relative;
+.gallery2 {
+    .flex-viewport {
+        max-height: $galleryHeigth;
+    }
+    .flex-control-thumbs li {
+        width: 10%;
+        min-width: 80px;
+        min-height: 100px;
+    }
+    .flex-direction-nav a {
+        height: 60px;
+        &.flex-next {
+            background-image: url("/static/images/next.png");
+        }
+        &.flex-prev {
+            background-image: url("/static/images/prev.png");
+        }
+    }
+    .image-outer-wrapper {
+        text-align: center;
+        .image-middle-wrapper {
+            display: inline-block;
+            .image-inner-wrapper {
+                display: table-cell;
+                vertical-align: middle;
+                height: $galleryHeigth;
                 img {
+                    width: auto !important;
                     max-height: $galleryHeigth;
-                }
-            }
-        }
-        .slide.ng-hide-add {
-            display:block!important;
-            opacity:1;
-            @include transition(1s linear all);
-            @include transform-origin(right top 0);
-        }
-        .slide.ng-hide-add.ng-hide-add-active {
-            @include transform(rotateX(50deg) rotateY(30deg));
-            opacity:0;
-        }
-        .slide.ng-hide-remove {
-            @include transition(1s linear all);
-            display:block!important;
-            opacity:0;
-        }
-        .slide, .slide.ng-hide-remove.ng-hide-remove-active {
-            opacity:1;
-        }
-        .arrow {
-            position: absolute;
-            height: 64px;
-            width: 64px;
-            margin-top: -35px;
-            top: 50%;
-            opacity: 0.2;
-            cursor: pointer;
-            &:hover {
-                opacity:1;
-            }
-            &.prev {
-                background-image: url("/static/images/prev.png");
-                left: 20px;
-                transition: all 0.2s linear 0s;
-            }
-            &.next {
-                background-image: url("/static/images/next.png");
-                right: 20px;
-                transition: all 0.2s linear 0s;
-            }
-        }
-        .nav {
-            bottom: -15px;
-            position: absolute;
-            width: 100%;
-            li {
-                border: 5px solid #AAAAAA;
-                border-radius: 5px;
-                cursor: pointer;
-                display: inline-block;
-                margin: 0 8px;
-                width: 60px;
-                &.active {
-                    border: 5px solid #FFFFFF;
                 }
             }
         }

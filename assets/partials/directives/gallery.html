@@ -1,18 +1,13 @@
-<div class="gallery">
-    <div class="gallery-wrapper">
-        <div ng-repeat="image in gallery" class="slide" ng-swipe-right="showPrev()" ng-swipe-left="showNext()" ng-show="isActive($index)">
-            <div>
-                <img ng-src="{{ image.path }}">
+ <div class="gallery2">
+    <flex-slider slide="image in gallery" animation="slide" control-nav="thumbnails">
+        <li data-thumb="{{image.path}}">
+            <div class="image-outer-wrapper">
+                <div class=image-middle-wrapper>
+                    <div class="image-inner-wrapper">
+                        <img ng-src="{{image.path}}" alt="{{image.desc}}" title="{{image.desc}}">
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <span class="arrow prev" ng-click="showPrev()"></span>
-        <span class="arrow next" ng-click="showNext()"></span>
-
-        <ul class="nav">
-            <li ng-repeat="image in gallery" ng-class="{'active':isActive($index)}">
-                <img ng-src="{{image.path}}" alt="{{image.desc}}" title="{{image.desc}}" ng-click="showPhoto($index);" />
-            </li>
-        </ul>
-    </div>
-</div>
+        </li>
+    </flex-slider>
+ </div>
