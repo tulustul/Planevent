@@ -48,6 +48,8 @@ urls = [
     ('task_cancel', '/api/task/{id}/cancel'),
 
     # seo
+    ('seo_home', '/seo'),
+    ('seo_search', '/offers/search'),
     ('seo_offer', '/offers/{id}'),
 
 ]

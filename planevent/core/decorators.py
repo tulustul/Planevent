@@ -110,6 +110,7 @@ def seo_view_decorator(mth):
                 location='/#{}?{}'
                 .format(self.request.path, self.request.query_string)
             )
+        self.is_robot = True
         return mth(self, *args, **kwargs)
     return wrap
 

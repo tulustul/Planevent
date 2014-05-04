@@ -1,0 +1,28 @@
+{% extends '../templates/seo/base.jinja2' %}
+{% block content %}
+    <section id="offer">
+        <h2>{{ offer.name }}</h2>
+        <img src="{{ offer.logo.path }}" alt="offer logo">
+        <h5>Kategoria: {{ offer.category.name }}</h5>
+        <p>{{ offer.description }}</p>
+
+        <span>
+            {{ offer.address.street }},
+            {{ offer.address.city }}
+            {{ offer.address.postal_code }}
+        </span>
+
+        <h5>Dodano: {{ offer.added_at }}</h5>
+
+        {% for contact in offer.contacts %}
+            <li>{{ contact.value }} - {{ contact.description }}</li>
+        {% endfor %}
+    </section>
+
+    <section id="gallery">
+        <h2>Galeria</h2>
+        {% for image in offer.gallery %}
+            <img src="{{ image.path }}" alt="gallery image">
+        {% endfor %}
+    </section>
+{% endblock %}

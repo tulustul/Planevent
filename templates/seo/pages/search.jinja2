@@ -1,0 +1,21 @@
+{% extends '../templates/seo/base.jinja2' %}
+{% block content %}
+    <h2>Wyszukiwanie</h2>
+    <ul>
+    {% for offer in offers %}
+        <li>
+            {% include '../templates/seo/widgets/offer_preview.jinja2' %}
+        </li>
+    {% endfor %}
+    </ul>
+
+    <section id="navigation">
+        {% for i in range(total_pages) %}
+            {% if i == current_page %}
+                <span>{{ i }}</span>
+            {% else %}
+                <a href="/offers/search?page={{ i }}">{{ i }}</a>
+            {% endif %}
+        {% endfor %}
+    </section>
+{% endblock %}

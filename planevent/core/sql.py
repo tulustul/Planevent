@@ -39,6 +39,11 @@ class BaseEntity(AbstractConcreteBase, Base):
         return query.options(cls.get_query_options(*relations))
 
     @classmethod
+    def count(cls):
+        query = DBSession.query(cls)
+        return query.count()
+
+    @classmethod
     def all(cls, *relations):
         return cls.query(*relations).all()
 

@@ -6,6 +6,7 @@ from pyramid.view import (
 from pyramid.httpexceptions import HTTPFound
 from pyramid.response import Response
 
+from planevent.patches import robot_detection
 from planevent import (
     settings,
 )
@@ -48,6 +49,10 @@ class View(object):
 @route('home')
 class HomeView(View):
     def get(self) -> Template('index'):
+        if robot_detection.is_robot(self.request.user_agent):
+            return HTTPFound(
+                location='/seo'
+            )
         return {'PIWIK_URL': settings.PIWIK_URL}
 
 

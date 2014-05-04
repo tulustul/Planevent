@@ -19,7 +19,6 @@ from planevent.core import (
 from planevent.offers import service
 from planevent.core.views import View
 from planevent.core.models import Address
-from planevent.categories import service as categories_service
 
 VENDOR_KEY = 'offer:{}'
 CATEGORIES_KEY = 'categories'
@@ -219,24 +218,8 @@ class TagsView(View):
 
 @route('offers_promoted')
 class PromotedCategoriesOffersView(View):
-
-    def get_random_categories(self, categories_limit):
-        categories = categories_service.get_all_categories()
-        return random.sample(categories, categories_limit)
-
-    def get(self, limit_per_category: int=8, categories_limit: int=4):
-        categories = self.get_random_categories(categories_limit)
-
-        result = []
-        for category in categories:
-            offers = models.Offer.query('address') \
-                .filter(models.Offer.category_id == category.id) \
-                .order_by(models.Offer.promotion) \
-                .limit(limit_per_category) \
-                .all()
-            result.append({
-                'category': category,
-                'offers': offers,
-            })
-
-        return result
+    def get(self, limit_per_category: int=10, categories_limit: int=4):
+        return service.get_promoted_offers(
+            limit_per_category,
+            categories_limit,
+        )

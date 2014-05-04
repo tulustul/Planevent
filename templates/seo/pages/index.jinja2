@@ -1,0 +1,17 @@
+{% extends '../templates/seo/base.jinja2' %}
+{% block content %}
+    <a href="/offers/search">Szukaj</a>
+    <h2>Polecane oferty</h2>
+    {% for offer_category in promoted_offers %}
+        <section>
+            <h3>{{ offer_category.category.name }}</h3>
+            <ul>
+            {% for offer in offer_category.offers %}
+                <li>
+                    {% include '../templates/seo/widgets/offer_preview.jinja2' %}
+                </li>
+            {% endfor %}
+            </ul>
+        </section>
+    {% endfor %}
+{% endblock %}
