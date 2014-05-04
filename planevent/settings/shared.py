@@ -14,6 +14,14 @@ OAuthData = namedtuple(
     ],
 )
 
+User = namedtuple(
+    'User', [
+        'name',
+        'email',
+        'password',
+    ]
+)
+
 OAUTH = {
     'google': OAuthData(
         client_id='892381245855.apps.googleusercontent.com',
@@ -58,7 +66,8 @@ GOOGLE_EXPORT_WORKSHEET = 'export'
 RECALL_PASSWORD_TOKEN_EXPIRATION_TIME = 60  # in minutes
 MINIMUM_PASSWORD_LENGTH = 5
 
-ADMIN_EMAIL = 'tulfm@poczta.fm'
-ADMIN_PASSWORD = 'admin'
+ADMINS = [
+    User(name='tul', email='tulfm@poczta.fm', password='admin'),
+]
 
 OFFER_VIEW_INCREMENT_DELAY = 5  # in minutes

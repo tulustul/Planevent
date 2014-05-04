@@ -27,6 +27,8 @@ urls = [
     ('tag_names', '/api/tags/names'),
     ('categories', '/api/categories'),
     ('subcategories', '/api/subcategories'),
+    ('feedbacks', '/api/feedbacks'),
+    ('feedback_check', '/api/feedback/{id}/check'),
 
     # A/B experiments
     ('experiments', '/api/experiments'),

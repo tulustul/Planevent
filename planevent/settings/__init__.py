@@ -2,8 +2,6 @@ import sys
 
 import pyramid
 
-from planevent.settings.shared import *
-
 testing = sys.argv[0].endswith('nosetests')
 
 if testing:

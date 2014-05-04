@@ -218,3 +218,64 @@ $galleryHeigth: 500px;
         background-image: url("/static/images/prev.png");
     }
 }
+
+#feedback {
+    position: fixed;
+    bottom: -20px;
+    right: 10px;
+    background: #A5BAF3;
+    border-radius: 20px 20px 0px 0px;
+    border: 2px solid #5B70CD;
+    &.extended {
+        @include transition(0.5s);
+        width: 500px;
+        height: 300px;
+        bottom: -5px;
+        .title {
+            cursor: normal;
+        }
+    }
+    &.collapsed {
+        @include transition(0.5s);
+        width: 100px;
+        height: 50px;
+        &:hover {
+            @include transition(0.3s);
+            bottom: -3px;
+        }
+        .title {
+            cursor: pointer;
+        }
+    }
+    .title {
+        font-weight: 600;
+        font-size: 16px;
+        padding: 6px 15px 10px 15px;
+    }
+    label {
+        margin-bottom: 0px;
+        margin-top: 5px;
+        font-weight: normal;
+    }
+    input {
+        width: 100%;
+    }
+    textarea {
+        width: 100%;
+        height: 140px;
+        resize: none;
+    }
+    .button a {
+        font-size: 17px;
+    }
+    h5 {
+        position: relative;
+        top: -11px;
+        &.fa-times {
+            color: $dominant;
+        }
+        &.fa-check {
+            color: green;
+        }
+    }
+}

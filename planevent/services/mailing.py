@@ -22,17 +22,18 @@ class InvalidEmail(MailException):
     pass
 
 
-def validate_email(email):
-    if not re.match(MAIL_REGEX, email):
-        raise InvalidEmail()
+def validate_to(to):
+    for email in to:
+        if not re.match(MAIL_REGEX, email):
+            raise InvalidEmail()
 
 
 def send_mail(template, to, subject, **kwargs):
 
-    validate_email(to)
-
     if isinstance(to, str):
         to = [to]
+
+    validate_to(to)
 
     template = env.get_template(template + '.jinja2')
     mail_body = template.render(**kwargs)

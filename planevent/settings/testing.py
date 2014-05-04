@@ -1,3 +1,5 @@
+from planevent.settings.shared import *
+
 INI_FILE = 'testing.ini'
 
 APP_URL = 'http://localhost:8080'

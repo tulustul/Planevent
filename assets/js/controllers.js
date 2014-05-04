@@ -200,6 +200,7 @@ angular.module('planevent').controller('AdminPageController',
     $scope.statisticsView = 'assets/partials/admin/statistics.html';
     $scope.abTestsView = 'assets/partials/admin/abtests.html';
     $scope.databaseView = 'assets/partials/admin/database.html';
+    $scope.feedbacksView = 'assets/partials/admin/feedbacks.html';
 
     var Offer = $resource('/api/offer/:id');
     var OfferPromotion = $resource('/api/offer/:id/promotion/:promotion',
@@ -280,6 +281,49 @@ angular.module('planevent').controller('AdminPageController',
         );
     };
 });
+
+angular.module('planevent').controller('AdminFeedbacksController',
+        function($scope, $http) {
+    var LIMIT = 10;
+
+    $scope.getFeedbacks = function(checked, offset) {
+        $scope.checked = checked;
+
+        $http.get('/api/feedbacks', {params: {
+            checked: checked,
+            limit: LIMIT,
+            offset: offset
+        }})
+        .success(function(response){
+            var pages = response.pages, i;
+
+            $scope.feedbacks = response.feedbacks;
+            $scope.page = response.page;
+
+            $scope.pages = [];
+            for (i = 0; i < pages; i++) {
+                $scope.pages.push(i);
+            }
+        })
+        .error(function() {
+            $scope.addDanger('Unknown error while fetching feedbacks');
+        });
+    };
+
+    $scope.goToPage = function(page) {
+        $scope.getFeedbacks($scope.checked, (page) * LIMIT);
+    };
+
+    $scope.markAsChecked = function(feedback) {
+        $http.post('/api/feedback/' + feedback.id + '/check')
+        .success(function() {
+            feedback.checked = true;
+        });
+    };
+});
+
+
+
 
 angular.module('planevent').controller('RelatedOffersController',
         function($scope, $resource) {
@@ -703,4 +747,40 @@ angular.module('planevent').controller('PromotedOffersController',
         });
         $scope.entities = entities;
     });
+});
+
+angular.module('planevent').controller('FeedbackController',
+        function($scope, $http, authService) {
+
+    $scope.title = '';
+    $scope.content = '';
+
+    $scope.sendFeedback = function() {
+        var userEmail = '';
+        if (authService.loggedUser !== null) {
+            userEmail = authService.loggedUser.email;
+        }
+
+        if ($scope.title === '') {
+            $scope.status = 'empty';
+            return;
+        }
+
+        $scope.status = 'waiting';
+
+        $http.put('/api/feedbacks', {
+            title: $scope.title,
+            content: $scope.content,
+            email: userEmail
+        })
+        .success(function() {
+            $scope.status = 'success';
+            $scope.title = '';
+            $scope.content = '';
+        })
+        .error(function() {
+            $scope.status = 'error';
+
+        });
+    };
 });

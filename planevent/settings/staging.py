@@ -1,3 +1,5 @@
+from planevent.settings.shared import *
+
 INI_FILE = 'staging.ini'
 
 APP_URL = 'http://staging1planevent-tul.rhcloud.com'

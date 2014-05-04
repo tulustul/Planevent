@@ -70,5 +70,25 @@
         <a href="#/faq">FAQ</a>|
         <a href="#/contact">Kontakt</a>
     </footer>
+
+    <div ng-controller="FeedbackController">
+        <div id="feedback" ng-class="{'extended': extended, 'collapsed': !extended}">
+            <div class="title" ng-click="extended=true">Feedback</div>
+
+            <label>Tytuł</label><br />
+            <input type="text" ng-model="title"><br />
+
+            <label>Treść</label><br />
+            <textarea ng-model="content"></textarea><br />
+
+            <pebutton ng-click="extended=false">Zamknij</pebutton>
+            <pebutton icon="share" ng-click="sendFeedback()" ng-show="status!='waiting'">Wyślij</pebutton>
+            <h5 class="fa fa-sun-o fa-spin" ng-show="status=='waiting'"></h5>
+            <h5 class="fa fa-check" ng-show="status=='success'">Wysłano</h5>
+            <h5 class="fa fa-times" ng-show="status=='error'">Błąd podczas wysyłania</h5>
+            <h5 class="fa fa-times" ng-show="status=='empty'">Wypełnij formularz</h5>
+        </div>
+    </div>
+
 </body>
 </html>

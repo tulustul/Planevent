@@ -1,3 +1,5 @@
+from planevent.settings.shared import *
+
 INI_FILE = 'production.ini'
 
 APP_URL = 'http://planevent-tul.rhcloud.com'
@@ -11,3 +13,9 @@ REDIS = {
 }
 
 PIWIK_URL = 'piwik-tul.rhcloud.com/'
+
+ADMINS = ADMINS + [User(
+    name='Van Black',
+    email='slawomir.jablonski@gmail.com',
+    password='admin',
+)]

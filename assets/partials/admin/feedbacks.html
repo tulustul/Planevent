@@ -1,0 +1,28 @@
+<div id="feedbacks" ng-controller="AdminFeedbacksController">
+
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary" ng-model="activeFilter" btn-radio="null" ng-click="getFeedbacks(null, 0)">Wszystkie</button>
+        <button type="button" class="btn btn-primary" ng-model="activeFilter" btn-radio="1" ng-click="getFeedbacks(1, 0)">Przeczytane</button>
+        <button type="button" class="btn btn-primary" ng-model="activeFilter" btn-radio="0" ng-click="getFeedbacks(0, 0)">Nieprzeczytane</button>
+    </div>
+
+    <div>
+        <span ng-repeat="i in pages">
+            <a href="" ng-if="i != page" ng-click="goToPage(i)">&nbsp{{ i+1 }}&nbsp</a>
+            <span ng-if="i == page">&nbsp{{ i+1 }}&nbsp</span>
+        </span>
+    </div>
+
+    <ul>
+        <li ng-repeat="feedback in feedbacks">
+            <figure>
+                <h4>
+                    {{ feedback.title }} - {{ feedback.email }}
+                    <button ng-if="!feedback.checked" ng-click="markAsChecked(feedback)">Oznacz jako przeczytane</button>
+                </h4>
+                <p>{{ feedback.content }}</p>
+            </figure>
+        </li>
+    </ul>
+
+</div>

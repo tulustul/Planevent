@@ -179,13 +179,14 @@ def generate_random_tasks(quantity, progress_counter):
     sql.Base.metadata.drop_all(planevent.sql_engine)
     sql.Base.metadata.create_all(planevent.sql_engine)
 
-    admin = account_models.Account.create(
-        name='Admin',
-        email=settings.ADMIN_EMAIL,
-        role=account_models.Account.Role.ADMIN,
-    )
-    admin.set_password(settings.ADMIN_PASSWORD)
-    admin.save()
+    for admin_info in settings.ADMINS:
+        admin = account_models.Account.create(
+            name=admin_info.name,
+            email=admin_info.email,
+            role=account_models.Account.Role.ADMIN,
+        )
+        admin.set_password(admin_info.password)
+        admin.save()
 
     categories, subcategories = create_test_categories()
     tags = create_test_tags()

@@ -110,7 +110,6 @@ def seo_view_decorator(mth):
                 location='/#{}?{}'
                 .format(self.request.path, self.request.query_string)
             )
-        self.is_robot = True
         return mth(self, *args, **kwargs)
     return wrap
 
@@ -140,6 +139,8 @@ def param_decorator(name, param):
                         param_value = param_type().deserialize(
                             json.loads(param_value)
                         )
+                    elif param_type is bool:
+                        param_value = bool(int(param_value))
                     else:
                         param_value = param_type(param_value)
                 except Exception as e:
