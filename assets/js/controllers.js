@@ -322,9 +322,6 @@ angular.module('planevent').controller('AdminFeedbacksController',
     };
 });
 
-
-
-
 angular.module('planevent').controller('RelatedOffersController',
         function($scope, $resource) {
 

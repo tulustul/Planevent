@@ -17,7 +17,7 @@
         <li ng-repeat="feedback in feedbacks">
             <figure>
                 <h4>
-                    {{ feedback.title }} - {{ feedback.email }}
+                    {{ feedback.title }} - {{ feedback.email }} - {{ feedback.created_at }}
                     <button ng-if="!feedback.checked" ng-click="markAsChecked(feedback)">Oznacz jako przeczytane</button>
                 </h4>
                 <p>{{ feedback.content }}</p>

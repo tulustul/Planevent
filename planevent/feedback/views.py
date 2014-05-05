@@ -29,8 +29,11 @@ class FeedbacksView(View):
         if checked is not None:
             query = query.filter(models.Feedback.checked == checked)
 
+        query = query.order_by(models.Feedback.created_at.desc()) \
+            .limit(limit).offset(offset)
+
         return {
-            'feedbacks': query.limit(limit).offset(offset).all(),
+            'feedbacks': query.all(),
             'page': math.floor(offset / limit),
             'pages': math.ceil(query.count() / limit),
         }
