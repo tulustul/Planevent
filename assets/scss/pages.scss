@@ -200,8 +200,13 @@ offerpreview {
         height: $offer-preview-height;
         position: relative;
         margin: 10px;
-        // z-index: -1;
-            .offer-preview {
+        box-shadow: 0 0 5px black;
+        &:hover {
+            @include transition(0.3s);
+            @include scale(1.1);
+            box-shadow: 0 0 30px black;
+        }
+        .offer-preview {
             width: 100%;
             height: $offer-preview-height - $offer-preview-bottom-border;
             background-color: white;
@@ -234,39 +239,39 @@ offerpreview {
                 float: left;
             }
         }
-        .flipper {
-            &:hover {
-                .back {
-                    border-bottom: 6px solid #d31919;
-                    box-shadow: 0px 0px 13px 0px black;
-                }
-            }
-            .front {
-                box-shadow: 0 0 5px black;
-            }
-            .back {
-                .offer-preview {
-                    .overlay-dark {
-                        position: absolute;
-                        top: $offer-preview-top-border;
-                        background-color: rgba(0, 0, 0, 0.8);
-                        width: 100%;
-                        height: $offer-preview-height - $offer-preview-top-border - $offer-preview-bottom-border + 1;
-                    }
-                    .flipped {
-                        position: absolute;
-                        top: $offer-preview-top-border;
-                        @include rotateY(180deg);
-                    }
-                    p {
-                        position: absolute;
-                        top: $offer-preview-top-border;
-                        color: white;
-                        padding: 5px;
-                    }
-                }
-            }
-        }
+        // .flipper {
+        //     &:hover {
+        //         .back {
+        //             border-bottom: 6px solid #d31919;
+        //             box-shadow: 0px 0px 13px 0px black;
+        //         }
+        //     }
+        //     .front {
+        //         box-shadow: 0 0 5px black;
+        //     }
+        //     .back {
+        //         .offer-preview {
+        //             .overlay-dark {
+        //                 position: absolute;
+        //                 top: $offer-preview-top-border;
+        //                 background-color: rgba(0, 0, 0, 0.8);
+        //                 width: 100%;
+        //                 height: $offer-preview-height - $offer-preview-top-border - $offer-preview-bottom-border + 1;
+        //             }
+        //             .flipped {
+        //                 position: absolute;
+        //                 top: $offer-preview-top-border;
+        //                 @include rotateY(180deg);
+        //             }
+        //             p {
+        //                 position: absolute;
+        //                 top: $offer-preview-top-border;
+        //                 color: white;
+        //                 padding: 5px;
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
 

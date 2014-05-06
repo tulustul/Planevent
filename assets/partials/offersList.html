@@ -2,10 +2,10 @@
 
 <infinitescroll
         class="offer-list"
-        page-size="20"
+        fetch-pages="2"
         distance="1"
         auto-scroll-limit="200",
-        element-size="offerPreviewSize()"
+        element-size="{width: 230, height: 270}"
         reset-function-name="resetSearch"
         fetch-function="fetch">
     <offerpreview offer="offer" ng-repeat="offer in entities" />

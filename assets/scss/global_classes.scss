@@ -35,6 +35,10 @@ a {
     clear: both;
 }
 
+.hidden {
+    display: none;
+}
+
 #container {
     @include container;
     @include border-box-sizing;

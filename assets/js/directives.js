@@ -389,13 +389,14 @@ angular.module('planevent').directive('infinitescroll',
         templateUrl: 'assets/partials/directives/infiniteScroll.html',
 
         link: function(scope, elem, attrs) {
-            var pageSize = parseInt(attrs.pageSize),
-                autoScroolLimit = parseInt(attrs.autoScrollLimit),
+            var autoScroolLimit = parseInt(attrs.autoScrollLimit),
                 fetchFunction = scope.$eval(attrs.fetchFunction),
                 offset = parseInt($routeParams.offset),
                 loadingPrevious = false,
                 checkWhenEnabled, scrollDistance, scrollEnabled,
-                minLoadedOffset, maxLoadedOffset;
+                minLoadedOffset, maxLoadedOffset, pageSize;
+
+            calculatePageSize(attrs.elementSize);
 
             if (isNaN(offset)) {
                 offset = 0;
@@ -480,6 +481,22 @@ angular.module('planevent').directive('infinitescroll',
                 });
             }
             scope[attrs.resetFunctionName] = reset;
+
+            function calculatePageSize() {
+                var elementSize = scope.$eval(attrs.elementSize),
+                    containerWidth = $('.infinite-scroll > .content').width(),
+                    viewportHeight = $(window).height(),
+                    fetchPages = parseInt(attrs.fetchPages);
+
+                pageSize = parseInt(containerWidth / elementSize.width) *
+                    parseInt((viewportHeight * fetchPages) /
+                             elementSize.height);
+            }
+
+            $(window).resize(function() {
+                calculatePageSize();
+                handler();
+            });
 
             function generatePages() {
                 scope.pages = _.range(0, scope.totalCount, pageSize);

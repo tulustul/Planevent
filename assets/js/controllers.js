@@ -59,17 +59,6 @@ angular.module('planevent').controller('OfferListController',
         $location.path('/offer/' + offer.id);
     };
 
-    $scope.offerPreviewSize = function() {
-        var previewElem = $('.offer-preview-wrapper').first();
-        if (previewElem.length === 0) {
-            return {width: 1, height: 1};
-        }
-        return {
-            width: previewElem.outerWidth(true),
-            height: previewElem.outerHeight(true)
-        };
-    };
-
     $scope.fetch = function(offset, limit, callback) {
         searchService.fetch(offset, limit, callback);
     };
