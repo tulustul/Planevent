@@ -11,6 +11,7 @@ from pyramid.exceptions import Forbidden
 
 from planevent.patches import robot_detection
 from planevent.core.sql import BaseEntity
+from planevent import settings
 import planevent
 
 
@@ -160,7 +161,7 @@ def permission(permission):
     def decorator(mth):
         @wraps(mth)
         def wrap(self, *args, **kwargs):
-            if self.get_user_role() < permission:
+            if settings.USE_PERMISSIONS and self.get_user_role() < permission:
                 raise Forbidden()
             return mth(self, *args, **kwargs)
         return wrap

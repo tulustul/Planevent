@@ -71,3 +71,5 @@ ADMINS = [
 ]
 
 OFFER_VIEW_INCREMENT_DELAY = 5  # in minutes
+
+USE_PERMISSIONS = True

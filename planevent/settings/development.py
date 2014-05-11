@@ -11,3 +11,11 @@ REDIS = {
     'DB': 1,
     'PASSWORD': '',
 }
+
+ADMINS = ADMINS + [User(
+    name='test account',
+    email='test.account@example.com',
+    password='asdasd',
+)]
+
+USE_PERMISSIONS = False
