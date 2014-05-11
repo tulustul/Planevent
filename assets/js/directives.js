@@ -344,6 +344,9 @@ angular.module('planevent').directive('pebutton', function() {
                 if ('href' in attrs) {
                     $('a', element).attr('href', attrs.href);
                 }
+                if ('target' in attrs) {
+                    $('a', element).attr('target', attrs.target);
+                }
             }
 
             function updateText() {

@@ -42,7 +42,8 @@ class FeedbacksView(View):
         if feedback.id is not None:
             return response(
                 400,
-                'Can add only new feedbacks. "Id" must be empty')
+                'Can add only new feedbacks. "Id" must be empty'
+            )
 
         feedback.checked = False
         feedback.created_at = datetime.now()

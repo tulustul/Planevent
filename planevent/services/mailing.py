@@ -22,18 +22,18 @@ class InvalidEmail(MailException):
     pass
 
 
-def validate_to(to):
-    for email in to:
+def validate_recipients(recipients):
+    for email in recipients:
         if not re.match(MAIL_REGEX, email):
             raise InvalidEmail()
 
 
-def send_mail(template, to, subject, **kwargs):
+def send_mail(template, recipients, subject, **kwargs):
 
-    if isinstance(to, str):
-        to = [to]
+    if isinstance(recipients, str):
+        recipients = [recipients]
 
-    validate_to(to)
+    validate_recipients(recipients)
 
     template = env.get_template(template + '.jinja2')
     mail_body = template.render(**kwargs)
@@ -42,7 +42,7 @@ def send_mail(template, to, subject, **kwargs):
         settings.MAILGUN_PATH,
         auth=("api", settings.MAILGUN_API_KEY),
         data={"from": settings.EMAIL_ADDRESS,
-              "to": to,
+              "to": recipients,
               "subject": subject,
               "html": mail_body}
     )
@@ -51,9 +51,9 @@ def send_mail(template, to, subject, **kwargs):
 
     if response.status_code == 200:
         logger.info('Sending email with subject "{}" to "{}"'
-                    .format(subject, to))
+                    .format(subject, recipients))
         return message
     else:
         logger.error('Unable to send email with subject "{}" to "{}".'
-                     .format(subject, to))
+                     .format(subject, recipients))
         raise MailException(message)

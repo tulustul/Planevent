@@ -5,11 +5,11 @@
         <div class="login-menu login-form" ng-show="showLoginForm">
             <pebutton icon="arrow-left" ng-click="registration = false" ng-show="registration">Wróć do logowania</pebutton>
             <h4 ng-show="registration">Rejestracja</h4>
-            <pebutton href="/login/facebook" icon="facebook">
+            <pebutton href="/login/facebook" target="_self" icon="facebook">
                 <span ng-show="!registration">Zaloguj przez Facebook</span>
                 <span ng-show="registration">Zarejestruj przez Facebook</span>
             </pebutton>
-            <pebutton href="/login/google" icon="google-plus">
+            <pebutton href="/login/google" target="_self" icon="google-plus">
                 <span ng-show="!registration">Zaloguj przez Google+</span>
                 <span ng-show="registration">Zarejestruj przez Google+</span>
             </pebutton>
@@ -17,8 +17,8 @@
             <form name="loginForm" ng-submit="registration ? register(email, password) : login(email, password)" autocomplete>
                 <h4 ng-show="!registration">Zaloguj przez email:</h4>
                 <h4 ng-show="registration">Zarejestruj przez email:</h4>
-                <input type="email" placeholder="Email" ng-model="email" required>
-                <input type="password" placeholder="Hasło" ng-model="password" minlength="3" required>
+                <input type="email" name="email" placeholder="Email" ng-model="email" required autocomplete>
+                <input type="password" name="password" placeholder="Hasło" ng-model="password" minlength="3" required>
                 <h4 class="login-error" ng-show="message == 'invalid_credentials' || message == 'unknown_error'">Niepoprawny login lub hasło</h4>
                 <h4 class="login-error" ng-show="message == 'password_too_short'">Hasło jest za krótkie</h4>
                 <h4 class="login-error" ng-show="message == 'email_already_taken'">Email jest już zajęty</h4>
