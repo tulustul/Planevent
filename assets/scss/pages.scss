@@ -373,10 +373,7 @@ offerpreview {
 }
 
 #user-profile {
-    $column-width: 3em;
-    @include container;
     @include border-box-sizing;
-    max-width: 500px;
     margin: 0 auto;
     margin-top: 10px;
     border: 1px #999 solid;
