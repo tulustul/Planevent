@@ -49,8 +49,6 @@ angular.module('planevent').service('offersService',
     };
 });
 
-
-
 angular.module('planevent').service('authService', function($http) {
 
     var self = this;
@@ -129,7 +127,7 @@ angular.module('planevent').service('accountService', function($resource) {
     };
 });
 
-angular.module('planevent').factory('globalsService',
+angular.module('planevent').factory('categoriesService',
     function($routeParams, $resource) {
 
     var Categories = $resource('/api/categories');
@@ -162,4 +160,3 @@ angular.module('planevent').factory('globalsService',
 
     return service;
 });
-

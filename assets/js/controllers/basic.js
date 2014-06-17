@@ -9,7 +9,7 @@ angular.module('planevent').controller('HomePageController',
 );
 
 angular.module('planevent').controller('MainPageController',
-    function($scope, globalsService, searchService) {
+    function($scope, categoriesService, searchService) {
         $scope.mainView = 'assets/partials/mainView.html';
         $scope.categoriesView = 'assets/partials/categoriesView.html';
         $scope.offerView = 'assets/partials/offerView.html';
@@ -17,7 +17,7 @@ angular.module('planevent').controller('MainPageController',
         $scope.loggedUserView = 'assets/partials/loggedUser.html';
         $scope.promotedOffersView = 'assets/partials/promotedOffers.html';
 
-        $scope.categories = globalsService.categories;
+        $scope.categories = categoriesService.categories;
 
         $scope.getPromotedOffers = function() {
             searchService.resetParams();

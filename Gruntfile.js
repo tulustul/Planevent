@@ -19,11 +19,9 @@ var vendorJs = {
     src: [
         'bower_components/jquery/dist/jquery.js',
         'bower_components/jquery-ui/ui/jquery-ui.js',
-        // 'bower_components/jquery-ui/ui/jquery.ui.core.js',
-        // 'bower_components/jquery-ui/ui/jquery.ui.widget.js',
-        // 'bower_components/jquery-ui/ui/jquery.ui.slider.js',
 
         'bower_components/underscore/underscore.js',
+        'bower_components/markerclustererplus/src/markerclusterer.js',
 
         'bower_components/angular/angular.js',
         'bower_components/angular-animate/angular-animate.js',
@@ -80,9 +78,10 @@ module.exports = function(grunt) {
                 options: {
                     sassDir: 'assets/scss',
                     cssDir: 'static',
+                    importPath: 'bower_components/font-awesome/scss',
                     specify: [
                         'assets/scss/main.scss',
-                        'assets/scss/admin.scss'
+                        'assets/scss/admin.scss',
                     ]
                 }
             }
@@ -126,6 +125,16 @@ module.exports = function(grunt) {
             }
         },
 
+        copy: {
+            main: {
+                expand: true,
+                cwd: 'bower_components/font-awesome/fonts/',
+                src: ['*'],
+                dest: 'static/fonts',
+                filter: 'isFile'
+            },
+        },
+
         clean: ['tmp']
 
     });
@@ -138,8 +147,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-compass');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.registerTask('staging', [
+        'copy',
         'ngtemplates',
         'concat',
         'compass',
@@ -147,6 +158,7 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('dev', [
+        'copy',
         'ngtemplates',
         'concat',
         'compass',
@@ -155,6 +167,7 @@ module.exports = function(grunt) {
     ]);
 
     grunt.registerTask('prod', [
+        'copy',
         'ngtemplates',
         'concat',
         'ngmin',

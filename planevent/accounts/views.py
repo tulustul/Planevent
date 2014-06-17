@@ -152,7 +152,7 @@ class LoggedUserView(View):
                 'likings',
                 'likings.subcategory',
             )
-        return
+        return None
 
     def post(self, account: Body(models.Account)):
         user_id = self.get_user_id()

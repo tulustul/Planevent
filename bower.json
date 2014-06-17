@@ -17,7 +17,9 @@
     "angular-ui-slider": "*",
     "ngAutocomplete": "~1.0.0",
     "angucomplete": "*",
-    "angular-flexslider": "*"
+    "angular-flexslider": "*",
+    "font-awesome": "*",
+    "markerclustererplus": "2.1.1"
   },
   "devDependencies": {}
 }

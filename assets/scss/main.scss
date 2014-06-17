@@ -1,6 +1,9 @@
-@import "fontawesome/font-awesome.scss";
+$fa-font-path: "/static/fonts";
+@import "font-awesome.scss";
+
 @import "global_classes.scss";
 @import "admin.scss";
 @import "gadgets.scss";
 @import "pages.scss";
 @import "responsive.scss";
+

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('planevent').controller('AccountController',
-        function($scope, $location, $rootScope, accountService, authService,
-                 globalsService) {
+        function($scope, $location, accountService, authService,
+                 categoriesService) {
 
     $scope.informationView = 'assets/partials/profile/information.html';
     $scope.settingsView = 'assets/partials/profile/settings.html';
@@ -10,22 +10,22 @@ angular.module('planevent').controller('AccountController',
     $scope.changePasswordView = 'assets/partials/profile/changePassword.html';
 
     $scope.accountSaved = false;
-    $rootScope.loggedUser = null;
+    $scope.loggedUser = null;
 
     $scope.waiting = false;
 
     authService.getLoggedUser()
     .success(function(loggedUser) {
 
-        $rootScope.loggedUser = loggedUser;
+        $scope.loggedUser = loggedUser;
 
         if (loggedUser === undefined) {
             $location.path('/');
             return;
         }
 
-        globalsService.getCategories(function(categories) {
-            var likingsIds = $rootScope.loggedUser.likingsIds;
+        categoriesService.getCategories(function(categories) {
+            var likingsIds = $scope.loggedUser.likingsIds;
             $scope.availableCategories = _.map(categories, function(c) {
                 // TODO list of ids instead of field injection
                 c.available = true;
@@ -40,14 +40,14 @@ angular.module('planevent').controller('AccountController',
 
     $scope.logout = function() {
         authService.logout();
-        $rootScope.loggedUser = null;
+        $scope.loggedUser = null;
         $location.path('/');
     };
 
     $scope.saveAccount = function() {
         $scope.accountSaved = false;
-        accountService.saveAccount($rootScope.loggedUser, function(account) {
-            $rootScope.loggedUser = account;
+        accountService.saveAccount($scope.loggedUser, function(account) {
+            $scope.loggedUser = account;
         });
         $scope.accountSaved = true;
     };
@@ -70,10 +70,10 @@ angular.module('planevent').controller('AccountController',
 });
 
 angular.module('planevent').controller('LikingsEditionController',
-        function($scope, $location, accountService) {
+        function($scope) {
 
     $scope.addLiking = function(subcategory, level) {
-        var likings = $rootScope.loggedUser.likings;
+        var likings = $scope.loggedUser.likings;
         likings[likings.length] = {
             subcategory: subcategory,
             level: level
@@ -82,7 +82,7 @@ angular.module('planevent').controller('LikingsEditionController',
     };
 
     $scope.removeLiking = function(liking) {
-        var likings = $rootScope.loggedUser.likings;
+        var likings = $scope.loggedUser.likings;
         likings.splice(likings.indexOf(liking), 1);
         liking.subcategory.available = true;
     };

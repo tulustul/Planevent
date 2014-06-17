@@ -2,12 +2,12 @@
 
 angular.module('planevent').controller('OfferAddEditController',
     function($scope, $resource, $routeParams, $location, $upload,
-             globalsService) {
+             categoriesService) {
 
         $scope.locationComplete = false;
         $scope.validatingLocation = false;
-        $scope.categories = globalsService.categories;
-        $scope.contactTypes = globalsService.contactTypes;
+        $scope.categories = categoriesService.categories;
+        $scope.contactTypes = categoriesService.contactTypes;
         $scope.offerView = 'assets/partials/offerView.html';
 
         if ($routeParams.offerId === undefined) {

@@ -16,7 +16,7 @@ angular.module('planevent').controller('OfferListController',
 });
 
 angular.module('planevent').controller('OfferPageController',
-        function($scope, $resource, $routeParams, globalsService) {
+        function($scope, $resource, $routeParams, categoriesService) {
     var Offer = $resource('/api/offer/:id');
     $scope.offerDoesNotExists = false;
     $scope.otherError = false;
@@ -33,7 +33,7 @@ angular.module('planevent').controller('OfferPageController',
             }
         }
     );
-    $scope.categories = globalsService.categories;
+    $scope.categories = categoriesService.categories;
 
     $scope.removeOffer = function() {
         Offer.remove({id: $scope.offer.id});
