@@ -3,13 +3,6 @@
 angular.module('planevent').controller('AccountController',
         function($scope, $location, accountService, authService,
                  categoriesService) {
-
-    $scope.informationView = 'assets/partials/profile/information.html';
-    $scope.settingsView = 'assets/partials/profile/settings.html';
-    $scope.likingsView = 'assets/partials/profile/likings.html';
-    $scope.changePasswordView = 'assets/partials/profile/changePassword.html';
-
-    $scope.accountSaved = false;
     $scope.loggedUser = null;
 
     $scope.waiting = false;
@@ -43,6 +36,17 @@ angular.module('planevent').controller('AccountController',
         $scope.loggedUser = null;
         $location.path('/');
     };
+});
+
+angular.module('planevent').controller('ProfileController',
+        function($scope, $location, accountService, authService) {
+
+    $scope.informationView = 'assets/partials/profile/information.html';
+    $scope.settingsView = 'assets/partials/profile/settings.html';
+    $scope.likingsView = 'assets/partials/profile/likings.html';
+    $scope.changePasswordView = 'assets/partials/profile/changePassword.html';
+
+    $scope.accountSaved = false;
 
     $scope.saveAccount = function() {
         $scope.accountSaved = false;
@@ -64,9 +68,8 @@ angular.module('planevent').controller('AccountController',
             $scope.waiting = false;
             $scope.message = response.message;
         });
-
-
     };
+
 });
 
 angular.module('planevent').controller('LikingsEditionController',
@@ -86,5 +89,4 @@ angular.module('planevent').controller('LikingsEditionController',
         likings.splice(likings.indexOf(liking), 1);
         liking.subcategory.available = true;
     };
-
 });

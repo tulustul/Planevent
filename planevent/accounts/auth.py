@@ -110,6 +110,4 @@ def try_login(request, email, password):
 
 
 def logout(request):
-    # request.session['user_id'] = None
-    # request.session['user_role'] = None
     del request.session['user']
