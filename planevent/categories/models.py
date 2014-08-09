@@ -29,3 +29,5 @@ class Subcategory(BaseEntity):
     # add optional automatic tags
     # add optional automatic age restriction + bool if age restriction is
     # validated (in offer)
+    #
+    category = relationship('Category', cascade="delete, all")

@@ -12,7 +12,7 @@ angular.module('planevent').service('userProfileService',
 
             scope.loggedUser = loggedUser;
 
-            if (loggedUser === undefined) {
+            if (loggedUser === undefined || loggedUser === 'null') {
                 $location.path('/');
                 return;
             }
@@ -22,7 +22,7 @@ angular.module('planevent').service('userProfileService',
 
 angular.module('planevent').controller('AccountController',
         function($scope, $location, userProfileService, accountService,
-         authService, categoriesService) {
+         authService) {
     $scope.loggedUser = null;
 
     $scope.waiting = false;
@@ -33,57 +33,12 @@ angular.module('planevent').controller('AccountController',
         $scope.loggedUser = account;
     });
 
-        // categoriesService.getCategories(function(categories) {
-        //     var likingsIds = $scope.loggedUser.likingsIds;
-        //     $scope.availableCategories = _.map(categories, function(c) {
-        //         // TODO list of ids instead of field injection
-        //         c.available = true;
-        //         c.subcategories = _.map(c.subcategories, function(sub) {
-        //             sub.available = likingsIds.indexOf(sub.id) === -1;
-        //             return sub;
-        //         });
-        //         return c;
-        //     });
-        // });
-    // });
-
     $scope.logout = function() {
         authService.logout();
         $scope.loggedUser = null;
         $location.path('/');
     };
 });
-
-// angular.module('planevent').controller('ProfileController',
-//         function($scope, $location, accountService, authService) {
-
-//     // $scope.informationView = 'assets/partials/profile/information.html';
-//     // $scope.settingsView = 'assets/partials/profile/settings.html';
-//     // $scope.likingsView = 'assets/partials/profile/likings.html';
-//     // $scope.changePasswordView = 'assets/partials/profile/changePassword.html';
-
-//     // $scope.chosenProfileView = $scope.informationView;
-
-//     $scope.accountSaved = false;
-
-//     authService.getLoggedUser().success(function(loggedUser) {
-//         $scope.loggedUser = loggedUser;
-
-//         if (loggedUser === undefined) {
-//             $location.path('/');
-//             return;
-//         }
-//     });
-
-//     $scope.saveAccount = function() {
-//         $scope.accountSaved = false;
-//         accountService.saveAccount($scope.loggedUser, function(account) {
-//             $scope.loggedUser = account;
-//         });
-//         $scope.accountSaved = true;
-//     };
-
-// });
 
 angular.module('planevent').controller('ProfileInformationsController',
         function($scope, userProfileService) {
@@ -119,7 +74,7 @@ angular.module('planevent').controller('ProfileChangePasswordController',
 });
 
 angular.module('planevent').controller('ProfileLikingsController',
-        function($scope, userProfileService, categoriesService) {
+        function($scope, $http, userProfileService, categoriesService) {
 
     userProfileService.prepareScope($scope);
 
@@ -127,18 +82,17 @@ angular.module('planevent').controller('ProfileLikingsController',
         $scope.categories = categories;
     });
 
-    // $scope.addLiking = function(subcategory, level) {
-    //     var likings = $scope.loggedUser.likings;
-    //     likings[likings.length] = {
-    //         subcategory: subcategory,
-    //         level: level
-    //     };
-    //     subcategory.available = false;
-    // };
+    $scope.setLiking = function(liking, level) {
+        liking.level = level;
 
-    // $scope.removeLiking = function(liking) {
-    //     var likings = $scope.loggedUser.likings;
-    //     likings.splice(likings.indexOf(liking), 1);
-    //     liking.subcategory.available = true;
-    // };
+        $http.post('/api/accounts/liking/' + liking.id + '/level', level)
+        .success(function() {
+            $scope.$broadcast('likingUpdated', liking);
+        })
+        .error(function() {
+            // nothing?
+        });
+
+    };
+
 });

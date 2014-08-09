@@ -81,7 +81,7 @@ angular.module('planevent').controller('LoginController',
         authService.register(email, password)
         .success(function(account) {
             $scope.waiting = false;
-            $rootScope.loggedUser = account;
+            $rootScope.$broadcast('loggedIn', account);
         })
         .error(function(response) {
             $scope.waiting = false;

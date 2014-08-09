@@ -151,6 +151,7 @@ class LoggedUserView(View):
                 'settings.address',
                 'likings',
                 'likings.subcategory',
+                'likings.subcategory.category',
             )
         return None
 
@@ -161,3 +162,37 @@ class LoggedUserView(View):
 
         account.save()
         return account
+
+
+@route('account_liking_level')
+class AccountLikingView(View):
+
+    @permission(models.Account.Role.NORMAL)
+    def post(self, liking_id: Rest(int), level: Body(int)):
+        liking = models.AccountLiking.get(liking_id)
+
+        if not liking:
+            return self.response(
+                404,
+                'No AccountLiking with id {}'.format(liking_id),
+            )
+
+        user_id = self.get_user_id()
+        user_role = self.get_user_role()
+        if (
+            liking.account_id != user_id and
+            user_role != models.Account.Role.ADMIN
+        ):
+            return self.response(
+                403,
+                'No permission to edit AccountLiking with id {}'
+                .format(liking_id),
+            )
+
+        if level not in range(1, 5):
+            return self.response(400, 'Level must be between 1 and 4')
+
+        liking.level = level
+        liking.save()
+
+        return self.response(200, 'AccountLiking updated')

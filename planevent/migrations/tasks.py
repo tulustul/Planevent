@@ -203,4 +203,3 @@ def generate_random_tasks(quantity, progress_counter):
                 progress_counter.progress += 10
 
     progress_counter.message = '{} entities generated'.format(quantity)
-

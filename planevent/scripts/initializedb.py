@@ -125,11 +125,11 @@ def create_test_categories():
         )
         categories_list.append(category)
         category.save()
-        for subcategory_name in subcategories:
+        for subcategory in subcategories:
             subcategory = categories_models.Subcategory(
-                name=subcategory_name,
+                name=subcategory['name'],
                 color=generate_random_color(),
-                icon_path='/static/images/icons/question.png',
+                icon_path=subcategory['icon'],
                 category_id=category.id,
             )
             subcategory.save()

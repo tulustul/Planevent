@@ -1,23 +1,13 @@
-<div ng-include="userProfileNavigation"></div>
+<div id="user-profile">
+    <div ng-include="userProfileNavigation"></div>
 
-<section id="likingsView">
-    <div>
-        <strong>Wybrane</strong>
-        <ul><li ng-repeat="liking in loggedUser.likings"
-                ng-click="removeLiking(liking)"
-                ng-style="{'background-color': liking.subcategory.color}">
-             {{ liking.subcategory.name }}
-        </li></ul>
-    </div>
-   <!--  <div>
-        <strong>Dostępne</strong>
-        <ul><li ng-repeat="category in availableCategories | filter:{available:true}">
-            {{ category.name }}
-            <ul><li ng-repeat="subcategory in category.subcategories | filter:{available:true}"
-                    ng-click="addLiking(subcategory)"
-                    ng-style="{'background-color': subcategory.color}">
-                {{ subcategory.name }}
-            </li></ul>
-        </li></ul>
-    </div> -->
-</section>
+    <article id="likings-view">
+        <section class="category" ng-repeat="category in categories">
+            <h1>{{ category.name }}</h1>
+            <liking ng-model="liking"
+                    ng-repeat="liking in loggedUser.likings"
+                    ng-click="showLevelChooser(liking, $event)"
+                    ng-if="liking.subcategory.category.id === category.id" />
+        </section>
+    </article>
+</div>

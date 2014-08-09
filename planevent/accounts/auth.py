@@ -45,7 +45,7 @@ def _login(request, account):
 
 
 def register(request, email, password):
-    mailing.validate_email(email)
+    mailing.validate_recipients([email])
     account = models.Account.get_by_email(email)
 
     if account:
@@ -77,7 +77,7 @@ def change_password(email, old_password, new_password):
 
 
 def recall_password(email):
-    mailing.validate_email(email)
+    mailing.validate_recipients([email])
     account = models.Account.get_by_email(email, 'credentials')
     if account:
         account.generate_recall_password_token()

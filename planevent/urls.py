@@ -29,6 +29,7 @@ urls = [
     ('subcategories', '/api/subcategories'),
     ('feedbacks', '/api/feedbacks'),
     ('feedback_check', '/api/feedback/{id}/check'),
+    ('account_liking_level', '/api/accounts/liking/{liking_id}/level'),
 
     # A/B experiments
     ('experiments', '/api/experiments'),

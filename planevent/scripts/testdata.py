@@ -1,26 +1,84 @@
 categories = {
     'Sport': [
-        'Brydż',
-        'Szachy',
-        'Siatkówka',
-        'Krykiet',
-        'Bilard :P',
+        {
+            'name': 'Airsoft',
+            'icon': '/static/images/categories/airsoft.png',
+        }, {
+            'name': 'Szachy',
+            'icon': '/static/images/categories/chess.png',
+        }, {
+            'name': 'Siatkówka',
+            'icon': '/static/images/categories/volleyball.png',
+        }, {
+            'name': 'Paintball',
+            'icon': '/static/images/categories/paintball.png',
+        }, {
+            'name': 'Bilard',
+            'icon': '/static/images/categories/bilard.png',
+        }, {
+            'name': 'Bungee',
+            'icon': '/static/images/categories/bungee.png',
+        }, {
+            'name': 'Piłka nożna',
+            'icon': '/static/images/categories/soccer.png',
+        }, {
+            'name': 'Skoki na spadochronach',
+            'icon': '/static/images/categories/parachuting.png'
+        }, {
+            'name': 'Bieganie',
+            'icon': '/static/images/categories/running.png',
+        }, {
+            'name': 'Koszykówka',
+            'icon': '/static/images/categories/basketball.png'
+        },
+    ],
+    'Zabawa': [
+        {
+            'name': 'Taniec',
+            'icon': '/static/images/categories/dancing.gif',
+        },
     ],
     'Muzyka': [
-        'Techno',
-        'Metal',
-        'Country',
-        'Hip-Hop',
-    ],
-    'Historia': [
-        'Wystawy historyczne',
-        'Rekonstrukcje',
+        {
+            'name': 'Metal',
+            'icon': '/static/images/categories/metalMusic.png',
+        }, {
+            'name': 'Country',
+            'icon': '/static/images/categories/countryMusic.png',
+        }, {
+            'name': 'Hip-Hop',
+            'icon': '/static/images/categories/hiphopMusic.png',
+        }, {
+            'name': 'Klasyczna',
+            'icon': '/static/images/categories/classicalMusic.png',
+        }, {
+            'name': 'Reggae',
+            'icon': '/static/images/categories/reggaeMusic.png',
+        }, {
+            'name': 'Rock',
+            'icon': '/static/images/categories/rockMusic.png',
+        },
     ],
     'Sztuka': [
-        'Wystawy',
-        'Galerie',
-        'Teatr',
-        'Opera',
+        {
+            'name': 'Wystawy',
+            'icon': '/static/images/categories/exhibition.png',
+        }, {
+            'name': 'Teatr',
+            'icon': '/static/images/categories/theatre.png',
+        }, {
+            'name': 'Historia',
+            'icon': '/static/images/categories/history.jpg',
+        },
+    ],
+    'Motoryzacja': [
+        {
+            'name': 'Offroad',
+            'icon': '/static/images/categories/offroad.png',
+        }, {
+            'name': 'Monster truck',
+            'icon': '/static/images/categories/monsterTruck.png',
+        },
     ],
 }
 
