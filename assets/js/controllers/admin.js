@@ -26,7 +26,7 @@ angular.module('planevent').controller('DatabaseManagementController',
             exec: function(spreadsheetName, worksheetName) {
                 $scope.resetMessages();
 
-                $http.post('/api/database/migration', {
+                $http.post('/api/database/migration/import', {
                     spreadsheet: spreadsheetName,
                     worksheet: worksheetName,
                 })
@@ -44,7 +44,7 @@ angular.module('planevent').controller('DatabaseManagementController',
             exec: function() {
                 $scope.resetMessages();
 
-                $http.get('/api/database/migration')
+                $http.get('/api/database/migration/export')
                 .success(function(response) {
                     $scope.addSuccess(response.message);
                     countProgress(response.progress_counter);

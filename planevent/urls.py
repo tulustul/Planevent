@@ -38,7 +38,8 @@ urls = [
     ('experiment_increment', '/api/experiment/{name}/{variation}/increment'),
 
     # database management
-    ('migration', '/api/database/migration'),
+    ('migration_export', '/api/database/migration/export'),
+    ('migration_import', '/api/database/migration/import'),
     ('update_schema', '/api/database/update'),
     # dev only - disable on production
     ('clear_database', '/api/database/clear'),

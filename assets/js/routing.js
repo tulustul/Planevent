@@ -41,8 +41,23 @@ angular.module('planevent').config(
     })
 
     .when('/userProfile', {
-        templateUrl: 'assets/partials/userProfile.html',
-        controller: 'AccountController'
+        redirectTo: '/userProfile/informations'
+    })
+    .when('/userProfile/informations', {
+        templateUrl: 'assets/partials/profile/informations.html',
+        controller: 'ProfileInformationsController'
+    })
+    .when('/userProfile/settings', {
+        templateUrl: 'assets/partials/profile/settings.html',
+        controller: 'ProfileSettingsController'
+    })
+    .when('/userProfile/changePassword', {
+        templateUrl: 'assets/partials/profile/changePassword.html',
+        controller: 'ProfileChangePasswordController'
+    })
+    .when('/userProfile/likings', {
+        templateUrl: 'assets/partials/profile/likings.html',
+        controller: 'ProfileLikingsController'
     })
     .when('/userProfile/firstLogging', {
         templateUrl: 'assets/partials/profile/firstLogging.html',

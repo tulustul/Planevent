@@ -47,11 +47,11 @@ angular.module('planevent').controller('LoginController',
         $scope.message = '';
 
         authService.login(email, password)
-        // .success(function(account) {
-            // $scope.waiting = false;
-            // $rootScope.loggedUser = account;
-            // authService.loggedUser = account;
-        // })
+        .success(function(account) {
+            $scope.waiting = false;
+            $rootScope.$broadcast('loggedIn', account);
+            authService.loggedUser = account;
+        })
         .error(function(response) {
             $scope.waiting = false;
             $scope.message = response.message;

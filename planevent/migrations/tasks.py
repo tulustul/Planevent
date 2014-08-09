@@ -179,6 +179,8 @@ def generate_random_tasks(quantity, progress_counter):
     sql.Base.metadata.drop_all(planevent.sql_engine)
     sql.Base.metadata.create_all(planevent.sql_engine)
 
+    categories, subcategories = create_test_categories()
+
     for admin_info in settings.ADMINS:
         admin = account_models.Account.create(
             name=admin_info.name,
@@ -188,7 +190,6 @@ def generate_random_tasks(quantity, progress_counter):
         admin.set_password(admin_info.password)
         admin.save()
 
-    categories, subcategories = create_test_categories()
     tags = create_test_tags()
 
     progress_counter.message = 'Generating entities'

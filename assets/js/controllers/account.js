@@ -1,35 +1,51 @@
 'use strict';
 
+angular.module('planevent').service('userProfileService',
+        function($location, authService) {
+
+    this.prepareScope = function(scope) {
+        scope.userProfileNavigation =
+            'assets/partials/profile/userProfileNavigation.html';
+
+        authService.getLoggedUser()
+        .success(function(loggedUser) {
+
+            scope.loggedUser = loggedUser;
+
+            if (loggedUser === undefined) {
+                $location.path('/');
+                return;
+            }
+        });
+    };
+});
+
 angular.module('planevent').controller('AccountController',
-        function($scope, $location, accountService, authService,
-                 categoriesService) {
+        function($scope, $location, userProfileService, accountService,
+         authService, categoriesService) {
     $scope.loggedUser = null;
 
     $scope.waiting = false;
 
-    authService.getLoggedUser()
-    .success(function(loggedUser) {
+    userProfileService.prepareScope($scope);
 
-        $scope.loggedUser = loggedUser;
-
-        if (loggedUser === undefined) {
-            $location.path('/');
-            return;
-        }
-
-        categoriesService.getCategories(function(categories) {
-            var likingsIds = $scope.loggedUser.likingsIds;
-            $scope.availableCategories = _.map(categories, function(c) {
-                // TODO list of ids instead of field injection
-                c.available = true;
-                c.subcategories = _.map(c.subcategories, function(sub) {
-                    sub.available = likingsIds.indexOf(sub.id) === -1;
-                    return sub;
-                });
-                return c;
-            });
-        });
+    $scope.$on('loggedIn', function(event, account) {
+        $scope.loggedUser = account;
     });
+
+        // categoriesService.getCategories(function(categories) {
+        //     var likingsIds = $scope.loggedUser.likingsIds;
+        //     $scope.availableCategories = _.map(categories, function(c) {
+        //         // TODO list of ids instead of field injection
+        //         c.available = true;
+        //         c.subcategories = _.map(c.subcategories, function(sub) {
+        //             sub.available = likingsIds.indexOf(sub.id) === -1;
+        //             return sub;
+        //         });
+        //         return c;
+        //     });
+        // });
+    // });
 
     $scope.logout = function() {
         authService.logout();
@@ -38,23 +54,54 @@ angular.module('planevent').controller('AccountController',
     };
 });
 
-angular.module('planevent').controller('ProfileController',
-        function($scope, $location, accountService, authService) {
+// angular.module('planevent').controller('ProfileController',
+//         function($scope, $location, accountService, authService) {
 
-    $scope.informationView = 'assets/partials/profile/information.html';
-    $scope.settingsView = 'assets/partials/profile/settings.html';
-    $scope.likingsView = 'assets/partials/profile/likings.html';
-    $scope.changePasswordView = 'assets/partials/profile/changePassword.html';
+//     // $scope.informationView = 'assets/partials/profile/information.html';
+//     // $scope.settingsView = 'assets/partials/profile/settings.html';
+//     // $scope.likingsView = 'assets/partials/profile/likings.html';
+//     // $scope.changePasswordView = 'assets/partials/profile/changePassword.html';
 
-    $scope.accountSaved = false;
+//     // $scope.chosenProfileView = $scope.informationView;
 
-    $scope.saveAccount = function() {
-        $scope.accountSaved = false;
-        accountService.saveAccount($scope.loggedUser, function(account) {
-            $scope.loggedUser = account;
-        });
-        $scope.accountSaved = true;
-    };
+//     $scope.accountSaved = false;
+
+//     authService.getLoggedUser().success(function(loggedUser) {
+//         $scope.loggedUser = loggedUser;
+
+//         if (loggedUser === undefined) {
+//             $location.path('/');
+//             return;
+//         }
+//     });
+
+//     $scope.saveAccount = function() {
+//         $scope.accountSaved = false;
+//         accountService.saveAccount($scope.loggedUser, function(account) {
+//             $scope.loggedUser = account;
+//         });
+//         $scope.accountSaved = true;
+//     };
+
+// });
+
+angular.module('planevent').controller('ProfileInformationsController',
+        function($scope, userProfileService) {
+
+    userProfileService.prepareScope($scope);
+});
+
+angular.module('planevent').controller('ProfileSettingsController',
+        function($scope, userProfileService) {
+
+    userProfileService.prepareScope($scope);
+
+});
+
+angular.module('planevent').controller('ProfileChangePasswordController',
+        function($scope, userProfileService, authService) {
+
+    userProfileService.prepareScope($scope);
 
     $scope.changePassword = function(oldPassword, newPassword) {
         $scope.waiting = true;
@@ -69,24 +116,29 @@ angular.module('planevent').controller('ProfileController',
             $scope.message = response.message;
         });
     };
-
 });
 
-angular.module('planevent').controller('LikingsEditionController',
-        function($scope) {
+angular.module('planevent').controller('ProfileLikingsController',
+        function($scope, userProfileService, categoriesService) {
 
-    $scope.addLiking = function(subcategory, level) {
-        var likings = $scope.loggedUser.likings;
-        likings[likings.length] = {
-            subcategory: subcategory,
-            level: level
-        };
-        subcategory.available = false;
-    };
+    userProfileService.prepareScope($scope);
 
-    $scope.removeLiking = function(liking) {
-        var likings = $scope.loggedUser.likings;
-        likings.splice(likings.indexOf(liking), 1);
-        liking.subcategory.available = true;
-    };
+    categoriesService.getCategories(function(categories) {
+        $scope.categories = categories;
+    });
+
+    // $scope.addLiking = function(subcategory, level) {
+    //     var likings = $scope.loggedUser.likings;
+    //     likings[likings.length] = {
+    //         subcategory: subcategory,
+    //         level: level
+    //     };
+    //     subcategory.available = false;
+    // };
+
+    // $scope.removeLiking = function(liking) {
+    //     var likings = $scope.loggedUser.likings;
+    //     likings.splice(likings.indexOf(liking), 1);
+    //     liking.subcategory.available = true;
+    // };
 });

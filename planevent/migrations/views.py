@@ -16,11 +16,11 @@ from planevent.scripts.initializedb import (
 from planevent.migrations import tasks
 
 
-@route('migration')
-class MigrationView(View):
+@route('migration_export')
+class MigrationExportView(View):
 
     @permission(Account.Role.ADMIN)
-    def export(self, spreadsheet: str, worksheet: str):
+    def post(self, spreadsheet: str, worksheet: str):
         progress_counter = TaskProgressCounter.create()
 
         tasks.export(spreadsheet, worksheet, progress_counter)
@@ -30,8 +30,12 @@ class MigrationView(View):
             'progress_counter': progress_counter.id,
         }
 
+
+@route('migration_import')
+class MigrationImportView(View):
+
     @permission(Account.Role.ADMIN)
-    def import_(self, spreadsheet: str, worksheet: str):
+    def post(self, spreadsheet: str, worksheet: str):
         sql.Base.metadata.drop_all(planevent.sql_engine)
         sql.Base.metadata.create_all(planevent.sql_engine)
 
@@ -41,7 +45,6 @@ class MigrationView(View):
         progress_counter = TaskProgressCounter.create()
 
         tasks.import_(spreadsheet, worksheet, progress_counter)
-
         return {
             'message': 'Export started',
             'progress_counter': progress_counter.id,

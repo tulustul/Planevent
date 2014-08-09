@@ -1,4 +1,6 @@
-<section id="likingsView" ng-controller="LikingsEditionController">
+<div ng-include="userProfileNavigation"></div>
+
+<section id="likingsView">
     <div>
         <strong>Wybrane</strong>
         <ul><li ng-repeat="liking in loggedUser.likings"
@@ -7,7 +9,7 @@
              {{ liking.subcategory.name }}
         </li></ul>
     </div>
-    <div>
+   <!--  <div>
         <strong>Dostępne</strong>
         <ul><li ng-repeat="category in availableCategories | filter:{available:true}">
             {{ category.name }}
@@ -17,5 +19,5 @@
                 {{ subcategory.name }}
             </li></ul>
         </li></ul>
-    </div>
+    </div> -->
 </section>

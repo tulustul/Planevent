@@ -26,7 +26,7 @@ requires = [
     'requests_oauthlib',
     'jinja2',
     'uwsgi',
-    'gspread',
+    'gspread>=0.2',
     'WebOb>=1.3.1',
 ]
 

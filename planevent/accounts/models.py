@@ -19,6 +19,7 @@ from sqlalchemy.orm import relationship
 
 from planevent.core.sql import BaseEntity
 from planevent.core.models import Address
+from planevent.categories.models import Subcategory
 from planevent import settings
 
 
@@ -54,7 +55,7 @@ class Account(BaseEntity):
 
     @classmethod
     def create(cls, **kwargs):
-        return cls(
+        account = cls(
             created_at=datetime.now(),
             login_count=0,
             settings=AccountSettings(
@@ -63,6 +64,17 @@ class Account(BaseEntity):
             credentials=AccountCrendentials(),
             **kwargs
         )
+
+        account.save()
+
+        for subcategory in Subcategory.all():
+            liking = AccountLiking(
+                account_id=account.id,
+                subcategory=subcategory,
+            )
+            liking.save()
+
+        return account
 
     @classmethod
     def get_by_email(cls, email, *relations):
@@ -122,11 +134,16 @@ class AccountSettings(BaseEntity):
 
 
 class AccountLiking(BaseEntity):
-    __tablename__ = 'account_liking'
-    account_id = Column(Integer, ForeignKey('account.id'))
-    category_id = Column(Integer, ForeignKey('category.id'))
-    subcategory_id = Column(Integer, ForeignKey('subcategory.id'))
-    level = Column(String(1))
+    class Level:
+        DONT_LIKE = 1
+        NEUTRAL = 2
+        LIKE = 3
+        LOVE = 4
 
-    category = relationship('Category', cascade="delete, all")
+    __tablename__ = 'account_liking'
+
+    account_id = Column(Integer, ForeignKey('account.id'))
+    subcategory_id = Column(Integer, ForeignKey('subcategory.id'))
+    level = Column(Integer, default=Level.NEUTRAL)
+
     subcategory = relationship('Subcategory', cascade="delete, all")

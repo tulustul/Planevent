@@ -17,6 +17,7 @@
   "jquery": true,
 
   "globals": {
+    "angular": false,
     "planevent": false,
     "_": false,
     "google": false,
