@@ -7,12 +7,10 @@ from planevent.core.decorators import (
 )
 from planevent.core.views import View
 from planevent.core import sql
+from planevent.core import cache
 from planevent.core.redisdb import redis_db
 from planevent.async import TaskProgressCounter
-from planevent.scripts.initializedb import (
-    create_test_categories,
-    # create_test_tags,
-)
+from planevent.scripts.initializedb import create_test_categories
 from planevent.migrations import tasks
 
 
@@ -38,6 +36,7 @@ class MigrationImportView(View):
     def post(self, spreadsheet: str, worksheet: str):
         sql.Base.metadata.drop_all(planevent.sql_engine)
         sql.Base.metadata.create_all(planevent.sql_engine)
+        cache.flush()
 
         categories, subcategories = create_test_categories()
         # tags = create_test_tags()
@@ -68,6 +67,7 @@ class ClearDatabaseView(View):
         sql.Base.metadata.drop_all(planevent.sql_engine)
         sql.Base.metadata.create_all(planevent.sql_engine)
         redis_db.flushall()
+        cache.flush()
         return 'Database cleared'
 
 
@@ -76,6 +76,8 @@ class GenerateRandomInstancesView(View):
 
     # @permission(Account.Role.ADMIN)
     def post(self, quantity: Body(int)):
+        cache.flush()
+
         progress_counter = TaskProgressCounter.create()
 
         tasks.generate_random_tasks(quantity, progress_counter)
