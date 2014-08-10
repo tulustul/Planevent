@@ -20,6 +20,7 @@ from planevent.urls import urls
 from planevent import settings as app_settings
 
 os.environ['DEBUG'] = '1'
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger('planevent')

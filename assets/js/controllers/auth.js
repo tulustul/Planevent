@@ -1,17 +1,5 @@
 'use strict';
 
-angular.module('planevent').controller('FirstLoggingController',
-        function($scope, $location, accountService) {
-
-    accountService.getAccount(function(loggedUser) {
-        if (loggedUser === undefined) {
-            $location.path('/');
-        } else if (loggedUser.login_count > 1) {
-            $location.path('/userProfile');
-        }
-    });
-});
-
 angular.module('planevent').controller('PasswordRecallCallbackController',
         function($scope, $routeParams, authService) {
 

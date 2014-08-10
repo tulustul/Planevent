@@ -94,5 +94,12 @@ angular.module('planevent').controller('ProfileLikingsController',
         });
 
     };
+});
 
+angular.module('planevent').controller('FirstLoggingController',
+        function($scope, $location, userProfileService) {
+
+    userProfileService.prepareScope($scope);
+
+    $scope.likingsView = 'assets/partials/profile/likings.html';
 });
