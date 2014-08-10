@@ -85,12 +85,14 @@ angular.module('planevent').controller('ProfileLikingsController',
     $scope.setLiking = function(liking, level) {
         liking.level = level;
 
+        liking.waiting = true;
         $http.post('/api/accounts/liking/' + liking.id + '/level', level)
         .success(function() {
             $scope.$broadcast('likingUpdated', liking);
+            liking.waiting = false;
         })
         .error(function() {
-            // nothing?
+            liking.waiting = false;
         });
 
     };

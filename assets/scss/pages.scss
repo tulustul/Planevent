@@ -540,6 +540,10 @@ offerpreview {
                         @include transition(0.5s);
                         opacity: 1;
                     }
+                    .level {
+                        @include transition(0.5s);
+                        opacity: 0;
+                    }
                 }
                 .level-chooser {
                     opacity: 0;
@@ -549,10 +553,9 @@ offerpreview {
                     background-color: rgb(255, 252, 245);
                     border-radius: 20px;
                     border: 1px black solid;
-                    height: 28px;
                     line-height: 25px;
-                    width: 115px;
                     margin: 0px auto;
+                    padding: 2px;
                     .fa:hover {
                         @include transition(0.3s);
                         @include scale(1.15);
