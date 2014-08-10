@@ -10,7 +10,7 @@ if [ "$1" = "production" ]
 then
     REMOTE=openshift
     echo 'production' >> instance
-    grunt prod
+    grunt staging
 else
     REMOTE=openshift-staging
     echo 'staging' >> instance
