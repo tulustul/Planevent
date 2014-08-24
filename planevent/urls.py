@@ -30,6 +30,7 @@ urls = [
     ('feedbacks', '/api/feedbacks'),
     ('feedback_check', '/api/feedback/{id}/check'),
     ('account_liking_level', '/api/accounts/liking/{liking_id}/level'),
+    ('offer_recommendations', '/api/offers/recommendations'),
 
     # A/B experiments
     ('experiments', '/api/experiments'),

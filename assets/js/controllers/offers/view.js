@@ -84,3 +84,12 @@ angular.module('planevent').controller('PromotedOffersController',
         $scope.entities = entities;
     });
 });
+
+angular.module('planevent').controller('RecommendedOffersController',
+        function($scope, offersService) {
+
+    offersService.getRecommendations()
+    .success(function(recommendations) {
+        $scope.recommendations = recommendations;
+    });
+});

@@ -1,0 +1,14 @@
+<div ng-controller="RecommendedOffersController">
+
+    <div ng-include="searchForm"></div>
+
+    <section id="promoted-offers">
+        <h2>Rekomendowane dla Ciebie</h2>
+        <flex-slider slide="offer in recommendations" animation="slide" item-width="260">
+            <li>
+                <offerpreview offer="offer"></offerpreview>
+            </li>
+        </flex-slider>
+        <div></div>
+    </section>
+</div>

@@ -1,6 +1,7 @@
 __pycache__
 *.pyc
 .sass-cache
+beaker_data
 planevent.egg-info
 tmp
 node_modules

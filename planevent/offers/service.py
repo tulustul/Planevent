@@ -2,8 +2,14 @@ import random
 
 from planevent.core import redisdb
 from planevent import settings
+from planevent.accounts.models import (
+    Account,
+    AccountLiking,
+)
 from planevent.categories import service as categories_service
+from planevent.categories.models import Subcategory
 from planevent.offers import models
+from planevent.core.models import Address
 
 VIEW_IS_SEEN = 'viewactive:{}:{}:{}'  # .format(ip, user_id, offer_id)
 
@@ -48,5 +54,69 @@ def get_promoted_offers(limit_per_category, categories_limit):
             'category': category,
             'offers': offers,
         })
+
+    return result
+
+
+def get_recomendations(limit=10):
+
+    ids = Account.columns(Account.id)
+
+    for account_id in ids:
+        yield get_account_recomendations(account_id, limit=limit)
+
+
+def get_account_recomendations(account_id, limit=10):
+
+    def get_liking_subcategory(likings, level):
+        return [
+            liking.subcategory.id for liking in account.likings
+            if liking.level == level
+        ]
+
+    def get_offers(subcategory_ids, recomendations_settings):
+        query = (
+            models.Offer.query()
+            .filter(Subcategory.id.in_(subcategory_ids))
+        )
+
+        if recomendations_settings:
+            lat = recomendations_settings.lat
+            lon = recomendations_settings.lon
+            distance = recomendations_settings.distance
+            query = (
+                query
+                .filter(Address.longitude.between(
+                    lat - distance, lon + distance
+                ))
+                .filter(Address.latitude.between(
+                    lat - distance, lon + distance
+                ))
+            )
+
+        return query.order_by(models.Offer.promotion).limit(limit).all()
+
+    if account_id is None:
+        return []
+
+    account = Account.get(
+        account_id,
+        'settings',
+        'settings.address',
+        'likings',
+        'likings.subcategory',
+    )
+
+    loves = get_liking_subcategory(account.likings, AccountLiking.Level.LOVE)
+    likes = get_liking_subcategory(account.likings, AccountLiking.Level.LIKE)
+    mehs = get_liking_subcategory(account.likings, AccountLiking.Level.MEH)
+
+    settings = account.settings.recommendations
+
+    result = get_offers(loves, settings)
+    if len(result) < limit:
+        result += get_offers(likes, settings)
+    if len(result) < limit:
+        result += get_offers(mehs, settings)
 
     return result

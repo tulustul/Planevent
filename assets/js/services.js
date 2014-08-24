@@ -47,6 +47,10 @@ angular.module('planevent').service('offersService',
     this.getPromotedOffers = function() {
         return $http.get('/api/offers/promoted');
     };
+
+    this.getRecommendations = function() {
+        return $http.get('/api/offers/recommendations');
+    };
 });
 
 angular.module('planevent').service('authService', function($http) {

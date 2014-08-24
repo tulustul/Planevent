@@ -223,3 +223,11 @@ class PromotedCategoriesOffersView(View):
             limit_per_category,
             categories_limit,
         )
+
+
+@route('offer_recommendations')
+class RecommendedOffersView(View):
+
+    @permission(Account.Role.NORMAL)
+    def get(self, limit: int=10):
+        return service.get_account_recomendations(self.get_user_id())

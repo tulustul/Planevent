@@ -1,3 +1,4 @@
+from collections import namedtuple
 import hashlib
 import os
 import uuid
@@ -126,17 +127,33 @@ class AccountCrendentials(BaseEntity):
 
 
 class AccountSettings(BaseEntity):
+    Recommendations = namedtuple(
+        'Recommendations',
+        ('lat', 'lon', 'distance'),
+    )
+
     __tablename__ = 'account_settings'
     recomendations_range = Column(Integer, default=10)
     address_id = Column(Integer, ForeignKey('address.id'))
 
     address = relationship("Address", cascade="delete, all")
 
+    @property
+    def recommendations(self):
+        if self.address and self.address.validated:
+            return self.Recommendations(
+                lat=self.address.latitude,
+                lon=self.address.longitude,
+                distance=self.recomendations_range,
+            )
+        else:
+            return None
+
 
 class AccountLiking(BaseEntity):
     class Level:
-        DONT_LIKE = 1
-        NEUTRAL = 2
+        DISLIKE = 1
+        MEH = 2
         LIKE = 3
         LOVE = 4
 
@@ -144,6 +161,6 @@ class AccountLiking(BaseEntity):
 
     account_id = Column(Integer, ForeignKey('account.id'))
     subcategory_id = Column(Integer, ForeignKey('subcategory.id'))
-    level = Column(Integer, default=Level.NEUTRAL)
+    level = Column(Integer, default=Level.MEH)
 
     subcategory = relationship('Subcategory', cascade="delete, all")

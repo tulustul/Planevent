@@ -5,6 +5,7 @@ angular.module('planevent').controller('HomePageController',
         $scope.registrationLandingPage =
             'assets/partials/registrationLandingPage.html';
         $scope.promotedView = 'assets/partials/promotedView.html';
+        $scope.recomendationsView = 'assets/partials/recomendationsView.html';
     }
 );
 

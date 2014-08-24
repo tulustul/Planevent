@@ -1,4 +1,5 @@
 import json
+import math
 
 from sqlalchemy import (
     Column,
@@ -24,3 +25,10 @@ class Address(BaseEntity):
     longitude = Column(Float)
     latitude = Column(Float)
     validated = Column(Boolean, default=False)
+
+    def distance_to(self, lat, lon):
+        # Euclidean space for simplicity and speed. We don't need high
+        # precision here
+        return math.sqrt(
+            (self.latitude - lat) ** 2 + (self.longitude - lon) ** 2
+        )

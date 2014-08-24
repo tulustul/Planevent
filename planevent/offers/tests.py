@@ -1,5 +1,16 @@
 from planevent.core.tests_base import PlaneventTest
-from planevent.offers import models
+from planevent.accounts.models import (
+    Account,
+    AccountLiking,
+)
+from planevent.categories.models import (
+    Category,
+    Subcategory,
+)
+from planevent.offers import (
+    models,
+    service,
+)
 
 
 class OffersBaseTestCase(PlaneventTest):
@@ -117,3 +128,21 @@ class ImageUploadTestCase(OffersBaseTestCase):
 #         self.assertIn('kuchnia grecka', tags_names)
 #         self.assertIn('kuchnia polska', tags_names)
 #         self.assertIn('kuchnia francuska', tags_names)
+
+
+class RecomendationsTestCase(OffersBaseTestCase):
+
+    def test_image_upload(self):
+        Category(
+            name='test category',
+            color='FFFFFF',
+            subcategories=[
+                Subcategory(name='test subcategory 1', color='FFFFFF'),
+                Subcategory(name='test subcategory 2', color='FFFFFF'),
+            ],
+        ).save()
+
+        Account.create(email='fake_account 1')
+        Account.create(email='fake_account 2')
+
+        service.get_recomendations()

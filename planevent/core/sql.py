@@ -52,6 +52,10 @@ class BaseEntity(AbstractConcreteBase, Base):
         return cls.query(*relations).get(id_)
 
     @classmethod
+    def columns(cls, *columns):
+        return DBSession.query(*columns)
+
+    @classmethod
     def delete(cls, id_):
         DBSession.delete(cls.get(id_))
         DBSession.flush()
