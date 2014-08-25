@@ -2,7 +2,7 @@
   "name": "planevent",
   "version": "0.0.0",
   "dependencies": {
-    "angular": "~1.2.14",
+    "angular": "~1.3",
     "angular-animate": "~1.2.14",
     "angular-resource": "~1.2.14",
     "angular-route": "~1.2.14",
