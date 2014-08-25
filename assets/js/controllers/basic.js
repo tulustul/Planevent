@@ -1,11 +1,23 @@
 'use strict';
 
 angular.module('planevent').controller('HomePageController',
-    function($scope) {
+    function($scope, authService) {
         $scope.registrationLandingPage =
             'assets/partials/registrationLandingPage.html';
         $scope.promotedView = 'assets/partials/promotedView.html';
         $scope.recomendationsView = 'assets/partials/recomendationsView.html';
+
+        authService.getLoggedUser(function(loggedUser) {
+            $scope.loggedUser = loggedUser;
+        });
+
+        $scope.$on('loggedIn', function(event, account) {
+            $scope.loggedUser = account;
+        });
+
+        $scope.$on('loggedOut', function(event) {
+            $scope.loggedUser = null;
+        });
     }
 );
 

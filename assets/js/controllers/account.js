@@ -7,11 +7,8 @@ angular.module('planevent').service('userProfileService',
         scope.userProfileNavigation =
             'assets/partials/profile/userProfileNavigation.html';
 
-        authService.getLoggedUser()
-        .success(function(loggedUser) {
-
+        authService.getLoggedUser(function(loggedUser) {
             scope.loggedUser = loggedUser;
-
             if (loggedUser === undefined || loggedUser === 'null') {
                 $location.path('/');
                 return;
@@ -21,8 +18,8 @@ angular.module('planevent').service('userProfileService',
 });
 
 angular.module('planevent').controller('AccountController',
-        function($scope, $location, userProfileService, accountService,
-         authService) {
+        function($scope, $rootScope, $location, userProfileService,
+         accountService, authService) {
     $scope.loggedUser = null;
 
     $scope.waiting = false;
@@ -36,6 +33,7 @@ angular.module('planevent').controller('AccountController',
     $scope.logout = function() {
         authService.logout();
         $scope.loggedUser = null;
+        $rootScope.$broadcast('loggedOut');
         $location.path('/');
     };
 });

@@ -57,12 +57,35 @@ angular.module('planevent').service('authService', function($http) {
 
     var self = this;
     this.loggedUser = null;
+    this.waitingForResponse = false;
+    this.callbacksQueue = [];
 
-    this.getLoggedUser = function() {
-        return $http.get('/api/user/logged')
-        .success(function(loggedUser) {
-            self.loggedUser = loggedUser;
-        });
+    this.getLoggedUser = function(callback) {
+        if (self.waitingForResponse) {
+            self.callbacksQueue[self.callbacksQueue.length] = callback;
+            return;
+        }
+        if (this.loggedUser === null) {
+            self.waitingForResponse = true;
+            $http.get('/api/user/logged')
+            .success(function(loggedUser) {
+                self.waitingForResponse = false;
+                self.loggedUser = loggedUser;
+                if (self.loggedUser === 'null') {
+                    self.loggedUser = null;
+                }
+                callback(self.loggedUser);
+                _.each(self.callbacksQueue, function(callback) {
+                    callback(self.loggedUser);
+                });
+                self.callbacksQueue = [];
+            })
+            .error(function(){
+                self.waitingForResponse = false;
+            });
+        } else {
+            callback(self.loggedUser);
+        }
     };
 
     this.register = function(email, password) {
@@ -164,3 +187,4 @@ angular.module('planevent').factory('categoriesService',
 
     return service;
 });
+
