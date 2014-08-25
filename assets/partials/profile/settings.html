@@ -1,12 +1,23 @@
 <div id="user-profile">
-	<div ng-include="userProfileNavigation"></div>
+    <div ng-include="userProfileNavigation"></div>
 
-	<div id="address-form">
-	    <addressSetter ng-model="loggedUser.settings.address" type="simple" label="Lokalizacja" />
+    <div id="address-form">
+        <addressSetter ng-model="loggedUser.settings.address"
+                       type="simple"
+                       label="Lokalizacja" />
 
-	    Zasięg rekomendacji: <input type="range" ng-model="loggedUser.settings.recomendations_range" min="1" max="50">
-	    {{ loggedUser.settings.recomendations_range }}km
+        Zasięg rekomendacji:
+        <input type="range"
+               ng-model="loggedUser.settings.recomendations_range"
+               min="1"
+               max="50"
+               ng-disabled="!loggedUser.settings.address.validated">
+        {{ loggedUser.settings.recomendations_range }}km
 
-	    <addressViewer ng-model="loggedUser.settings.address" radius="loggedUser.settings.recomendations_range" />
-	</div>
+        <addressViewer ng-model="loggedUser.settings.address"
+                       radius="loggedUser.settings.recomendations_range" />
+    </div>
+
+    <button ng-click="saveAccount()">Save</button>
+    <span ng-show="saved" class="fa fa-check">Saved</span>
 </div>

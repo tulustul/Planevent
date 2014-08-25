@@ -153,15 +153,15 @@ angular.module('planevent').directive('addressviewer', function($timeout) {
 
             var viewerElement = $('.address-viewer', element);
             scope.$watch(
-                         function() {
-                            return viewerElement.is(':visible');
-                        },
-                        function() {
-                            var center = map.getCenter();
-                            google.maps.event.trigger(map, 'resize');
-                            map.setCenter(center);
-                        }
-                        );
+                function() {
+                    return viewerElement.is(':visible');
+                },
+                function() {
+                    var center = map.getCenter();
+                    google.maps.event.trigger(map, 'resize');
+                    map.setCenter(center);
+                }
+            );
         }
     };
 });
@@ -171,9 +171,7 @@ angular.module('planevent').directive('addresssetter', function() {
         restrict: 'EA',
         require: '^ngModel',
         templateUrl: 'assets/partials/directives/addressSetter.html',
-        link: function(scope, element, attrs) {
-            var address = scope.$eval(attrs.ngModel);
-
+        link: function(scope, element, attrs, ngModel) {
             scope.locationLabel = attrs.label;
             scope.type = attrs.type;
 
@@ -185,7 +183,8 @@ angular.module('planevent').directive('addresssetter', function() {
                 var type, component,
                     street = ' ',
                     location = result.geometry.location,
-                    address_components = result.address_components;
+                    address_components = result.address_components,
+                    address = ngModel.$viewValue;
 
                 address.formatted = result.formatted_address;
 
@@ -207,14 +206,12 @@ angular.module('planevent').directive('addresssetter', function() {
                 }
 
                 address.latitude = location.k;
-                address.longitude = location.A;
+                address.longitude = location.B;
 
                 address.validated = true;
-
-                scope[attrs.ngModel] = address;
             }
 
-            function processMultilineAddress() {
+            function processMultilineAddress(address) {
                 if (!address.city) {
                     scope.locationComplete = false;
                     return;
@@ -231,21 +228,23 @@ angular.module('planevent').directive('addresssetter', function() {
             }
 
             scope.validateAddress = function() {
-                address = scope.$eval(attrs.ngModel);
+                var address = ngModel.$viewValue;
 
                 if (scope.type !== 'simple') {
-                    processMultilineAddress();
+                    processMultilineAddress(address);
                 }
 
                 scope.validatingLocation = true;
                 var geocoder = new google.maps.Geocoder();
                 geocoder.geocode(
-                                 {'address': scope.addressString},
-                                 geocodeCallback
-                                 );
+                    {'address': scope.addressString},
+                    geocodeCallback
+                );
             };
 
             function geocodeCallback(results, status) {
+                var address = ngModel.$viewValue;
+
                 scope.validatingLocation = false;
                 if (status === google.maps.GeocoderStatus.OK) {
                     parseResponse(results[0]);
@@ -253,7 +252,6 @@ angular.module('planevent').directive('addresssetter', function() {
                 } else {
                     address.validated = false;
                 }
-                scope.$apply();
             }
 
             scope.$watch('details', function() {

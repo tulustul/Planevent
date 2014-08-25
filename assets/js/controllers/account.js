@@ -19,7 +19,7 @@ angular.module('planevent').service('userProfileService',
 
 angular.module('planevent').controller('AccountController',
         function($scope, $rootScope, $location, userProfileService,
-         accountService, authService) {
+         authService) {
     $scope.loggedUser = null;
 
     $scope.waiting = false;
@@ -45,9 +45,15 @@ angular.module('planevent').controller('ProfileInformationsController',
 });
 
 angular.module('planevent').controller('ProfileSettingsController',
-        function($scope, userProfileService) {
+        function($scope, userProfileService, accountService) {
 
     userProfileService.prepareScope($scope);
+
+    $scope.saveAccount = function() {
+        accountService.saveAccount($scope.loggedUser, function() {
+            $scope.saved = true;
+        });
+    };
 
 });
 
