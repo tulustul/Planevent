@@ -53,15 +53,13 @@ angular.module('planevent').controller('RelatedOffersController',
             return tag.id;
         });
 
-        searchService.resetParams();
-        searchService.categoryEnabled = true;
-        searchService.locationEnabled = true;
-
-        searchService.params.location = $scope.offer.address.city;
-        searchService.params.category = $scope.offer.category.id;
-        searchService.params.exclude_offer_id = $scope.offer.id;
-        searchService.params.tags = tags_ids;
-        searchService.params.range = 50;
+        searchService.params = {
+            location: $scope.offer.address.city,
+            category: $scope.offer.category.id,
+            exclude_offer_id: $scope.offer.id,
+            tags: tags_ids,
+            range: 50
+        };
 
         searchService.fetch(0, 6, function(total_count, offers) {
             $scope.relatedOffers = offers;

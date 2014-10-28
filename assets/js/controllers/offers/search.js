@@ -24,18 +24,12 @@ angular.module('planevent').controller('SearchController',
         $scope.categoryEnabled = true;
         $scope.category = parseInt($routeParams.category);
     }
-    // if ('lat' in $routeParams && 'lon' in $routeParams &&
-            // 'location' in $routeParams) {
     if ('location' in $routeParams) {
         $scope.locationEnabled = true;
         $scope.location.formatted = $routeParams.location;
-        // $scope.location.latitude = $routeParams.lat;
-        // $scope.location.longitude = $routeParams.lon;
     }
     if ('range' in $routeParams) {
         $scope.radius = $routeParams.range;
-        // $scope.location.latitude = $routeParams.lat;
-        // $scope.location.longitude = $routeParams.lon;
     }
 
     $scope.searchTags = [];
@@ -52,13 +46,8 @@ angular.module('planevent').controller('SearchController',
     };
 
     $scope.search = function(resetOffset) {
-        searchService.resetParams();
 
-        searchService.categoryEnabled = $scope.categoryEnabled;
-        searchService.locationEnabled = $scope.locationEnabled;
-        searchService.priceEnabled = $scope.priceEnabled;
-
-        // searchService.params.tags = $scope.tags;
+        searchService.params = {};
 
         if ($scope.categoryEnabled) {
             searchService.params.category = $scope.category;

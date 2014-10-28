@@ -6,9 +6,10 @@ angular.module('planevent').service('searchService',
     this.Offers = $resource('/api/offers/search');
 
     this.resetParams = function() {
-        this.categoryEnabled = false;
-        this.locationEnabled = false;
-        this.priceEnabled = false;
+        // this.categoryEnabled = false;
+        // this.locationEnabled = false;
+        // this.priceEnabled = false;
+        // this.excludeIdEnabled = false;
         this.params = {};
     };
     this.resetParams();
@@ -17,18 +18,22 @@ angular.module('planevent').service('searchService',
         var params = {offset: offset, limit: limit},
             response;
 
-        if (this.categoryEnabled) {
+        if (this.params.category) {
             params.category = this.params.category;
         }
 
-        if (this.locationEnabled) {
+        if (this.params.location && this.params.range) {
             params.location = this.params.location;
             params.range = this.params.range;
         }
 
-        if (this.priceEnabled) {
+        if (this.params.price_min || this.params.price_max) {
             params.price_min = this.params.price_min;
             params.price_max = this.params.price_max;
+        }
+
+        if (this.params.exclude_offer_id) {
+            params.exclude_offer_id = this.params.exclude_offer_id;
         }
 
         response = this.Offers.get(params, function() {
