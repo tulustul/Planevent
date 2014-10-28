@@ -80,14 +80,13 @@ class SearchOffersView(View):
         category: int=None,
         tags: list=None,
         location: str=None,
-        range: int=None,
+        range_: int=None,
         exclude_offer_id: int=None,
         price_min: int=None,
         price_max: int=None,
         offset: int=0,
         limit: int=10,
     ):
-
         query = sql.DBSession.query(models.Offer.id)
 
         if category is not None:
@@ -106,15 +105,15 @@ class SearchOffersView(View):
         if price_max is not None:
             query = query.filter(models.Offer.price_max <= price_max)
 
-        if location:
+        if location and range_:
             latlng = geocode_location(location)
             if latlng:
-                range /= 111.12
+                range_ /= 111.12
                 query = query.join(Address) \
                     .filter(Address.longitude.between(
-                        latlng.lng - range, latlng.lng + range)) \
+                        latlng.lng - range_, latlng.lng + range_)) \
                     .filter(Address.latitude.between(
-                        latlng.lat - range, latlng.lat + range))
+                        latlng.lat - range_, latlng.lat + range_))
 
         query = query.order_by(models.Offer.promotion.desc())
 

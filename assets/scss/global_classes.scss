@@ -1,23 +1,7 @@
 @import "globals.scss";
 
 body {
-    background-image: url("/static/images/backgrounds/noisy1.png");
-    background-image: url("/static/images/backgrounds/gun_metal.png");
-    background-image: url("/static/images/backgrounds/carbon_fibre.png");
-    background-image: url("/static/images/backgrounds/micro_carbon.png");
-    background-image: url("/static/images/backgrounds/carbon_fibre_@2X.png");
-    background-image: url("/static/images/backgrounds/gun_metal_@2X.png");
-    background-image: url("/static/images/backgrounds/micro_carbon_@2X.png");
-    background-image: url("/static/images/backgrounds/crossword.png");
-    background-image: url("/static/images/backgrounds/green_cup.png");
-    background-image: url("/static/images/backgrounds/grey_wash_wall.png");
-    background-image: url("/static/images/backgrounds/grey_wash_wall_@2X.png");
-    background-image: url("/static/images/backgrounds/squared_metal.png");
-    background-image: url("/static/images/backgrounds/squared_metal_@2X.png");
-    background-image: url("/static/images/backgrounds/ticks.png");
-    background-image: url("/static/images/backgrounds/ticks_@2X.png");
-    background-color: rgb(66, 66, 66);
-    background-image: url("/static/images/backgrounds/noisy2.png");
+    background-color: white;
     font-family: 'Open Sans', arial, sans-serif;
 }
 
@@ -42,12 +26,10 @@ a {
 #container {
     @include container;
     @include border-box-sizing;
-    margin-top: 85px;
-    margin-bottom: 45px;
+    margin-top: $header-height;
+    margin-bottom: $footer-height;
     .content {
         #view {
-            position: relative;
-            margin-top: 6px;
             &.ng-leave {
                 @include transition(0.5s);
                 left: 0;
@@ -69,13 +51,13 @@ a {
 
 header {
     clear: both;
-    background-color: $ligth;
-    padding: 10px;
+    background-color: $dark;
     position: fixed;
     top: 0px;
     z-index: 1;
-    box-shadow: 0px 0px 10px #383838;
     width: 100%;
+    border-bottom: 4px solid $dominant;
+    box-shadow: 0px 0px 30px #383838;
     img {
         float: left;
         height: 60px;
@@ -109,9 +91,10 @@ header {
 footer {
     clear: both;
     background-color: $dark;
-    padding: 10px;
+    border-top: 2px solid $dominant;
+    padding: 5px;
     text-align: center;
-    box-shadow: 0px 0px 10px #383838;
+    box-shadow: 0px 0px 30px #383838;
     position: fixed;
     bottom: 0px;
     width: 100%;
@@ -120,6 +103,16 @@ footer {
     }
 }
 
-.address-viewer {
-    height: 300px;
+.main-menu {
+    float: left;
+    li {
+        list-style-type: none;
+        float: left;
+        padding: 0px 10px;
+    }
+}
+
+.widget {
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    background-color: white;
 }

@@ -1,0 +1,11 @@
+ <div class="galleryPreview widget">
+    <p>Galeria</p>
+    <ul>
+        <li ng-repeat="image in gallery | limitTo: limit">
+            <div class="image" style="background-image: url({{ image.path }})"></div>
+        </li>
+    </ul>
+    <div class="zoom-overlay">
+        <span class="fa fa-search-plus"></span>
+    </div>
+ </div>

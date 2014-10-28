@@ -42,9 +42,7 @@ angular.module('planevent').controller('OfferPageController',
 });
 
 angular.module('planevent').controller('RelatedOffersController',
-        function($scope, $resource) {
-
-    var OffersSearch = $resource('/api/offers/search');
+        function($scope, searchService) {
 
     $scope.$watch('offer', function() {
         if ($scope.offer === undefined) {
@@ -55,17 +53,19 @@ angular.module('planevent').controller('RelatedOffersController',
             return tag.id;
         });
 
-        var params = {
-            category: $scope.offer.category.id,
-            exclude_offer_id: $scope.offer.id,
-            tags: tags_ids,
-            range: 50,
-            limit: 5
-        };
+        searchService.resetParams();
+        searchService.categoryEnabled = true;
+        searchService.locationEnabled = true;
 
-        params.location = $scope.offer.address.city;
+        searchService.params.location = $scope.offer.address.city;
+        searchService.params.category = $scope.offer.category.id;
+        searchService.params.exclude_offer_id = $scope.offer.id;
+        searchService.params.tags = tags_ids;
+        searchService.params.range = 50;
 
-        $scope.relatedOffers = OffersSearch.query(params);
+        searchService.fetch(0, 6, function(total_count, offers) {
+            $scope.relatedOffers = offers;
+        });
     });
 
 });

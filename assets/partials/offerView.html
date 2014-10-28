@@ -1,24 +1,29 @@
 <section id="offer">
-    <h2>{{ offer.name }}</h2>
-    <img ng-src="{{ offer.logo.path }}" alt="offer logo">
-    <h5>Kategoria: {{ offer.category.name }}</h5>
-    <p>{{ offer.description }}</p>
+    <div class="details">
+        <div class="fields widget">
+            <label>Kategoria:</label>
+            <span class="value">{{ offer.category.name }}</span><br />
 
-    <span>
-        {{ offer.address.street }},
-        {{ offer.address.city }}
-        {{ offer.address.postal_code }}
-    </span>
+            <label>Cena:</label>
+            <span class="value">{{ offer.price_min }}zł - {{ offer.price_max }}zł</span><br />
 
-    <h5>Dodano: {{ offer.added_at }}</h5>
-    <h5>Tagi: <span ng-repeat="tag in offer.tags">{{tag.name}}, </span></h5>
+            <label>Dodano:</label>
+            <span class="value">{{ offer.added_at }}</span><br />
 
-    <li ng-repeat="contact in offer.contacts">
-        {{ contact.value }} - {{ contact.description }}
-    </li>
+            <label>Ostatnia zmiana:</label>
+            <span class="value">{{ offer.updated_at }}</span><br />
+        </div>
 
-    <addressviewer ng-model="offer.address" />
+        <li ng-repeat="contact in offer.contacts">
+            {{ contact.value }} - {{ contact.description }}
+        </li>
 
-    <gallery ng-model="offer.gallery" />
+        <p class="description widget">{{ offer.description }}</p>
+    </div>
+
+    <div class="widgets">
+        <addressviewer ng-model="offer.address" />
+        <gallery-preview ng-model="offer.gallery" limit="4" />
+    </div>
 
 </section>

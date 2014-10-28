@@ -1,10 +1,9 @@
-<div id="categories-view" ng-include="categoriesView"></div>
-
 <div class="offer-page">
     <div class="navigation">
-        <pebutton icon="arrow-circle-o-left" href="/#/offers/{{ selectedCategory.id }}" watch="offer.id">Do listy</pebutton>
+        <p class="title">{{offer.name}}</p>
         <pebutton icon="edit" href="/#/offerAddEdit/{{ offer.id }}" watch="offer.id">Edytuj</pebutton>
         <pebutton icon="times" href="#" ng-click="removeOffer()">Usuń</pebutton>
+        <pebutton icon="times" href="#">Wyłącz ofertę</pebutton>
     </div><br />
 
     <div id="offer-view" ng-include="offerView" ng-show="fetched"></div>
@@ -15,13 +14,6 @@
 
 <div class="related-offers" ng-controller="RelatedOffersController">
     <h3 class>Najbliższe podobne firmy:<br /></h3>
-    <a href="#/offer/{{ offer.id }}" ng-repeat="offer in relatedOffers">
-        <figure class="offer-preview">
-            <img ng-src="{{ offer.logo.path }}" alt="offer logo">
-            <h2>{{ offer.name }}</h2>
-            <h3>{{ offer.address.city }}</h3>
-            <p>{{ offer.description }}</p>
-        </figure>
-    </a>
+    <offerpreview ng-repeat="offer in relatedOffers" offer="offer">
     <h4 ng-show="relatedOffers.length == 0">Brak pasujących wyników</h4>
 </div>

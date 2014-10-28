@@ -4,13 +4,16 @@
 
 @import "mixins.scss";
 
+$header-height: 64px;
+$footer-height: 32px;
+
 $total-columns  : 12;
 $column-width   : 18em;
-$gutter-width   : 2em;
+$gutter-width   : 0em;
 $grid-padding   : $gutter-width;
 
-$dark: #CCC;
-$ligth: #EEE;
+$dark: #E7E7E7;
+$ligth: #FBFBFB;
 
 $background: #BBB, #777, #777, #BBB;
 
@@ -35,4 +38,4 @@ $break-add-offer: 450px;
 
 $button-primary-color: rgb(211, 25, 25);
 $button-secondary-color: white;
-$button-background-color: rgba(255, 255, 255, 0);
+$button-background-color: rgba(255, 255, 255, 1);

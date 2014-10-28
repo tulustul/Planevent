@@ -33,7 +33,7 @@ angular.module('planevent').directive('addressviewer', function($timeout) {
                     zoom: 5
                 };
 
-                var mapElement = $('.address-viewer', element)[0];
+                var mapElement = $('.address-viewer .map', element)[0];
                 map = new google.maps.Map(mapElement, mapOptions);
             }
 
@@ -151,7 +151,7 @@ angular.module('planevent').directive('addressviewer', function($timeout) {
             scope.$watch(attrs.radius, updateRadius);
             scope.$watch('entities', updateMarkers);
 
-            var viewerElement = $('.address-viewer', element);
+            var viewerElement = $('.address-viewer .map', element);
             scope.$watch(
                 function() {
                     return viewerElement.is(':visible');

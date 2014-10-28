@@ -9,10 +9,12 @@ angular.module('planevent').controller('HomePageController',
 
         authService.getLoggedUser(function(loggedUser) {
             $scope.loggedUser = loggedUser;
+            $scope.address = $scope.loggedUser.settings.address;
         });
 
         $scope.$on('loggedIn', function(event, account) {
             $scope.loggedUser = account;
+            $scope.address = $scope.loggedUser.settings.address;
         });
 
         $scope.$on('loggedOut', function(event) {

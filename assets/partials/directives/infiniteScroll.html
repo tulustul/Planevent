@@ -1,11 +1,11 @@
 <div class="infinite-scroll">
-    <div class="pagination-wrapper">
+    <!-- <div class="pagination-wrapper">
         <div class="pagination">
             <ul>
                 <li ng-repeat="page in pages" ng-click="fetchPage(page)" ng-class="{ loaded: page >= minLoadedOffset && page <= maxLoadedOffset, current: page == currentPage }"><span class="fa fa-chevron-right" ng-show="page == currentPage"/><span class="pageNumber">{{ page }}</span></li>
             </ul>
         </div>
-    </div>
+    </div> -->
     <div class="manual-loader" ng-click="loadPrevious()" ng-show="!topIsLoaded"><span>Wczytaj wcześniejsze</span></div>
 
     <div class="loading-message">

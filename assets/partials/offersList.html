@@ -1,12 +1,14 @@
-<div ng-include="searchForm"></div>
+<div id="searchView">
+	<div ng-include="searchForm"></div>
 
-<infinitescroll
-        class="offer-list"
-        fetch-pages="2"
-        distance="1"
-        auto-scroll-limit="200",
-        element-size="{width: 230, height: 270}"
-        reset-function-name="resetSearch"
-        fetch-function="fetch">
-    <offerpreview offer="offer" ng-repeat="offer in entities" />
-</infinitescroll>
+	<infinitescroll
+	        class="offer-list"
+	        fetch-pages="2"
+	        distance="1"
+	        auto-scroll-limit="200",
+	        element-size="{width: 230, height: 270}"
+	        reset-function-name="resetSearch"
+	        fetch-function="fetch">
+	    <offerpreview offer="offer" ng-repeat="offer in entities" />
+	</infinitescroll>
+</div>

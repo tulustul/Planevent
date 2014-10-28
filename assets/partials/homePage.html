@@ -1,6 +1,16 @@
-<section id="homePage" ng-controller="HomePageController">
-    <!-- <div ng-include="registrationLandingPage" ng-show="!loggedUser"></div> -->
-    <div ng-include="promotedView"></div>
-    <div ng-include="recomendationsView" ng-if="loggedUser"></div>
-    <div ng-include="offersList"></div>
-</section>
+<article id="home-page" ng-controller="HomePageController">
+	<addressviewer ng-model="address"></addressviewer>
+	<section>
+		<p>
+			Kim jesteśmy? <br />
+			Co robimy? <br />
+			Co powinine zrobić użytkownik? <br />
+			Dlaczego użytkownik nas potrzebuje?
+		</p>
+
+		<form action="/offers/search">
+			<input type="text" placeholder="Szukaj">
+			<pebutton icon="search" href="search">Szukaj</pebutton>
+		</form>
+	</section>
+</article>
