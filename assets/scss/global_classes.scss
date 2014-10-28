@@ -24,12 +24,11 @@ a {
 }
 
 #container {
-    @include container;
-    @include border-box-sizing;
     margin-top: $header-height;
     margin-bottom: $footer-height;
     .content {
         #view {
+            position: relative;
             &.ng-leave {
                 @include transition(0.5s);
                 left: 0;
