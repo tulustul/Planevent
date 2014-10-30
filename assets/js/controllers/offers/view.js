@@ -25,7 +25,6 @@ angular.module('planevent').controller('OfferPageController',
     $scope.offer = Offer.get({offerId: $routeParams.offerId},
         function(){
             $scope.fetched = true;
-            // $scope.offer = offer;
         },
         function(response){
             if (response.status === 404) {
@@ -74,7 +73,7 @@ angular.module('planevent').controller('OfferPageController',
 angular.module('planevent').controller('RelatedOffersController',
         function($scope, searchService) {
 
-    $scope.$watch('offer', function() {
+    $scope.offer.$promise.then(function() {
         if ($scope.offer === undefined) {
             return;
         }
