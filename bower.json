@@ -18,6 +18,7 @@
     "ngAutocomplete": "~1.0.0",
     "angucomplete": "*",
     "angular-flexslider": "*",
+    "angular-xeditable": "*",
     "font-awesome": "*",
     "markerclustererplus": "2.1.1"
   },

@@ -18,13 +18,14 @@ angular.module('planevent').controller('OfferListController',
 angular.module('planevent').controller('OfferPageController',
         function($scope, $resource, $routeParams, $modal, categoriesService) {
 
-    var Offer = $resource('/api/offer/:id');
+    var Offer = $resource('/api/offer/:offerId', {offerId: '@id'});
+
     $scope.offerDoesNotExists = false;
     $scope.otherError = false;
-    var offer = Offer.get({id: $routeParams.offerId},
+    $scope.offer = Offer.get({offerId: $routeParams.offerId},
         function(){
             $scope.fetched = true;
-            $scope.offer = offer;
+            // $scope.offer = offer;
         },
         function(response){
             if (response.status === 404) {
@@ -34,7 +35,20 @@ angular.module('planevent').controller('OfferPageController',
             }
         }
     );
-    $scope.categories = categoriesService.categories;
+    categoriesService.getCategories(function(categories) {
+        $scope.categories = categories;
+    });
+
+    $scope.updateOffer = function(data) {
+        $scope.offer.$save();
+    };
+
+    $scope.getCategoryName = function(categoryId) {
+        var category = categoriesService.getCategoryById(categoryId);
+        if (category !== null) {
+            return category.name;
+        }
+    };
 
     $scope.removeOffer = function() {
         Offer.remove({id: $scope.offer.id});
@@ -48,6 +62,12 @@ angular.module('planevent').controller('OfferPageController',
             scope: galleryScope,
             windowClass: 'galleryModal',
         });
+    };
+
+    $scope.showEditable = function(form) {
+        if ($scope.editing) {
+            form.$show();
+        }
     };
 });
 

@@ -1,9 +1,19 @@
 <div class="offer-page">
     <div class="navigation">
-        <p class="title">{{offer.name}}</p>
-        <pebutton icon="edit" href="/#/offerAddEdit/{{ offer.id }}" watch="offer.id">Edytuj</pebutton>
-        <pebutton icon="times" href="#" ng-click="removeOffer()">Usuń</pebutton>
-        <pebutton icon="times" href="#">Wyłącz ofertę</pebutton>
+
+        <p class="title"
+           editable-text="offer.name"
+           e-form="offerTitle"
+           ng-click="showEditable(offerTitle)"
+           ng-class="{editing: editing}"
+           onbeforesave="updateOffer($data)">
+            {{offer.name}}
+        </p>
+
+        <pebutton icon="edit" ng-click="editing=true" ng-show="!editing">Edytuj</pebutton>
+        <pebutton icon="save" ng-click="editing=false" ng-show="editing">Zakończ edycję</pebutton>
+        <pebutton icon="times" href="#" ng-click="removeOffer()" ng-show="!editing">Usuń</pebutton>
+        <pebutton icon="ban" href="#" ng-show="!editing">Wyłącz ofertę</pebutton>
     </div><br />
 
     <div id="offer-view" ng-include="offerView" ng-show="fetched"></div>

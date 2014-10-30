@@ -20,7 +20,7 @@ from planevent.offers import service
 from planevent.core.views import View
 from planevent.core.models import Address
 
-VENDOR_KEY = 'offer:{}'
+OFFER_KEY = 'offer:{}'
 CATEGORIES_KEY = 'categories'
 SUBCATEGORIES_KEY = 'subcategories'
 
@@ -30,11 +30,11 @@ class OfferView(View):
 
     @time_profiler('OfferView')
     def get(self, id: Rest(int)):
-        offer = cache.get((VENDOR_KEY, id), models.Offer)
+        offer = cache.get((OFFER_KEY, id), models.Offer)
         if offer is None:
             offer = models.Offer.get(id, '*')
             if offer:
-                cache.set((VENDOR_KEY, id), offer)
+                cache.set((OFFER_KEY, id), offer)
 
         if not offer:
             return self.response(404, 'No offer with id {}'.format(id))
@@ -43,12 +43,21 @@ class OfferView(View):
 
         return offer
 
+    def post(self, id: Rest(int), offer: Body(models.Offer)):
+        old_offer = models.Offer.get(offer.id)
+        if old_offer and id == offer.id:
+            offer.save()
+            cache.set((OFFER_KEY, offer.id), offer)
+            return offer
+        else:
+            return self.response(404, 'No offer with id {}'.format(id))
+
     def delete(self, id: Rest(int)):
         offer = models.Offer.get(id)
         if not offer:
             return self.response(404, 'No offer with id {}'.format(id))
         models.Offer.delete(id)
-        cache.delete((VENDOR_KEY, offer.id))
+        cache.delete((OFFER_KEY, offer.id))
         return {'message': 'deleted', 'id': id}
 
 
@@ -67,7 +76,7 @@ class OfferPromotionView(View):
             return self.response(404, 'No offer with id {}'.format(id))
         offer.promotion = promotion
         offer.save()
-        cache.set((VENDOR_KEY, offer.id), offer)
+        cache.set((OFFER_KEY, offer.id), offer)
         return {'message': 'saved', 'id': id, 'promotion': promotion}
 
 
@@ -136,7 +145,7 @@ class SearchOffersView(View):
 class OffersView(View):
 
     def post(self, offer: Body(models.Offer)):
-        original_offer = cache.get((VENDOR_KEY, offer.id), models.Offer)
+        original_offer = cache.get((OFFER_KEY, offer.id), models.Offer)
         if not original_offer:
             original_offer = models.Offer.get(offer.id)
 
@@ -149,7 +158,7 @@ class OffersView(View):
         else:
             offer.updated_at = now
         offer.save()
-        cache.set((VENDOR_KEY, offer.id), offer)
+        cache.set((OFFER_KEY, offer.id), offer)
         return offer
 
 

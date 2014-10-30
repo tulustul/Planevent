@@ -1,8 +1,8 @@
  <div class="galleryPreview widget">
-    <p>Galeria</p>
+    <span class="title">Galeria</span>
     <ul>
         <li ng-repeat="image in gallery | limitTo: limit">
-            <div class="image" style="background-image: url({{ image.path }})"></div>
+            <img ng-src="{{image.path}}">
         </li>
     </ul>
     <div class="zoom-overlay">

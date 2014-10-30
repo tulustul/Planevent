@@ -1,5 +1,18 @@
 @import "globals.scss";
 
+.widget {
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    .title {
+        display: block;
+        padding: 3px;
+        text-align: center;
+        font-weight: 300;
+        font-size: 20px;
+        border-bottom: 2px solid $dominant;
+    }
+}
+
 /* BUTTON */
 .button {
     display: inline-block;
@@ -69,6 +82,24 @@
     @extend %button-slide;
 }
 
+.editable-buttons {
+    pebutton {
+        &.submit {
+            .button a {
+                color: $button-submit-color;
+                border-color: $button-submit-color;
+                &:hover {
+                    color: $button-secondary-color;
+                    background-color: $button-submit-color;
+                }
+            }
+        }
+        .button a {
+            font-size: 20px;
+        }
+    }
+}
+
 $galleryPreviewSize: 155px;
 .galleryPreview {
     position: relative;
@@ -97,11 +128,6 @@ $galleryPreviewSize: 155px;
             opacity: 1;
         }
     }
-    p {
-        text-align: center;
-        font-weight: 300;
-        font-size: 20px;
-    }
     ul {
         margin: 0px;
         padding: 10px;
@@ -110,13 +136,12 @@ $galleryPreviewSize: 155px;
         flex-wrap: wrap;
         li {
             list-style: none;
-            .image {
+            align-self: center;
+            img {
                 width: $galleryPreviewSize;
-                height: $galleryPreviewSize;
-                background-repeat: no-repeat;
-                background-size: contain;
-                background-position: center;
+                height: auto;
                 margin: 5px;
+                box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.4);
             }
         }
     }
@@ -176,16 +201,8 @@ $galleryHeigth: 500px;
     }
 }
 
-.address-viewer {
-    p {
-        text-align: center;
-        margin-bottom: 0px;
-        font-weight: 300;
-        font-size: 20px;
-    }
-    .map {
-        height: 300px;
-    }
+.address-viewer .map {
+    height: 300px;
 }
 
 .flipper {

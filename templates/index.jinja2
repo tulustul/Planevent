@@ -11,11 +11,24 @@
 
     <script type="text/javascript">
         var planevent = angular.module('planevent',
-        ['ui.bootstrap.modal', 'ui.bootstrap.tabs', 'ui.bootstrap.tpls',
-        'ui.slider',
-        'ngAnimate', 'ngRoute', 'ngResource',
-        'angularFileUpload', 'ngAutocomplete', 'angucomplete',
-        'angular-flexslider']);
+        [
+            // configurable
+            'xeditable',
+            // built-in
+            'ngAnimate',
+            'ngRoute',
+            'ngResource',
+            // angular ui bootstrap
+            'ui.bootstrap.modal',
+            'ui.bootstrap.tabs',
+            'ui.bootstrap.tpls',
+            'ui.slider',
+            // others
+            'angularFileUpload',
+            'ngAutocomplete',
+            'angucomplete',
+            'angular-flexslider',
+        ]);
     </script>
 
     {% if PIWIK_URL %}

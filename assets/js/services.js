@@ -185,9 +185,29 @@ angular.module('planevent').factory('categoriesService',
     };
 
     service.getCategories = function(callback) {
-        var categories = Categories.query({}, function() {
-            callback(categories);
+        if (service.categories === undefined) {
+            service.categories = Categories.query({}, function() {
+                callback(service.categories);
+            });
+        } else {
+            callback(service.categories);
+        }
+    };
+
+    service.getCategoryById = function(categoryId) {
+        if (service.categories === undefined) {
+            console.error(
+                'Cannot call getCategoryById withour categories fetched'
+            );
+        }
+        var filtered = _.filter(service.categories, function(category) {
+            return category.id === categoryId;
         });
+        if (filtered.length > 0) {
+            return filtered[0];
+        } else {
+            return null;
+        }
     };
 
     return service;

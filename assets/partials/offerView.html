@@ -2,7 +2,15 @@
     <div class="details">
         <div class="fields widget">
             <label>Kategoria:</label>
-            <span class="value">{{ offer.category.name }}</span><br />
+            <span class="value"
+                  editable-select="offer.category.id"
+                  e-form="offerCategory"
+                  e-ng-options="c.id as c.name for c in categories"
+                  ng-click="showEditable(offerCategory)"
+                  ng-class="{editing: editing}"
+                  onbeforesave="updateOffer($data)">
+                {{ getCategoryName(offer.category.id) }}
+            </span><br />
 
             <label>Cena:</label>
             <span class="value">{{ offer.price_min }}zł - {{ offer.price_max }}zł</span><br />
