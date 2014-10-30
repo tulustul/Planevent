@@ -8,12 +8,12 @@
 
     <div id="offer-view" ng-include="offerView" ng-show="fetched"></div>
 
-    <h2 ng-show="offerDoesNotExists">Nie ma takiej firmy :/</h2>
+    <h2 ng-show="offerDoesNotExists">Nie ma takiej oferty :/</h2>
     <h2 ng-show="otherError">Nieznany błąd</h2>
 </div>
 
 <div class="related-offers" ng-controller="RelatedOffersController">
-    <h3 class>Najbliższe podobne firmy:<br /></h3>
+    <h3 class>Najbliższe podobne oferty:<br /></h3>
     <offerpreview ng-repeat="offer in relatedOffers" offer="offer">
     <h4 ng-show="relatedOffers.length == 0">Brak pasujących wyników</h4>
 </div>

@@ -16,7 +16,8 @@ angular.module('planevent').controller('OfferListController',
 });
 
 angular.module('planevent').controller('OfferPageController',
-        function($scope, $resource, $routeParams, categoriesService) {
+        function($scope, $resource, $routeParams, $modal, categoriesService) {
+
     var Offer = $resource('/api/offer/:id');
     $scope.offerDoesNotExists = false;
     $scope.otherError = false;
@@ -39,6 +40,15 @@ angular.module('planevent').controller('OfferPageController',
         Offer.remove({id: $scope.offer.id});
     };
 
+    $scope.showGallery = function() {
+        var galleryScope = $scope.$new(true);
+        galleryScope.gallery = $scope.offer.gallery;
+        galleryScope.modal = $modal.open({
+            templateUrl: 'assets/partials/galleryModal.html',
+            scope: galleryScope,
+            windowClass: 'galleryModal',
+        });
+    };
 });
 
 angular.module('planevent').controller('RelatedOffersController',

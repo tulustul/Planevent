@@ -1,12 +1,8 @@
  <div class="gallery">
     <flex-slider slide="image in gallery" animation="slide" control-nav="thumbnails">
         <li data-thumb="{{image.path}}">
-            <div class="image-outer-wrapper">
-                <div class=image-middle-wrapper>
-                    <div class="image-inner-wrapper">
-                        <img ng-src="{{image.path}}" alt="{{image.desc}}" title="{{image.desc}}">
-                    </div>
-                </div>
+            <div class="image"
+                 style="background-image: url({{image.path}})">
             </div>
         </li>
     </flex-slider>
