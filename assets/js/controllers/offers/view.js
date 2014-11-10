@@ -20,6 +20,7 @@ angular.module('planevent').controller('OfferPageController',
 
     var Offer = $resource('/api/offer/:offerId', {offerId: '@id'});
 
+    $scope.state = 'viewing';
     $scope.offerDoesNotExists = false;
     $scope.otherError = false;
     $scope.offer = Offer.get({offerId: $routeParams.offerId},
@@ -38,8 +39,16 @@ angular.module('planevent').controller('OfferPageController',
         $scope.categories = categories;
     });
 
-    $scope.updateOffer = function(data) {
-        $scope.offer.$save();
+    $scope.saveOffer = function() {
+        $scope.state = 'saving';
+        $scope.offer.$save(
+            function() {
+                $scope.state = 'saved';
+            },
+            function() {
+                $scope.state = 'error';
+            }
+        );
     };
 
     $scope.getCategoryName = function(categoryId) {
@@ -64,7 +73,7 @@ angular.module('planevent').controller('OfferPageController',
     };
 
     $scope.showEditable = function(form) {
-        if ($scope.editing) {
+        if ($scope.state === 'editing') {
             form.$show();
         }
     };

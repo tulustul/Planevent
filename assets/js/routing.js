@@ -70,7 +70,7 @@ angular.module('planevent').config(
         reloadOnSearch: false
     })
     .when('/offers/:offerId', {
-        templateUrl: 'assets/partials/offerPage.html',
+        templateUrl: 'assets/partials/offer/offerPage.html',
         controller: 'OfferPageController'
     })
 

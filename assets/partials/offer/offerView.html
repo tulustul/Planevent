@@ -1,0 +1,14 @@
+<section id="offer">
+    <div class="details">
+        <div class="data">
+            <ng-include class="fields widget" src="'assets/partials/offer/fields.html'"></ng-include>
+            <ng-include class="widget" src="'assets/partials/offer/contacts.html'"></ng-include>
+        </div>
+        <p class="description widget">{{ offer.description }}</p>
+    </div>
+
+    <div class="widgets">
+        <addressviewer ng-model="offer.address" />
+        <gallery-preview ng-model="offer.gallery" limit="4" ng-click="showGallery()" />
+    </div>
+</section>

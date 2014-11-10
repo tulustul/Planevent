@@ -26,14 +26,6 @@ angular.module('planevent').directive('pebutton', function() {
 
             scope.class_ = '';
 
-            if ('buttonSlide' in attrs) {
-                scope.class_ += '-slide';
-            }
-
-            if ('textPosition' in attrs) {
-                scope.class_ += '-' + attrs.textPosition;
-            }
-
             scope.icon = attrs.icon;
             scope.text = attrs.text;
 

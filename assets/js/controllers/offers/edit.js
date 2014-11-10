@@ -1,91 +1,32 @@
 'use strict';
 
-angular.module('planevent').controller('OfferAddEditController',
-    function($scope, $resource, $routeParams, $location, $upload,
-             categoriesService) {
+angular.module('planevent').controller('ContactsEditController',
+		function($scope) {
 
-        $scope.locationComplete = false;
-        $scope.validatingLocation = false;
-        $scope.categories = categoriesService.categories;
-        $scope.contactTypes = categoriesService.contactTypes;
-        $scope.offerView = 'assets/partials/offerView.html';
+	$scope.contactTypes = ['tel', 'www', 'email', 'fax', 'facebook'];
 
-        if ($routeParams.offerId === undefined) {
-            $scope.offer = {gallery: [], address: {}};
-        } else {
-            var Offer = $resource('/api/offer/:id');
-            $scope.offer = Offer.get({id: $routeParams.offerId}, function() {
-                var address = $scope.offer.address;
-                $scope.locationComplete = address.city && address.street;
-            });
-        }
+	$scope.contactIcons = {
+		tel: 'phone',
+		www: 'globe',
+		email: 'envelope',
+		fax: 'fax',
+		facebook: 'facebook',
+	};
 
-        $scope.goTo = function(section) {
-            $scope.step = section;
-            $scope.section = 'assets/partials/offerAddEdit/' +
-                section + '.html';
-        };
+	$scope.getContactIcon = function(contactType) {
+		var icon = $scope.contactIcons[contactType];
+		if (icon === undefined) {
+			return 'share';
+		} else {
+			return icon;
+		}
+	};
 
-        $scope.submit = function() {
-            var Offers = $resource('/api/offers');
-            var offer = Offers.save($scope.offer , function() {
-                $location.path('/offer/' + offer.id);
-            });
-        };
+	$scope.removeContact = function(index) {
+		$scope.offer.contacts.splice(index, 1);
+	};
 
-        $scope.addContact = function() {
-            var contacts = $scope.offer.contacts;
-            if (contacts === undefined) {
-                contacts = $scope.offer.contacts = [];
-            }
-            contacts[contacts.length] = {};
-        };
-
-        $scope.removeContact = function(contactNo) {
-            $scope.offer.contacts.splice(contactNo, 1);
-        };
-
-        $scope.addTag = function() {
-            var tags = $scope.offer.tags;
-            if (tags === undefined) {
-                tags = $scope.offer.tags = [];
-            }
-            tags[tags.length] = {};
-        };
-
-        $scope.removeTag = function(tagNo) {
-            $scope.offer.tags.splice(tagNo, 1);
-        };
-
-        $scope.uploadLogo = function(files) {
-            uploadImages(files, '/api/image', function(data) {
-                $scope.offer.logo = {path: data.path};
-            });
-        };
-
-        $scope.uploadGallery = function(files) {
-            uploadImages(files, '/api/gallery', function(data) {
-                var gallery = $scope.offer.gallery;
-                gallery[gallery.length] = {path: data.path};
-            });
-        };
-
-        function uploadImages(files, api, callback) {
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                $scope.upload = $upload.upload({
-                    url: api,
-                    method: 'POST',
-                    file: file,
-                // }).progress(function(evt) {
-                    // console.log('percent: ' + parseInt(100.0 *
-                                   //evt.loaded / evt.total));
-                }).success(callback);
-                //.error(...)
-                //.then(success, error, progress);
-            }
-        }
-
-        $scope.goTo('info');
-    }
-);
+	$scope.addContact = function() {
+		$scope.offer.contacts[$scope.offer.contacts.length] = {};
+	};
+});

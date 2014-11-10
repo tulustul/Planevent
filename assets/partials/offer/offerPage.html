@@ -1,0 +1,53 @@
+<div class="offer-page">
+    <div class="navigation">
+
+        <p class="title"
+           editable-text="offer.name"
+           e-form="offerTitle"
+           ng-click="showEditable(offerTitle)"
+           ng-class="{editing: state=='editing'}"
+           onbeforesave="updateOffer($data)">
+            {{offer.name}}
+        </p>
+
+        <alert type="'success'" ng-show="state=='saved'" close="state='viewing'">
+            Zapisano
+        </alert>
+
+        <alert type="'danger'" ng-show="state=='error'" close="state='viewing'">
+            Nie można zapisać zmian
+        </alert>
+
+        <div ng-show="state=='editing'">
+            <pebutton icon="save" ng-click="saveOffer()">
+                Zapisz zmiany
+            </pebutton>
+            <pebutton icon="ban" ng-click="state='viewing'">
+                Anuluj zmiany
+            </pebutton>
+        </div>
+        <div ng-show="state=='viewing' || state=='saved'">
+            <pebutton icon="edit" ng-click="state='editing'">
+                Edytuj
+            </pebutton>
+            <pebutton icon="times" href="#" ng-click="removeOffer()">
+                Usuń
+            </pebutton>
+            <pebutton icon="ban" href="#">
+                Wyłącz ofertę
+            </pebutton>
+        </div>
+        <spinner ng-show="state=='saving'"></spinner>
+    </div>
+
+    <div id="offer-view" ng-include="'assets/partials/offer/offerView.html'" ng-show="fetched"></div>
+
+    <h2 ng-show="offerDoesNotExists">Nie ma takiej oferty :/</h2>
+    <h2 ng-show="otherError">Nieznany błąd</h2>
+</div>
+
+<div class="related-offers" ng-controller="RelatedOffersController">
+    <h3 class>Najbliższe podobne oferty:<br /></h3>
+    <offerpreview ng-repeat="offer in relatedOffers" offer="offer">
+    <h4 ng-show="relatedOffers.length == 0">Brak pasujących wyników</h4>
+</div>

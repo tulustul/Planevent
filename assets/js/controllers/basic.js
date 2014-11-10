@@ -27,7 +27,6 @@ angular.module('planevent').controller('MainPageController',
     function($scope, categoriesService, searchService) {
         $scope.mainView = 'assets/partials/mainView.html';
         $scope.categoriesView = 'assets/partials/categoriesView.html';
-        $scope.offerView = 'assets/partials/offerView.html';
         $scope.searchForm = 'assets/partials/search.html';
         $scope.loggedUserView = 'assets/partials/loggedUser.html';
         $scope.promotedOffersView = 'assets/partials/promotedOffers.html';

@@ -1,0 +1,38 @@
+<ul id="contacts" ng-controller="ContactsEditController">
+    <li ng-repeat="contact in offer.contacts">
+        <div class="contact-data">
+            <span class="contact fa fa-{{ getContactIcon(contact.type) }}"
+                  editable-select="contact.type"
+                  e-form="contactType"
+                  e-ng-options="type as type for type in contactTypes"
+                  ng-click="showEditable(contactType)"
+                  ng-class="{editing: state=='editing'}">
+            </span>
+
+            <span class="value"
+                  ng-switch on="contact.type"
+                  editable-text="contact.value"
+                  e-form="contactValue"
+                  ng-click="showEditable(contactValue)"
+                  ng-class="{editing: state=='editing'}">
+
+                <a ng-switch-when="email" href="mailto:{{ contact.value }}"> {{ contact.value }} </a>
+                <a ng-switch-when="www" href="{{ contact.value }}" target="_blank"> {{ contact.value }} </a>
+                <a ng-switch-when="facebook" href="{{ contact.value }}" target="_blank"> {{ contact.value }} </a>
+                <span ng-switch-default>{{ contact.value }}</span>
+
+            </span>
+
+            <span class="description"
+                  editable-text="contact.description"
+                  e-form="contactDescription"
+                  ng-click="showEditable(contactDescription)"
+                  ng-class="{editing: state=='editing'}">
+                {{ contact.description }}
+            </span>
+        </div>
+
+        <pebutton class="small-button" icon="times" ng-if="state=='editing'" ng-click="removeContact($index)">Usuń</pebutton>
+    </li>
+    <pebutton id="add-contact" class="wide-button" icon="plus" ng-if="state=='editing'" ng-click="addContact()">Dodaj kontakt</pebutton>
+</ul>

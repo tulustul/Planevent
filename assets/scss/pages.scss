@@ -131,7 +131,7 @@ $mapAndGallerySize: 350px;
 .offer-page {
     background: $ligth;
     border-right: 3px solid $dominant;
-    padding: 10px;
+    padding: 0px 10px;
     width: calc(100% - #{$relatedOffersWidth});
     height: calc(100% - #{$header-height} - #{$footer-height});
     float: left;
@@ -140,48 +140,69 @@ $mapAndGallerySize: 350px;
         border-bottom: 2px solid $dominant;
         overflow: hidden;
         margin-bottom: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 0px;
         p.title {
             float: left;
             font-size: 35px;
             font-weight: 300;
+            margin: 0px;
         }
         pebutton {
             float: right;
-            &:first-child {
-                float: left;
-            }
         }
     }
     #offer {
         display: flex;
-        .description {
-            padding: 15px;
-            font-size: 17px;
-            line-height: 1.6em;
-        }
         .details {
             width: calc(100% - #{$mapAndGallerySize} - 20px);
             display: flex;
             flex-wrap: wrap;
+            align-content: flex-start;
+            >.description {
+                padding: 15px;
+                font-size: 17px;
+                line-height: 1.6em;
+            }
             .data {
                 display: flex;
                 width: 100%;
                 .fields {
                     padding: 15px;
+                    min-width: 33%;
                 }
                 #contacts {
+                    min-width: 33%;
                     list-style: none;
                     padding-left: 10px;
+                    #add-contact {
+                        margin: 10px 0px;
+                    }
                     li {
-                        padding: 5px;
-                        .fa:before {
+                        padding: 2px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        .contact-data {
+                            flex-shrink: 100;
+                        }
+                        .contact.fa:before {
                             margin-right: 5px;
                             color: $dominant;
                             font-size: 20px;
                         }
+                        .value, .description {
+                            min-width: 20px;
+                            min-height: 15px;
+                            display: inline-block;
+                        }
                         .description {
+                            margin-left: 10px;
                             color: gray;
                             font-size: 12px;
+                            flex-grow: 1;
                         }
                     }
                 }
