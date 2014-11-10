@@ -61,7 +61,7 @@ class Offer(BaseEntity):
 class Contact(BaseEntity):
     __tablename__ = 'contact'
     offer_id = Column(Integer, ForeignKey('offer.id'))
-    type = Column(Integer)
+    type = Column(String(20))
     value = Column(String(50))
     description = Column(Text)
 

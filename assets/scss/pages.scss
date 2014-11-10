@@ -139,6 +139,7 @@ $mapAndGallerySize: 350px;
     .navigation {
         border-bottom: 2px solid $dominant;
         overflow: hidden;
+        margin-bottom: 5px;
         p.title {
             float: left;
             font-size: 35px;
@@ -152,23 +153,41 @@ $mapAndGallerySize: 350px;
         }
     }
     #offer {
-        padding: 0px 10px;
+        display: flex;
         .description {
             padding: 15px;
             font-size: 17px;
             line-height: 1.6em;
-            margin-top: 20px;
         }
         .details {
-            float: left;
             width: calc(100% - #{$mapAndGallerySize} - 20px);
-            .fields {
-                padding: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            .data {
+                display: flex;
+                width: 100%;
+                .fields {
+                    padding: 15px;
+                }
+                #contacts {
+                    list-style: none;
+                    padding-left: 10px;
+                    li {
+                        padding: 5px;
+                        .fa:before {
+                            margin-right: 5px;
+                            color: $dominant;
+                            font-size: 20px;
+                        }
+                        .description {
+                            color: gray;
+                            font-size: 12px;
+                        }
+                    }
+                }
             }
         }
         .widgets {
-            float: right;
-            width: $mapAndGallerySize;
             .address-viewer {
                 margin-bottom: 20px;
                 .map {

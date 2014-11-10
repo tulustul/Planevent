@@ -1,31 +1,55 @@
 <section id="offer">
     <div class="details">
-        <div class="fields widget">
-            <label>Kategoria:</label>
-            <span class="value"
-                  editable-select="offer.category.id"
-                  e-form="offerCategory"
-                  e-ng-options="c.id as c.name for c in categories"
-                  ng-click="showEditable(offerCategory)"
-                  ng-class="{editing: editing}"
-                  onbeforesave="updateOffer($data)">
-                {{ getCategoryName(offer.category.id) }}
-            </span><br />
+        <div class="data">
+            <div class="fields widget">
+                <label>Kategoria:</label>
+                <span class="value"
+                      editable-select="offer.category.id"
+                      e-form="offerCategory"
+                      e-ng-options="c.id as c.name for c in categories"
+                      ng-click="showEditable(offerCategory)"
+                      ng-class="{editing: editing}"
+                      onbeforesave="updateOffer($data)">
+                    {{ getCategoryName(offer.category.id) }}
+                </span><br />
 
-            <label>Cena:</label>
-            <span class="value">{{ offer.price_min }}zł - {{ offer.price_max }}zł</span><br />
+                <label>Cena:</label>
+                <span class="value">{{ offer.price_min }}zł - {{ offer.price_max }}zł</span><br />
 
-            <label>Dodano:</label>
-            <span class="value">{{ offer.added_at }}</span><br />
+                <label>Dodano:</label>
+                <span class="value">{{ offer.added_at }}</span><br />
 
-            <label>Ostatnia zmiana:</label>
-            <span class="value">{{ offer.updated_at }}</span><br />
+                <label>Ostatnia zmiana:</label>
+                <span class="value">{{ offer.updated_at }}</span><br />
+            </div>
+            <ul id="contacts" class="widget">
+                <li ng-repeat="contact in offer.contacts">
+                    <span ng-switch on="contact.type">
+                        <span ng-switch-when="tel">
+                            <span class="fa fa-phone">{{ contact.value }}</span>
+                        </span>
+                        <span ng-switch-when="www">
+                            <a href="{{ contact.value }}" target="_blank" class="fa fa-globe">{{ contact.value }}</a>
+                        </span>
+                        <span ng-switch-when="email">
+                            <a href="mailto:{{ contact.value }}" target="_blank" class="fa fa-envelope">{{ contact.value }}</a>
+                        </span>
+                        <span ng-switch-when="fax">
+                            <span class="fa fa-fax">{{ contact.value }}</span>
+                        </span>
+                        <span ng-switch-when="facebook">
+                            <a href="{{ contact.value }}" target="_blank" class="fa fa-facebook">{{ contact.value }}</a>
+                        </span>
+                        <span ng-switch-default>
+                            <span>{{ contact.value }}</span>
+                        </span>
+                    </span>
+                    <span ng-if="contact.description" class="description">
+                        {{ contact.description }}
+                    </span>
+                </li>
+            </ul>
         </div>
-
-        <li ng-repeat="contact in offer.contacts">
-            {{ contact.value }} - {{ contact.description }}
-        </li>
-
         <p class="description widget">{{ offer.description }}</p>
     </div>
 

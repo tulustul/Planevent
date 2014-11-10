@@ -148,7 +148,9 @@ angular.module('planevent').directive('addressviewer', function($timeout) {
                                    attrs.ngModel + '.latitude]',
                                    updatePosition);
 
-            scope.$watch(attrs.radius, updateRadius);
+            if (attrs.radius !== undefined) {
+                scope.$watch(attrs.radius, updateRadius);
+            }
             scope.$watch('entities', updateMarkers);
 
             var viewerElement = $('.address-viewer .map', element);

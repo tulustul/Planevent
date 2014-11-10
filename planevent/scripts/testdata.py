@@ -270,18 +270,18 @@ offers = {
 }
 
 contacts = [
-    {  # www
-        'type': 1,
+    {
+        'type': 'www',
         'values': [
-            'www.asd.com',
-            'www.kgfmdg.com',
-            'www.fgkjdfg.com',
-            'www.ass-assssd.com',
-            'www.dupa.com',
+            'http://www.asd.com',
+            'http://www.kgfmdg.com',
+            'http://www.fgkjdfg.com',
+            'http://www.ass-assssd.com',
+            'http://www.dupa.com',
         ],
     },
-    {  # email
-        'type': 2,
+    {
+        'type': 'email',
         'values': [
             'asd@asdd',
             'cv@cvbcvsdd',
@@ -290,8 +290,8 @@ contacts = [
             'zzz@azzzzzz.zad',
         ],
     },
-    {  # tel
-        'type': 3,
+    {
+        'type': 'tel',
         'values': [
             '132-132-132',
             '123-123-123',
@@ -300,8 +300,8 @@ contacts = [
             '348-348-348',
         ],
     },
-    {  # fax
-        'type': 4,
+    {
+        'type': 'fax',
         'values': [
             '+44-208-1234567',
             '+12-228-8757566',
@@ -310,14 +310,14 @@ contacts = [
             '+82-287-5738975',
         ],
     },
-    {  # facebook
-        'type': 5,
+    {
+        'type': 'facebook',
         'values': [
-            'www.facebook.com/asd'
-            'www.facebook.com/gdgdfg'
-            'www.facebook.com/dfgfgew'
-            'www.facebook.com/sdfsdf'
-            'www.facebook.com/ert-ert'
+            'http://www.facebook.com/asd'
+            'http://www.facebook.com/gdgdfg'
+            'http://www.facebook.com/dfgfgew'
+            'http://www.facebook.com/sdfsdf'
+            'http://www.facebook.com/ert-ert'
         ],
     },
 ]

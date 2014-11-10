@@ -173,7 +173,7 @@ angular.module('planevent').directive('infinitescroll',
                 }
                 scrollEnabled = true;
                 checkWhenEnabled = false;
-                if (attrs.infiniteScrollDisabled !== null) {
+                if (attrs.infiniteScrollDisabled !== undefined) {
                     scope.$watch(attrs.infiniteScrollDisabled, function(value) {
                         scrollEnabled = !value;
                         if (scrollEnabled && checkWhenEnabled) {

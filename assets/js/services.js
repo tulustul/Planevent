@@ -46,9 +46,6 @@ angular.module('planevent').service('searchService',
 angular.module('planevent').service('offersService',
     function($resource, $http) {
 
-    // var Offers = $resource('/api/offers');
-    // var PromotedOffers = $resource('/api/offers/promoted');
-
     this.getPromotedOffers = function() {
         return $http.get('/api/offers/promoted');
     };
