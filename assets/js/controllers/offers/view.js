@@ -26,6 +26,9 @@ angular.module('planevent').controller('OfferPageController',
     $scope.offer = Offer.get({offerId: $routeParams.offerId},
         function(){
             $scope.fetched = true;
+            if ($scope.offer.contacts === undefined) {
+                $scope.offer.contacts = [];
+            }
         },
         function(response){
             if (response.status === 404) {
@@ -65,6 +68,7 @@ angular.module('planevent').controller('OfferPageController',
     $scope.showGallery = function() {
         var galleryScope = $scope.$new(true);
         galleryScope.gallery = $scope.offer.gallery;
+        galleryScope.editing = $scope.state === 'editing';
         galleryScope.modal = $modal.open({
             templateUrl: 'assets/partials/galleryModal.html',
             scope: galleryScope,

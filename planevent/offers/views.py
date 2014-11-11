@@ -162,8 +162,8 @@ class OffersView(View):
         return offer
 
 
-@route('image')
-class ImageView(View):
+@route('logo')
+class LogoView(View):
 
     @image_upload('static/images/uploads/logos/', size=(200, 200))
     def post(self, image_path):

@@ -194,6 +194,8 @@ class image_upload(object):
             input_file = file_upload.file
             self.prepare_image(input_file, output_file_path)
 
+            output_file_path = '/' + output_file_path
+
             return mth(instance, output_file_path, *args, **kwargs)
         return wrap
 

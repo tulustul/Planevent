@@ -65,6 +65,13 @@ def create_test_gallery(offer, quantity):
         image = models.ImageGallery()
         image.path = '/static/images/test/gallery/' + \
             str(random.randrange(40)) + '.jpg'
+        image.description = (
+            'Lorem ipsum dolor sit amet, consectetur adipisicing elit, '
+            'sed do eiusmod, tempor incididunt ut labore et dolore magna'
+            ' aliqua. Ut enim ad minim veniam,'
+        )
+        max_desc_index = random.randrange(len(image.description))
+        image.description = image.description[:max_desc_index]
         offer.gallery.append(image)
 
 

@@ -66,20 +66,24 @@ pebutton {
     }
 }
 
-.editable-buttons {
-    pebutton {
-        &.submit {
-            .button {
-                color: $button-submit-color;
-                border-color: $button-submit-color;
-                &:hover {
-                    color: $button-secondary-color;
-                    background-color: $button-submit-color;
+.editable-wrap {
+    .editable-controls {
+    }
+    .editable-buttons {
+        pebutton {
+            &.submit {
+                .button {
+                    color: $button-submit-color;
+                    border-color: $button-submit-color;
+                    &:hover {
+                        color: $button-secondary-color;
+                        background-color: $button-submit-color;
+                    }
                 }
             }
-        }
-        .button:before {
-            font-size: 20px;
+            .button:before {
+                font-size: 20px;
+            }
         }
     }
 }
@@ -133,9 +137,6 @@ $galleryPreviewSize: 155px;
 
 $galleryHeigth: 500px;
 .gallery {
-    .flex-viewport {
-        max-height: $galleryHeigth;
-    }
     .flex-control-thumbs{
         display: flex;
         align-items: center;
@@ -153,12 +154,25 @@ $galleryHeigth: 500px;
             }
         }
     }
-    .image {
-        width: 100%;
-        height: $galleryHeigth;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;
+    li {
+        .image {
+            width: 100%;
+            height: $galleryHeigth;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+        }
+        .description {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 200;
+            &.editable {
+                display: block;
+            }
+        }
+    }
+    .add-image {
+        margin: 10px 0px;
     }
 }
 
@@ -182,6 +196,8 @@ $galleryHeigth: 500px;
         margin-top: 0px;
         text-align: center;
         border-top: 2px solid $dominant;
+        display: flex;
+        justify-content: center;
     }
 }
 

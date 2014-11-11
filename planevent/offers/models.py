@@ -74,6 +74,7 @@ class Image(BaseEntity):
 class ImageGallery(BaseEntity):
     __tablename__ = 'image_gallery'
     path = Column(String(50))
+    description = Column(Text())
     offer_id = Column(Integer, ForeignKey('offer.id'))
 
 

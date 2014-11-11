@@ -210,3 +210,22 @@ angular.module('planevent').factory('categoriesService',
     return service;
 });
 
+angular.module('planevent').service('fileUploadService',
+        function($upload) {
+
+    this.upload = function(files, api, callback) {
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            $upload.upload({
+                url: api,
+                method: 'POST',
+                file: file,
+            // }).progress(function(evt) {
+                // console.log('percent: ' + parseInt(100.0 *
+                               //evt.loaded / evt.total));
+            }).success(callback);
+            //.error(...)
+            //.then(success, error, progress);
+        }
+    };
+});

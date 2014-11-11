@@ -1,9 +1,33 @@
  <div class="gallery">
     <flex-slider slide="image in gallery" animation="slide" control-nav="thumbnails">
         <li data-thumb="{{image.path}}">
+        	<pebutton icon="times"
+        			  class="wide-button small-button"
+        			  ng-if="editing"
+        			  ng-click="removeImage(image)">
+        		Usuń
+        	</pebutton>
+            <p class="description" ng-if="!editing">
+            	{{ image.description }}
+            </p>
+            <p class="description editing"
+               ng-if="editing"
+	           editable-text="image.description"
+	           e-form="imageDescription"
+	           ng-click="imageDescription.$show()">
+            	{{ image.description || "Tutaj opis obrazka" }}
+            </p>
             <div class="image"
                  style="background-image: url({{image.path}})">
             </div>
         </li>
     </flex-slider>
+ 	<pebutton icon="plus"
+ 			  class="wide-button add-image"
+ 			  ng-if="editing"
+ 			  ng-click="initImageUpload()">
+ 		Dodaj obraz
+ 	</pebutton>
+ 	<input id="add-image-button" class="hidden" type="file" ng-file-select="addImage($files)" multiple>
+
  </div>

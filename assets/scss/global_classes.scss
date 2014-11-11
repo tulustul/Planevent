@@ -116,6 +116,9 @@ footer {
     color: #428bca;
     border-bottom: dashed 1px #428bca;
     cursor: pointer;
+    min-width: 20px;
+    min-height: 15px;
+    display: inline-block;
 }
 
 .flex {

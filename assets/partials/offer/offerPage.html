@@ -5,9 +5,8 @@
            editable-text="offer.name"
            e-form="offerTitle"
            ng-click="showEditable(offerTitle)"
-           ng-class="{editing: state=='editing'}"
-           onbeforesave="updateOffer($data)">
-            {{offer.name}}
+           ng-class="{editing: state=='editing'}">
+            {{ offer.name || "Tutaj tytuł oferty" }}
         </p>
 
         <alert type="'success'" ng-show="state=='saved'" close="state='viewing'">

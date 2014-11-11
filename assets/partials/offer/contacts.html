@@ -16,10 +16,10 @@
                   ng-click="showEditable(contactValue)"
                   ng-class="{editing: state=='editing'}">
 
-                <a ng-switch-when="email" href="mailto:{{ contact.value }}"> {{ contact.value }} </a>
-                <a ng-switch-when="www" href="{{ contact.value }}" target="_blank"> {{ contact.value }} </a>
-                <a ng-switch-when="facebook" href="{{ contact.value }}" target="_blank"> {{ contact.value }} </a>
-                <span ng-switch-default>{{ contact.value }}</span>
+                <a ng-switch-when="email" href="mailto:{{ contact.value }}"> {{ contact.value || "Dane kontaktu" }} </a>
+                <a ng-switch-when="www" href="{{ contact.value }}" target="_blank"> {{ contact.value || "Dane kontaktu" }} </a>
+                <a ng-switch-when="facebook" href="{{ contact.value }}" target="_blank"> {{ contact.value || "Dane kontaktu" }} </a>
+                <span ng-switch-default>{{ contact.value || "Dane kontaktu" }}</span>
 
             </span>
 
@@ -28,7 +28,7 @@
                   e-form="contactDescription"
                   ng-click="showEditable(contactDescription)"
                   ng-class="{editing: state=='editing'}">
-                {{ contact.description }}
+                {{ contact.description || "Opis kontaktu" }}
             </span>
         </div>
 

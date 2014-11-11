@@ -20,7 +20,7 @@ urls = [
     ('offers', '/api/offers'),
     ('offers_search', '/api/offers/search'),
     ('offers_promoted', '/api/offers/promoted'),
-    ('image', '/api/image'),
+    ('logo', '/api/logo'),
     ('gallery', '/api/gallery'),
     ('tags', '/api/tags'),
     ('tag_autocomplete', '/api/tags/autocomplete'),
