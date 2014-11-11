@@ -28,7 +28,7 @@
                   e-form="contactDescription"
                   ng-click="showEditable(contactDescription)"
                   ng-class="{editing: state=='editing'}">
-                {{ contact.description || "Opis kontaktu" }}
+                {{ contact.description || (state=='editing' && "Opis kontaktu") || "" }}
             </span>
         </div>
 

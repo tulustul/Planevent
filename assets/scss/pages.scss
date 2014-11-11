@@ -166,6 +166,15 @@ $mapAndGallerySize: 350px;
                 font-size: 17px;
                 line-height: 1.6em;
             }
+            .ta-root {
+                .ta-editor {
+                    width: 100%;
+                    margin-bottom: 0px;
+                }
+                .ta-toolbar {
+                    padding: 5px;
+                }
+            }
             .data {
                 display: flex;
                 width: 100%;
