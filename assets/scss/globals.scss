@@ -7,6 +7,11 @@
 $header-height: 64px;
 $footer-height: 32px;
 
+$google-plus-color: #DE4B39;
+$facebook-color: #3B5998;
+
+$link-color: #428bca;
+
 $total-columns  : 12;
 $column-width   : 18em;
 $gutter-width   : 0em;
@@ -26,7 +31,6 @@ $greenYellowGradient: rgb(255, 245, 220), #779C78;
 $yellowGradient: white, rgb(255, 245, 220);
 $darkGreenGradient: #EEE, #779C78;
 
-
 $dominant: #d31919;
 $success: rgb(13, 158, 0);
 
@@ -36,7 +40,8 @@ $break-bigger: 800px;
 $break-big: 1200px;
 $break-add-offer: 450px;
 
-$button-primary-color: rgb(211, 25, 25);
+$button-primary-color: $dominant;
 $button-secondary-color: white;
 $button-background-color: rgba(255, 255, 255, 1);
-$button-submit-color: green;
+$button-submit-color: rgb(40, 152, 42);
+$button-call-to-action-color: rgb(71, 126, 191);;

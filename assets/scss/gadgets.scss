@@ -65,6 +65,12 @@ pebutton {
         justify-content: center;
     }
 }
+.submit-button .button {
+    @include button-color($button-submit-color);
+}
+.call-to-action-button .button {
+    @include button-color($button-call-to-action-color);
+}
 
 .editable-wrap {
     .editable-controls {
@@ -73,12 +79,7 @@ pebutton {
         pebutton {
             &.submit {
                 .button {
-                    color: $button-submit-color;
-                    border-color: $button-submit-color;
-                    &:hover {
-                        color: $button-secondary-color;
-                        background-color: $button-submit-color;
-                    }
+                    @include button-color($button-submit-color);
                 }
             }
             .button:before {
@@ -172,32 +173,20 @@ $galleryHeigth: 500px;
         }
     }
     .add-image {
-        margin: 10px 0px;
+        float: none;
+        .button {
+            margin-top: 20px;
+        }
     }
 }
 
 .galleryModal .modal-dialog {
     width: 80%;
     max-width: 1000px;
-    .modal-header {
-        padding: 0px;
-        border-bottom: 2px solid $dominant;
-        font-size: 40px;
-        font-weight: 300;
-        text-align: center;
-    }
     .modal-body {
         .flexslider {
             margin: 0px;
         }
-    }
-    .modal-footer {
-        padding: 15px;
-        margin-top: 0px;
-        text-align: center;
-        border-top: 2px solid $dominant;
-        display: flex;
-        justify-content: center;
     }
 }
 
@@ -452,4 +441,29 @@ $galleryHeigth: 500px;
     flex-grow: 1;
     text-align: center;
     margin: 0px 50px;
+}
+
+.modal-dialog {
+    .modal-header {
+        padding: 0px;
+        border-bottom: 2px solid $dominant;
+        font-size: 40px;
+        font-weight: 300;
+        text-align: center;
+        .modal-close {
+            float: right;
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            color: $dominant;
+            cursor: pointer;
+            text-decoration: none;
+            @include transition(0.3s);
+            &:hover {
+                @include transition(0.3s);
+                text-shadow: 2px 2px 0px black;
+                @include transform(scale(1.2));
+            }
+        }
+    }
 }

@@ -677,3 +677,56 @@ offerpreview {
         float: right;
     }
 }
+
+.loginModal, .registrationModal, .remindPasswordModal {
+    .modal-body {
+        #login-form {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 7px;
+            .inputs {
+                width: 50%;
+                margin-right: 10px;
+                input {
+                    width: 100%;
+                }
+            }
+            pebutton {
+                width: 50%;
+            }
+        }
+        >p {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 300;
+        }
+        .button {
+            justify-content: center;
+        }
+        .oauth {
+            display: flex;
+            justify-content: space-between;
+            pebutton {
+                width: 50%;
+                .fa-facebook {
+                    @include button-color($facebook-color);
+                }
+                .fa-google-plus {
+                    @include button-color($google-plus-color);
+                }
+            }
+        }
+        .options {
+            margin-top: 17px;
+            display: flex;
+            justify-content: space-around;
+            font-size: 20px;
+            font-weight: 300;
+            a {
+                color: $link-color;
+                cursor: pointer;
+            }
+        }
+    }
+}

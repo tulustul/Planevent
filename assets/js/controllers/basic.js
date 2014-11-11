@@ -24,19 +24,42 @@ angular.module('planevent').controller('HomePageController',
 );
 
 angular.module('planevent').controller('MainPageController',
-    function($scope, categoriesService, searchService) {
+    function($scope, $modal, categoriesService, searchService) {
         $scope.mainView = 'assets/partials/mainView.html';
         $scope.categoriesView = 'assets/partials/categoriesView.html';
         $scope.searchForm = 'assets/partials/search.html';
-        $scope.loggedUserView = 'assets/partials/loggedUser.html';
         $scope.promotedOffersView = 'assets/partials/promotedOffers.html';
 
         $scope.categories = categoriesService.categories;
 
-        $scope.getPromotedOffers = function() {
-            searchService.resetParams();
-            searchService.params.category = $routeParams.categoryId;
-            searchService.fetch(offset, limit, callback);
+        // $scope.getPromotedOffers = function() {
+        //     searchService.resetParams();
+        //     searchService.params.category = $routeParams.categoryId;
+        //     searchService.fetch(offset, limit, callback);
+        // };
+
+        $scope.$on('showRegistrationForm', function() {
+            $scope.showRegistrationForm();
+        });
+
+        $scope.showRegistrationForm = function() {
+            var registrationScope = $scope.$new(true);
+            registrationScope.modal = $modal.open({
+                templateUrl: 'assets/partials/registrationModal.html',
+                scope: registrationScope,
+                windowClass: 'registrationModal',
+                controller: 'RegistrationController',
+            });
+        };
+
+        $scope.showLoginForm = function() {
+            var loginScope = $scope.$new(true);
+            loginScope.modal = $modal.open({
+                templateUrl: 'assets/partials/loginModal.html',
+                scope: loginScope,
+                windowClass: 'loginModal',
+                controller: 'LoginController',
+            });
         };
     }
 );

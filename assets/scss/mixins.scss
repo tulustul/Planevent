@@ -23,23 +23,18 @@
         display: block !important;
         @include transform(scaleY(0));
         @include transform-origin(right top 0);
-        // max-height: 0px;
     }
     &.ng-hide-remove-active {
         @include transform-origin(right top 0);
         @include transform(scaleY(1));
-        // max-height: $maxHeight;
     }
 }
 
-// .slideDownScale {
-//     @include transition(0.5s);
-//     @include transform-origin(right top 0);
-//     @include transform(scaleY(1));
-// }
-
-// .slideUpScale {
-//     @include transition(0.5s);
-//     @include transform-origin(right top 0);
-//     @include transform(scaleY(0));
-// }
+@mixin button-color($color) {
+    color: $color;
+    border-color: $color;
+    &:hover {
+        color: $button-secondary-color;
+        background-color: $color;
+    }
+}

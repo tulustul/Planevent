@@ -49,7 +49,10 @@ a {
 }
 
 header {
-    clear: both;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 4px;
     background-color: $dark;
     position: fixed;
     top: 0px;
@@ -113,8 +116,8 @@ footer {
 
 .editing {
     text-decoration: none;
-    color: #428bca;
-    border-bottom: dashed 1px #428bca;
+    color: $link-color;
+    border-bottom: dashed 1px $link-color;
     cursor: pointer;
     min-width: 20px;
     min-height: 15px;
@@ -123,4 +126,12 @@ footer {
 
 .flex {
     display: flex;
+}
+
+.right {
+    float: right;
+}
+
+.left {
+    float: left;
 }

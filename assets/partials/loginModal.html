@@ -1,0 +1,28 @@
+<modal title="Logowanie">
+	<p>Zaloguj się przez swój email</p>
+	<form id="login-form">
+		<div class="inputs">
+			<input class="form-control" type="email" name="email" placeholder="email">
+			<input class="form-control" type="password" name="password" placeholder="hasło">
+		</div>
+		<pebutton class="submit-button" icon="sign-in" ng-click="login()" type="submit">
+			Zaloguj się
+		</pebutton>
+	</form>
+
+	<p>lub</p>
+
+	<div class="oauth">
+		<pebutton icon="facebook">
+			Zaloguj się przez Facebook
+		</pebutton>
+		<pebutton icon="google-plus">
+			Zaloguj się przez Google+
+		</pebutton>
+	</div>
+
+	<div class="options">
+		<a ng-click="modal.close(); showRegistrationForm()">Nie mam jeszcze konta</a>
+		<a ng-click="modal.close(); showRemindPasswordForm()">Zapomniałem hasła</a>
+	</div>
+</modal>

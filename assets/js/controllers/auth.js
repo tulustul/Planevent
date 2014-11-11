@@ -77,3 +77,31 @@ angular.module('planevent').controller('LoginController',
         });
     };
 });
+
+angular.module('planevent').controller('LoginController',
+        function($scope, $modal) {
+
+    $scope.showRemindPasswordForm = function() {
+        var remindPasswordScope = $scope.$new(true);
+        remindPasswordScope.modal = $modal.open({
+            templateUrl: 'assets/partials/remindPasswordModal.html',
+            scope: remindPasswordScope,
+            windowClass: 'remindPasswordModal',
+            controller: 'RemindPasswordController',
+        });
+    };
+
+    $scope.showRegistrationForm = function() {
+        $scope.$emit('showRegistrationForm');
+    };
+});
+
+angular.module('planevent').controller('RegistrationController',
+        function($scope) {
+
+});
+
+angular.module('planevent').controller('RemindPasswordController',
+        function($scope) {
+
+});

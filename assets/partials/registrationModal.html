@@ -1,0 +1,20 @@
+<modal title="Rejestracja">
+	<p>Zarejestruj się przez swój email</p>
+	<form id="login-form">
+		<div class="inputs">
+			<input class="form-control" type="email" name="email" placeholder="email">
+			<input class="form-control" type="password" name="password" placeholder="hasło">
+			<input class="form-control" type="password" name="repeatPassword" placeholder="powtórz hasło">
+		</div>
+		<pebutton class="submit-button" icon="sign-in" ng-click="register()" type="submit">
+			Zarejestruj się
+		</pebutton>
+	</form>
+
+	<p>lub</p>
+
+	<div class="oauth">
+		<pebutton icon="facebook">Zarejestruj się przez Facebook</pebutton>
+		<pebutton icon="google-plus">Zarejestruj się przez Google+</pebutton>
+	</div>
+</modal>
