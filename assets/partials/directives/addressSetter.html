@@ -1,21 +1,13 @@
 <div class="address-setter">
-    <div ng-show="type != 'simple'">
-        Ulica i numer: <input type="text" ng-model="address.street" ng-blur="validateAddress()"><br />
-        Miasto: <input type="text" ng-model="address.city" ng-blur="validateAddress()"><br />
-        Kod pocztowy: <input type="text" ng-model="address.postal_code" ng-blur="validateAddress()"><br />
-    </div>
-
-    <div ng-show="type == 'simple'">
-        <span ng-show="details" class="validation fa fa-check" />
-        <div ng-class="{'input-wrapper': details}">
-            <input
-                type="text"
-                placeholder="Lokalizacja"
-                ng-model="address.formatted"
-                ng-autocomplete
-                options="{country: 'pl', types: 'geocode'}"
-                details="details">
-        </div>
+    <span ng-show="details" class="validation fa fa-check" />
+    <div ng-class="{'input-wrapper': details}">
+        <input
+            type="text"
+            placeholder="Lokalizacja"
+            ng-model="address.formatted"
+            ng-autocomplete
+            options="{country: 'pl', types: 'geocode'}"
+            details="details">
     </div>
 
     <div ng-show="locationComplete">

@@ -4,8 +4,7 @@
       e-form="offerCategory"
       e-ng-options="c.id as c.name for c in categories"
       ng-click="showEditable(offerCategory)"
-      ng-class="{editing: state=='editing'}"
-      onbeforesave="updateOffer($data)">
+      ng-class="{editing: state=='editing'}">
     {{ getCategoryName(offer.category.id) }}
 </span><br />
 

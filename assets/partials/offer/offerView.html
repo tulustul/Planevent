@@ -8,7 +8,15 @@
     </div>
 
     <div class="widgets">
-        <addressviewer ng-model="offer.address" />
+        <div class="widget">
+            <span class="title"
+                  ng-show="state!='editing'"
+                  ng-class="{editing: state=='editing'}">
+                {{ offer.address.formatted }}
+            </span>
+            <addressSetter ng-if="state=='editing'" ng-model="offer.address" type="simple"></addressSetter>
+            <addressviewer ng-model="offer.address"></addressviewer>
+        </div>
         <gallery-preview ng-model="offer.gallery" limit="4" ng-click="showGallery()" />
     </div>
 </section>

@@ -216,6 +216,18 @@ $mapAndGallerySize: 350px;
                     height: $mapAndGallerySize;
                 }
             }
+            .address-setter {
+                input {
+                    width: 100%;
+                    padding: 3px;
+                    font-size: 20px;
+                    text-align: center;
+                    font-weight: 300;
+                    border: none;
+                    border-bottom: 2px solid $dominant;
+                    color: #428bca;
+                }
+            }
             gallery-preview {
                 .galleryPreview {
                     width: $mapAndGallerySize;

@@ -175,7 +175,6 @@ angular.module('planevent').directive('addresssetter', function() {
         templateUrl: 'assets/partials/directives/addressSetter.html',
         link: function(scope, element, attrs, ngModel) {
             scope.locationLabel = attrs.label;
-            scope.type = attrs.type;
 
             function parseResponse(result) {
                 if (result === undefined) {
@@ -213,29 +212,7 @@ angular.module('planevent').directive('addresssetter', function() {
                 address.validated = true;
             }
 
-            function processMultilineAddress(address) {
-                if (!address.city) {
-                    scope.locationComplete = false;
-                    return;
-                } else {
-                    scope.locationComplete = true;
-                }
-                scope.addressString = '';
-                if (address.street !== undefined) {
-                    scope.addressString += address.street + ' ';
-                }
-                if (address.city !== undefined) {
-                    scope.addressString += address.city;
-                }
-            }
-
             scope.validateAddress = function() {
-                var address = ngModel.$viewValue;
-
-                if (scope.type !== 'simple') {
-                    processMultilineAddress(address);
-                }
-
                 scope.validatingLocation = true;
                 var geocoder = new google.maps.Geocoder();
                 geocoder.geocode(
