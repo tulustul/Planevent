@@ -680,39 +680,31 @@ offerpreview {
 
 .loginModal, .registrationModal, .remindPasswordModal {
     .modal-body {
-        #login-form {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 7px;
-            .inputs {
-                width: 50%;
-                margin-right: 10px;
-                input {
-                    width: 100%;
-                }
-            }
-            pebutton {
-                width: 50%;
-            }
-        }
         >p {
             text-align: center;
             font-size: 20px;
             font-weight: 300;
         }
-        .button {
-            justify-content: center;
+        md-button {
+            width: 50%;
+            &.submit-button {
+                margin-top: 10px;
+            }
+        }
+        md-input-group {
+            width: 50%;
+            input {
+                width: 100%;
+            }
         }
         .oauth {
             display: flex;
             justify-content: space-between;
-            pebutton {
-                width: 50%;
-                .fa-facebook {
+            md-button {
+                &.fa-facebook {
                     @include button-color($facebook-color);
                 }
-                .fa-google-plus {
+                &.fa-google-plus {
                     @include button-color($google-plus-color);
                 }
             }

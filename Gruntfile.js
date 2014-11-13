@@ -39,7 +39,10 @@ var vendorJs = {
         'bower_components/angular-xeditable/dist/js/xeditable.js',
         'bower_components/textAngular/src/textAngular-sanitize.js',
         'bower_components/textAngular/src/textAngular.js',
-        'bower_components/textAngular/src/textAngularSetup.js'
+        'bower_components/textAngular/src/textAngularSetup.js',
+        'bower_components/angular-aria/angular-aria.js',
+        'bower_components/hammerjs/hammer.js',
+        'bower_components/angular-material/angular-material.js'
     ],
     dest: 'static/vendor.js'
 };
@@ -51,6 +54,7 @@ var vendorCss = {
         'bower_components/angucomplete/angucomplete.css',
         'bower_components/flexslider/flexslider.css',
         'bower_components/angular-xeditable/dist/css/xeditable.css',
+        'bower_components/angular-material/angular-material.css'
     ],
     dest: 'static/vendor.css'
 };

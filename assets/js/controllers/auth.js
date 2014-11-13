@@ -46,22 +46,6 @@ angular.module('planevent').controller('LoginController',
         });
     };
 
-    $scope.sendRecallEmail = function(email) {
-        $scope.waiting = true;
-
-        authService.sendRecallEmail(email)
-        .success(function(response) {
-            $scope.waiting = false;
-            $scope.showLoginForm = true;
-            $scope.showRecallForm = false;
-            $scope.message = response.message;
-        })
-        .error(function(response) {
-            $scope.waiting = false;
-            $scope.message = response.message;
-        });
-    };
-
     $scope.register = function(email, password) {
         $scope.waiting = true;
         $scope.message = '';
@@ -102,6 +86,21 @@ angular.module('planevent').controller('RegistrationController',
 });
 
 angular.module('planevent').controller('RemindPasswordController',
-        function($scope) {
+        function($scope, authService) {
 
+    $scope.remindPassword = function(email) {
+        $scope.waiting = true;
+
+        authService.sendRecallEmail(email)
+        .success(function(response) {
+            $scope.waiting = false;
+            // $scope.showLoginForm = true;
+            // $scope.showRecallForm = false;
+            $scope.message = response.message;
+        })
+        .error(function(response) {
+            $scope.waiting = false;
+            $scope.message = response.message;
+        });
+    };
 });

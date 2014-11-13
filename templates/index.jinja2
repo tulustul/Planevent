@@ -1,5 +1,7 @@
     <html ng-app="planevent">
 <head>
+    <base href="/">
+
     <title>Plan Event</title>
 
     <meta charset="utf-8">
@@ -17,6 +19,7 @@
             'ngAnimate',
             'ngRoute',
             'ngResource',
+            'ngAria',
             // angular ui bootstrap
             'ui.bootstrap.alert',
             'ui.bootstrap.modal',
@@ -24,6 +27,7 @@
             'ui.bootstrap.tpls',
             'ui.slider',
             // others
+            'ngMaterial',
             'angularFileUpload',
             'ngAutocomplete',
             'angucomplete',
@@ -64,18 +68,17 @@
             <img src="/static/images/icons/question.png" alt="logo">
             <h1>Planevent</h1>
         </a>
-        <!-- <div ng-include="'assets/partials/loggedUser.html'"></div> -->
 
         <div class="actions">
-            <pebutton icon="plus" class="call-to-action-button">
+            <md-button class="fa fa-plus call-to-action-button">
                 Dodaj ofertę
-            </pebutton>
-            <pebutton icon="rocket" class="submit-button" ng-click="showRegistrationForm()">
+            </md-button>
+            <md-button class="fa fa-rocket submit-button" ng-click="showRegistrationForm()">
                 Zarejestruj się
-            </pebutton>
-            <pebutton icon="sign-in" ng-click="showLoginForm()">
+            </md-button>
+            <md-button class="fa fa-sign-in" ng-click="showLoginForm()">
                 Zaloguj się
-            </pebutton>
+            </md-button>
         </div>
 
         <!-- <experiment id="addOfferExp">

@@ -32,7 +32,7 @@
             </span>
         </div>
 
-        <pebutton class="small-button" icon="times" ng-if="state=='editing'" ng-click="removeContact($index)">Usuń</pebutton>
+        <md-button class="small-button fa fa-times" ng-if="state=='editing'" ng-click="removeContact($index)">Usuń</md-button>
     </li>
-    <pebutton id="add-contact" class="wide-button" icon="plus" ng-if="state=='editing'" ng-click="addContact()">Dodaj kontakt</pebutton>
+    <md-button id="add-contact" class="wide-button fa fa-plus" ng-if="state=='editing'" ng-click="addContact()">Dodaj kontakt</md-button>
 </ul>

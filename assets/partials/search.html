@@ -6,7 +6,7 @@
         </div>
 
         <div>
-            <pebutton id="searchButton" icon="search" ng-click="clearMap();search()" text-position="bottom"></pebutton>
+            <md-button id="searchButton" class="fa fa-search bottom-button" ng-click="clearMap();search()"></md-button>
             <div class="searchField">
                 <input type="text" placeholder="Szukaj">
                 <!-- <angucomplete
@@ -64,16 +64,16 @@
         </div>
     </section>
     <div class="formField slideAnimation" ng-show="mapVisible">
-        <pebutton
-            icon="search-plus"
+        <md-button
+            class="fa fa-search-plus"
             ng-click="bigMap=true; updateMap(0.5)"
             ng-show="!bigMap">Duża mapa
-        </pebutton>
-        <pebutton
-            icon="search-minus"
+        </md-button>
+        <md-button
+            class="fa fa-search-minus"
             ng-click="bigMap=false; updateMap(0.5)"
             ng-show="bigMap">Mała mapa
-        </pebutton>
+        </md-button>
         <addressViewer
             ng-model="location"
             radius="radius"

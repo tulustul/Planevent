@@ -1,24 +1,24 @@
 <modal title="Logowanie">
 	<p>Zaloguj się przez swój email</p>
-	<form id="login-form">
-		<div class="inputs">
-			<input class="form-control" type="email" name="email" placeholder="email">
-			<input class="form-control" type="password" name="password" placeholder="hasło">
-		</div>
-		<pebutton class="submit-button" icon="sign-in" ng-click="login()" type="submit">
+	<form id="login-form" layout="vertical" layout-align="center center">
+		<md-text-float label="Email" ng-model="email"></md-text-float>
+		<md-text-float label="Hasło" ng-model="password"></md-text-float>
+
+		<md-button class="submit-button wide-button fa fa-sign-in" ng-click="login()" type="submit">
 			Zaloguj się
-		</pebutton>
+		</md-button>
 	</form>
 
 	<p>lub</p>
 
 	<div class="oauth">
-		<pebutton icon="facebook">
+		<md-button class="fa fa-facebook">
 			Zaloguj się przez Facebook
-		</pebutton>
-		<pebutton icon="google-plus">
+		</md-button>
+
+		<md-button class="fa fa-google-plus">
 			Zaloguj się przez Google+
-		</pebutton>
+		</md-button>
 	</div>
 
 	<div class="options">

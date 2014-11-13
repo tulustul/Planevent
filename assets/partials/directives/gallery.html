@@ -1,12 +1,11 @@
  <div class="gallery">
     <flex-slider slide="image in gallery" animation="slide" control-nav="thumbnails">
         <li data-thumb="{{image.path}}">
-        	<pebutton icon="times"
-        			  class="wide-button small-button"
+        	<md-button class="fa fa-times wide-button small-button"
         			  ng-if="editing"
         			  ng-click="removeImage(image)">
         		Usuń
-        	</pebutton>
+        	</md-button>
             <p class="description" ng-if="!editing">
             	{{ image.description }}
             </p>
@@ -22,12 +21,11 @@
             </div>
         </li>
     </flex-slider>
- 	<pebutton icon="plus"
- 			  class="wide-button add-image"
+ 	<md-button class="fa fa-plus wide-button add-image"
  			  ng-if="editing"
  			  ng-click="initImageUpload()">
  		Dodaj obraz
- 	</pebutton>
+ 	</md-button>
  	<input id="add-image-button" class="hidden" type="file" ng-file-select="addImage($files)" multiple>
 
  </div>

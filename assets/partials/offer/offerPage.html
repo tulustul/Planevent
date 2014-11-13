@@ -18,23 +18,27 @@
         </alert>
 
         <div ng-show="state=='editing'">
-            <pebutton icon="save" ng-click="saveOffer()">
+            <md-button class="fa fa-save" ng-click="saveOffer()">
                 Zapisz zmiany
-            </pebutton>
-            <pebutton icon="ban" ng-click="state='viewing'">
+            </md-button>
+            <md-button class="fa fa-ban" ng-click="state='viewing'">
                 Anuluj zmiany
-            </pebutton>
+            </md-button>
         </div>
         <div ng-show="state=='viewing' || state=='saved'">
-            <pebutton icon="edit" ng-click="state='editing'">
+            <md-button class="fa fa-edit" ng-click="state='editing'">
                 Edytuj
-            </pebutton>
-            <pebutton icon="times" href="#" ng-click="removeOffer()">
-                Usuń
-            </pebutton>
-            <pebutton icon="ban" href="#">
-                Wyłącz ofertę
-            </pebutton>
+            </md-button>
+            <a href="#">
+                <md-button class="fa fa-times" ng-click="removeOffer()">
+                    Usuń
+                </md-button>
+            </a>
+            <a href="#">
+                <md-button class="fa fa-ban">
+                    Wyłącz ofertę
+                </md-button>
+            </a>
         </div>
         <spinner ng-show="state=='saving'"></spinner>
     </div>

@@ -31,10 +31,12 @@
 }
 
 @mixin button-color($color) {
-    color: $color;
-    border-color: $color;
-    &:hover {
-        color: $button-secondary-color;
-        background-color: $color;
+    &.md-default-theme {
+        color: $color;
+        border-color: $color;
+        &:not([disabled]):hover {
+            color: $button-secondary-color;
+            background-color: $color;
+        }
     }
 }
