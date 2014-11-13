@@ -3,7 +3,10 @@
 planevent.run(function(editableOptions, editableThemes) {
 	editableOptions.theme = 'bs3';
 	editableThemes.bs3.cancelTpl =
-		'<pebutton icon="times" ng-click="$form.$cancel()" />';
+		'<md-button class="fa fa-times small-button" ' +
+		'ng-click="$form.$cancel()"></md-button>';
+
 	editableThemes.bs3.submitTpl =
-		'<pebutton icon="check" ng-click="$form.$submit()" class="submit" />';
+		'<md-button class="fa fa-check small-button submit-button" ' +
+		'ng-click="$form.$submit()" class="submit"></md-button>';
 });

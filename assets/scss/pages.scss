@@ -2,130 +2,6 @@
 
 $searchBoxWidth: 300px;
 
-$create-edit-navigation-height: 41px;
-article#create-edit {
-    background: $ligth;
-    border: 1px solid;
-
-    section {
-
-        &.ng-leave {
-            @include transition(0.5s);
-            opacity: 1;
-        }
-
-        &.ng-enter {
-            @include transition(0.5s);
-            @include transition-delay(0.5s);
-            opacity: 0;
-        }
-
-        &.ng-leave-active {
-            opacity: 0;
-        }
-
-        &.ng-enter-active {
-            opacity: 1;
-        }
-
-        #address-form {
-
-            #address-incorrect {
-                color: red;
-            }
-
-            #address-correct {
-                color: green;
-            }
-
-            #validating-address {
-                color: gray;
-            }
-        }
-    }
-
-    #navigation {
-        height: $create-edit-navigation-height;
-        width: 100%;
-        display: table;
-        border-spacing: 7px 0px;
-        margin-bottom: 10px;
-        padding-top: 5px;
-        li {
-            @include span-columns(1, 6);
-            float: none;
-            margin: 11px;
-            padding: 0px;
-            @include gradient-background($darkGradient);
-            cursor: pointer;
-            vertical-align: middle;
-            display: table-cell;
-            text-align: center;
-            height: $create-edit-navigation-height;
-            border: 1px solid;
-            border-bottom: none;
-            &:hover {
-                @include gradient-background($yellowGradient);
-            }
-            &.selected {
-                @include gradient-background($ligthGradient);
-            }
-        }
-    }
-}
-
-section#categories {
-    .checkbox-list {
-        display: none;
-    }
-    .full-list {
-        li {
-            float: left;
-            margin-right: 10px;
-            margin-bottom: 5px;
-            width: 55px;
-            @include gradient-background($darkGradient);
-            cursor: pointer;
-            list-style: none;
-            &:hover {
-                @include gradient-background($yellowGradient);
-            }
-            &.selected {
-                @include gradient-background($darkGreenGradient);
-            }
-            img {
-                height: 40px;
-                margin-left: 9px;
-                margin-top: 2px;
-            }
-            h6 {
-                text-align: center;
-                font-size: 10px;
-                margin: 0px;
-            }
-        }
-    }
-}
-
-#categories-view {
-    @include span-columns(2);
-    #categories {
-        select {
-            width: 100%;
-        }
-        li {
-            width: 100%;
-            img {
-                float: left;
-            }
-            h6 {
-                font-size: 20px;
-                margin: 10px;
-            }
-        }
-    }
-}
-
 $relatedOffersWidth: 496px;
 $mapAndGallerySize: 350px;
 .offer-page {
@@ -149,9 +25,6 @@ $mapAndGallerySize: 350px;
             font-size: 35px;
             font-weight: 300;
             margin: 0px;
-        }
-        pebutton {
-            float: right;
         }
     }
     #offer {
@@ -461,113 +334,11 @@ offerpreview {
     padding: 15px;
 }
 
-#logging {
-    float: right;
-    margin-right: 20px;
-    margin-top: 4px;
-    .login-menu {
-        position: absolute;
-        right: 20px;
-        width: 245px;
-        background-color: white;
-        padding: 7px 0px;
-        text-align: center;
-        border: 2px solid $dominant;
-        a {
-            width: 220px;
-        }
-
-        &.ng-leave {
-            @include transition(0.5s);
-            opacity: 1;
-        }
-
-        &.ng-enter {
-            @include transition(0.5s);
-            @include transition-delay(0.5s);
-            opacity: 0;
-        }
-
-        &.ng-leave-active {
-            opacity: 0;
-        }
-
-        &.ng-enter-active {
-            opacity: 1;
-        }
-    }
-}
-
-.login-form {
-    .register {
-        border-bottom: 2px solid $dominant;
-        padding-bottom: 9px;
-        margin-bottom: 9px;
-    }
-    .login-error {
-        color: $dominant;
-    }
-    .login-success {
-        color: $success;
-    }
-    .login-link {
-        display: block;
-        cursor: pointer;
-        font-size: 17px;
-        width: 100% !important;
-        padding: 2px;
-        color: $dominant;
-    }
-    input {
-        height: 30px;
-        width: 220px;
-        padding-left: 5px;
-        margin: 5px 0px;
-    }
-    h4 {
-        padding-top: 9px;
-        &:first-of-type {
-            border-top: 2px solid $dominant;
-        }
-    }
-}
-
-#registrationLandingPage {
-    background-color: white;
-    max-width: 1300px;
-    margin: 0px auto;
-    section {
-        float: left;
-        width: 23%;
-        margin: 20px;
-        &:last-of-type {
-            width: 220px;
-        }
-        .icon-header {
-            width: 100%;
-            text-align: center;
-            font-size: 60px;
-        }
-    }
-}
-
 #change-password-from-recall {
     margin: 0px auto;
     width: 250px;
     background: white;
     padding: 10px;
-}
-
-#promoted-offers {
-    margin-right: 5px !important;
-    @include span-columns(10 omega);
-    .flex-control-nav {
-        top: -30px;
-        height: 11px;
-    }
-    .category {
-        background-color: white;
-    }
 }
 
 #user-profile {

@@ -65,7 +65,7 @@ angular.module('planevent').config(
     })
 
     .when('/offers/search', {
-        templateUrl: 'assets/partials/offersList.html',
+        templateUrl: 'assets/partials/offers/offersList.html',
         controller: 'OfferListController',
         reloadOnSearch: false
     })

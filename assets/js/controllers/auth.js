@@ -68,7 +68,7 @@ angular.module('planevent').controller('LoginController',
     $scope.showRemindPasswordForm = function() {
         var remindPasswordScope = $scope.$new(true);
         remindPasswordScope.modal = $modal.open({
-            templateUrl: 'assets/partials/remindPasswordModal.html',
+            templateUrl: 'assets/partials/auth/remindPasswordModal.html',
             scope: remindPasswordScope,
             windowClass: 'remindPasswordModal',
             controller: 'RemindPasswordController',

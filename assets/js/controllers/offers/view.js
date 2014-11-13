@@ -70,7 +70,7 @@ angular.module('planevent').controller('OfferPageController',
         galleryScope.gallery = $scope.offer.gallery;
         galleryScope.editing = $scope.state === 'editing';
         galleryScope.modal = $modal.open({
-            templateUrl: 'assets/partials/galleryModal.html',
+            templateUrl: 'assets/partials/offer/galleryModal.html',
             scope: galleryScope,
             windowClass: 'galleryModal',
         });

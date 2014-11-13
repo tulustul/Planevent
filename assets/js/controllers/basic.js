@@ -2,11 +2,6 @@
 
 angular.module('planevent').controller('HomePageController',
     function($scope, authService) {
-        $scope.registrationLandingPage =
-            'assets/partials/registrationLandingPage.html';
-        $scope.promotedView = 'assets/partials/promotedView.html';
-        $scope.recomendationsView = 'assets/partials/recomendationsView.html';
-
         authService.getLoggedUser(function(loggedUser) {
             $scope.loggedUser = loggedUser;
             $scope.address = $scope.loggedUser.settings.address;
@@ -25,11 +20,6 @@ angular.module('planevent').controller('HomePageController',
 
 angular.module('planevent').controller('MainPageController',
     function($scope, $modal, categoriesService, searchService) {
-        $scope.mainView = 'assets/partials/mainView.html';
-        $scope.categoriesView = 'assets/partials/categoriesView.html';
-        $scope.searchForm = 'assets/partials/search.html';
-        $scope.promotedOffersView = 'assets/partials/promotedOffers.html';
-
         $scope.categories = categoriesService.categories;
 
         // $scope.getPromotedOffers = function() {
@@ -45,7 +35,7 @@ angular.module('planevent').controller('MainPageController',
         $scope.showRegistrationForm = function() {
             var registrationScope = $scope.$new(true);
             registrationScope.modal = $modal.open({
-                templateUrl: 'assets/partials/registrationModal.html',
+                templateUrl: 'assets/partials/auth/registrationModal.html',
                 scope: registrationScope,
                 windowClass: 'registrationModal',
                 controller: 'RegistrationController',
@@ -55,7 +45,7 @@ angular.module('planevent').controller('MainPageController',
         $scope.showLoginForm = function() {
             var loginScope = $scope.$new(true);
             loginScope.modal = $modal.open({
-                templateUrl: 'assets/partials/loginModal.html',
+                templateUrl: 'assets/partials/auth/loginModal.html',
                 scope: loginScope,
                 windowClass: 'loginModal',
                 controller: 'LoginController',

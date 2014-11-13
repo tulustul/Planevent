@@ -26,19 +26,19 @@
             </md-button>
         </div>
         <div ng-show="state=='viewing' || state=='saved'">
-            <md-button class="fa fa-edit" ng-click="state='editing'">
-                Edytuj
-            </md-button>
-            <a href="#">
-                <md-button class="fa fa-times" ng-click="removeOffer()">
-                    Usuń
-                </md-button>
-            </a>
             <a href="#">
                 <md-button class="fa fa-ban">
                     Wyłącz ofertę
                 </md-button>
             </a>
+            <a href="#">
+                <md-button class="fa fa-times" ng-click="removeOffer()">
+                    Usuń
+                </md-button>
+            </a>
+            <md-button class="fa fa-edit" ng-click="state='editing'">
+                Edytuj
+            </md-button>
         </div>
         <spinner ng-show="state=='saving'"></spinner>
     </div>
