@@ -5,18 +5,16 @@
             Szukajka
         </div>
 
-        <div>
-            <md-button id="searchButton" class="fa fa-search bottom-button" ng-click="clearMap();search()"></md-button>
-            <div class="searchField">
-                <input type="text" placeholder="Szukaj">
-                <!-- <angucomplete
-                  placeholder="Szukaj"
-                  pause="100"
-                  localdata="searchTags"
-                  searchFields="name"
-                  titlefield="name"
-                  selectedobject="selectedSearchTags" /> -->
-            </div>
+        <div class="searchBox">
+            <!-- <angucomplete
+              placeholder="Szukaj"
+              pause="100"
+              localdata="searchTags"
+              searchFields="name"
+              titlefield="name"
+              selectedobject="selectedSearchTags" /> -->
+            <input type="text" placeholder="Szukaj" class="form-control">
+            <md-button id="searchButton" class="fa fa-search" ng-click="clearMap();search()"></md-button>
         </div>
 
         <div class="searchFilter" ng-click="categoryEnabled=!categoryEnabled">
@@ -64,6 +62,15 @@
         </div>
     </section>
     <div class="formField slideAnimation" ng-show="mapVisible">
+        <addressViewer
+            ng-model="location"
+            radius="radius"
+            scale-policy="radius-only"
+            markers-model=""
+            update-function-name="updateMap"
+            clear-markers-function-name="clearMap"
+            ng-class="{bigAddressViewer: bigMap, smallAddressViewer: !bigMap}" >
+        </addressViewer>
         <md-button
             class="fa fa-search-plus"
             ng-click="bigMap=true; updateMap(0.5)"
@@ -74,15 +81,6 @@
             ng-click="bigMap=false; updateMap(0.5)"
             ng-show="bigMap">Mała mapa
         </md-button>
-        <addressViewer
-            ng-model="location"
-            radius="radius"
-            scale-policy="radius-only"
-            markers-model=""
-            update-function-name="updateMap"
-            clear-markers-function-name="clearMap"
-            ng-class="{bigAddressViewer: bigMap, smallAddressViewer: !bigMap}" >
-        </addressViewer>
     </div>
 </div>
 </div>
