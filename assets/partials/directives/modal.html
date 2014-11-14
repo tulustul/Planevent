@@ -1,6 +1,7 @@
-<div class="modal-header">
-	<span>{{ title }}</span>
-	<span class="modal-close fa fa-times" ng-click="modal.close()"></span>
-</div>
-
-<div class="modal-body" ng-transclude></div>
+<md-dialog aria-label="{{ title }}">
+	<md-subheader class="md-sticky-no-effect">
+		{{ title }}
+		<span class="modal-close fa fa-times" ng-click="close()"></span>
+	</md-subheader>
+	<md-content ng-transclude></md-content>
+</md-dialog>

@@ -17,12 +17,11 @@
 
 md-button.md-default-theme {
     float: left;
-    color: $button-primary-color;
-    background-color: $button-background-color;
     cursor: pointer;
     padding: 5px;
     border-radius: 8px;
-    border: 2px solid $button-primary-color;
+    border-width: 2px;
+    border-style: solid;
     text-transform: none;
     display: flex;
     align-items: center;
@@ -30,6 +29,8 @@ md-button.md-default-theme {
     font-size: 15px;
     margin: 0px 3px;
     min-width: 30px;
+    background-color: $button-secondary-color;
+    @include button-color($dominant);
     &:before {
         padding-left: 3px;
         font-size: 30px;
@@ -38,12 +39,9 @@ md-button.md-default-theme {
     &:not([disabled]):hover {
         @include transition(0.5s);
         text-decoration: none;
-        background-color: $button-primary-color;
-        color: $button-secondary-color;
     }
     &:not([disabled]).focus {
         box-shadow: 0px 0px 10px;
-        background-color: $button-background-color;
     }
     .md-button-inner {
         height: auto;
@@ -65,10 +63,10 @@ md-button.md-default-theme {
     width: 100%;
     justify-content: center;
 }
-.submit-button {
+md-button.submit-button {
     @include button-color($button-submit-color);
 }
-.call-to-action-button {
+md-button.call-to-action-button {
     @include button-color($button-call-to-action-color);
 }
 
@@ -391,27 +389,41 @@ $galleryHeigth: 500px;
     margin: 0px 50px;
 }
 
-.modal-dialog {
-    .modal-header {
-        padding: 0px;
-        border-bottom: 2px solid $dominant;
-        font-size: 40px;
-        font-weight: 300;
-        text-align: center;
-        .modal-close {
-            float: right;
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            color: $dominant;
-            cursor: pointer;
-            text-decoration: none;
-            @include transition(0.3s);
-            &:hover {
+modal {
+    max-width: 80%;
+    max-height: 80%;
+    md-dialog.md-default-theme {
+        background-color: white;
+        border-radius: 8px;
+        max-width: 100%;
+        .md-subheader {
+            padding-top: 7px;
+            padding-bottom: 10px;
+            margin-right: 0px;
+            border-bottom: 2px solid $dominant;
+            font-size: 40px;
+            font-weight: 300;
+            text-align: center;
+            flex: 0 0 auto;
+            background-color: transparent;
+            .modal-close {
+                float: right;
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                color: $dominant;
+                cursor: pointer;
+                text-decoration: none;
                 @include transition(0.3s);
-                text-shadow: 2px 2px 0px black;
-                @include transform(scale(1.2));
+                &:hover {
+                    @include transition(0.3s);
+                    text-shadow: 2px 2px 0px black;
+                    @include transform(scale(1.2));
+                }
             }
+        }
+        md-content {
+            background-color: transparent;
         }
     }
 }

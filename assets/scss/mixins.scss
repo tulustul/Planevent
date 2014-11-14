@@ -36,5 +36,11 @@
             color: $button-secondary-color;
             background-color: $color;
         }
+        &:not([disabled]).focus {
+            background-color: $button-secondary-color;
+            &:hover {
+                background-color: $color;
+            }
+        }
     }
 }

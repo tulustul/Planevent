@@ -20,57 +20,56 @@ angular.module('planevent').controller('PasswordRecallCallbackController',
     };
 });
 
+// angular.module('planevent').controller('LoginController',
+//         function($scope, $rootScope, authService) {
+
+//     $scope.email = '';
+//     $scope.password = '';
+//     $scope.message = '';
+//     $scope.form = '';
+//     $scope.waiting = false;
+//     $scope.registration = false;
+
+//     $scope.login = function(email, password) {
+//         $scope.waiting = true;
+//         $scope.message = '';
+
+//         authService.login(email, password)
+//         .success(function(account) {
+//             $scope.waiting = false;
+//             $rootScope.$broadcast('loggedIn', account);
+//             authService.loggedUser = account;
+//         })
+//         .error(function(response) {
+//             $scope.waiting = false;
+//             $scope.message = response.message;
+//         });
+//     };
+
+//     $scope.register = function(email, password) {
+//         $scope.waiting = true;
+//         $scope.message = '';
+
+//         authService.register(email, password)
+//         .success(function(account) {
+//             $scope.waiting = false;
+//             $rootScope.$broadcast('loggedIn', account);
+//         })
+//         .error(function(response) {
+//             $scope.waiting = false;
+//             $scope.message = response.message;
+//         });
+//     };
+// });
+
 angular.module('planevent').controller('LoginController',
-        function($scope, $rootScope, authService) {
+        function($scope, $mdDialog) {
 
-    $scope.email = '';
-    $scope.password = '';
-    $scope.message = '';
-    $scope.form = '';
-    $scope.waiting = false;
-    $scope.registration = false;
-
-    $scope.login = function(email, password) {
-        $scope.waiting = true;
-        $scope.message = '';
-
-        authService.login(email, password)
-        .success(function(account) {
-            $scope.waiting = false;
-            $rootScope.$broadcast('loggedIn', account);
-            authService.loggedUser = account;
-        })
-        .error(function(response) {
-            $scope.waiting = false;
-            $scope.message = response.message;
-        });
-    };
-
-    $scope.register = function(email, password) {
-        $scope.waiting = true;
-        $scope.message = '';
-
-        authService.register(email, password)
-        .success(function(account) {
-            $scope.waiting = false;
-            $rootScope.$broadcast('loggedIn', account);
-        })
-        .error(function(response) {
-            $scope.waiting = false;
-            $scope.message = response.message;
-        });
-    };
-});
-
-angular.module('planevent').controller('LoginController',
-        function($scope, $modal) {
+    $scope.close = $mdDialog.hide;
 
     $scope.showRemindPasswordForm = function() {
-        var remindPasswordScope = $scope.$new(true);
-        remindPasswordScope.modal = $modal.open({
+        $mdDialog.show({
             templateUrl: 'assets/partials/auth/remindPasswordModal.html',
-            scope: remindPasswordScope,
-            windowClass: 'remindPasswordModal',
             controller: 'RemindPasswordController',
         });
     };
@@ -81,12 +80,16 @@ angular.module('planevent').controller('LoginController',
 });
 
 angular.module('planevent').controller('RegistrationController',
-        function($scope) {
+        function($scope, $mdDialog) {
+
+    $scope.close = $mdDialog.hide;
 
 });
 
 angular.module('planevent').controller('RemindPasswordController',
-        function($scope, authService) {
+        function($scope, $mdDialog, authService) {
+
+    $scope.close = $mdDialog.hide;
 
     $scope.remindPassword = function(email) {
         $scope.waiting = true;

@@ -19,7 +19,7 @@ angular.module('planevent').controller('HomePageController',
 );
 
 angular.module('planevent').controller('MainPageController',
-    function($scope, $modal, categoriesService, searchService) {
+    function($scope, $mdDialog, categoriesService, searchService) {
         $scope.categories = categoriesService.categories;
 
         // $scope.getPromotedOffers = function() {
@@ -33,21 +33,15 @@ angular.module('planevent').controller('MainPageController',
         });
 
         $scope.showRegistrationForm = function() {
-            var registrationScope = $scope.$new(true);
-            registrationScope.modal = $modal.open({
+            $mdDialog.show({
                 templateUrl: 'assets/partials/auth/registrationModal.html',
-                scope: registrationScope,
-                windowClass: 'registrationModal',
                 controller: 'RegistrationController',
             });
         };
 
         $scope.showLoginForm = function() {
-            var loginScope = $scope.$new(true);
-            loginScope.modal = $modal.open({
+            $mdDialog.show({
                 templateUrl: 'assets/partials/auth/loginModal.html',
-                scope: loginScope,
-                windowClass: 'loginModal',
                 controller: 'LoginController',
             });
         };
