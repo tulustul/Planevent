@@ -12,14 +12,14 @@ angular.module('planevent').controller('HomePageController',
             $scope.address = $scope.loggedUser.settings.address;
         });
 
-        $scope.$on('loggedOut', function(event) {
+        $scope.$on('loggedOut', function() {
             $scope.loggedUser = null;
         });
     }
 );
 
 angular.module('planevent').controller('MainPageController',
-    function($scope, $mdDialog, categoriesService, searchService) {
+    function($scope, $mdDialog, $mdSidenav, categoriesService, searchService) {
         $scope.categories = categoriesService.categories;
 
         // $scope.getPromotedOffers = function() {
@@ -30,6 +30,14 @@ angular.module('planevent').controller('MainPageController',
 
         $scope.$on('showRegistrationForm', function() {
             $scope.showRegistrationForm();
+        });
+
+        $scope.$on('toggleUserSidebar', function() {
+            $mdSidenav('userSidebar').toggle();
+        });
+
+        $scope.$on('closeUserSidebar', function() {
+            $mdSidenav('userSidebar').close();
         });
 
         $scope.showRegistrationForm = function() {
@@ -101,5 +109,23 @@ angular.module('planevent').controller('FeedbackController',
             $scope.status = 'error';
 
         });
+    };
+});
+
+angular.module('planevent').controller('NavigationActionsController',
+        function($scope, $mdSidenav, userProfileService) {
+
+    userProfileService.prepareScope($scope);
+
+    $scope.$on('loggedIn', function(event, account) {
+        $scope.account = account;
+    });
+
+    $scope.$on('loggedOut', function() {
+        $scope.account = null;
+    });
+
+    $scope.toogleMenu = function() {
+        $scope.$emit('toggleUserSidebar');
     };
 });

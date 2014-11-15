@@ -1,43 +1,5 @@
 'use strict';
 
-angular.module('planevent').service('userProfileService',
-        function($location, authService) {
-
-    this.prepareScope = function(scope) {
-        scope.userProfileNavigation =
-            'assets/partials/profile/userProfileNavigation.html';
-
-        authService.getLoggedUser(function(loggedUser) {
-            scope.loggedUser = loggedUser;
-            if (loggedUser === undefined || loggedUser === 'null') {
-                $location.path('/');
-                return;
-            }
-        });
-    };
-});
-
-angular.module('planevent').controller('AccountController',
-        function($scope, $rootScope, $location, userProfileService,
-         authService) {
-    $scope.loggedUser = null;
-
-    $scope.waiting = false;
-
-    userProfileService.prepareScope($scope);
-
-    $scope.$on('loggedIn', function(event, account) {
-        $scope.loggedUser = account;
-    });
-
-    $scope.logout = function() {
-        authService.logout();
-        $scope.loggedUser = null;
-        $rootScope.$broadcast('loggedOut');
-        $location.path('/');
-    };
-});
-
 angular.module('planevent').controller('ProfileInformationsController',
         function($scope, userProfileService) {
 

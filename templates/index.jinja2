@@ -20,6 +20,7 @@
             'ngRoute',
             'ngResource',
             'ngAria',
+            'ngMessages',
             // angular ui bootstrap
             'ui.bootstrap.alert',
             'ui.bootstrap.modal',
@@ -62,24 +63,14 @@
 
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400' rel='stylesheet' type='text/css'>
 </head>
-<body ng-controller="MainPageController">
+<body ng-controller="MainPageController" layout="vertical">
     <header>
         <a class="title" href="/">
             <img src="/static/images/icons/question.png" alt="logo">
             <h1>Planevent</h1>
         </a>
 
-        <div class="actions">
-            <md-button class="fa fa-plus call-to-action-button">
-                Dodaj ofertę
-            </md-button>
-            <md-button class="fa fa-rocket submit-button" ng-click="showRegistrationForm()">
-                Zarejestruj się
-            </md-button>
-            <md-button class="fa fa-sign-in" ng-click="showLoginForm()">
-                Zaloguj się
-            </md-button>
-        </div>
+        <div ng-include="'assets/partials/navigationActions.html'"></div>
 
         <!-- <experiment id="addOfferExp">
             <variation id="bsVar">
@@ -95,6 +86,7 @@
         <section class="content">
             <div id="view" ng-view></div>
         </section>
+        <div ng-include="'assets/partials/auth/userSidebar.html'"></div>
     </div>
     <footer>
         <a href="#/about">O nas</a>|

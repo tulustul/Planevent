@@ -110,4 +110,5 @@ def try_login(request, email, password):
 
 
 def logout(request):
-    del request.session['user']
+    if 'user' in request.session:
+        del request.session['user']

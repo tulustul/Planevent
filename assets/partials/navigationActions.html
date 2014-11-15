@@ -1,0 +1,16 @@
+<section ng-controller="NavigationActionsController">
+
+	<md-button class="fa fa-plus call-to-action-button">
+	    Dodaj ofertę
+	</md-button>
+	<md-button ng-if="!account" class="fa fa-rocket submit-button" ng-click="showRegistrationForm()">
+	    Zarejestruj się
+	</md-button>
+	<md-button ng-if="!account" class="fa fa-sign-in" ng-click="showLoginForm()">
+	    Zaloguj się
+	</md-button>
+	<md-button ng-if="account" class="fa fa-user" ng-click="toogleMenu()">
+	    {{ account.email }}
+	</md-button>
+
+</section>

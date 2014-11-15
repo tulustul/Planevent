@@ -1,5 +1,22 @@
 'use strict';
 
+angular.module('planevent').service('userProfileService',
+        function($location, authService) {
+
+    this.prepareScope = function(scope) {
+        scope.userProfileNavigation =
+            'assets/partials/profile/userProfileNavigation.html';
+
+        authService.getLoggedUser(function(account) {
+            scope.account = account;
+            if (account === undefined || account === 'null') {
+                $location.path('/');
+                return;
+            }
+        });
+    };
+});
+
 angular.module('planevent').controller('PasswordRecallCallbackController',
         function($scope, $routeParams, authService) {
 
@@ -63,7 +80,7 @@ angular.module('planevent').controller('PasswordRecallCallbackController',
 // });
 
 angular.module('planevent').controller('LoginController',
-        function($scope, $mdDialog) {
+        function($scope, $rootScope, $mdDialog, authService) {
 
     $scope.close = $mdDialog.hide;
 
@@ -75,14 +92,52 @@ angular.module('planevent').controller('LoginController',
     };
 
     $scope.showRegistrationForm = function() {
-        $scope.$emit('showRegistrationForm');
+        $scope.$broadcast('showRegistrationForm');
+    };
+
+    $scope.login = function(email, password) {
+        $scope.waiting = true;
+        $scope.message = '';
+
+        authService.login(email, password)
+        .success(function(account) {
+            $scope.waiting = false;
+            $rootScope.$broadcast('loggedIn', account);
+            authService.loggedUser = account;
+            $mdDialog.hide();
+        })
+        .error(function(response) {
+            $scope.waiting = false;
+            $scope.message = response.message;
+        });
     };
 });
 
 angular.module('planevent').controller('RegistrationController',
-        function($scope, $mdDialog) {
+        function($scope, $rootScope, $mdDialog, authService) {
 
     $scope.close = $mdDialog.hide;
+
+    $scope.register = function(email, password, passwordRepeat) {
+        $scope.waiting = true;
+        $scope.message = '';
+
+        if (password !== passwordRepeat) {
+            // $scope.registrationForm.password.$error.dontMatch = true;
+            $scope.passwordRepeat.$setValidity(false);
+            return;
+        }
+
+        authService.register(email, password, passwordRepeat)
+        .success(function(account) {
+            $scope.waiting = false;
+            $rootScope.$broadcast('loggedIn', account);
+        })
+        .error(function(response) {
+            $scope.waiting = false;
+            $scope.message = response.message;
+        });
+    };
 
 });
 
@@ -97,8 +152,6 @@ angular.module('planevent').controller('RemindPasswordController',
         authService.sendRecallEmail(email)
         .success(function(response) {
             $scope.waiting = false;
-            // $scope.showLoginForm = true;
-            // $scope.showRecallForm = false;
             $scope.message = response.message;
         })
         .error(function(response) {
@@ -107,3 +160,19 @@ angular.module('planevent').controller('RemindPasswordController',
         });
     };
 });
+
+angular.module('planevent').controller('UserSidebarController',
+        function($scope, $rootScope, $mdSidenav, authService) {
+
+    $scope.close = function() {
+        $mdSidenav('userSidebar').close();
+    }
+
+    $scope.logout = function() {
+        authService.logout(function() {
+            $rootScope.$broadcast('loggedOut');
+            $mdSidenav('userSidebar').close();
+        });
+    };
+});
+

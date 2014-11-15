@@ -1,0 +1,29 @@
+<md-sidenav class="user-sidebar md-sidenav-right" component-id="userSidebar">
+    <md-content class="md-padding" layout="vertical" ng-controller="UserSidebarController">
+
+        <a href="/userProfile/informations">
+	        <md-button class="md-primary wide-button fa fa-user" ng-click="close()">
+	            Profil
+	        </md-button>
+        </a>
+
+        <a href="/userProfile/settings">
+	        <md-button class="md-primary wide-button fa fa-gear" ng-click="close()">
+	            Ustawienia
+	        </md-button>
+        </a>
+
+        <a href="/userProfile/likings">
+	        <md-button class="md-primary wide-button fa fa-smile-o" ng-click="close()">
+	            Upodobania
+	        </md-button>
+        </a>
+
+        <md-divider></md-divider>
+
+        <md-button class="md-primary call-to-action-button fa fa-sign-out" ng-click="logout()">
+            Wyloguj
+        </md-button>
+
+    </md-content>
+</md-sidenav>

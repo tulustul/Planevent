@@ -481,3 +481,15 @@ offerpreview {
         }
     }
 }
+
+.user-sidebar {
+    md-content {
+        padding-top: 0px;
+        md-button {
+            margin: 10px 0px;
+        }
+        md-divider {
+            margin: 10px 0px;
+        }
+    }
+}

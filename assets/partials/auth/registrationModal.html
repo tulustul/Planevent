@@ -1,12 +1,19 @@
 <modal title="Rejestracja" class="registrationModal">
 	<p>Zarejestruj się przez swój email</p>
-	<form id="login-form" layout="vertical" layout-align="center center">
-		<md-text-float label="Email" fid="email" ng-model="email" type="email"></md-text-float>
-		<md-text-float label="Hasło" ng-model="password" type="password"></md-text-float>
-		<md-text-float label="Powtórz hasło" ng-model="passwordRepeated" type="password"></md-text-float>
-		<md-button class="submit-button fa fa-sign-in" ng-click="register()" type="submit">
+	<form name="registrationForm" id="login-form" layout="vertical" layout-align="center center">
+		<md-text-float label="Email" fid="email" ng-model="email" type="email" required></md-text-float>
+		<md-text-float label="Hasło" ng-model="password" type="password" minlength="5" required></md-text-float>
+		<md-text-float name="passwordRepeated" label="Powtórz hasło" ng-model="passwordRepeated" type="password" required compare-to="password"></md-text-float>
+
+		<ng-messages for="registrationForm.passwordRepeated.$error">
+			<ng-message when="compareTo">Podane hasła nie są identyczne</ng-message>
+			<ng-message when="minlength">Hasło musi mieć przynajmniej 5 znaków</ng-message>
+		</ng-messages>
+
+		<md-button class="submit-button fa fa-sign-in" ng-click="register(email, password, passwordRepeat)" type="submit" ng-disabled="registrationForm.$invalid">
 			Zarejestruj się
 		</md-button>
+
 	</form>
 
 	<p>lub</p>

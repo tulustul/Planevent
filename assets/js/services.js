@@ -55,7 +55,8 @@ angular.module('planevent').service('offersService',
     };
 });
 
-angular.module('planevent').service('authService', function($http) {
+angular.module('planevent').service('authService',
+        function($http, $location) {
 
     var self = this;
     this.loggedUser = null;
@@ -104,10 +105,12 @@ angular.module('planevent').service('authService', function($http) {
         });
     };
 
-    this.logout = function() {
+    this.logout = function(callback) {
         $http.post('/api/logout')
         .success(function() {
             self.loggedUser = null;
+            $location.path('/');
+            callback();
         });
     };
 

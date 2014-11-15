@@ -6,6 +6,7 @@
     "angular-animate": "*",
     "angular-resource": "*",
     "angular-route": "*",
+    "angular-messages": "*",
     "angular-material": "*",
     "ng-file-upload": "*",
     "ng-table": "*",

@@ -1,12 +1,18 @@
 <modal title="Logowanie" class="loginModal">
 	<p>Zaloguj się przez swój email</p>
-	<form id="login-form" layout="vertical" layout-align="center center">
-		<md-text-float label="Email" ng-model="email" type="email" fid="email"></md-text-float>
-		<md-text-float label="Hasło" ng-model="password" type="password" fid="password"></md-text-float>
+	<form name="loginForm" id="login-form" layout="vertical" layout-align="center center">
+		<md-text-float label="Email" ng-model="email" type="email" fid="email" required></md-text-float>
+		<span ng-show="loginForm.email.$error.required">Tell us your email.</span>
+		<md-text-float label="Hasło" ng-model="password" type="password" fid="password" required></md-text-float>
 
-		<md-button class="submit-button wide-button fa fa-sign-in" ng-click="login()" type="submit">
+		<md-button class="submit-button wide-button fa fa-sign-in"
+		    	   type="submit"
+		    	   ng-click="login(email, password)"
+		    	   ng-disabled="loginForm.$invalid"
+		    	   ng-show="!waiting">
 			Zaloguj się
 		</md-button>
+		<spinner ng-show="waiting"></spinner>
 	</form>
 
 	<p>lub</p>

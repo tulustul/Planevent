@@ -27,6 +27,7 @@ var vendorJs = {
         'bower_components/angular-animate/angular-animate.js',
         'bower_components/angular-resource/angular-resource.js',
         'bower_components/angular-route/angular-route.js',
+        'bower_components/angular-messages/angular-messages.js',
 
         'bower_components/angucomplete/angucomplete.js',
         'bower_components/ngAutocomplete/src/ngAutocomplete.js',
