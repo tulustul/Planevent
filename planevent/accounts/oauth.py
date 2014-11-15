@@ -85,10 +85,16 @@ def process_oauth_user(provider, provider_user):
 
     is_new = False
     if not account:
+        email = provider_user.get('email')
+        if email:
+            account = models.Account.get_by_email(email)
+
+    if not account:
         account = models.Account.create(email=provider_user.get('email'))
-        account.credentials.origin_id = provider_user.get('id'),
-        account.credentials.provider = provider,
         is_new = True
+
+    account.credentials.origin_id = provider_user.get('id'),
+    account.credentials.provider = provider,
 
     provider_settings = settings.OAUTH[provider]
 
