@@ -16,7 +16,7 @@ angular.module('planevent').controller('OfferListController',
 });
 
 angular.module('planevent').controller('OfferPageController',
-        function($scope, $resource, $routeParams, $modal, categoriesService) {
+        function($scope, $resource, $routeParams, $mdDialog, categoriesService) {
 
     var Offer = $resource('/api/offer/:offerId', {offerId: '@id'});
 
@@ -66,13 +66,13 @@ angular.module('planevent').controller('OfferPageController',
     };
 
     $scope.showGallery = function() {
-        var galleryScope = $scope.$new(true);
-        galleryScope.gallery = $scope.offer.gallery;
-        galleryScope.editing = $scope.state === 'editing';
-        galleryScope.modal = $modal.open({
+        $mdDialog.show({
             templateUrl: 'assets/partials/offer/galleryModal.html',
-            scope: galleryScope,
-            windowClass: 'galleryModal',
+            controller: 'GalleryModalController',
+            locals: {
+                gallery: $scope.offer.gallery,
+                editing: $scope.state === 'editing',
+            },
         });
     };
 
@@ -132,4 +132,13 @@ angular.module('planevent').controller('RecommendedOffersController',
     .success(function(recommendations) {
         $scope.recommendations = recommendations;
     });
+});
+
+angular.module('planevent').controller('GalleryModalController',
+        function($scope, $mdDialog, gallery, editing) {
+
+    $scope.close = $mdDialog.hide;
+
+    $scope.gallery = gallery;
+    $scope.editing = editing;
 });

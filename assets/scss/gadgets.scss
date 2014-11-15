@@ -126,7 +126,8 @@ $galleryPreviewSize: 155px;
 }
 
 $galleryHeigth: 500px;
-.gallery {
+gallery {
+    display: flex;
     .flex-control-thumbs{
         display: flex;
         align-items: center;
@@ -169,12 +170,14 @@ $galleryHeigth: 500px;
     }
 }
 
-.galleryModal .modal-dialog {
-    width: 80%;
+.gallery-modal {
     max-width: 1000px;
-    .modal-body {
-        .flexslider {
-            margin: 0px;
+    md-content {
+        display: flex;
+        .gallery {
+            .flexslider {
+                margin: 0px;
+            }
         }
     }
 }
@@ -398,12 +401,13 @@ $galleryHeigth: 500px;
 }
 
 modal {
-    max-width: 80%;
-    max-height: 80%;
+    max-width: 90%;
+    max-height: 90%;
     md-dialog.md-default-theme {
         background-color: white;
         border-radius: 8px;
         max-width: 100%;
+        max-height: 90%;
         .md-subheader {
             padding-top: 7px;
             padding-bottom: 10px;
@@ -432,6 +436,7 @@ modal {
         }
         md-content {
             background-color: transparent;
+            overflow-x: hidden;
         }
     }
 }
