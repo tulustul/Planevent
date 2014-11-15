@@ -36,7 +36,7 @@ class Account(BaseEntity):
 
     __tablename__ = 'account'
     name = Column(String(50))
-    email = Column(String(50), nullable=False)
+    email = Column(String(50))
     first_name = Column(String(50))
     last_name = Column(String(50))
     link = Column(String(50))
@@ -66,6 +66,9 @@ class Account(BaseEntity):
             **kwargs
         )
 
+        if not account.name:
+            account._build_username()
+
         account.save()
 
         for subcategory in Subcategory.all():
@@ -85,10 +88,27 @@ class Account(BaseEntity):
 
     @classmethod
     def get_by_provider(cls, provider_name, id_in_provider):
-        return cls.query() \
-            .filter(AccountCrendentials.provider == provider_name) \
-            .filter(AccountCrendentials.origin_id == id_in_provider) \
+        credentials = (
+            AccountCrendentials.query()
+            .filter(AccountCrendentials.provider == provider_name)
+            .filter(AccountCrendentials.origin_id == id_in_provider)
             .first()
+        )
+        if credentials:
+            return cls.query().filter(
+                cls.credentials_id == credentials.id
+            ).first()
+        else:
+            return None
+
+    def _build_username(self):
+        if self.first_name:
+            self.name = self.first_name
+            if self.last_name:
+                self.name += self.last_name
+        elif self.email:
+            self.name = self.email
+
 
     def _generate_password_hash(self, password):
         hash = hashlib.sha256()

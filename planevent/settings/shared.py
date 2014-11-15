@@ -41,7 +41,7 @@ OAUTH = {
     'facebook': OAuthData(
         client_id='1375697412694445',
         secret_key='814f154c3744d73e57228206668d66f6',
-        authorize_url='https://graph.facebook.com/oauth/authorize',
+        authorize_url='https://www.facebook.com/dialog/oauth',
         access_token_url='https://graph.facebook.com/oauth/access_token',
         user_info_url='https://graph.facebook.com/me',
         scope=['email'],

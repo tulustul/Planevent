@@ -445,6 +445,9 @@ offerpreview {
         font-size: 20px;
         font-weight: 300;
     }
+    a md-button{
+        width: auto;
+    }
     md-button {
         width: 50%;
         &.submit-button {

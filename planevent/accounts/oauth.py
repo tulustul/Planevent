@@ -1,8 +1,8 @@
 import json
-import datetime
+import os
 
-from oauthlib.common import urldecode
 from requests_oauthlib import OAuth2Session
+from requests_oauthlib.compliance_fixes.facebook import facebook_compliance_fix
 
 from planevent import settings
 from planevent.accounts import (
@@ -11,20 +11,7 @@ from planevent.accounts import (
     auth,
 )
 
-
-def facebook_compliance_fix(session):
-
-    def _compliance_fix(response):
-        token = dict(urldecode(response.text))
-        expires = token.get('expires')
-        if expires is not None:
-            token['expires_in'] = expires
-        token['token_type'] = 'Bearer'
-        response._content = bytes(json.dumps(token), encoding='utf8')
-        return response
-
-    session.register_compliance_hook('access_token_response', _compliance_fix)
-    return session
+os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = 'True'
 
 
 def _get_oauth2_callback_url(request, provider):
@@ -98,8 +85,8 @@ def process_oauth_user(provider, provider_user):
 
     is_new = False
     if not account:
-        account = models.Account.create(email=provider_user['email'])
-        account.credentials.origin_id = provider_user['id'],
+        account = models.Account.create(email=provider_user.get('email'))
+        account.credentials.origin_id = provider_user.get('id'),
         account.credentials.provider = provider,
         is_new = True
 

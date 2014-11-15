@@ -13,18 +13,24 @@
 			Zaloguj się
 		</md-button>
 		<spinner ng-show="waiting"></spinner>
+
+		<span ng-show="message=='invalid_credentials'">Niepoprawne hasło</span>
 	</form>
 
 	<p>lub</p>
 
 	<div class="oauth">
-		<md-button class="fa fa-facebook">
-			Zaloguj się przez Facebook
-		</md-button>
+		<a href="/login/facebook" target="_self">
+			<md-button class="fa fa-facebook">
+				Zaloguj się przez Facebook
+			</md-button>
+		</a>
 
-		<md-button class="fa fa-google-plus">
-			Zaloguj się przez Google+
-		</md-button>
+		<a href="/login/google" target="_self">
+			<md-button class="fa fa-google-plus">
+				Zaloguj się przez Google+
+			</md-button>
+		</a>
 	</div>
 
 	<div class="options">
