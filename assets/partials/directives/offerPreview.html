@@ -1,32 +1,21 @@
-<a href="/#/offers/{{ offer.id }}">
-    <figure class="offer-preview-wrapper">
-        <!-- <div class="flipper"> -->
-            <!-- <div class="front"> -->
-                <div class="offer-preview">
-                    <img ng-src="{{ offer.preview_image_url }}" alt="offer logo">
-                    <div class="content top">
-                        <span class="name">{{ offer.name }}</span>
-                    </div>
-                    <div class="content bottom">
-                        <span class="city">{{ offer.address.city }}</span>
-                        <span class="price" ng-show="offer.price_min">
-                            {{ offer.price_min }} zł
-                            <span ng-show="offer.price_max">
-                                - {{ offer.price_max }} zł
-                            </span>
-                        </span>
-                    </div>
-                </div>
-            <!-- </div> -->
-<!--
-            <div class="back">
-                <div class="offer-preview">
-                    <img class="flipped" ng-src="{{ offer.preview_image_url }}" alt="offer logo">
-                    <div class="overlay-dark" />
-                    <p>{{ offer.description }}</p>
-                </div>
-            </div>
- -->
-        <!-- </div> -->
-    </figure>
+<a href="/#/offers/{{ offer.id }}" class="widget">
+    <img ng-src="{{ offer.preview_image_url }}" class="face" alt="offer logo ">
+    <section class="data">
+        <span class="title">{{ offer.name }}</span>
+        <span class="city">{{ offer.address.city }}</span>
+        <span class="price" ng-show="offer.price_min">
+            {{ offer.price_min }} zł
+            <span ng-show="offer.price_max">
+                - {{ offer.price_max }} zł
+            </span>
+        </span>
+        <p ng-bind-html="offer.short_description"></p>
+    </section>
+    <section class="author" layout="vertical" layout-align="center center">
+        <p>Dodał</p>
+        <img ng-if="offer.author.avatar" src="{{ offer.author.avatar }}" alt="author avatar">
+        <span>
+            {{ offer.author.name }}
+        </span>
+    </section>
 </a>

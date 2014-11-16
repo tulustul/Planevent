@@ -18,4 +18,5 @@ ADMINS = ADMINS + [User(
     name='Van Black',
     email='slawomir.jablonski@gmail.com',
     password='admin',
+    avatar=None,
 )]

@@ -186,6 +186,7 @@ def generate_random_tasks(quantity, progress_counter):
             name=admin_info.name,
             email=admin_info.email,
             role=account_models.Account.Role.ADMIN,
+            avatar=admin_info.avatar,
         )
         admin.set_password(admin_info.password)
         admin.save()

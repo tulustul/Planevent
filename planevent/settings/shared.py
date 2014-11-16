@@ -19,6 +19,7 @@ User = namedtuple(
         'name',
         'email',
         'password',
+        'avatar',
     ]
 )
 
@@ -69,7 +70,12 @@ RECALL_PASSWORD_TOKEN_EXPIRATION_TIME = 60  # in minutes
 MINIMUM_PASSWORD_LENGTH = 5
 
 ADMINS = [
-    User(name='tul', email='tulfm@poczta.fm', password='admin'),
+    User(
+        name='tul super admin',
+        email='tulfm@poczta.fm',
+        password='admin',
+        avatar='/static/images/avatars/avatar_200.gif',
+    ),
 ]
 
 OFFER_VIEW_INCREMENT_DELAY = 5  # in minutes

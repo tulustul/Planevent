@@ -16,6 +16,7 @@ ADMINS = ADMINS + [User(
     name='test account',
     email='test.account@example.com',
     password='asdasd',
+    avatar=None,
 )]
 
 USE_PERMISSIONS = False

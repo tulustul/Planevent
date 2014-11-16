@@ -105,6 +105,7 @@ def create_test_offer(test_instances):
     offer = models.Offer()
     offer.status = models.Offer.Status.ACTIVE
     offer.name = random.choice(testdata.offers['names'])
+    offer.short_description = random.choice(testdata.offers['descriptions'])[:200]
     offer.description = random.choice(testdata.offers['descriptions'])
     offer.category = random.choice(test_instances.categories)
     offer.added_at = datetime.datetime.now()

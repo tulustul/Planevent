@@ -206,7 +206,7 @@ class SearchOffersView(View):
             t[0] for t in query.limit(limit).offset(offset).all()
         ]
 
-        offers = models.Offer.query('address', 'logo') \
+        offers = models.Offer.query('address', 'logo', 'author') \
             .filter(models.Offer.id.in_(offers_ids)).all()
 
         return {

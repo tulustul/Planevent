@@ -136,11 +136,7 @@ $mapAndGallerySize: 350px;
         width: calc(100% - #{$searchBoxWidth} - 10px);
         float: right;
         margin-right: 10px;
-        .offer-preview-wrapper {
-            @include span-columns(2, 12);
-        }
         .loading-message {
-            @include span-columns(12 omega);
             text-align: center;
             span {
                 font-size: 40px;
@@ -151,78 +147,92 @@ $mapAndGallerySize: 350px;
     }
 }
 
-$offer-preview-width: 210px;
-$offer-preview-height: 250px;
+$offer-preview-size: 170px;
 $offer-preview-top-border: 4px;
 $offer-preview-bottom-border: 6px;
 offerpreview {
+    margin: 10px;
+    display: flex;
+    @include transition(0.3s);
     &.ng-leave {
         @include transition(0.5s);
         opacity: 1;
     }
-
     &.ng-enter {
         @include transition(0.5s);
         opacity: 0;
     }
-
     &.ng-enter-stagger {
         @include transition(0);
         @include transition-delay(0.05s);
     }
-
     &.ng-leave-active {
         opacity: 0;
     }
-
     &.ng-enter-active {
         opacity: 1;
     }
-    .offer-preview-wrapper {
-        min-width: $offer-preview-width;
-        max-width: $offer-preview-width;
-        width: $offer-preview-width;
-        height: $offer-preview-height;
-        position: relative;
-        margin: 10px;
-        box-shadow: 0 0 5px black;
-        float: left;
-        &:hover {
-            @include transition(0.3s);
-            @include scale(1.1);
-            box-shadow: 0 0 30px black;
+    &:hover {
+        @include transition(0.3s);
+        @include scale(1.02);
+        box-shadow: 0 0 30px black;
+    }
+    a {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: $offer-preview-size;
+        text-decoration: none;
+        overflow: hidden;
+        >img {
+            min-height: $offer-preview-size;
+            min-width: $offer-preview-size;
+            max-height: $offer-preview-size;
+            max-width: $offer-preview-size;
+            box-shadow: 0px 0px 10px black;
         }
-        .offer-preview {
-            width: 100%;
-            height: $offer-preview-height - $offer-preview-bottom-border;
-            background-color: white;
-            cursor: pointer;
-            border-top: $offer-preview-top-border solid $dominant;
-            overflow: hidden;
-            .content {
-                position: absolute;
-                padding: 5px;
-                width: 100%;
-                background-color: rgba(0, 0, 0, 0.6);
-                color: white;
-                &.top {
-                    font-size: 20px;
-                }
-                &.bottom {
-                    bottom: 0px;
-                    .city {
-                        font-size: 15px;
-                    }
-                    .price {
-                        float: right;
-                        margin-right: 15px;
-                    }
-                }
+        .data {
+            padding: 0px 16px;
+            height: $offer-preview-size;
+            flex-grow: 1;
+            .title {
+                display: block;
+                padding: 3px;
+                font-weight: 300;
+                font-size: 20px;
+                border-bottom: 2px solid $dominant;
+                margin-bottom: 5px;
+            }
+            .city {
+                margin-right: 20px;
+            }
+            .price {
+                color: gray;
+                font-weight: 200;
+            }
+            p {
+                font-size: 12px;
+                color: gray;
+                margin-top: 5px;
+            }
+        }
+        .author {
+            padding: 16px;
+            text-align: center;
+            font-weight: 200;
+            p {
+
             }
             img {
-                width: 100%;
-                height: 100%;
-                float: left;
+                width: 50px;
+                height: 50px;
+                border-radius: 100%;
+            }
+            span {
+                color: gray;
+            }
+            p {
+                margin-top: 0px;
             }
         }
     }

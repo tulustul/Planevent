@@ -49,8 +49,8 @@ var vendorJs = {
 };
 var vendorCss = {
     src: [
-        'bower_components/bootstrap/dist/css/bootstrap.css',
-        'bower_components/bootstrap/dist/css/bootstrap-theme.css',
+        // 'bower_components/bootstrap/dist/css/bootstrap.css',
+        // 'bower_components/bootstrap/dist/css/bootstrap-theme.css',
         'bower_components/jquery-ui/themes/base/jquery-ui.css',
         'bower_components/angucomplete/angucomplete.css',
         'bower_components/flexslider/flexslider.css',

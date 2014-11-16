@@ -46,6 +46,7 @@ class Account(BaseEntity):
     login_count = Column(Integer, default=0)
     role = Column(Integer, default=Role.NORMAL)
     password_protected = Column(Boolean, default=False)
+    avatar = Column(String(200))
 
     settings_id = Column(Integer, ForeignKey('account_settings.id'))
     credentials_id = Column(Integer, ForeignKey('account_credentials.id'))

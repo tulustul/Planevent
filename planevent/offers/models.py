@@ -35,6 +35,7 @@ class Offer(BaseEntity):
 
     __tablename__ = 'offer'
     name = Column(String(150))
+    short_description = Column(String(130))
     description = Column(Text)
     category_id = Column(Integer, ForeignKey('category.id'))
     added_at = Column(DateTime)
