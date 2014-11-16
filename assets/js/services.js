@@ -232,3 +232,19 @@ angular.module('planevent').service('fileUploadService',
         }
     };
 });
+
+angular.module('planevent').service('toastService',
+        function($mdToast) {
+
+    this.show = function(message) {
+        $mdToast.show({
+            controller: 'ToastController',
+            templateUrl: 'assets/partials/widgets/genericToast.html',
+            hideDelay: 5000,
+            position: 'top center',
+            locals: {
+                message: message,
+            },
+        });
+    };
+});

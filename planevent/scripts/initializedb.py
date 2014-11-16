@@ -103,6 +103,7 @@ def get_random_preview_image():
 
 def create_test_offer(test_instances):
     offer = models.Offer()
+    offer.status = models.Offer.Status.ACTIVE
     offer.name = random.choice(testdata.offers['names'])
     offer.description = random.choice(testdata.offers['descriptions'])
     offer.category = random.choice(test_instances.categories)
@@ -110,6 +111,7 @@ def create_test_offer(test_instances):
     offer.promotion = random.randrange(1000)
     offer.address = create_test_address()
     offer.logo = create_test_logo()
+    offer.author_id = 1
     if random.random() < 0.9:
         offer.price_min = random.randrange(1, 9) * 10**random.randrange(1, 3)
         if random.random() < 0.7:

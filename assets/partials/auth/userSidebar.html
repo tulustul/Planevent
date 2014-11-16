@@ -1,21 +1,35 @@
-<md-sidenav class="user-sidebar md-sidenav-right" component-id="userSidebar">
+<md-sidenav class="user-sidebar md-sidenav-right md-whiteframe-z5" component-id="userSidebar">
     <md-content class="md-padding" layout="vertical" ng-controller="UserSidebarController">
 
-        <a href="/userProfile/informations">
+        <a href="/user/offers">
+            <md-button class="md-primary wide-button fa fa-suitcase" ng-click="close()">
+                Moje oferty
+            </md-button>
+        </a>
+
+        <a href="/user/offers">
+            <md-button class="md-primary wide-button fa fa-star-o" ng-click="close()">
+                Ulubione oferty
+            </md-button>
+        </a>
+
+        <a href="/user/likings">
+            <md-button class="md-primary wide-button fa fa-smile-o" ng-click="close()">
+                Upodobania
+            </md-button>
+        </a>
+
+        <md-divider></md-divider>
+
+        <a href="/user/informations">
 	        <md-button class="md-primary wide-button fa fa-user" ng-click="close()">
 	            Profil
 	        </md-button>
         </a>
 
-        <a href="/userProfile/settings">
+        <a href="/user/settings">
 	        <md-button class="md-primary wide-button fa fa-gear" ng-click="close()">
 	            Ustawienia
-	        </md-button>
-        </a>
-
-        <a href="/userProfile/likings">
-	        <md-button class="md-primary wide-button fa fa-smile-o" ng-click="close()">
-	            Upodobania
 	        </md-button>
         </a>
 

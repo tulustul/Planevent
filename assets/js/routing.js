@@ -6,10 +6,6 @@ angular.module('planevent').config(
     $locationProvider.html5Mode(true);
 
     $routeProvider
-    // .when('/', {
-    //     templateUrl: 'assets/partials/mainView.html',
-    //     controller: 'MainPageController'
-    // })
     .when('/password_recall_callback', {
         templateUrl: 'assets/partials/passwordRecallCallback.html',
         controller: 'PasswordRecallCallbackController'
@@ -40,27 +36,27 @@ angular.module('planevent').config(
         controller: 'MainPageController'
     })
 
-    .when('/userProfile', {
-        redirectTo: '/userProfile/informations'
+    .when('/user', {
+        redirectTo: '/user/informations'
     })
-    .when('/userProfile/informations', {
-        templateUrl: 'assets/partials/profile/informations.html',
+    .when('/user/informations', {
+        templateUrl: 'assets/partials/user/informations.html',
         controller: 'ProfileInformationsController'
     })
-    .when('/userProfile/settings', {
-        templateUrl: 'assets/partials/profile/settings.html',
+    .when('/user/settings', {
+        templateUrl: 'assets/partials/user/settings.html',
         controller: 'ProfileSettingsController'
     })
-    .when('/userProfile/changePassword', {
-        templateUrl: 'assets/partials/profile/changePassword.html',
+    .when('/user/changePassword', {
+        templateUrl: 'assets/partials/user/changePassword.html',
         controller: 'ProfileChangePasswordController'
     })
-    .when('/userProfile/likings', {
-        templateUrl: 'assets/partials/profile/likings.html',
+    .when('/user/likings', {
+        templateUrl: 'assets/partials/user/likings.html',
         controller: 'ProfileLikingsController'
     })
-    .when('/userProfile/firstLogging', {
-        templateUrl: 'assets/partials/profile/firstLogging.html',
+    .when('/user/firstLogging', {
+        templateUrl: 'assets/partials/user/firstLogging.html',
         controller: 'FirstLoggingController'
     })
 

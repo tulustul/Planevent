@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy import (
     Column,
     Integer,
@@ -11,6 +13,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 from planevent.core.sql import BaseEntity
+from planevent.accounts.models import Account
 from planevent import redisdb
 
 
@@ -25,6 +28,11 @@ class OfferTag(BaseEntity):
 class Offer(BaseEntity):
     VIEW_COUNT = 'offerviewcount:{}'  # .format(offer_id)
 
+    class Status(object):
+        ACTIVE = 'ACTIVE'
+        INACTIVE = 'INACTIVE'
+        DELETED = 'DELETED'
+
     __tablename__ = 'offer'
     name = Column(String(150))
     description = Column(Text)
@@ -36,11 +44,13 @@ class Offer(BaseEntity):
     price_max = Column(Integer)
     preview_image_url = Column(String(150))
     to_complete = Column(Boolean)
-    active = Column(Boolean, default=True)
+    status = Column(String(20), nullable=False)
 
+    author_id = Column(Integer, ForeignKey('account.id'), nullable=False)
     address_id = Column(Integer, ForeignKey('address.id'))
     logo_id = Column(Integer, ForeignKey('image.id'), nullable=True)
 
+    author = relationship("Account", cascade="delete, all")
     category = relationship("Category", cascade="delete, all")
     contacts = relationship("Contact", cascade="delete, all")
     address = relationship("Address", cascade="delete, all")
@@ -56,6 +66,16 @@ class Offer(BaseEntity):
 
     def increment_views_count(self):
         redisdb.redis_db.incr(self.VIEW_COUNT.format(self.id))
+
+    def user_can_edit(self, user_dict):
+        return (
+            user_dict['id'] == self.author_id or
+            user_dict['role'] == Account.Role.ADMIN
+        )
+
+    def save(self):
+        self.updated_at = datetime.now()
+        super().save()
 
 
 class Contact(BaseEntity):

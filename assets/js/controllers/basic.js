@@ -129,3 +129,12 @@ angular.module('planevent').controller('NavigationActionsController',
         $scope.$emit('toggleUserSidebar');
     };
 });
+
+angular.module('planevent').controller('ToastController',
+        function($scope, $mdToast, message) {
+
+    $scope.message = message;
+    $scope.close = function() {
+        $mdToast.hide();
+    };
+});

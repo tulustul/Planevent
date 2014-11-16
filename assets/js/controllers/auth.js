@@ -103,7 +103,6 @@ angular.module('planevent').controller('LoginController',
         .success(function(account) {
             $scope.waiting = false;
             $rootScope.$broadcast('loggedIn', account);
-            authService.loggedUser = account;
             $mdDialog.hide();
         })
         .error(function(response) {
@@ -119,19 +118,22 @@ angular.module('planevent').controller('RegistrationController',
     $scope.close = $mdDialog.hide;
 
     $scope.register = function(email, password, passwordRepeat) {
-        $scope.waiting = true;
         $scope.message = '';
 
         if (password !== passwordRepeat) {
-            // $scope.registrationForm.password.$error.dontMatch = true;
-            $scope.passwordRepeat.$setValidity(false);
+            $scope.passwordsDontMatch = true;
             return;
+        } else {
+            $scope.passwordsDontMatch = false;
         }
+
+        $scope.waiting = true;
 
         authService.register(email, password, passwordRepeat)
         .success(function(account) {
             $scope.waiting = false;
             $rootScope.$broadcast('loggedIn', account);
+            $mdDialog.hide();
         })
         .error(function(response) {
             $scope.waiting = false;
@@ -166,7 +168,7 @@ angular.module('planevent').controller('UserSidebarController',
 
     $scope.close = function() {
         $mdSidenav('userSidebar').close();
-    }
+    };
 
     $scope.logout = function() {
         authService.logout(function() {

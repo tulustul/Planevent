@@ -55,7 +55,7 @@ def register(request, email, password):
         email=email,
     )
 
-    account.name = email.split('@')[0]
+    account.name = email
     account.first_name = account.name
     account.last_login = datetime.now()
 

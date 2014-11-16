@@ -1,56 +1,53 @@
-<div class="offer-page">
-    <div class="navigation">
+<div layout-md="horizontal" layout="vertical">
+    <div class="offer-page">
+        <div class="navigation" layout-lg="horizontal" layout="vertical">
 
-        <p class="title"
-           editable-text="offer.name"
-           e-form="offerTitle"
-           ng-click="showEditable(offerTitle)"
-           ng-class="{editing: state=='editing'}">
-            {{ offer.name || "Tutaj tytuł oferty" }}
-        </p>
+            <p class="title"
+               editable-text="offer.name"
+               e-form="offerTitle"
+               ng-click="showEditable(offerTitle)"
+               ng-class="{editing: state=='editing'}">
+                {{ offer.name || "Tutaj tytuł oferty" }}
+            </p>
 
-        <alert type="'success'" ng-show="state=='saved'" close="state='viewing'">
-            Zapisano
-        </alert>
-
-        <alert type="'danger'" ng-show="state=='error'" close="state='viewing'">
-            Nie można zapisać zmian
-        </alert>
-
-        <div ng-show="state=='editing'">
-            <md-button class="fa fa-save" ng-click="saveOffer()">
-                Zapisz zmiany
-            </md-button>
-            <md-button class="fa fa-ban" ng-click="state='viewing'">
-                Anuluj zmiany
-            </md-button>
+            <div class="actions">
+                <div ng-show="state=='editing'">
+                    <md-button class="fa fa-save" ng-click="saveOffer()">
+                        Zapisz zmiany
+                    </md-button>
+                    <md-button class="fa fa-ban" ng-click="state='viewing'">
+                        Anuluj zmiany
+                    </md-button>
+                </div>
+                <div ng-show="state=='viewing' || state=='saved'">
+                    <md-button class="fa fa-ban" ng-if="offer.status=='ACTIVE'" ng-click="deactivateOffer()">
+                        Deaktywuj ofertę
+                    </md-button>
+                    <md-button class="fa fa-check" ng-if="offer.status=='INACTIVE'" ng-click="activateOffer()">
+                        Aktywuj ofertę
+                    </md-button>
+                    <a href="#">
+                        <md-button class="fa fa-times" ng-click="removeOffer()">
+                            Usuń
+                        </md-button>
+                    </a>
+                    <md-button class="fa fa-edit" ng-click="state='editing'">
+                        Edytuj
+                    </md-button>
+                </div>
+                <spinner ng-show="state=='saving'"></spinner>
+            </div>
         </div>
-        <div ng-show="state=='viewing' || state=='saved'">
-            <a href="#">
-                <md-button class="fa fa-ban">
-                    Wyłącz ofertę
-                </md-button>
-            </a>
-            <a href="#">
-                <md-button class="fa fa-times" ng-click="removeOffer()">
-                    Usuń
-                </md-button>
-            </a>
-            <md-button class="fa fa-edit" ng-click="state='editing'">
-                Edytuj
-            </md-button>
-        </div>
-        <spinner ng-show="state=='saving'"></spinner>
+
+        <div id="offer-view" ng-include="'assets/partials/offer/offerView.html'" ng-show="fetched"></div>
+
+        <h2 ng-show="offerDoesNotExists">Nie ma takiej oferty :/</h2>
+        <h2 ng-show="otherError">Nieznany błąd</h2>
     </div>
 
-    <div id="offer-view" ng-include="'assets/partials/offer/offerView.html'" ng-show="fetched"></div>
-
-    <h2 ng-show="offerDoesNotExists">Nie ma takiej oferty :/</h2>
-    <h2 ng-show="otherError">Nieznany błąd</h2>
-</div>
-
-<div class="related-offers" ng-controller="RelatedOffersController">
-    <h3 class>Najbliższe podobne oferty:<br /></h3>
-    <offerpreview ng-repeat="offer in relatedOffers" offer="offer">
-    <h4 ng-show="relatedOffers.length == 0">Brak pasujących wyników</h4>
+    <div class="related-offers" ng-controller="RelatedOffersController">
+        <h3 class>Najbliższe podobne oferty:<br /></h3>
+        <offerpreview ng-repeat="offer in relatedOffers" offer="offer">
+        <h4 ng-show="relatedOffers.length == 0">Brak pasujących wyników</h4>
+    </div>
 </div>

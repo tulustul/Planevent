@@ -16,7 +16,8 @@ angular.module('planevent').controller('OfferListController',
 });
 
 angular.module('planevent').controller('OfferPageController',
-        function($scope, $resource, $routeParams, $mdDialog, categoriesService) {
+        function($scope, $http, $resource, $routeParams, $mdDialog,
+                 toastService, $location, categoriesService) {
 
     var Offer = $resource('/api/offer/:offerId', {offerId: '@id'});
 
@@ -46,10 +47,10 @@ angular.module('planevent').controller('OfferPageController',
         $scope.state = 'saving';
         $scope.offer.$save(
             function() {
-                $scope.state = 'saved';
+                toastService.show('Zmiany zapisane');
             },
             function() {
-                $scope.state = 'error';
+                toastService.show('Nie można zapisać zmian');
             }
         );
     };
@@ -62,7 +63,27 @@ angular.module('planevent').controller('OfferPageController',
     };
 
     $scope.removeOffer = function() {
-        Offer.remove({id: $scope.offer.id});
+        $http.post('/api/offer/' + $scope.offer.id + '/delete')
+        .success(function(response) {
+            $scope.offer.status = response.status;
+        });
+        $location.path('/');
+    };
+
+    $scope.activateOffer = function() {
+        $http.post('/api/offer/' + $scope.offer.id + '/activate')
+        .success(function(response) {
+            $scope.offer.status = response.status;
+            toastService.show('Aktywowano ofertę');
+        });
+    };
+
+    $scope.deactivateOffer = function() {
+        $http.post('/api/offer/' + $scope.offer.id + '/deactivate')
+        .success(function(response) {
+            $scope.offer.status = response.status;
+            toastService.show('Deaktywowano ofertę');
+        });
     };
 
     $scope.showGallery = function() {

@@ -29,36 +29,108 @@ SUBCATEGORIES_KEY = 'subcategories'
 class OfferView(View):
 
     @time_profiler('OfferView')
-    def get(self, id: Rest(int)):
-        offer = cache.get((OFFER_KEY, id), models.Offer)
+    def get(self, offer_id: Rest(int)):
+        offer = cache.get((OFFER_KEY, offer_id), models.Offer)
         if offer is None:
-            offer = models.Offer.get(id, '*')
+            offer = models.Offer.get(offer_id, '*')
             if offer:
-                cache.set((OFFER_KEY, id), offer)
+                cache.set((OFFER_KEY, offer_id), offer)
 
         if not offer:
-            return self.response(404, 'No offer with id {}'.format(id))
+            return self.response(404, 'No offer with id {}'.format(offer_id))
 
         service.increment_view_count(offer, self.request)
 
         return offer
 
-    def post(self, id: Rest(int), offer: Body(models.Offer)):
-        old_offer = models.Offer.get(offer.id)
-        if old_offer and id == offer.id:
+    def post(self, offer_id: Rest(int), offer: Body(models.Offer)):
+        original_offer = models.Offer.get(offer.id)
+
+        if not original_offer.user_can_edit(self.get_user_dict()):
+            return self.response(
+                403, 'You have no permission to edit this offer'
+            )
+
+        if original_offer and offer_id == offer.id:
+            offer.author = original_offer.author
+            offer.added_at = original_offer.added_at
+            offer.promotion = original_offer.promotion
             offer.save()
             cache.set((OFFER_KEY, offer.id), offer)
             return offer
         else:
-            return self.response(404, 'No offer with id {}'.format(id))
+            return self.response(404, 'No offer with id {}'.format(offer_id))
 
-    def delete(self, id: Rest(int)):
-        offer = models.Offer.get(id)
+
+@route('offers')
+class OffersView(View):
+
+    @permission(Account.Role.NORMAL)
+    def post(self, offer: Body(models.Offer)):
+        if offer.id:
+            return self.response(
+                400, 'New offer cannot have id',
+            )
+        offer.added_at = datetime.datetime.now()
+        offer.updated_at = now
+        offer.save()
+        cache.set((OFFER_KEY, offer.id), offer)
+        return offer
+
+
+class ChangeStatusBaseMixin(object):
+    def change_status(self, offer_id, accepted_statuses, new_status):
+        offer = models.Offer.get(offer_id)
         if not offer:
             return self.response(404, 'No offer with id {}'.format(id))
-        models.Offer.delete(id)
-        cache.delete((OFFER_KEY, offer.id))
-        return {'message': 'deleted', 'id': id}
+        elif not offer.user_can_edit(self.get_user_dict()):
+            return self.response(
+                403, 'You have no permission to edit this offer'
+            )
+        elif offer.status not in accepted_statuses:
+            return self.response(409, 'Only inactive offers can be activated')
+        else:
+            offer.status = new_status
+            offer.save()
+            cache.delete((OFFER_KEY, offer.id))
+            return {
+                'message': 'status_changed',
+                'id': offer_id,
+                'status': new_status,
+            }
+
+
+@route('offer_activate')
+class OfferView(View, ChangeStatusBaseMixin):
+    @permission(Account.Role.NORMAL)
+    def post(self, offer_id: Rest(int)):
+        return self.change_status(
+            offer_id,
+            [models.Offer.Status.INACTIVE],
+            models.Offer.Status.ACTIVE,
+        )
+
+
+@route('offer_deactivate')
+class OfferView(View, ChangeStatusBaseMixin):
+    @permission(Account.Role.NORMAL)
+    def post(self, offer_id: Rest(int)):
+        return self.change_status(
+            offer_id,
+            [models.Offer.Status.ACTIVE],
+            models.Offer.Status.INACTIVE,
+        )
+
+
+@route('offer_delete')
+class OfferView(View, ChangeStatusBaseMixin):
+    @permission(Account.Role.NORMAL)
+    def post(self, offer_id: Rest(int)):
+        return self.change_status(
+            offer_id,
+            [models.Offer.Status.ACTIVE, models.Offer.Status.INACTIVE],
+            models.Offer.Status.DELETED,
+        )
 
 
 @route('offer_promotion')
@@ -67,17 +139,17 @@ class OfferPromotionView(View):
     @permission(Account.Role.ADMIN)
     def post(
         self,
-        id: Rest(int),
+        offer_id: Rest(int),
         promotion: Rest(int),
     ):
 
-        offer = models.Offer.get(id)
+        offer = models.Offer.get(offer_id)
         if not offer:
-            return self.response(404, 'No offer with id {}'.format(id))
+            return self.response(404, 'No offer with id {}'.format(offer_id))
         offer.promotion = promotion
         offer.save()
         cache.set((OFFER_KEY, offer.id), offer)
-        return {'message': 'saved', 'id': id, 'promotion': promotion}
+        return {'message': 'saved', 'id': offer_id, 'promotion': promotion}
 
 
 @route('offers_search')
@@ -95,6 +167,8 @@ class SearchOffersView(View):
         price_max: int=None,
         offset: int=0,
         limit: int=10,
+        active_only: bool=True,
+        author_id: int=None,
     ):
         query = sql.DBSession.query(models.Offer.id)
 
@@ -139,27 +213,6 @@ class SearchOffersView(View):
             'total_count': total_count,
             'offers': offers,
         }
-
-
-@route('offers')
-class OffersView(View):
-
-    def post(self, offer: Body(models.Offer)):
-        original_offer = cache.get((OFFER_KEY, offer.id), models.Offer)
-        if not original_offer:
-            original_offer = models.Offer.get(offer.id)
-
-        if original_offer:
-            offer.promotion = original_offer.promotion
-
-        now = datetime.datetime.now()
-        if not offer.added_at:
-            offer.added_at = now
-        else:
-            offer.updated_at = now
-        offer.save()
-        cache.set((OFFER_KEY, offer.id), offer)
-        return offer
 
 
 @route('logo')

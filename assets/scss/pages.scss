@@ -6,11 +6,10 @@ $relatedOffersWidth: 496px;
 $mapAndGallerySize: 350px;
 .offer-page {
     background: $ligth;
-    border-right: 3px solid $dominant;
+    // border-right: 3px solid $dominant;
     padding: 0px 10px;
-    width: calc(100% - #{$relatedOffersWidth});
-    height: calc(100% - #{$header-height} - #{$footer-height});
-    float: left;
+    // width: calc(100% - #{$relatedOffersWidth});
+    // height: calc(100% - #{$header-height} - #{$footer-height});
     overflow-y: auto;
     .navigation {
         border-bottom: 2px solid $dominant;
@@ -28,12 +27,12 @@ $mapAndGallerySize: 350px;
         }
     }
     #offer {
-        display: flex;
+        // display: flex;
         .details {
-            width: calc(100% - #{$mapAndGallerySize} - 20px);
-            display: flex;
-            flex-wrap: wrap;
-            align-content: flex-start;
+            // width: calc(100% - #{$mapAndGallerySize} - 20px);
+            // display: flex;
+            // flex-wrap: wrap;
+            // align-content: flex-start;
             >.description {
                 padding: 15px;
                 font-size: 17px;
@@ -50,8 +49,8 @@ $mapAndGallerySize: 350px;
                 }
             }
             .data {
-                display: flex;
-                width: 100%;
+                // display: flex;
+                // width: 100%;
                 .fields {
                     padding: 15px;
                     min-width: 33%;
@@ -85,7 +84,7 @@ $mapAndGallerySize: 350px;
                             margin-left: 10px;
                             color: gray;
                             font-size: 12px;
-                            flex-grow: 1;
+                            // flex-grow: 1;
                         }
                     }
                 }
@@ -95,7 +94,7 @@ $mapAndGallerySize: 350px;
             .address-viewer {
                 margin-bottom: 20px;
                 .map {
-                    width: $mapAndGallerySize;
+                    // width: $mapAndGallerySize;
                     height: $mapAndGallerySize;
                 }
             }
@@ -111,20 +110,20 @@ $mapAndGallerySize: 350px;
                     color: #428bca;
                 }
             }
-            gallery-preview {
-                .galleryPreview {
-                    width: $mapAndGallerySize;
-                }
-            }
+            // gallery-preview {
+            //     .galleryPreview {
+            //         width: $mapAndGallerySize;
+            //     }
+            // }
         }
     }
 }
 .related-offers {
-    width: $relatedOffersWidth;
+    // width: $relatedOffersWidth;
     padding: 10px;
-    float: right;
     overflow-y: auto;
-    height: calc(100% - #{$header-height} - #{$footer-height});
+    min-width: 480px;
+    // height: calc(100% - #{$header-height} - #{$footer-height});
     h3 {
         margin-top: 10px;
         font-size: 30px;
