@@ -13,6 +13,7 @@ $mapAndGallerySize: 322px;
         overflow: hidden;
         margin-bottom: 5px;
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-between;
         align-items: center;
         padding: 5px 0px;
@@ -195,7 +196,7 @@ offerpreview {
         @include scale(1.01);
         box-shadow: 0 0 20px black;
     }
-    a {
+    a.widget {
         display: flex;
         align-items: center;
         width: 100%;

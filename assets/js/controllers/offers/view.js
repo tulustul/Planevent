@@ -65,25 +65,41 @@ angular.module('planevent').controller('OfferPageController',
     };
 
     $scope.removeOffer = function() {
-        $http.post('/api/offer/' + $scope.offer.id + '/delete')
-        .success(function(response) {
-            $scope.offer.status = response.status;
+        $mdDialog.show({
+            templateUrl: 'assets/partials/offer/removeModal.html',
+            controller: 'RemoveOfferModalController',
+            locals: {
+                gallery: $scope.offer.gallery,
+                editing: $scope.state === 'editing',
+            },
+        }).then(function() {
+            $scope.state = 'saving';
+            $http.post('/api/offer/' + $scope.offer.id + '/delete')
+            .success(function(response) {
+                $scope.offer.status = response.status;
+                toastService.show('Usunięto kategorię');
+                $location.path('/');
+            });
         });
-        $location.path('/');
+
     };
 
     $scope.activateOffer = function() {
+        $scope.state = 'saving';
         $http.post('/api/offer/' + $scope.offer.id + '/activate')
         .success(function(response) {
             $scope.offer.status = response.status;
+            $scope.state = 'viewing';
             toastService.show('Aktywowano ofertę');
         });
     };
 
     $scope.deactivateOffer = function() {
+        $scope.state = 'saving';
         $http.post('/api/offer/' + $scope.offer.id + '/deactivate')
         .success(function(response) {
             $scope.offer.status = response.status;
+            $scope.state = 'viewing';
             toastService.show('Deaktywowano ofertę');
         });
     };
@@ -160,8 +176,16 @@ angular.module('planevent').controller('RecommendedOffersController',
 angular.module('planevent').controller('GalleryModalController',
         function($scope, $mdDialog, gallery, editing) {
 
-    $scope.close = $mdDialog.hide;
+    $scope.cancel = $mdDialog.cancel;
 
     $scope.gallery = gallery;
     $scope.editing = editing;
+});
+
+angular.module('planevent').controller('RemoveOfferModalController',
+        function($scope, $mdDialog) {
+
+    $scope.cancel = $mdDialog.cancel;
+    $scope.hide = $mdDialog.hide;
+
 });

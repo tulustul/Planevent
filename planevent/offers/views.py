@@ -88,7 +88,12 @@ class ChangeStatusBaseMixin(object):
                 403, 'You have no permission to edit this offer'
             )
         elif offer.status not in accepted_statuses:
-            return self.response(409, 'Only inactive offers can be activated')
+            st_map = models.Offer.STATUSES_MAP
+            return self.response(
+                409,
+                'Cannot change status from {} to {}'
+                .format(st_map[offer.status], st_map[new_status])
+            )
         else:
             offer.status = new_status
             offer.save()
@@ -96,7 +101,7 @@ class ChangeStatusBaseMixin(object):
             return {
                 'message': 'status_changed',
                 'id': offer_id,
-                'status': new_status,
+                'status': models.Offer.STATUSES_MAP[new_status],
             }
 
 
@@ -167,10 +172,16 @@ class SearchOffersView(View):
         price_max: int=None,
         offset: int=0,
         limit: int=10,
-        active_only: bool=True,
+        include_inactive: bool=False,
         author_id: int=None,
     ):
         query = sql.DBSession.query(models.Offer.id)
+
+        statuses = [models.Offer.Status.ACTIVE]
+        if include_inactive:
+            statuses += models.Offer.Status.INACTIVE
+
+        query = query.filter(models.Offer.status.in_(statuses))
 
         if category is not None:
             query = query.filter(models.Offer.category_id == category)

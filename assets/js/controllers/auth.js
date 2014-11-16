@@ -37,7 +37,7 @@ angular.module('planevent').controller('PasswordRecallCallbackController',
 angular.module('planevent').controller('LoginController',
         function($scope, $rootScope, $mdDialog, authService) {
 
-    $scope.close = $mdDialog.hide;
+    $scope.cancel = $mdDialog.cancel;
 
     $scope.showRemindPasswordForm = function() {
         $mdDialog.show({
@@ -70,7 +70,7 @@ angular.module('planevent').controller('LoginController',
 angular.module('planevent').controller('RegistrationController',
         function($scope, $rootScope, $mdDialog, authService) {
 
-    $scope.close = $mdDialog.hide;
+    $scope.cancel = $mdDialog.cancel;
 
     $scope.register = function(email, password, passwordRepeat) {
         $scope.message = '';
@@ -101,7 +101,7 @@ angular.module('planevent').controller('RegistrationController',
 angular.module('planevent').controller('RemindPasswordController',
         function($scope, $mdDialog, authService) {
 
-    $scope.close = $mdDialog.hide;
+    $scope.cancel = $mdDialog.cancel;
 
     $scope.remindPassword = function(email) {
         $scope.waiting = true;

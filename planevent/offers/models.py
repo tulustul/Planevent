@@ -29,9 +29,15 @@ class Offer(BaseEntity):
     VIEW_COUNT = 'offerviewcount:{}'  # .format(offer_id)
 
     class Status(object):
-        ACTIVE = 'ACTIVE'
-        INACTIVE = 'INACTIVE'
-        DELETED = 'DELETED'
+        ACTIVE = 1
+        INACTIVE = 2
+        DELETED = 3
+
+    STATUSES_MAP = {
+        1: 'ACTIVE',
+        2: 'INACTIVE',
+        3: 'DELETED',
+    }
 
     __tablename__ = 'offer'
     name = Column(String(150))
@@ -45,7 +51,7 @@ class Offer(BaseEntity):
     price_max = Column(Integer)
     preview_image_url = Column(String(150))
     to_complete = Column(Boolean)
-    status = Column(String(20), nullable=False)
+    status = Column(Integer, nullable=False)
 
     author_id = Column(Integer, ForeignKey('account.id'), nullable=False)
     address_id = Column(Integer, ForeignKey('address.id'))
@@ -77,6 +83,19 @@ class Offer(BaseEntity):
     def save(self):
         self.updated_at = datetime.now()
         super().save()
+
+    def serialize(self):
+        dict_ = super().serialize()
+        dict_['status'] = self.STATUSES_MAP[self.status]
+        return dict_
+
+    def deserialize(self, dict_):
+        super().deserialize(dict_)
+        self.status = next(
+            key for key, value in self.STATUSES_MAP.items()
+            if value == self.status
+        )
+        return self
 
 
 class Contact(BaseEntity):
