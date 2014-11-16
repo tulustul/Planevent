@@ -1,11 +1,11 @@
 <div id="user-profile">
-    <div ng-include="userProfileNavigation"></div>
+    <!-- <div ng-include="'assets/partials/profile/userProfileNavigation.html'"></div> -->
 
     <article id="likings-view">
         <section class="category" ng-repeat="category in categories">
             <h1>{{ category.name }}</h1>
             <liking ng-model="liking"
-                    ng-repeat="liking in loggedUser.likings"
+                    ng-repeat="liking in account.likings"
                     ng-click="showLevelChooser(liking, $event)"
                     ng-if="liking.subcategory.category.id === category.id" />
         </section>

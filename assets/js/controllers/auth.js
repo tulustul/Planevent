@@ -4,9 +4,6 @@ angular.module('planevent').service('userProfileService',
         function($location, authService) {
 
     this.prepareScope = function(scope) {
-        scope.userProfileNavigation =
-            'assets/partials/profile/userProfileNavigation.html';
-
         authService.getLoggedUser(function(account) {
             scope.account = account;
             if (account === undefined || account === 'null') {
@@ -36,48 +33,6 @@ angular.module('planevent').controller('PasswordRecallCallbackController',
         });
     };
 });
-
-// angular.module('planevent').controller('LoginController',
-//         function($scope, $rootScope, authService) {
-
-//     $scope.email = '';
-//     $scope.password = '';
-//     $scope.message = '';
-//     $scope.form = '';
-//     $scope.waiting = false;
-//     $scope.registration = false;
-
-//     $scope.login = function(email, password) {
-//         $scope.waiting = true;
-//         $scope.message = '';
-
-//         authService.login(email, password)
-//         .success(function(account) {
-//             $scope.waiting = false;
-//             $rootScope.$broadcast('loggedIn', account);
-//             authService.loggedUser = account;
-//         })
-//         .error(function(response) {
-//             $scope.waiting = false;
-//             $scope.message = response.message;
-//         });
-//     };
-
-//     $scope.register = function(email, password) {
-//         $scope.waiting = true;
-//         $scope.message = '';
-
-//         authService.register(email, password)
-//         .success(function(account) {
-//             $scope.waiting = false;
-//             $rootScope.$broadcast('loggedIn', account);
-//         })
-//         .error(function(response) {
-//             $scope.waiting = false;
-//             $scope.message = response.message;
-//         });
-//     };
-// });
 
 angular.module('planevent').controller('LoginController',
         function($scope, $rootScope, $mdDialog, authService) {
@@ -177,4 +132,3 @@ angular.module('planevent').controller('UserSidebarController',
         });
     };
 });
-

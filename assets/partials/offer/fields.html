@@ -1,18 +1,28 @@
-<label>Kategoria:</label>
-<span class="value"
-      editable-select="offer.category.id"
-      e-form="offerCategory"
-      e-ng-options="c.id as c.name for c in categories"
-      ng-click="showEditable(offerCategory)"
-      ng-class="{editing: state=='editing'}">
-    {{ getCategoryName(offer.category.id) }}
-</span><br />
+<ul id="fields">
+	<li>
+		<label>Kategoria</label>
+		<span class="value"
+		      editable-select="offer.category.id"
+		      e-form="offerCategory"
+		      e-ng-options="c.id as c.name for c in categories"
+		      ng-click="showEditable(offerCategory)"
+		      ng-class="{editing: state=='editing'}">
+		    {{ getCategoryName(offer.category.id) }}
+		</span>
+	</li>
 
-<label>Cena:</label>
-<span class="value">{{ offer.price_min }}zł - {{ offer.price_max }}zł</span><br />
+	<li>
+		<label>Cena</label>
+		<span class="value">{{ offer.price_min }}zł - {{ offer.price_max }}zł</span>
+	</li>
 
-<label>Dodano:</label>
-<span class="value">{{ offer.added_at }}</span><br />
+	<li>
+		<label>Dodano</label>
+		<span class="value">{{ offer.added_at | date  }}</span>
+	</li>
 
-<label>Ostatnia zmiana:</label>
-<span class="value">{{ offer.updated_at }}</span><br />
+	<li>
+		<label>Ostatnia zmiana</label>
+		<span class="value">{{ offer.updated_at | date }}</span>
+	</li>
+</ul>

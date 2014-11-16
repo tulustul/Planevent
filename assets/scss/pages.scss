@@ -3,13 +3,10 @@
 $searchBoxWidth: 300px;
 
 $relatedOffersWidth: 496px;
-$mapAndGallerySize: 350px;
+$mapAndGallerySize: 322px;
 .offer-page {
-    background: $ligth;
-    // border-right: 3px solid $dominant;
+    flex-grow: 1;
     padding: 0px 10px;
-    // width: calc(100% - #{$relatedOffersWidth});
-    // height: calc(100% - #{$header-height} - #{$footer-height});
     overflow-y: auto;
     .navigation {
         border-bottom: 2px solid $dominant;
@@ -27,12 +24,7 @@ $mapAndGallerySize: 350px;
         }
     }
     #offer {
-        // display: flex;
         .details {
-            // width: calc(100% - #{$mapAndGallerySize} - 20px);
-            // display: flex;
-            // flex-wrap: wrap;
-            // align-content: flex-start;
             >.description {
                 padding: 15px;
                 font-size: 17px;
@@ -49,31 +41,59 @@ $mapAndGallerySize: 350px;
                 }
             }
             .data {
-                // display: flex;
-                // width: 100%;
+                .widget {
+                    display: flex;
+                }
+                #contacts, #fields {
+                    width: 100%;
+                    list-style: none;
+                    padding: 0px 10px;
+                    margin: 0px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
                 .fields {
-                    padding: 15px;
                     min-width: 33%;
+                    ul {
+                        li {
+                            display: flex;
+                            justify-content: space-between;
+                            padding: 6px;
+                            &:not(:first-child) {
+                                border-top: 1px solid $dark;
+                            }
+                            label {
+                                color: gray;
+
+                            }
+                        }
+                    }
                 }
                 #contacts {
-                    min-width: 33%;
-                    list-style: none;
-                    padding-left: 10px;
                     #add-contact {
                         margin: 10px 0px;
                     }
                     li {
-                        padding: 2px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
+                        padding: 6px;
+                        &:not(:first-child) {
+                            border-top: 1px solid $dark;
+                        }
                         .contact-data {
                             flex-shrink: 100;
+                            display: flex;
                         }
-                        .contact.fa:before {
-                            margin-right: 5px;
-                            color: $dominant;
-                            font-size: 20px;
+                        .contact {
+                            width: 25px;
+                            &.fa:before {
+                                margin-right: 5px;
+                                color: $dominant;
+                                font-size: 20px;
+                            }
+                        }
+                        .value {
+                            text-overflow: ellipsis;
+                            overflow: hidden;
                         }
                         .value, .description {
                             min-width: 20px;
@@ -81,21 +101,21 @@ $mapAndGallerySize: 350px;
                             display: inline-block;
                         }
                         .description {
-                            margin-left: 10px;
+                            margin-left: 26px;
                             color: gray;
                             font-size: 12px;
-                            // flex-grow: 1;
                         }
                     }
                 }
             }
         }
         .widgets {
-            .address-viewer {
-                margin-bottom: 20px;
-                .map {
-                    // width: $mapAndGallerySize;
-                    height: $mapAndGallerySize;
+            .map-widget {
+                flex-grow: 1;
+                .address-viewer {
+                    .map {
+                        height: $mapAndGallerySize;
+                    }
                 }
             }
             .address-setter {
@@ -110,24 +130,22 @@ $mapAndGallerySize: 350px;
                     color: #428bca;
                 }
             }
-            // gallery-preview {
-            //     .galleryPreview {
-            //         width: $mapAndGallerySize;
-            //     }
-            // }
+            gallery-preview {
+                align-self: center;
+            }
         }
     }
 }
 .related-offers {
-    // width: $relatedOffersWidth;
     padding: 10px;
-    overflow-y: auto;
-    min-width: 480px;
-    // height: calc(100% - #{$header-height} - #{$footer-height});
+    min-width: 600px;
     h3 {
         margin-top: 10px;
         font-size: 30px;
         font-weight: 300;
+    }
+    offerpreview {
+        margin: 10px 0px;
     }
 }
 
@@ -151,7 +169,7 @@ $offer-preview-size: 170px;
 $offer-preview-top-border: 4px;
 $offer-preview-bottom-border: 6px;
 offerpreview {
-    margin: 10px;
+    margin: 20px;
     display: flex;
     @include transition(0.3s);
     &.ng-leave {
@@ -174,8 +192,8 @@ offerpreview {
     }
     &:hover {
         @include transition(0.3s);
-        @include scale(1.02);
-        box-shadow: 0 0 30px black;
+        @include scale(1.01);
+        box-shadow: 0 0 20px black;
     }
     a {
         display: flex;
@@ -184,6 +202,7 @@ offerpreview {
         height: $offer-preview-size;
         text-decoration: none;
         overflow: hidden;
+        margin: 0px;
         >img {
             min-height: $offer-preview-size;
             min-width: $offer-preview-size;
@@ -220,9 +239,6 @@ offerpreview {
             padding: 16px;
             text-align: center;
             font-weight: 200;
-            p {
-
-            }
             img {
                 width: 50px;
                 height: 50px;

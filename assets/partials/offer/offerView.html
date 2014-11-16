@@ -1,4 +1,4 @@
-<section id="offer" layout-lg="horizontal" layout="vertical">
+<section id="offer" layout="vertical">
     <div class="details">
         <div class="data" layout-md="horizontal" layout="vertical">
             <ng-include class="fields widget" src="'assets/partials/offer/fields.html'"></ng-include>
@@ -11,8 +11,8 @@
         <text-angular class="widget" ng-model="offer.description" ng-if="state=='editing'"></text-angular>
     </div>
 
-    <div class="widgets">
-        <div class="widget">
+    <div class="widgets" layout="vertical" layout-md="horizontal">
+        <div class="widget map-widget">
             <span class="title"
                   ng-show="state!='editing'"
                   ng-class="{editing: state=='editing'}">

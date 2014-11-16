@@ -1,0 +1,12 @@
+@media (min-width: 1200px) {
+	.related-offers {
+    	max-width: 600px;
+    	border-left: 3px solid $dominant;
+	}
+}
+
+@media (min-width: 960px) {
+	#offer .details .data .widget {
+		width: 50%;
+	}
+}

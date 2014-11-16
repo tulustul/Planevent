@@ -48,9 +48,11 @@ angular.module('planevent').controller('OfferPageController',
         $scope.offer.$save(
             function() {
                 toastService.show('Zmiany zapisane');
+                $scope.state = 'viewing';
             },
             function() {
                 toastService.show('Nie można zapisać zmian');
+                $scope.state = 'viewing';
             }
         );
     };

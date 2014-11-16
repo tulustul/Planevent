@@ -34,6 +34,7 @@ body {
         .content {
             #view {
                 position: relative;
+                background: $ligth;
                 &.ng-leave {
                     @include transition(0.5s);
                     left: 0;
