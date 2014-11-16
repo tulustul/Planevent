@@ -31,10 +31,10 @@ body {
         overflow-x: hidden;
         max-height: 100%;
         position: relative;
+        background: $ligth;
         .content {
             #view {
                 position: relative;
-                background: $ligth;
                 &.ng-leave {
                     @include transition(0.5s);
                     left: 0;

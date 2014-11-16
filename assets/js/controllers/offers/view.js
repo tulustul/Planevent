@@ -22,8 +22,7 @@ angular.module('planevent').controller('OfferPageController',
     var Offer = $resource('/api/offer/:offerId', {offerId: '@id'});
 
     $scope.state = 'viewing';
-    $scope.offerDoesNotExists = false;
-    $scope.otherError = false;
+    $scope.error = '';
     $scope.offer = Offer.get({offerId: $routeParams.offerId},
         function(){
             $scope.fetched = true;
@@ -33,9 +32,9 @@ angular.module('planevent').controller('OfferPageController',
         },
         function(response){
             if (response.status === 404) {
-                $scope.offerDoesNotExists = true;
+                $scope.error = 'offerDoesNotExist';
             } else {
-                $scope.otherError = true;
+                $scope.error = 'unknown';
             }
         }
     );

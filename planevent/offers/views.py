@@ -30,14 +30,23 @@ class OfferView(View):
 
     @time_profiler('OfferView')
     def get(self, offer_id: Rest(int)):
+        def not_found():
+            return self.response(404, 'No offer with id {}'.format(offer_id))
+
         offer = cache.get((OFFER_KEY, offer_id), models.Offer)
         if offer is None:
             offer = models.Offer.get(offer_id, '*')
             if offer:
                 cache.set((OFFER_KEY, offer_id), offer)
 
-        if not offer:
-            return self.response(404, 'No offer with id {}'.format(offer_id))
+        if not offer or offer.status == offer.Status.DELETED:
+            return not_found()
+
+        if (
+            offer.status == offer.Status.INACTIVE and
+            not offer.user_can_edit(self.get_user_dict())
+        ):
+            return not_found()
 
         service.increment_view_count(offer, self.request)
 

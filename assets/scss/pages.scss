@@ -149,6 +149,17 @@ $mapAndGallerySize: 322px;
         margin: 10px 0px;
     }
 }
+.offer-fetch-errors {
+    text-align: center;
+    padding: 50px;
+    h1 {
+        font-weight: 200;
+    }
+    .fa {
+        font-size: 200px;
+        color: $dominant
+    }
+}
 
 #searchView {
     .offer-list {

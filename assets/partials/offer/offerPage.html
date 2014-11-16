@@ -1,4 +1,4 @@
-<div layout-lg="horizontal" layout="vertical">
+<article layout-lg="horizontal" layout="vertical" ng-if="fetched">
     <div class="offer-page">
         <div class="navigation" layout-lg="horizontal" layout="vertical">
 
@@ -41,8 +41,6 @@
 
         <div id="offer-view" ng-include="'assets/partials/offer/offerView.html'" ng-show="fetched"></div>
 
-        <h2 ng-show="offerDoesNotExists">Nie ma takiej oferty :/</h2>
-        <h2 ng-show="otherError">Nieznany błąd</h2>
     </div>
 
     <div class="related-offers" ng-controller="RelatedOffersController">
@@ -50,4 +48,14 @@
         <offerpreview ng-repeat="offer in relatedOffers" offer="offer">
         <h4 ng-show="relatedOffers.length == 0">Brak pasujących wyników</h4>
     </div>
-</div>
+</article>
+
+<article class="offer-fetch-errors" ng-if="error">
+    <span class="fa fa-frown-o"></span>
+    <h1 ng-if="error=='offerDoesNotExist'">
+        Podana oferta nie istnieje
+    </h1>
+    <h1 ng-if="error=='unknown'">
+        Wystąpił nieznany błąd
+    </h1>
+</article>
