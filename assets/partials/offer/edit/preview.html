@@ -1,0 +1,11 @@
+<section class="preview-editing" layout="vertical">
+
+	<label>Krótki opis ({{ offer.short_description.length }} / 200)</label>
+	<textarea maxlength="200" ng-model="offer.short_description"></textarea>
+
+	<md-button class="fa fa-image" ng-click="initPreviewImageUpload()">Zmień logo</md-button>
+ 	<input id="upload-logo" class="hidden" type="file" ng-file-select="uploadPreviewImage($files)">
+
+	<offerpreview offer="offer"></offerpreview>
+
+</section>

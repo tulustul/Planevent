@@ -9,6 +9,9 @@
 	        element-size="{width: 230, height: 270}"
 	        reset-function-name="resetSearch"
 	        fetch-function="fetch">
-	    <offerpreview offer="offer" ng-repeat="offer in entities" />
+
+	    <a class="offer-previews-wrapper" href="/#/offers/{{ offer.id }}" ng-repeat="offer in entities">
+	    	<offerpreview offer="offer"></offerpreview>
+	    </a>
 	</infinitescroll>
 </div>

@@ -41,7 +41,7 @@ class Offer(BaseEntity):
 
     __tablename__ = 'offer'
     name = Column(String(150))
-    short_description = Column(String(130))
+    short_description = Column(String(200))
     description = Column(Text)
     category_id = Column(Integer, ForeignKey('category.id'))
     added_at = Column(DateTime)
@@ -75,10 +75,13 @@ class Offer(BaseEntity):
         redisdb.redis_db.incr(self.VIEW_COUNT.format(self.id))
 
     def user_can_edit(self, user_dict):
-        return (
-            user_dict['id'] == self.author_id or
-            user_dict['role'] == Account.Role.ADMIN
-        )
+        if user_dict:
+            return (
+                user_dict['id'] == self.author_id or
+                user_dict['role'] == Account.Role.ADMIN
+            )
+        else:
+            return False
 
     def save(self):
         self.updated_at = datetime.now()

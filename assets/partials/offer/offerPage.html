@@ -9,7 +9,7 @@
                ng-class="{editing: state=='editing'}">
                 {{ offer.name || "Tutaj tytuł oferty" }}
             </p>
-
+            {{ state }}
             <div class="actions">
                 <div ng-show="state=='editing'">
                     <md-button class="fa fa-save" ng-click="saveOffer()">
@@ -45,7 +45,9 @@
 
     <div class="related-offers" ng-controller="RelatedOffersController">
         <h3 class>Najbliższe podobne oferty:<br /></h3>
-        <offerpreview ng-repeat="offer in relatedOffers" offer="offer">
+        <a href="/#/offers/{{ offer.id }}" ng-repeat="offer in relatedOffers">
+            <offerpreview offer="offer"></offerpreview>
+        </a>
         <h4 ng-show="relatedOffers.length == 0">Brak pasujących wyników</h4>
     </div>
 </article>

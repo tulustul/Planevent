@@ -17,7 +17,8 @@ angular.module('planevent').controller('OfferListController',
 
 angular.module('planevent').controller('OfferPageController',
         function($scope, $http, $resource, $routeParams, $mdDialog,
-                 toastService, $location, categoriesService) {
+                 toastService, $location, categoriesService,
+                 fileUploadService) {
 
     var Offer = $resource('/api/offer/:offerId', {offerId: '@id'});
 
@@ -50,8 +51,8 @@ angular.module('planevent').controller('OfferPageController',
                 $scope.state = 'viewing';
             },
             function() {
-                toastService.show('Nie można zapisać zmian');
                 $scope.state = 'viewing';
+                toastService.show('Nie można zapisać zmian');
             }
         );
     };
@@ -78,6 +79,18 @@ angular.module('planevent').controller('OfferPageController',
                 $scope.offer.status = response.status;
                 toastService.show('Usunięto kategorię');
                 $location.path('/');
+            })
+            .error(function(response, status_code) {
+                if (status_code === 403) {
+                    toastService.show(
+                        'Nie posiadasz uprawnień do usunięcia tej oferty'
+                    );
+                } else {
+                    toastService.show(
+                        'Nie można usunąć oferty - nieznany błąd'
+                    );
+                }
+                $scope.state = 'viewing';
             });
         });
 
@@ -100,6 +113,17 @@ angular.module('planevent').controller('OfferPageController',
             $scope.offer.status = response.status;
             $scope.state = 'viewing';
             toastService.show('Deaktywowano ofertę');
+        });
+    };
+
+    $scope.initPreviewImageUpload = function() {
+        $('#upload-logo').click();
+    };
+
+    $scope.uploadPreviewImage = function(files) {
+        fileUploadService.upload(
+                files, '/api/logo', function(data) {
+            $scope.offer.preview_image_url = data.path;
         });
     };
 
