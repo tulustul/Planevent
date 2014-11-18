@@ -24,6 +24,7 @@ a {
     display: none;
 }
 
+$changingPageTime: 0.3s;
 body {
     overflow-x: hidden;
     max-height: 100%;
@@ -31,31 +32,25 @@ body {
         flex-grow: 1;
         overflow-y: auto;
         overflow-x: hidden;
-        position: relative;
         background: $ligth;
-        align-items: stretch;
-        justify-content: center;
-        display: flex;
         [ng-view] {
             width: 100%;
-        }
-        >article {
-            width: 100%;
-        }
-        &.ng-leave {
-            @include transition(0.5s);
-            left: 0;
-        }
-        &.ng-enter {
-            @include transition(0.5s);
-            @include transition-delay(0.5s);
-            left: -100%;
-        }
-        &.ng-leave-active {
-            left: 100%;
-        }
-        &.ng-enter-active {
-            left: 0;
+            position: relative;
+            &.ng-leave {
+                @include transition($changingPageTime);
+                opacity: 1;
+            }
+            &.ng-enter {
+                @include transition($changingPageTime);
+                @include transition-delay($changingPageTime);
+                opacity: 0;
+            }
+            &.ng-leave-active {
+                opacity: 0;
+            }
+            &.ng-enter-active {
+                opacity: 1;
+            }
         }
     }
     header {
