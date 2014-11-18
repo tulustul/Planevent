@@ -1,5 +1,6 @@
 <article layout-lg="horizontal" layout="vertical" ng-if="fetched">
     <div class="offer-page">
+
         <div class="navigation" layout-lg="horizontal" layout="vertical">
 
             <p class="title"
@@ -9,13 +10,13 @@
                ng-class="{editing: state=='editing'}">
                 {{ offer.name || "Tutaj tytuł oferty" }}
             </p>
-            {{ state }}
+
             <div class="actions">
                 <div ng-show="state=='editing'">
                     <md-button class="fa fa-save" ng-click="saveOffer()">
                         Zapisz zmiany
                     </md-button>
-                    <md-button class="fa fa-ban" ng-click="state='viewing'">
+                    <md-button class="fa fa-ban" ng-click="setState('viewing')">
                         Anuluj zmiany
                     </md-button>
                 </div>
@@ -31,7 +32,7 @@
                             Usuń
                         </md-button>
                     </a>
-                    <md-button class="fa fa-edit" ng-click="state='editing'">
+                    <md-button class="fa fa-edit" ng-click="setState('editing')">
                         Edytuj
                     </md-button>
                 </div>
@@ -45,7 +46,7 @@
 
     <div class="related-offers" ng-controller="RelatedOffersController">
         <h3 class>Najbliższe podobne oferty:<br /></h3>
-        <a href="/#/offers/{{ offer.id }}" ng-repeat="offer in relatedOffers">
+        <a href="/#/offers/{{ offer.id }}" class="offer-previews-wrapper" ng-repeat="offer in relatedOffers">
             <offerpreview offer="offer"></offerpreview>
         </a>
         <h4 ng-show="relatedOffers.length == 0">Brak pasujących wyników</h4>

@@ -55,7 +55,7 @@ class Offer(BaseEntity):
 
     author_id = Column(Integer, ForeignKey('account.id'), nullable=False)
     address_id = Column(Integer, ForeignKey('address.id'))
-    logo_id = Column(Integer, ForeignKey('image.id'), nullable=True)
+    logo_id = Column(Integer, ForeignKey('image.id'))
 
     author = relationship("Account", cascade="delete, all")
     category = relationship("Category", cascade="delete, all")
@@ -63,9 +63,9 @@ class Offer(BaseEntity):
     address = relationship("Address", cascade="delete, all")
     logo = relationship("Image", cascade="delete, all")
     gallery = relationship("ImageGallery", cascade="delete, all")
-    tags = relationship('Tag',
-                        secondary=OfferTag.__table__,
-                        cascade="delete, all")
+    # tags = relationship('Tag',
+                        # secondary=OfferTag.__table__,
+                        # cascade="delete, all")
 
     @property
     def views_count(self):
@@ -94,10 +94,11 @@ class Offer(BaseEntity):
 
     def deserialize(self, dict_):
         super().deserialize(dict_)
-        self.status = next(
-            key for key, value in self.STATUSES_MAP.items()
-            if value == self.status
-        )
+        if self.status:
+            self.status = next(
+                key for key, value in self.STATUSES_MAP.items()
+                if value == self.status
+            )
         return self
 
 

@@ -14,7 +14,8 @@ urls = [
     ('logged_user', '/api/user/logged'),
 
     # api
-    ('offer', '/api/offer/{offer_id}'),
+    ('offer', '/api/offers/{offer_id:\d+}'),
+    ('offer_new', '/api/offers/new'),
     ('offer_delete', '/api/offer/{offer_id}/delete'),
     ('offer_activate', '/api/offer/{offer_id}/activate'),
     ('offer_deactivate', '/api/offer/{offer_id}/deactivate'),

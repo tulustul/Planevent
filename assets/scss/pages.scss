@@ -7,7 +7,6 @@ $mapAndGallerySize: 322px;
 .offer-page {
     flex-grow: 1;
     padding: 0px 10px;
-    overflow-y: auto;
     .navigation {
         border-bottom: 2px solid $dominant;
         overflow: hidden;
@@ -42,9 +41,6 @@ $mapAndGallerySize: 322px;
                 }
             }
             .data {
-                .widget {
-                    display: flex;
-                }
                 #contacts, #fields {
                     width: 100%;
                     list-style: none;
@@ -150,7 +146,6 @@ $mapAndGallerySize: 322px;
 }
 .related-offers {
     padding: 10px;
-    min-width: 600px;
     h3 {
         margin-top: 10px;
         font-size: 30px;
@@ -162,29 +157,13 @@ $mapAndGallerySize: 322px;
 }
 .offer-fetch-errors {
     text-align: center;
-    padding: 50px;
+    align-self: center;
     h1 {
         font-weight: 200;
     }
     .fa {
         font-size: 200px;
         color: $dominant
-    }
-}
-
-#searchView {
-    .offer-list {
-        width: calc(100% - #{$searchBoxWidth} - 10px);
-        float: right;
-        margin-right: 10px;
-        .loading-message {
-            text-align: center;
-            span {
-                font-size: 40px;
-                line-height: 60px;
-                color: white;
-            }
-        }
     }
 }
 
@@ -196,7 +175,7 @@ offerpreview {
     display: flex;
     @include transition(0.3s);
     .widget {
-        display: flex;
+        flex-direction: row;
         align-items: center;
         width: 100%;
         height: $offer-preview-size;
@@ -204,11 +183,13 @@ offerpreview {
         overflow: hidden;
         margin: 0px;
         >img {
-            min-height: $offer-preview-size;
-            min-width: $offer-preview-size;
-            max-height: $offer-preview-size;
-            max-width: $offer-preview-size;
-            box-shadow: 0px 0px 10px black;
+            min-height: $offer-preview-size - 10px;
+            min-width: $offer-preview-size - 10px;
+            max-height: $offer-preview-size - 10px;
+            max-width: $offer-preview-size - 10px;
+            margin: 10px;
+            box-shadow: 0px 0px 2px black;
+            border-radius: 100%;
         }
         .data {
             padding: 0px 16px;
@@ -286,23 +267,41 @@ offerpreview {
     }
 }
 
+#search-view {
+    .offer-list {
+        // width: calc(100% - #{$searchBoxWidth} - 10px);
+        // float: right;
+        // margin-right: 10px;
+        flex-grow: 1;
+        .loading-message {
+            text-align: center;
+            span {
+                font-size: 40px;
+                line-height: 60px;
+                color: white;
+            }
+        }
+    }
+}
+
 #search-view-wrapper {
-    height: calc(100% - #{$header-height} - #{$footer-height});
-    position: fixed;
+    min-width: $searchBoxWidth;
+    // height: calc(100% - #{$header-height} - #{$footer-height});
+    // position: fixed;
     z-index: 10;
-    width: $searchBoxWidth;
+    // width: $searchBoxWidth;
     border-right: 4px solid $dominant;
     #search-view {
         background: white;
-        #searchButton {
-            float: right;
-        }
-        .formTitle {
-            font-size: 23px;
-            text-align: center;
-            border-top: 5px solid $dominant;
-            margin-bottom: -7px;
-        }
+        // #searchButton {
+            // float: right;
+        // }
+        // .formTitle {
+        //     font-size: 23px;
+        //     text-align: center;
+        //     border-top: 5px solid $dominant;
+        //     margin-bottom: -7px;
+        // }
         .searchBox {
             margin: 8px 3px 4px 6px;
             display: flex;
@@ -544,7 +543,7 @@ offerpreview {
 
 .user-sidebar {
     md-content {
-        padding-top: 0px;
+        padding-top: 10px;
         md-button {
             margin: 10px 0px;
         }

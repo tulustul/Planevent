@@ -1,6 +1,14 @@
 <md-sidenav class="user-sidebar md-sidenav-right md-whiteframe-z5" component-id="userSidebar">
     <md-content class="md-padding" layout="vertical" ng-controller="UserSidebarController">
 
+        <a href="/offers/new" ng-click="close()">
+            <md-button class="fa fa-plus wide-button call-to-action-button">
+                Dodaj ofertę
+            </md-button>
+        </a>
+
+        <md-divider></md-divider>
+
         <a href="/user/offers">
             <md-button class="md-primary wide-button fa fa-suitcase" ng-click="close()">
                 Moje oferty

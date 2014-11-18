@@ -7,7 +7,7 @@ angular.module('planevent').controller('OfferListController',
     searchService.params.category = $routeParams.categoryId;
 
     $scope.goToOffer = function(offer) {
-        $location.path('/offer/' + offer.id);
+        $location.path('/offers/' + offer.id);
     };
 
     $scope.fetch = function(offset, limit, callback) {
@@ -20,25 +20,36 @@ angular.module('planevent').controller('OfferPageController',
                  toastService, $location, categoriesService,
                  fileUploadService) {
 
-    var Offer = $resource('/api/offer/:offerId', {offerId: '@id'});
+    var Offer = $resource('/api/offers/:offerId', {offerId: '@id'}),
+        offerId = $routeParams.offerId;
 
     $scope.state = 'viewing';
     $scope.error = '';
-    $scope.offer = Offer.get({offerId: $routeParams.offerId},
-        function(){
-            $scope.fetched = true;
-            if ($scope.offer.contacts === undefined) {
-                $scope.offer.contacts = [];
+
+    if (offerId === 'new') {
+        $scope.offer = new Offer({
+            gallery: [],
+            contacts: [],
+        });
+        $scope.fetched = true;
+    } else {
+        $scope.offer = Offer.get({offerId: $routeParams.offerId},
+            function(){
+                $scope.fetched = true;
+                if ($scope.offer.contacts === undefined) {
+                    $scope.offer.contacts = [];
+                }
+            },
+            function(response){
+                if (response.status === 404) {
+                    $scope.error = 'offerDoesNotExist';
+                } else {
+                    $scope.error = 'unknown';
+                }
             }
-        },
-        function(response){
-            if (response.status === 404) {
-                $scope.error = 'offerDoesNotExist';
-            } else {
-                $scope.error = 'unknown';
-            }
-        }
-    );
+        );
+    }
+
     categoriesService.getCategories(function(categories) {
         $scope.categories = categories;
     });
@@ -46,9 +57,11 @@ angular.module('planevent').controller('OfferPageController',
     $scope.saveOffer = function() {
         $scope.state = 'saving';
         $scope.offer.$save(
-            function() {
+            function(offer) {
                 toastService.show('Zmiany zapisane');
                 $scope.state = 'viewing';
+                $scope.offer = offer;
+                $location.path('/offers/' + offer.id);
             },
             function() {
                 $scope.state = 'viewing';
@@ -114,6 +127,10 @@ angular.module('planevent').controller('OfferPageController',
             $scope.state = 'viewing';
             toastService.show('Deaktywowano ofertę');
         });
+    };
+
+    $scope.setState = function(state) {
+        $scope.state = state;
     };
 
     $scope.initPreviewImageUpload = function() {

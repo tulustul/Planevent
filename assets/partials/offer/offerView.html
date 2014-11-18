@@ -4,11 +4,14 @@
             <ng-include class="fields widget" src="'assets/partials/offer/view/fields.html'"></ng-include>
             <ng-include class="widget" src="'assets/partials/offer/view/contacts.html'"></ng-include>
         </div>
-        <p class="description widget"
-           ng-bind-html="offer.description"
-           ng-if="state!='editing'"
-           ng-class="{editing: state=='editing'}"></p>
-        <text-angular class="widget" ng-model="offer.description" ng-if="state=='editing'"></text-angular>
+        <div class="widget">
+            <span class="title">Opis</span>
+            <p class="description"
+               ng-bind-html="offer.description"
+               ng-if="state!='editing'"
+               ng-class="{editing: state=='editing'}"></p>
+            <text-angular class="widget" ng-model="offer.description" ng-if="state=='editing'"></text-angular>
+        </div>
     </div>
 
     <div ng-if="state=='editing'">

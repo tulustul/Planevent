@@ -1,12 +1,65 @@
 @media (min-width: 1200px) {
 	.related-offers {
     	max-width: 600px;
+    	min-width: 600px;
     	border-left: 3px solid $dominant;
+    	height: calc(100% - #{$header-height} - #{$footer-height} - 2 * #{$border-width});
+    	overflow: auto;
+	}
+	.offer-page {
+    	height: calc(100% - #{$header-height} - #{$footer-height} - 2 * #{$border-width});
+    	overflow: auto;
 	}
 }
 
 @media (min-width: 960px) {
 	#offer .details .data .widget {
 		width: 50%;
+	}
+}
+
+@media (max-width: 960px) {
+	body footer a {
+		padding: 0px 10px;
+	}
+	#search-view-wrapper {
+		border-right: none;
+	}
+	md-content.md-default-theme {
+		padding: 0px;
+	}
+	offerpreview {
+		margin: 15px 0px;
+	}
+}
+
+@media (max-width: 600px) {
+	.widget {
+		margin: 5px 0px;
+	}
+	.offer-page {
+		padding: 0;
+	}
+	offerpreview {
+		.author {
+			display: none;
+		}
+		.widget {
+			.data {
+				padding: 0px 10px
+			}
+			> img {
+				min-height: 100;
+				min-width: 100;
+				max-height: 100;
+				max-width: 100;
+			}
+		}
+	}
+	.related-offers {
+		padding: 0px;
+	}
+	#add-offer-button {
+		display: none;
 	}
 }

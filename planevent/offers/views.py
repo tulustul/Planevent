@@ -71,7 +71,7 @@ class OfferView(View):
             return self.response(404, 'No offer with id {}'.format(offer_id))
 
 
-@route('offers')
+@route('offer_new')
 class OffersView(View):
 
     @permission(Account.Role.NORMAL)
@@ -81,7 +81,11 @@ class OffersView(View):
                 400, 'New offer cannot have id',
             )
         offer.added_at = datetime.datetime.now()
-        offer.updated_at = now
+        offer.updated_at = datetime.datetime.now()
+        offer.author_id = self.get_user_id()
+        if not offer.status:
+            offer.status = models.Offer.Status.INACTIVE
+
         offer.save()
         cache.set((OFFER_KEY, offer.id), offer)
         return offer

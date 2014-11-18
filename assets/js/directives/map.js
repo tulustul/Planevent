@@ -30,7 +30,8 @@ angular.module('planevent').directive('addressviewer', function($timeout) {
             function initMap() {
                 var mapOptions = {
                     center: new google.maps.LatLng(52, 19),
-                    zoom: 5
+                    zoom: 5,
+                    scrollwheel: false,
                 };
 
                 var mapElement = $('.address-viewer .map', element)[0];

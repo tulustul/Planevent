@@ -1,4 +1,5 @@
-<ul id="contacts" ng-controller="ContactsEditController">
+<span class="title">Kontakt</span>
+<ul id="contacts" class="content" ng-controller="ContactsEditController">
     <li ng-repeat="contact in offer.contacts">
         <div class="contact-data">
             <span class="contact fa fa-{{ getContactIcon(contact.type) }}"

@@ -1,8 +1,9 @@
-<ul id="fields">
+<span class="title">Informacje</span>
+<ul id="fields" class="content">
 	<li>
 		<label>Kategoria</label>
 		<span class="value"
-		      editable-select="offer.category.id"
+		      editable-select="offer.category_id"
 		      e-form="offerCategory"
 		      e-ng-options="c.id as c.name for c in categories"
 		      ng-click="showEditable(offerCategory)"

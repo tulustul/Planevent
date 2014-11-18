@@ -26,46 +26,51 @@ a {
 
 body {
     overflow-x: hidden;
+    max-height: 100%;
     #container {
         flex-grow: 1;
         overflow-y: auto;
         overflow-x: hidden;
-        max-height: 100%;
         position: relative;
         background: $ligth;
-        .content {
-            #view {
-                position: relative;
-                &.ng-leave {
-                    @include transition(0.5s);
-                    left: 0;
-                }
-                &.ng-enter {
-                    @include transition(0.5s);
-                    @include transition-delay(0.5s);
-                    left: -100%;
-                }
-                &.ng-leave-active {
-                    left: 100%;
-                }
-                &.ng-enter-active {
-                    left: 0;
-                }
-            }
+        align-items: stretch;
+        justify-content: center;
+        display: flex;
+        [ng-view] {
+            width: 100%;
+        }
+        >article {
+            width: 100%;
+        }
+        &.ng-leave {
+            @include transition(0.5s);
+            left: 0;
+        }
+        &.ng-enter {
+            @include transition(0.5s);
+            @include transition-delay(0.5s);
+            left: -100%;
+        }
+        &.ng-leave-active {
+            left: 100%;
+        }
+        &.ng-enter-active {
+            left: 0;
         }
     }
     header {
+        min-height: $header-height;
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding-right: 4px;
         background-color: $dark;
-        z-index: 1;
-        border-bottom: 4px solid $dominant;
+        z-index: 15;
+        border-bottom: $border-width solid $dominant;
         box-shadow: 0px 0px 30px #383838;
         img {
             float: left;
-            height: 60px;
+            height: $header-height;
         }
         h1 {
             float: left;
@@ -93,8 +98,9 @@ body {
         }
     }
     footer {
+        min-height: $footer-height;
         background-color: $dark;
-        border-top: 2px solid $dominant;
+        border-top: $border-width solid $dominant;
         padding: 5px;
         text-align: center;
         box-shadow: 0px 0px 30px #383838;

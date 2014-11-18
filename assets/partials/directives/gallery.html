@@ -1,5 +1,5 @@
  <div class="gallery">
-    <flex-slider slide="image in gallery" animation="slide" control-nav="thumbnails">
+    <flex-slider slide="image in gallery" animation="slide" control-nav="thumbnails" ng-show="gallery.length">
         <li data-thumb="{{image.path}}">
         	<md-button class="fa fa-times wide-button small-button"
         			  ng-if="editing"

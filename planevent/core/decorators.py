@@ -148,7 +148,7 @@ def param_decorator(name, param):
                     raise TypeError(
                         'Cannot cast param {} to type {}. {}. \nParam: {}'
                         .format(name, param_type.__name__, e, param_value)
-                    )
+                    ) from e
                 kwargs[name] = param_value
 
             return mth(self, *args, **kwargs)

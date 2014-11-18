@@ -1,20 +1,7 @@
-<div id="search-view-wrapper" ng-controller="SearchController">
-<div id="search-view">
+<div id="search-view" ng-controller="SearchController">
     <section class="slideAnimation2" ng-show="!bigMap">
-        <div class="formTitle">
-            Szukajka
-        </div>
-
         <div class="searchBox">
-            <!-- <angucomplete
-              placeholder="Szukaj"
-              pause="100"
-              localdata="searchTags"
-              searchFields="name"
-              titlefield="name"
-              selectedobject="selectedSearchTags" /> -->
-            <input type="text" placeholder="Szukaj" class="form-control">
-            <md-button id="searchButton" class="fa fa-search icon-only-button" ng-click="clearMap();search()"></md-button>
+            <md-button id="searchButton" class="fa fa-search wide-button" ng-click="clearMap();search()">Szukaj</md-button>
         </div>
 
         <div class="searchFilter" ng-click="categoryEnabled=!categoryEnabled">
@@ -82,5 +69,4 @@
             ng-show="bigMap">Mała mapa
         </md-button>
     </div>
-</div>
 </div>
