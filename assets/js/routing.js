@@ -10,10 +10,10 @@ angular.module('planevent').config(
         templateUrl: 'assets/partials/passwordRecallCallback.html',
         controller: 'PasswordRecallCallbackController'
     })
-    .when('/', {
-        templateUrl: 'assets/partials/homePage.html',
-        controller: 'HomePageController'
-    })
+    // .when('/', {
+    //     templateUrl: 'assets/partials/homePage.html',
+    //     controller: 'HomePageController'
+    // })
     .when('/playground', {
         templateUrl: 'assets/partials/playground.html',
         controller: 'MainPageController'
