@@ -21,6 +21,9 @@
             </div>
         </li>
     </flex-slider>
+
+    <p class="message" ng-show="!gallery.length">Brak zdjęć</p>
+
  	<md-button class="fa fa-plus wide-button add-image"
  			  ng-if="editing"
  			  ng-click="initImageUpload()">

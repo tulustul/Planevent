@@ -39,6 +39,9 @@ angular.module('planevent').controller('OfferPageController',
                 if ($scope.offer.contacts === undefined) {
                     $scope.offer.contacts = [];
                 }
+                if ($scope.offer.gallery === undefined) {
+                    $scope.offer.gallery = [];
+                }
             },
             function(response){
                 if (response.status === 404) {
@@ -81,10 +84,6 @@ angular.module('planevent').controller('OfferPageController',
         $mdDialog.show({
             templateUrl: 'assets/partials/offer/removeModal.html',
             controller: 'RemoveOfferModalController',
-            locals: {
-                gallery: $scope.offer.gallery,
-                editing: $scope.state === 'editing',
-            },
         }).then(function() {
             $scope.state = 'saving';
             $http.post('/api/offer/' + $scope.offer.id + '/delete')

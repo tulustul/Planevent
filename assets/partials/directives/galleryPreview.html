@@ -1,6 +1,6 @@
  <div class="galleryPreview widget">
     <span class="title">Galeria</span>
-    <ul>
+    <ul ng-show="gallery.length">
         <li ng-repeat="image in gallery | limitTo: limit">
             <img ng-src="{{image.path}}">
         </li>
@@ -8,4 +8,6 @@
     <div class="zoom-overlay">
         <span class="fa fa-search-plus"></span>
     </div>
+
+    <p class="message" ng-show="!gallery.length">Brak zdjęć</p>
  </div>
