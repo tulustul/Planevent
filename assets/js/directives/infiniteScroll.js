@@ -2,9 +2,7 @@
 
 /* Basing on ng-infinite-scroll - v1.0.0 */
 angular.module('planevent').directive('infinitescroll',
-        function($window, $rootScope, $timeout, $location, $routeParams) {
-
-    $window = angular.element($window);
+        function($rootScope, $timeout, $location, $routeParams) {
 
     return {
         restrict: 'EA',
@@ -15,6 +13,7 @@ angular.module('planevent').directive('infinitescroll',
         link: function(scope, elem, attrs) {
             var autoScroolLimit = parseInt(attrs.autoScrollLimit),
                 fetchFunction = scope.$eval(attrs.fetchFunction),
+                scrollingElement = $(attrs.scrollingElement),
                 offset = parseInt($routeParams.offset),
                 loadingPrevious = false,
                 checkWhenEnabled, scrollDistance, scrollEnabled,
@@ -97,8 +96,8 @@ angular.module('planevent').directive('infinitescroll',
                 } else {
                     minLoadedOffset = 0;
                 }
-                maxLoadedOffset = 0;
-                fetchEntities(0, pageSize, function(entities) {
+                maxLoadedOffset = minLoadedOffset;
+                fetchEntities(minLoadedOffset, pageSize, function(entities) {
                     scope.entities = entities;
                     maxLoadedOffset += entities.length;
                     return 0;
@@ -108,23 +107,18 @@ angular.module('planevent').directive('infinitescroll',
 
             function calculatePageSize() {
                 var elementSize = scope.$eval(attrs.elementSize),
-                    containerWidth = $('.infinite-scroll > .content').width(),
-                    viewportHeight = $(window).height(),
+                    containerHeight = scrollingElement.height(),
                     fetchPages = parseInt(attrs.fetchPages);
 
-                pageSize = parseInt(containerWidth / elementSize.width) *
-                    parseInt((viewportHeight * fetchPages) /
-                             elementSize.height);
+                pageSize = parseInt(
+                    (containerHeight * fetchPages) / elementSize
+                );
             }
 
-            $(window).resize(function() {
-                calculatePageSize();
-                handler();
-            });
-
-            function generatePages() {
-                scope.pages = _.range(0, scope.totalCount, pageSize);
-            }
+            // pages disabled for now
+            // function generatePages() {
+            //     scope.pages = _.range(0, scope.totalCount, pageSize);
+            // }
 
             function fetchEntities(offset, limit, callback) {
                 if (loadingPrevious) {
@@ -149,7 +143,8 @@ angular.module('planevent').directive('infinitescroll',
                     if (page !== undefined) {
                         scrollToPage(page);
                     }
-                    generatePages();
+                    // pages disabled for now
+                    // generatePages();
                 });
             }
 
@@ -160,7 +155,7 @@ angular.module('planevent').directive('infinitescroll',
                     perRow = Math.floor(containerWidth / elementSize.width),
                     top = (page-minLoadedOffset) / perRow * elementSize.height;
                 body.animate({scrollTop: top}, 600, 'linear');
-                calculateCurrentPage();
+                calculateCurrentElement();
             }
 
             function prepareScrolling() {
@@ -184,13 +179,10 @@ angular.module('planevent').directive('infinitescroll',
                 }
             }
 
-            function calculateCurrentPage() {
+            function calculateCurrentElement() {
                 var elementSize = scope.$eval(attrs.elementSize),
-                    containerWidth = $('.infinite-scroll > .content').width(),
-                    perRow = Math.floor(containerWidth / elementSize.width),
-                    row = $window.scrollTop() / elementSize.height,
-                    page = parseInt(row / (pageSize / perRow)) *
-                        pageSize + scope.minLoadedOffset;
+                    row = scrollingElement.scrollTop() / elementSize,
+                    page = parseInt(row + scope.minLoadedOffset);
                 scope.currentPage = page;
                 if(!scope.$$phase) {
                     scope.$apply();
@@ -200,13 +192,21 @@ angular.module('planevent').directive('infinitescroll',
             }
 
             function handler() {
-                calculateCurrentPage();
+                calculateCurrentElement();
 
                 var elementBottom, remaining, shouldScroll, windowBottom;
-                windowBottom = window.innerHeight + $window.scrollTop();
-                elementBottom = elem.offset().top + elem.height();
+                windowBottom = (
+                    scrollingElement.innerHeight() +
+                    scrollingElement.scrollTop()
+                );
+                elementBottom = (
+                    scrollingElement.offset().top +
+                    scrollingElement[0].scrollHeight
+                );
                 remaining = elementBottom - windowBottom;
-                shouldScroll = remaining <= window.innerHeight * scrollDistance;
+                shouldScroll = (remaining <=
+                    scrollingElement.innerHeight() * scrollDistance
+                );
 
                 if (shouldScroll && scrollEnabled &&
                         !scope.manualNextLoading && !scope.waitingForMore &&
@@ -218,9 +218,9 @@ angular.module('planevent').directive('infinitescroll',
                 }
             }
 
-            $window.on('scroll', handler);
+            scrollingElement.on('scroll', handler);
             scope.$on('$destroy', function() {
-                return $window.off('scroll', handler);
+                return scrollingElement.off('scroll', handler);
             });
             return $timeout((function() {
                 if (attrs.infiniteScrollImmediateCheck) {

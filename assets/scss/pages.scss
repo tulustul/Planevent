@@ -171,8 +171,9 @@ $offer-preview-size: 170px;
 $offer-preview-top-border: 4px;
 $offer-preview-bottom-border: 6px;
 offerpreview {
-    margin: 20px;
+    margin: 10px;
     display: flex;
+    flex-grow: 1;
     @include transition(0.3s);
     .widget {
         flex-direction: row;
@@ -239,7 +240,7 @@ offerpreview {
     }
 }
 .offer-previews-wrapper {
-    @include transition(0.3s);
+    display: flex;
     &.ng-leave {
         @include transition(0.5s);
         opacity: 1;
@@ -250,7 +251,7 @@ offerpreview {
     }
     &.ng-enter-stagger {
         @include transition(0);
-        @include transition-delay(0.15s);
+        @include transition-delay(0.2s);
     }
     &.ng-leave-active {
         opacity: 0;

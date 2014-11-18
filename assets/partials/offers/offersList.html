@@ -3,12 +3,13 @@
 
 	<infinitescroll
 	        class="offer-list"
-	        fetch-pages="2"
+	        fetch-pages="3"
 	        distance="1"
-	        auto-scroll-limit="200",
-	        element-size="{width: 230, height: 270}"
+	        auto-scroll-limit="100",
+	        element-size="190"
 	        reset-function-name="resetSearch"
-	        fetch-function="fetch">
+	        fetch-function="fetch"
+	        scrolling-element="[ng-view]">
 
 	    <a class="offer-previews-wrapper" href="/#/offers/{{ offer.id }}" ng-repeat="offer in entities">
 	    	<offerpreview offer="offer"></offerpreview>
