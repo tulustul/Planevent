@@ -43,7 +43,13 @@
 
         <md-divider></md-divider>
 
-        <md-button class="md-primary call-to-action-button fa fa-sign-out" ng-click="logout()">
+        <a href="/admin" target="_blank">
+            <md-button class="md-primary wide-button call-to-action-button fa fa-gears" ng-click="close()">
+                Panel admina
+            </md-button>
+        </a>
+
+        <md-button class="md-primary wide-button call-to-action-button fa fa-sign-out" ng-click="logout()">
             Wyloguj
         </md-button>
 

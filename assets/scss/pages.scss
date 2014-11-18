@@ -269,9 +269,6 @@ offerpreview {
 
 #search-view {
     .offer-list {
-        // width: calc(100% - #{$searchBoxWidth} - 10px);
-        // float: right;
-        // margin-right: 10px;
         flex-grow: 1;
         .loading-message {
             text-align: center;
@@ -286,22 +283,10 @@ offerpreview {
 
 #search-view-wrapper {
     min-width: $searchBoxWidth;
-    // height: calc(100% - #{$header-height} - #{$footer-height});
-    // position: fixed;
-    z-index: 10;
-    // width: $searchBoxWidth;
+    z-index: 2;
     border-right: 4px solid $dominant;
     #search-view {
         background: white;
-        // #searchButton {
-            // float: right;
-        // }
-        // .formTitle {
-        //     font-size: 23px;
-        //     text-align: center;
-        //     border-top: 5px solid $dominant;
-        //     margin-bottom: -7px;
-        // }
         .searchBox {
             margin: 8px 3px 4px 6px;
             display: flex;
