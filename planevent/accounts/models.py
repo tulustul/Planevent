@@ -154,6 +154,7 @@ class AccountSettings(BaseEntity):
     )
 
     __tablename__ = 'account_settings'
+    use_recommendations = Column(Boolean, default=True)
     recomendations_range = Column(Integer, default=10)
     address_id = Column(Integer, ForeignKey('address.id'))
 

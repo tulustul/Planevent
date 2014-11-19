@@ -5,7 +5,9 @@ from planevent.accounts.models import Account
 
 @cron(1, 1, -1, -1, -1)
 def send_recomendations_emails(num):
-    accounts = Account().all()
+    accounts = Account().filter(
+        Account.use_recommendations==True
+    ).all()
 
     for account in accounts:
         services.send_mail(

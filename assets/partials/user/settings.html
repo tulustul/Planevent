@@ -1,21 +1,27 @@
-<div ng-controller="ProfileSettingsController">
+<article ng-controller="ProfileSettingsController" class="settings">
     <div id="address-form">
-        <addressSetter ng-model="loggedUser.settings.address"
+
+        <div layout layout-align="start center">
+            <label>Wysyłaj rekomendacje</label>
+            <md-switch ng-model="account.settings.use_recommendations" aria-label="Use recommendations"></md-switch>
+        </div>
+
+        <div layout layout-align="center center">
+            <label>Zasięg rekomendacji</label>
+            <md-slider ng-model="account.settings.recomendations_range"
+                       min="1"
+                       max="50"
+                       ng-disabled="!account.settings.address.validated"></md-slider>
+            <span>{{ account.settings.recomendations_range }} km</span>
+        </div>
+
+        <label>Adres</label>
+        <addressSetter ng-model="account.settings.address"
                        type="simple"
                        label="Lokalizacja" />
-
-        Zasięg rekomendacji:
-        <input type="range"
-               ng-model="loggedUser.settings.recomendations_range"
-               min="1"
-               max="50"
-               ng-disabled="!loggedUser.settings.address.validated">
-        {{ loggedUser.settings.recomendations_range }}km
-
-        <addressViewer ng-model="loggedUser.settings.address"
-                       radius="loggedUser.settings.recomendations_range" />
+        <addressViewer ng-model="account.settings.address"
+                       radius="account.settings.recomendations_range" />
     </div>
 
-    <button ng-click="saveAccount()">Save</button>
-    <span ng-show="saved" class="fa fa-check">Saved</span>
-</div>
+    <md-button class="wide-button fa fa-save" ng-click="saveAccount()">Zapisz zmiany</md-button>
+</article>

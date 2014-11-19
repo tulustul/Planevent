@@ -62,7 +62,7 @@ body {
         padding-right: 4px;
         padding-left: 6px;
         background-color: $dominant;
-        z-index: 2;
+        z-index: 11;
         // border-bottom: $border-width solid $dominant;
         box-shadow: 0px 0px 30px #383838;
         .title {
@@ -106,7 +106,7 @@ body {
         padding: 5px;
         text-align: center;
         box-shadow: 0px 0px 30px #383838;
-        z-index: 1;
+        z-index: 11;
         a {
             padding: 0 45px;
             color: white;
@@ -152,11 +152,12 @@ body {
 }
 
 md-sidenav {
-    z-index: 100;
+    z-index: 10;
 }
 
 md-input-group.md-default-theme input {
-    width: 300px;
+    width: 500px;
+    max-width: 100%;
 }
 
 md-tabs.md-default-theme {
@@ -170,4 +171,8 @@ md-tabs.md-default-theme {
         height: 3px;
         background: $button-call-to-action-color;
     }
+}
+
+md-toast {
+    z-index: 100;
 }

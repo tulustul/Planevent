@@ -11,10 +11,10 @@
 		</md-button>
 	</div>
 	<md-button ng-if="!account" class="fa fa-sign-in extra-button" ng-click="showLoginForm()">
-	    Zaloguj się
+	    <span hide-phone>Zaloguj się</span>
 	</md-button>
 	<md-button ng-if="account" class="fa fa-reorder extra-button" ng-click="toogleMenu()">
-	    {{ account.name }}
+	    <span hide-phone>{{ account.name }}</span>
 	</md-button>
 
 </section>
