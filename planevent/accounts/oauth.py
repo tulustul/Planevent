@@ -73,7 +73,8 @@ def process_oauth_user(provider, provider_user):
     def fill_user_fields(account, provider_user, provider_settings):
         def fill_user_field(field):
             provider_field = provider_settings.mapper.get(field) or field
-            setattr(account, field, provider_user.get(provider_field))
+            if not getattr(account, field):
+                setattr(account, field, provider_user.get(provider_field))
 
         fill_user_field('name')
         fill_user_field('first_name')

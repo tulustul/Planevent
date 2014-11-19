@@ -40,7 +40,7 @@ class Account(BaseEntity):
     first_name = Column(String(50))
     last_name = Column(String(50))
     link = Column(String(50))
-    gender = Column(String(1))
+    gender = Column(String(1), default='U', nullable=False)
     created_at = Column(DateTime)
     last_login = Column(DateTime)
     login_count = Column(Integer, default=0)

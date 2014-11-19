@@ -74,7 +74,7 @@ ADMINS = [
         name='tul super admin',
         email='tulfm@poczta.fm',
         password='admin',
-        avatar='/static/images/avatars/avatar_200.gif',
+        avatar='/static/images/uploads/avatars/avatar_200.gif',
     ),
 ]
 

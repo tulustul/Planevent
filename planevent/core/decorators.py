@@ -5,7 +5,10 @@ import random
 import time
 import logging
 
-from PIL import Image
+from PIL import (
+    Image,
+    ImageOps,
+)
 from pyramid.httpexceptions import HTTPFound
 from pyramid.exceptions import Forbidden
 
@@ -181,7 +184,7 @@ class image_upload(object):
     def prepare_image(self, input_file, output_file_path):
         image = Image.open(input_file)
         if self.size:
-            image.thumbnail(self.size, Image.ANTIALIAS)
+            image = ImageOps.fit(image, self.size, Image.ANTIALIAS)
         image.save(output_file_path, 'PNG')
 
     def __call__(self, mth):
@@ -189,8 +192,12 @@ class image_upload(object):
         def wrap(instance, *args, **kwargs):
             file_upload = instance.request.POST['file']
 
-            output_file_path = self.repo_path + \
-                self.prepare_unique_filename(file_upload.filename)
+            if hasattr(instance, 'filename'):
+                filename = instance.filename + '.png'
+            else:
+                filename = self.prepare_unique_filename(file_upload.filename)
+
+            output_file_path = self.repo_path + filename
             input_file = file_upload.file
             self.prepare_image(input_file, output_file_path)
 

@@ -10,6 +10,7 @@ from planevent.core.decorators import (
     route,
     Rest,
     Body,
+    image_upload,
 )
 from planevent.core.views import View
 from planevent.services.mailing import InvalidEmail
@@ -196,3 +197,11 @@ class AccountLikingView(View):
         liking.save()
 
         return self.response(200, 'AccountLiking updated')
+
+
+@route('avatar')
+class AvatarView(View):
+
+    @image_upload('static/images/uploads/avatars/', size=(100, 100))
+    def post(self, image_path):
+        return {'path': image_path}

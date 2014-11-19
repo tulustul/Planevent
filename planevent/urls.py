@@ -26,6 +26,7 @@ urls = [
     ('offers_promoted', '/api/offers/promoted'),
     ('logo', '/api/logo'),
     ('gallery', '/api/gallery'),
+    ('avatar', '/api/avatar'),
     ('tags', '/api/tags'),
     ('tag_autocomplete', '/api/tags/autocomplete'),
     ('tag_names', '/api/tags/names'),

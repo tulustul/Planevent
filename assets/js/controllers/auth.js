@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('planevent').service('userProfileService',
-        function($location, authService) {
+        function($location, authService, accountService, toastService) {
 
     this.prepareScope = function(scope) {
         authService.getLoggedUser(function(account) {
@@ -11,6 +11,14 @@ angular.module('planevent').service('userProfileService',
                 return;
             }
         });
+
+        scope.saveAccount = function() {
+            scope.saving = true;
+            accountService.saveAccount(scope.account, function() {
+                scope.saving = false;
+                toastService.show('Zapisano zmiany');
+            });
+        };
     };
 });
 

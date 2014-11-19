@@ -42,21 +42,29 @@ angular.module('planevent').controller('UserNavigationController',
 });
 
 angular.module('planevent').controller('ProfileInformationsController',
-        function($scope, userProfileService) {
+        function($scope, userProfileService, fileUploadService) {
 
     userProfileService.prepareScope($scope);
+
+    $scope.initAvatarChange = function() {
+    	$('#avatar-upload').click();
+    };
+
+    $scope.uploadAvatar = function(files) {
+    	$scope.uploadingAvatar = true;
+        fileUploadService.upload(
+                files, '/api/avatar', function(data) {
+            $scope.account.avatar = data.path;
+            $scope.uploadingAvatar = false;
+        });
+    };
+
 });
 
 angular.module('planevent').controller('ProfileSettingsController',
-        function($scope, userProfileService, accountService) {
+        function($scope, userProfileService) {
 
     userProfileService.prepareScope($scope);
-
-    $scope.saveAccount = function() {
-        accountService.saveAccount($scope.loggedUser, function() {
-            $scope.saved = true;
-        });
-    };
 
 });
 

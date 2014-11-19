@@ -1,9 +1,31 @@
-<section layout="column" layout-align="center center" ng-controller="ProfileInformationsController">
-	<md-text-float label="Pseudomin" ng-model="account.name"></md-text-float>
-	<md-text-float label="Imię" ng-model="account.first_nam"></md-text-float>
+<section id="user-profile" layout="column" layout-align="center center" ng-controller="ProfileInformationsController">
+	<md-text-float label="Nazwa użytkownika" ng-model="account.name"></md-text-float>
+	<md-text-float label="Imię" ng-model="account.first_name"></md-text-float>
 	<md-text-float label="Nazwisko" ng-model="account.last_name"></md-text-float>
-	<md-text-float label="Płeć" ng-model="account.gender"></md-text-float>
-	<md-divider></md-divider>
-	<md-text-float label="" ng-model="account.created_at"></md-text-float>
-	<md-text-float label="" ng-model="account.login_count"></md-text-float>
+	<md-text-float label="E-mail" ng-model="account.email"></md-text-float>
+
+	<div layout="row" layout-align="center center">
+		<label>Płeć</label>
+		<md-radio-group ng-model="account.gender">
+	        <md-radio-button value="U">Nieważne</md-radio-button>
+	        <md-radio-button value="M">Mężczyzna</md-radio-button>
+	        <md-radio-button value="F">Kobieta</md-radio-button>
+	    </md-radio-group>
+    </div>
+
+	<div layout="row" layout-align="center center">
+		<label>Avatar</label>
+		<div class="avatar-settings" ng-show="!uploadingAvatar">
+			<img src="{{ account.avatar }}" alt="avatar użytkownika">
+			<div class="overlay fa fa-image" ng-click="initAvatarChange()"></div>
+			<input id="avatar-upload" class="hidden" type="file" ng-file-select="uploadAvatar($files)">
+		</div>
+		<spinner ng-show="uploadingAvatar"></spinner>
+    </div>
+
+	<md-text-float label="Data dołączenia" ng-model="account.created_at | date" disabled></md-text-float>
+	<md-text-float label="Ilość logowań" ng-model="account.login_count" disabled></md-text-float>
+
+	<md-button class="wide-button fa fa-save" ng-click="saveAccount()">Zapisz zmiany</md-button>
+
 </section>
