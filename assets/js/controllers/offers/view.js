@@ -26,13 +26,7 @@ angular.module('planevent').controller('OfferPageController',
     $scope.state = 'viewing';
     $scope.error = '';
 
-    if (offerId === 'new') {
-        $scope.offer = new Offer({
-            gallery: [],
-            contacts: [],
-        });
-        $scope.fetched = true;
-    } else {
+    function fetchOffer() {
         $scope.offer = Offer.get({offerId: $routeParams.offerId},
             function(){
                 $scope.fetched = true;
@@ -51,6 +45,17 @@ angular.module('planevent').controller('OfferPageController',
                 }
             }
         );
+
+    }
+
+    if (offerId === 'new') {
+        $scope.offer = new Offer({
+            gallery: [],
+            contacts: [],
+        });
+        $scope.fetched = true;
+    } else {
+        fetchOffer();
     }
 
     categoriesService.getCategories(function(categories) {
@@ -71,6 +76,10 @@ angular.module('planevent').controller('OfferPageController',
                 toastService.show('Nie można zapisać zmian');
             }
         );
+    };
+
+    $scope.cancelEditing = function() {
+        fetchOffer();
     };
 
     $scope.getCategoryName = function(categoryId) {
