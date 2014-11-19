@@ -1,5 +1,46 @@
 'use strict';
 
+angular.module('planevent').controller('UserNavigationController',
+		function($scope, $routeParams, $location) {
+
+	$scope.pages = [
+		{
+			label: 'Profil',
+			template: 'assets/partials/user/profile.html',
+			url: 'profile',
+		},
+		{
+			label: 'Ustawienia',
+			template: 'assets/partials/user/settings.html',
+			url: 'settings',
+		},
+		{
+			label: 'Upodobania',
+			template: 'assets/partials/user/likings.html',
+			url: 'likings',
+		},
+		{
+			label: 'Zmiana hasła',
+			template: 'assets/partials/user/changePassword.html',
+			url: 'changePassword',
+		},
+	];
+
+	$scope.selectedPage = 0;
+
+	for (var i = 0; i < $scope.pages.length; i++) {
+        if ($scope.pages[i].url === $routeParams.page) {
+            $scope.selectedPage = i;
+            break;
+        }
+    }
+
+    $scope.onPageSelect = function(page) {
+    	$location.search('page', page.url);
+    };
+
+});
+
 angular.module('planevent').controller('ProfileInformationsController',
         function($scope, userProfileService) {
 
@@ -71,3 +112,4 @@ angular.module('planevent').controller('FirstLoggingController',
 
     $scope.likingsView = 'assets/partials/profile/likings.html';
 });
+

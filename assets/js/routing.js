@@ -36,24 +36,10 @@ angular.module('planevent').config(
         controller: 'MainPageController'
     })
 
-    .when('/user', {
-        redirectTo: '/user/informations'
-    })
-    .when('/user/informations', {
-        templateUrl: 'assets/partials/user/informations.html',
-        controller: 'ProfileInformationsController'
-    })
-    .when('/user/settings', {
-        templateUrl: 'assets/partials/user/settings.html',
-        controller: 'ProfileSettingsController'
-    })
-    .when('/user/changePassword', {
-        templateUrl: 'assets/partials/user/changePassword.html',
-        controller: 'ProfileChangePasswordController'
-    })
-    .when('/user/likings', {
-        templateUrl: 'assets/partials/user/likings.html',
-        controller: 'ProfileLikingsController'
+    .when('/user/me/', {
+        templateUrl: 'assets/partials/user/userNavigation.html',
+        controller: 'UserNavigationController',
+        reloadOnSearch: false,
     })
     .when('/user/firstLogging', {
         templateUrl: 'assets/partials/user/firstLogging.html',

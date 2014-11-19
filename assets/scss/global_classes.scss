@@ -147,3 +147,20 @@ body {
 md-sidenav {
     z-index: 100;
 }
+
+md-input-group.md-default-theme input {
+    width: 300px;
+}
+
+md-tabs.md-default-theme {
+    .md-header {
+        background-color: $dominant;
+    }
+    md-tab {
+        color: #E9B0AF;
+    }
+    md-tabs-ink-bar {
+        height: 3px;
+        background: $button-call-to-action-color;
+    }
+}

@@ -1,0 +1,7 @@
+<md-tabs md-selected="selectedPage">
+	<md-tab label="{{ page.label }}"
+		    md-on-select="onPageSelect(page)"
+		    ng-repeat="page in pages">
+		<div ng-include="page.template"></div>
+	</md-tab>
+</md-tabs>

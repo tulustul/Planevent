@@ -1,6 +1,4 @@
-<div id="user-profile">
-    <!-- <div ng-include="'assets/partials/profile/userProfileNavigation.html'"></div> -->
-
+<div ng-controller="ProfileLikingsController">
     <article id="likings-view">
         <section class="category" ng-repeat="category in categories">
             <h1>{{ category.name }}</h1>
