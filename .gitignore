@@ -10,6 +10,7 @@ static/app.js
 static/vendor.js
 static/*.css
 static/images/uploads/logos/*
+static/images/uploads/avatars/*
 !static/images/uploads/logos/dummyfile
 static/images/uploads/galleries/*
 !static/images/uploads/galleries/dummyfile
