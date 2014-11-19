@@ -23,18 +23,18 @@
                 <span ng-switch-default>{{ contact.value || "Dane kontaktu" }}</span>
 
             </span>
+
+            <md-button class="small-button fa fa-times" ng-if="state=='editing'" ng-click="removeContact($index)"></md-button>
         </div>
 
         <span class="description"
-              ng-if="contact.description"
+              ng-if="contact.description || state=='editing'"
               editable-text="contact.description"
               e-form="contactDescription"
               ng-click="showEditable(contactDescription)"
               ng-class="{editing: state=='editing'}">
             {{ contact.description || (state=='editing' && "Opis kontaktu") || "" }}
         </span>
-
-        <!-- <md-button class="small-button fa fa-times" ng-if="state=='editing'" ng-click="removeContact($index)">Usuń</md-button> -->
     </li>
     <md-button id="add-contact" class="wide-button fa fa-plus" ng-if="state=='editing'" ng-click="addContact()">Dodaj kontakt</md-button>
 </ul>
