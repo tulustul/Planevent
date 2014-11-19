@@ -84,6 +84,9 @@ $widetAppearTime: 0.3s;
 .md-button.call-to-action-button {
     @include button-color($button-call-to-action-color);
 }
+.md-button.extra-button {
+    @include button-color(#FF7400);
+}
 
 $galleryPreviewSize: 155px;
 .galleryPreview {

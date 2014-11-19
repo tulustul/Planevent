@@ -10,10 +10,10 @@
 		    Zarejestruj się
 		</md-button>
 	</div>
-	<md-button ng-if="!account" class="fa fa-sign-in" ng-click="showLoginForm()">
+	<md-button ng-if="!account" class="fa fa-sign-in extra-button" ng-click="showLoginForm()">
 	    Zaloguj się
 	</md-button>
-	<md-button ng-if="account" class="fa fa-reorder" ng-click="toogleMenu()">
+	<md-button ng-if="account" class="fa fa-reorder extra-button" ng-click="toogleMenu()">
 	    {{ account.name }}
 	</md-button>
 

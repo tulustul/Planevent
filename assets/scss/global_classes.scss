@@ -60,16 +60,17 @@ body {
         justify-content: space-between;
         align-items: center;
         padding-right: 4px;
-        background-color: $dark;
+        padding-left: 6px;
+        background-color: $dominant;
         z-index: 2;
-        border-bottom: $border-width solid $dominant;
+        // border-bottom: $border-width solid $dominant;
         box-shadow: 0px 0px 30px #383838;
         .title {
             text-shadow: 1px 1px 2px black;
             display: flex;
             align-items: center;
-            font-size: 50px;
-            color: $dominant;
+            font-size: 45px;
+            color: white;
             h1 {
                 margin-left: 10px;
                 font-variant: small-caps;
@@ -100,14 +101,15 @@ body {
     }
     footer {
         min-height: $footer-height;
-        background-color: $dark;
-        border-top: $border-width solid $dominant;
+        background-color: $dominant;
+        // border-top: $border-width solid $dominant;
         padding: 5px;
         text-align: center;
         box-shadow: 0px 0px 30px #383838;
         z-index: 1;
         a {
             padding: 0 45px;
+            color: white;
         }
     }
 }
