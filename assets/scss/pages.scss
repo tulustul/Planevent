@@ -487,10 +487,10 @@ offerpreview {
         font-size: 20px;
         font-weight: 300;
     }
-    a md-button{
+    a .md-button{
         width: auto;
     }
-    md-button {
+    .md-button {
         width: 50%;
         &.submit-button {
             margin-top: 25px;
@@ -505,7 +505,7 @@ offerpreview {
     .oauth {
         display: flex;
         justify-content: space-between;
-        md-button {
+        .md-button {
             &.fa-facebook {
                 @include button-color($facebook-color);
             }
@@ -530,7 +530,7 @@ offerpreview {
 .user-sidebar {
     md-content {
         padding-top: 10px;
-        md-button {
+        .md-button {
             margin: 10px 0px;
         }
         md-divider {

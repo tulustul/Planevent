@@ -1,6 +1,6 @@
-<section id="offer" layout="vertical">
+<section id="offer" layout="column">
     <div class="details">
-        <div class="data" layout-md="horizontal" layout="vertical">
+        <div class="data" layout-tablet="column" layout-phone="column" layout="row">
             <ng-include class="fields widget" src="'assets/partials/offer/view/fields.html'"></ng-include>
             <ng-include class="widget" src="'assets/partials/offer/view/contacts.html'"></ng-include>
         </div>
@@ -18,7 +18,7 @@
         <div class="widget" ng-include="'assets/partials/offer/edit/preview.html'"></div>
     </div>
 
-    <div class="widgets" layout="vertical" layout-md="horizontal">
+    <div class="widgets" layout="row" layout-phone="column">
         <div class="widget map-widget">
             <span class="title"
                   ng-show="state!='editing'"

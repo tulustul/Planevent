@@ -59,15 +59,17 @@
             clear-markers-function-name="clearMap"
             ng-class="{bigAddressViewer: bigMap, smallAddressViewer: !bigMap}" >
         </addressViewer>
-        <md-button
-            class="fa fa-search-plus"
-            ng-click="bigMap=true; updateMap(0.5)"
-            ng-show="!bigMap">Duża mapa
-        </md-button>
-        <md-button
-            class="fa fa-search-minus"
-            ng-click="bigMap=false; updateMap(0.5)"
-            ng-show="bigMap">Mała mapa
-        </md-button>
+        <div hide-phone hide-tablet>
+            <md-button
+                class="fa fa-search-plus wide-button"
+                ng-click="bigMap=true; updateMap(0.5)"
+                ng-show="!bigMap">Duża mapa
+            </md-button>
+            <md-button
+                class="fa fa-search-minus wide-button"
+                ng-click="bigMap=false; updateMap(0.5)"
+                ng-show="bigMap">Mała mapa
+            </md-button>
+        </div>
     </div>
 </div>

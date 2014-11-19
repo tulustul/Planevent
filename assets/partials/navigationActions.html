@@ -1,13 +1,15 @@
-<section ng-controller="NavigationActionsController">
+<section ng-controller="NavigationActionsController" layout="row">
 
-	<a href="/offers/new" id="add-offer-button">
+	<a href="/offers/new" id="add-offer-button" hide-tablet hide-phone>
 		<md-button class="fa fa-plus call-to-action-button">
 		    Dodaj ofertę
 		</md-button>
 	</a>
-	<md-button ng-if="!account" class="fa fa-rocket submit-button" ng-click="showRegistrationForm()">
-	    Zarejestruj się
-	</md-button>
+	<div hide-phone>
+		<md-button ng-if="!account" class="fa fa-rocket submit-button" ng-click="showRegistrationForm()">
+		    Zarejestruj się
+		</md-button>
+	</div>
 	<md-button ng-if="!account" class="fa fa-sign-in" ng-click="showLoginForm()">
 	    Zaloguj się
 	</md-button>
