@@ -284,7 +284,7 @@ offerpreview {
 
 #search-view-wrapper {
     min-width: $searchBoxWidth;
-    z-index: 2;
+    z-index: 1;
     border-right: 4px solid $dominant;
     #search-view {
         background: white;
