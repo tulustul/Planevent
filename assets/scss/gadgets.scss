@@ -21,6 +21,7 @@ $widetAppearTime: 0.3s;
     }
 }
 
+$button-animation-time: 0.3s;
 .md-button.md-default-theme {
     float: left;
     cursor: pointer;
@@ -37,13 +38,14 @@ $widetAppearTime: 0.3s;
     min-width: 30px;
     background-color: $button-secondary-color;
     @include button-color($dominant);
+    @include transition($button-animation-time);
     &:before {
         padding-left: 3px;
         font-size: 30px;
         margin-right: 5px;
     }
     &:not([disabled]):hover {
-        @include transition(0.5s);
+        @include transition($button-animation-time);
         text-decoration: none;
     }
     &:not([disabled]):focus {
