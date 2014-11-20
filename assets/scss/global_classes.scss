@@ -164,6 +164,12 @@ md-tabs.md-default-theme {
     .md-header {
         background-color: $dominant;
     }
+    .md-tab-content {
+        height: auto;
+        article {
+            margin-bottom: 10px;
+        }
+    }
     md-tab {
         color: #E9B0AF;
     }
