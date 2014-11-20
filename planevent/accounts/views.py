@@ -87,8 +87,8 @@ class LogoutView(View):
 class ChangePasswordView(View):
 
     def post(self, credentials: Body(str)):
-        email = self.get_user_email()
-        if not email:
+        user_id = self.get_user_id()
+        if not user_id:
             return self.response(403, 'not_logged_in')
 
         try:
@@ -97,9 +97,15 @@ class ChangePasswordView(View):
             return self.response(400, 'invalid_body')
 
         try:
-            auth.change_password(email, old_password, new_password)
-        except (InvalidEmail, auth.InvalidCredentials):
+            auth.change_password(user_id, old_password, new_password)
+        except auth.InvalidCredentials:
             return self.response(400, 'invalid_credentials')
+        except models.Account.PasswordToShort:
+            return self.response(
+                400,
+                'password_too_short',
+                mimimum_length=settings.MINIMUM_PASSWORD_LENGTH,
+            )
 
         return self.response(200, 'password_changed')
 

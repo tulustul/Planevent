@@ -69,21 +69,35 @@ angular.module('planevent').controller('ProfileSettingsController',
 });
 
 angular.module('planevent').controller('ProfileChangePasswordController',
-        function($scope, userProfileService, authService) {
+        function($scope, userProfileService, authService, toastService) {
 
     userProfileService.prepareScope($scope);
 
-    $scope.changePassword = function(oldPassword, newPassword) {
+    $scope.changePassword = function(
+        oldPassword, newPassword, newPasswordRepeated
+    ) {
+
+        if (newPassword !== newPasswordRepeated) {
+            $scope.message = 'passwords_dont_match';
+            return;
+        }
+
         $scope.waiting = true;
 
         authService.changePassword(oldPassword, newPassword)
         .success(function(response) {
+            $scope.account.password_protected = true;
             $scope.message = response.message;
             $scope.waiting = false;
+            $scope.oldPassword = '';
+            $scope.newPassword = '';
+            $scope.newPasswordRepeated = '';
+            toastService.show('Hasło zostało zmienione');
         })
         .error(function(response) {
             $scope.waiting = false;
             $scope.message = response.message;
+            $scope.minPasswordLength = response.mimimum_length;
         });
     };
 });

@@ -39,8 +39,6 @@ def _login(request, account):
     account.last_login = datetime.now()
     account.login_count += 1
     account.save()
-    # request.session['user_id'] = account.id
-    # request.session['user_role'] = account.role
     request.session['user'] = account.serialize()
 
 
@@ -68,8 +66,8 @@ def register(request, email, password):
     return account
 
 
-def change_password(email, old_password, new_password):
-    account = models.Account.get_by_email(email, 'credentials')
+def change_password(user_id, old_password, new_password):
+    account = models.Account.get(user_id, 'credentials')
     _authenticate_account(account, old_password)
 
     account.set_password(new_password)

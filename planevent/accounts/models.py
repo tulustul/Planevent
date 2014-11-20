@@ -110,7 +110,6 @@ class Account(BaseEntity):
         elif self.email:
             self.name = self.email
 
-
     def _generate_password_hash(self, password):
         hash = hashlib.sha256()
         hash.update((password + self.credentials.password_salt).encode('utf8'))
@@ -127,8 +126,8 @@ class Account(BaseEntity):
         self.password_protected = True
 
     def check_password(self, password):
-        return self._generate_password_hash(password) == \
-            self.credentials.password_hash
+        password_hash = self._generate_password_hash(password)
+        return password_hash == self.credentials.password_hash
 
     def generate_recall_password_token(self):
         self.credentials.recall_token = uuid.uuid4().hex
