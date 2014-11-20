@@ -1,17 +1,20 @@
-<div class="liking">
+<div class="liking" layout="row" layout-align="center stretch">
 	<img src="{{ liking.subcategory.icon_path }}"
 		 alt="{{ liking.subcategory.name }}"
 		 ng-style="{'background-color': liking.subcategory.color}">
-	<span class="level fa fa-{{ smileIcon }}" ng-show="!liking.waiting"></span>
-	<span class="level fa fa-spinner fa-spin" ng-show="liking.waiting"></span>
-	<div class="level-chooser">
-		<div ng-show="!liking.waiting">
-			<span class="fa fa-frown-o" ng-class="{'current-level': liking.level === 1}" ng-click="setLiking(liking, 1)"></span>
-		    <span class="fa fa-meh-o" ng-class="{'current-level': liking.level === 2}"  ng-click="setLiking(liking, 2)"></span>
-		    <span class="fa fa-smile-o" ng-class="{'current-level': liking.level === 3}"  ng-click="setLiking(liking, 3)"></span>
-		    <span class="fa fa-heart" ng-class="{'current-level': liking.level === 4}"  ng-click="setLiking(liking, 4)"></span>
-		</div>
-	    <span class="fa fa-spinner fa-spin" ng-show="liking.waiting"></span>
+
+	<div class="content" layout="row" layout-align="space-between center">
+
+		<span class="name">{{ liking.subcategory.name }}</span>
+
+		<span class="level fa fa-{{ smileIcon }}" ng-show="!liking.waiting">
+			<div class="level-chooser">
+					<span class="fa fa-frown-o" ng-class="{'current-level': liking.level === 1}" ng-click="setLiking(liking, 1)"></span>
+				    <span class="fa fa-meh-o" ng-class="{'current-level': liking.level === 2}"  ng-click="setLiking(liking, 2)"></span>
+				    <span class="fa fa-smile-o" ng-class="{'current-level': liking.level === 3}"  ng-click="setLiking(liking, 3)"></span>
+			</div>
+		</span>
+
+		<spinner ng-show="liking.waiting"></spinner>
 	</div>
-	<p>{{ liking.subcategory.name }}</p>
 </div>

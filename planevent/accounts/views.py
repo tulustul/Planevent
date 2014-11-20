@@ -176,6 +176,7 @@ class AccountLikingView(View):
 
     @permission(models.Account.Role.NORMAL)
     def post(self, liking_id: Rest(int), level: Body(int)):
+        import time;time.sleep(1)
         liking = models.AccountLiking.get(liking_id)
 
         if not liking:

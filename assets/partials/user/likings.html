@@ -1,9 +1,16 @@
 <article id="likings-view" ng-controller="ProfileLikingsController">
-    <section class="category" ng-repeat="category in categories">
-        <h1>{{ category.name }}</h1>
-        <liking ng-model="liking"
-                ng-repeat="liking in account.likings"
-                ng-click="showLevelChooser(liking, $event)"
-                ng-if="liking.subcategory.category.id === category.id" />
+    <ul class="categories" layout="row" layout-align="center start">
+    	<li ng-repeat="category in categories">
+	        <h1>{{ category.name }}</h1>
+	        <ul class="likings" layout="column" layout-align="start start">
+	        	<li ng-repeat="liking in account.likings"
+			        ng-if="liking.subcategory.category.id === category.id">
+			        <liking
+			        	ng-model="liking"
+			            ng-click="showLevelChooser(liking, $event)">
+			        </liking>
+	        	</li>
+	        </ul>
+    	</li>
     </section>
 </article>

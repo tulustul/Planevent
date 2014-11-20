@@ -176,7 +176,6 @@ class AccountLiking(BaseEntity):
         DISLIKE = 1
         MEH = 2
         LIKE = 3
-        LOVE = 4
 
     __tablename__ = 'account_liking'
 

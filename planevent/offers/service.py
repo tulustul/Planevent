@@ -107,15 +107,12 @@ def get_account_recomendations(account_id, limit=10):
         'likings.subcategory',
     )
 
-    loves = get_liking_subcategory(account.likings, AccountLiking.Level.LOVE)
     likes = get_liking_subcategory(account.likings, AccountLiking.Level.LIKE)
     mehs = get_liking_subcategory(account.likings, AccountLiking.Level.MEH)
 
     settings = account.settings.recommendations
 
-    result = get_offers(loves, settings)
-    if len(result) < limit:
-        result += get_offers(likes, settings)
+    result = get_offers(likes, settings)
     if len(result) < limit:
         result += get_offers(mehs, settings)
 
