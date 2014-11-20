@@ -22,18 +22,18 @@
                 </div>
                 <div ng-show="state=='viewing'">
                     <md-button class="fa fa-ban" ng-if="offer.status=='ACTIVE'" ng-click="deactivateOffer()">
-                        Deaktywuj ofertę
+                        <span hide-phone>Deaktywuj ofertę</span>
                     </md-button>
                     <md-button class="fa fa-check" ng-if="offer.status=='INACTIVE'" ng-click="activateOffer()">
-                        Aktywuj ofertę
+                        <span hide-phone>Aktywuj ofertę</span>
                     </md-button>
                     <a href="#">
                         <md-button class="fa fa-times" ng-click="removeOffer()">
-                            Usuń
+                            <span hide-phone>Usuń</span>
                         </md-button>
                     </a>
                     <md-button class="fa fa-edit" ng-click="setState('editing')">
-                        Edytuj
+                        <span hide-phone>Edytuj</span>
                     </md-button>
                 </div>
                 <spinner ng-show="state=='saving'"></spinner>
@@ -44,8 +44,8 @@
 
     </div>
 
-    <div class="related-offers" ng-controller="RelatedOffersController">
-        <h3 class>Najbliższe podobne oferty:<br /></h3>
+    <div class="related-offers widget" ng-controller="RelatedOffersController">
+        <span class="title">Najbliższe podobne oferty</span>
         <a href="/#/offers/{{ offer.id }}" class="offer-previews-wrapper" ng-repeat="offer in relatedOffers">
             <offerpreview offer="offer"></offerpreview>
         </a>

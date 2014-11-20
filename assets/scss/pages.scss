@@ -25,8 +25,8 @@ $mapAndGallerySize: 322px;
     }
     #offer {
         .details {
-            >.description {
-                padding: 15px;
+            p.description {
+                padding: 0px 15px;
                 font-size: 17px;
                 line-height: 1.6em;
             }
@@ -146,12 +146,6 @@ $mapAndGallerySize: 322px;
     }
 }
 .related-offers {
-    padding: 10px;
-    h3 {
-        margin-top: 10px;
-        font-size: 30px;
-        font-weight: 300;
-    }
     offerpreview {
         margin: 10px 0px;
     }
