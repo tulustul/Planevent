@@ -31,6 +31,13 @@
 }
 
 @media (max-width: 600px) {
+	body {
+		max-height: none;
+		height: auto;
+		#container {
+			display: block;
+		}
+	}
 	.widget {
 		margin: 5px 0px;
 	}

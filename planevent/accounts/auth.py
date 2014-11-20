@@ -102,7 +102,7 @@ def recall_password_callback(token, new_password):
 
 
 def try_login(request, email, password):
-    account = models.Account.get_by_email(email, 'credentials')
+    account = models.Account.get_by_email(email, 'credentials', 'likings')
     _authenticate_account(account, password)
     _login(request, account)
 
