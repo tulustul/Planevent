@@ -1,4 +1,4 @@
-{% extends '../templates/seo/base.jinja2' %}
+{% extends '../base.jinja2' %}
 {% block content %}
     <a href="/offers/search">Szukaj</a>
     <h2>Polecane oferty</h2>
@@ -8,7 +8,7 @@
             <ul>
             {% for offer in offer_category.offers %}
                 <li>
-                    {% include '../templates/seo/widgets/offer_preview.jinja2' %}
+                    {% include '../widgets/offer_preview.jinja2' %}
                 </li>
             {% endfor %}
             </ul>
