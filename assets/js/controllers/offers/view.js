@@ -80,6 +80,7 @@ angular.module('planevent').controller('OfferPageController',
 
     $scope.cancelEditing = function() {
         fetchOffer();
+        $scope.state = 'viewing';
     };
 
     $scope.getCategoryName = function(categoryId) {
