@@ -46,9 +46,11 @@
 
     <div class="related-offers widget" ng-controller="RelatedOffersController">
         <span class="title">Najbliższe podobne oferty</span>
-        <a href="/#/offers/{{ offer.id }}" class="offer-previews-wrapper" ng-repeat="offer in relatedOffers">
-            <offerpreview offer="offer"></offerpreview>
-        </a>
+        <div class="related-offers-content">
+            <a href="/#/offers/{{ offer.id }}" class="offer-previews-wrapper" ng-repeat="offer in relatedOffers">
+                <offerpreview offer="offer"></offerpreview>
+            </a>
+        </div>
         <h4 ng-show="relatedOffers.length == 0">Brak pasujących wyników</h4>
     </div>
 </article>

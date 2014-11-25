@@ -146,8 +146,12 @@ $mapAndGallerySize: 322px;
     }
 }
 .related-offers {
-    offerpreview {
-        margin: 10px 0px;
+    .related-offers-content {
+        overflow-y: auto;
+        overflow-x: hidden;
+        offerpreview {
+            margin: 10px 0px;
+        }
     }
 }
 .offer-fetch-errors {

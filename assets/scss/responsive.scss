@@ -2,12 +2,15 @@
 	.related-offers {
     	max-width: 600px;
     	min-width: 600px;
+    	margin: 0px;
     	border-left: 3px solid $dominant;
-    	height: calc(100% - #{$header-height} - #{$footer-height} - 2 * #{$border-width});
-    	overflow: auto;
+    	height: calc(100% - #{$header-height} - #{$footer-height} - 1px);
+    	.title {
+    		min-height: 33px;
+    	}
 	}
 	.offer-page {
-    	height: calc(100% - #{$header-height} - #{$footer-height} - 2 * #{$border-width});
+    	height: calc(100% - #{$header-height} - #{$footer-height} - 1px);
     	overflow: auto;
 	}
 }
