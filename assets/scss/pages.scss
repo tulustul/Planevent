@@ -146,6 +146,7 @@ $mapAndGallerySize: 322px;
     }
 }
 .related-offers {
+    justify-content: flex-start;
     .related-offers-content {
         overflow-y: auto;
         overflow-x: hidden;

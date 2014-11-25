@@ -1,7 +1,7 @@
-<article layout-pc="row" layout="column" ng-if="fetched">
+<article layout-sm="column" layout-md="column" layout-lg="column" layout="row" ng-if="fetched">
     <div class="offer-page">
 
-        <div class="navigation" layout-pc="row" layout="column">
+        <div class="navigation" layout-lg="row" layout="column">
 
             <p class="title"
                editable-text="offer.name"
@@ -22,18 +22,18 @@
                 </div>
                 <div ng-show="state=='viewing'">
                     <md-button class="fa fa-ban" ng-if="offer.status=='ACTIVE'" ng-click="deactivateOffer()">
-                        <span hide-phone>Deaktywuj ofertę</span>
+                        <span hide-sm>Deaktywuj ofertę</span>
                     </md-button>
                     <md-button class="fa fa-check" ng-if="offer.status=='INACTIVE'" ng-click="activateOffer()">
-                        <span hide-phone>Aktywuj ofertę</span>
+                        <span hide-sm>Aktywuj ofertę</span>
                     </md-button>
                     <a href="#">
                         <md-button class="fa fa-times" ng-click="removeOffer()">
-                            <span hide-phone>Usuń</span>
+                            <span hide-sm>Usuń</span>
                         </md-button>
                     </a>
                     <md-button class="fa fa-edit" ng-click="setState('editing')">
-                        <span hide-phone>Edytuj</span>
+                        <span hide-sm>Edytuj</span>
                     </md-button>
                 </div>
                 <spinner ng-show="state=='saving'"></spinner>

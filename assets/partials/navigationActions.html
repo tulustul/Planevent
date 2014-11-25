@@ -1,20 +1,20 @@
 <section ng-controller="NavigationActionsController" layout="row">
 
-	<a href="/offers/new" id="add-offer-button" hide-tablet hide-phone>
+	<a href="/offers/new" id="add-offer-button" hide-md hide-sm>
 		<md-button class="fa fa-plus call-to-action-button">
 		    Dodaj ofertę
 		</md-button>
 	</a>
-	<div hide-phone>
+	<div hide-sm>
 		<md-button ng-if="!account" class="fa fa-rocket submit-button" ng-click="showRegistrationForm()">
 		    Zarejestruj się
 		</md-button>
 	</div>
 	<md-button ng-if="!account" class="fa fa-sign-in extra-button" ng-click="showLoginForm()">
-	    <span hide-phone>Zaloguj się</span>
+	    <span hide-sm>Zaloguj się</span>
 	</md-button>
 	<md-button ng-if="account" class="fa fa-reorder extra-button" ng-click="toogleMenu()">
-	    <span hide-phone>{{ account.name }}</span>
+	    <span hide-sm>{{ account.name }}</span>
 	</md-button>
 
 </section>
