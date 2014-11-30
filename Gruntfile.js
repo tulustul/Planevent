@@ -83,7 +83,6 @@ module.exports = function(grunt) {
         },
 
         compass: {
-            require: 'susy',
             dev: {
                 options: {
                     sassDir: 'assets/scss',
@@ -92,7 +91,8 @@ module.exports = function(grunt) {
                     specify: [
                         'assets/scss/main.scss',
                         'assets/scss/admin.scss',
-                    ]
+                    ],
+                    environment: 'development'
                 }
             }
         },

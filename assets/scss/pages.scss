@@ -532,13 +532,11 @@ offerpreview {
     overflow: hidden;
     padding: 50px;
     .address-viewer {
-        @include span-columns(1, 2);
         float: left;
         height: 300px;
         width: 500px;
     }
     section {
-        @include span-columns(1, 2);
         float: right;
     }
 }

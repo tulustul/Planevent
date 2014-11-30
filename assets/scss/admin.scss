@@ -2,8 +2,6 @@
 
 #admin-panel {
     $column-width: 4em;
-    @include container;
-    @include border-box-sizing;
     max-width: 1000px;
     margin: 0 auto;
     margin-top: 10px;
@@ -11,21 +9,17 @@
     background-color: $ligth;
     padding: 15px;
     label {
-        @include span-columns(4, 12, 0.0em);
         text-align: right;
         line-height: 30px;
         font-weight: bold;
     }
     input, strong {
-        @include span-columns(8 omega);
         height: 30px;
     }
     .alert {
-        @include span-columns(12);
         margin-top: 10px;
     }
     .btn-wrapper {
-        @include span-columns(12);
         .btn {
             float: right;
         }
