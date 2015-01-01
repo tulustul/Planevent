@@ -397,44 +397,42 @@ gallery {
     margin: 0px 50px;
 }
 
-modal {
+md-dialog.md-default-theme {
     max-width: 90%;
     max-height: 90%;
-    md-dialog.md-default-theme {
-        background-color: white;
-        border-radius: 8px;
-        max-width: 100%;
-        max-height: 90%;
-        .md-subheader {
-            padding-top: 7px;
-            padding-bottom: 10px;
-            margin-right: 0px;
-            border-bottom: 2px solid $dominant;
-            font-size: 40px;
-            font-weight: 300;
-            text-align: center;
-            flex: 0 0 auto;
-            background-color: transparent;
-            .modal-close {
-                float: right;
-                position: absolute;
-                top: 8px;
-                right: 8px;
-                color: $dominant;
-                cursor: pointer;
-                text-decoration: none;
+    background-color: white;
+    border-radius: 8px;
+    max-width: 100%;
+    max-height: 90%;
+    .md-subheader {
+        padding-top: 7px;
+        padding-bottom: 10px;
+        margin-right: 0px;
+        border-bottom: 2px solid $dominant;
+        font-size: 40px;
+        font-weight: 300;
+        text-align: center;
+        flex: 0 0 auto;
+        background-color: transparent;
+        .modal-close {
+            float: right;
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            color: $dominant;
+            cursor: pointer;
+            text-decoration: none;
+            @include transition(0.3s);
+            &:hover {
                 @include transition(0.3s);
-                &:hover {
-                    @include transition(0.3s);
-                    text-shadow: 2px 2px 0px black;
-                    @include transform(scale(1.2));
-                }
+                text-shadow: 2px 2px 0px black;
+                @include transform(scale(1.2));
             }
         }
-        md-content {
-            background-color: transparent;
-            overflow-x: hidden;
-        }
+    }
+    md-content {
+        background-color: transparent;
+        overflow-x: hidden;
     }
 }
 

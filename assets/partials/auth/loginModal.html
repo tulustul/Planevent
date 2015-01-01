@@ -1,40 +1,48 @@
-<modal title="Logowanie" class="loginModal">
-	<p>Zaloguj się przez swój email</p>
-	<form name="loginForm" id="login-form" layout="column" layout-align="center center">
-		<md-text-float label="Email" ng-model="email" type="email" md-fid="email" required></md-text-float>
-		<span ng-show="loginForm.email.$error.required">Tell us your email.</span>
-		<md-text-float label="Hasło" ng-model="password" type="password" md-fid="password" required></md-text-float>
+<md-dialog aria-label="Logowanie" class="loginModal">
 
-		<md-button class="submit-button wide-button fa fa-sign-in"
-		    	   type="submit"
-		    	   ng-click="login(email, password)"
-		    	   ng-disabled="loginForm.$invalid"
-		    	   ng-show="!waiting">
-			Zaloguj się
-		</md-button>
-		<spinner ng-show="waiting"></spinner>
+	<md-subheader class="md-sticky-no-effect">
+		Logowanie
+		<span class="modal-close fa fa-times" ng-click="cancel()"></span>
+	</md-subheader>
 
-		<span ng-show="message=='invalid_credentials'">Niepoprawne hasło</span>
-	</form>
+	<md-content>
+		<p>Zaloguj się przez swój email</p>
+		<form name="loginForm" id="login-form" layout="column" layout-align="center center">
+			<md-text-float label="Email" ng-model="email" type="email" md-fid="email" required></md-text-float>
+			<span ng-show="loginForm.email.$error.required">Tell us your email.</span>
+			<md-text-float label="Hasło" ng-model="password" type="password" md-fid="password" required></md-text-float>
 
-	<p>lub</p>
-
-	<div class="oauth">
-		<a href="/login/facebook" target="_self">
-			<md-button class="fa fa-facebook">
-				Zaloguj się przez Facebook
+			<md-button class="submit-button wide-button fa fa-sign-in"
+			    	   type="submit"
+			    	   ng-click="login(email, password)"
+			    	   ng-disabled="loginForm.$invalid"
+			    	   ng-show="!waiting">
+				Zaloguj się
 			</md-button>
-		</a>
+			<spinner ng-show="waiting"></spinner>
 
-		<a href="/login/google" target="_self">
-			<md-button class="fa fa-google-plus">
-				Zaloguj się przez Google+
-			</md-button>
-		</a>
-	</div>
+			<span ng-show="message=='invalid_credentials'">Niepoprawne hasło</span>
+		</form>
 
-	<div class="options">
-		<a ng-click="modal.close(); showRegistrationForm()">Nie mam jeszcze konta</a>
-		<a ng-click="modal.close(); showRemindPasswordForm()">Zapomniałem hasła</a>
-	</div>
-</modal>
+		<p>lub</p>
+
+		<div class="oauth">
+			<a href="/login/facebook" target="_self">
+				<md-button class="fa fa-facebook">
+					Zaloguj się przez Facebook
+				</md-button>
+			</a>
+
+			<a href="/login/google" target="_self">
+				<md-button class="fa fa-google-plus">
+					Zaloguj się przez Google+
+				</md-button>
+			</a>
+		</div>
+
+		<div class="options">
+			<a ng-click="modal.close(); showRegistrationForm()">Nie mam jeszcze konta</a>
+			<a ng-click="modal.close(); showRemindPasswordForm()">Zapomniałem hasła</a>
+		</div>
+	</md-content>
+</md-dialog>

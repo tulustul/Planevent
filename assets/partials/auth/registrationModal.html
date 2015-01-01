@@ -1,41 +1,49 @@
-<modal title="Rejestracja" class="registrationModal">
-	<p>Zarejestruj się przez swój email</p>
-	<form name="registrationForm" id="login-form" layout="column" layout-align="center center">
-		<md-text-float label="Email" md-fid="email" ng-model="email" type="email" required></md-text-float>
-		<md-text-float name="password" label="Hasło" ng-model="password" type="password" minlength="5" required></md-text-float>
-		<md-text-float name="password" label="Powtórz hasło" ng-model="passwordRepeated" type="password" required></md-text-float>
+<md-dialog aria-label="Rejestracja" class="registrationModal">
 
-		<ng-messages for="registrationForm.password.$error">
-			<ng-message when="minlength">Hasło musi mieć przynajmniej 5 znaków</ng-message>
-		</ng-messages>
+	<md-subheader class="md-sticky-no-effect">
+		Rejestracja
+		<span class="modal-close fa fa-times" ng-click="cancel()"></span>
+	</md-subheader>
 
-		<md-button class="submit-button fa fa-sign-in"
-				   ng-click="register(email, password, passwordRepeated)"
-				   type="submit"
-				   ng-disabled="registrationForm.$invalid"
-				   ng-show="!waiting">
-			Zarejestruj się
-		</md-button>
+	<md-content>
+		<p>Zarejestruj się przez swój email</p>
+		<form name="registrationForm" id="login-form" layout="column" layout-align="center center">
+			<md-text-float label="Email" md-fid="email" ng-model="email" type="email" required></md-text-float>
+			<md-text-float name="password" label="Hasło" ng-model="password" type="password" minlength="5" required></md-text-float>
+			<md-text-float name="password" label="Powtórz hasło" ng-model="passwordRepeated" type="password" required></md-text-float>
 
-		<spinner ng-show="waiting"></spinner>
-		<span ng-show="message=='invalid_credentials'">Niepoprawne hasło</span>
-		<span ng-show="passwordsDontMatch">Podane hasła nie są identyczne</span>
+			<ng-messages for="registrationForm.password.$error">
+				<ng-message when="minlength">Hasło musi mieć przynajmniej 5 znaków</ng-message>
+			</ng-messages>
 
-	</form>
-
-	<p>lub</p>
-
-	<div class="oauth">
-		<a href="/login/facebook" target="_self">
-			<md-button class="fa fa-facebook">
-				Zarejestruj się przez Facebook
+			<md-button class="submit-button fa fa-sign-in"
+					   ng-click="register(email, password, passwordRepeated)"
+					   type="submit"
+					   ng-disabled="registrationForm.$invalid"
+					   ng-show="!waiting">
+				Zarejestruj się
 			</md-button>
-		</a>
 
-		<a href="/login/google" target="_self">
-			<md-button class="fa fa-google-plus">
-				Zarejestruj się przez Google+
-			</md-button>
-		</a>
-	</div>
-</modal>
+			<spinner ng-show="waiting"></spinner>
+			<span ng-show="message=='invalid_credentials'">Niepoprawne hasło</span>
+			<span ng-show="passwordsDontMatch">Podane hasła nie są identyczne</span>
+
+		</form>
+
+		<p>lub</p>
+
+		<div class="oauth">
+			<a href="/login/facebook" target="_self">
+				<md-button class="fa fa-facebook">
+					Zarejestruj się przez Facebook
+				</md-button>
+			</a>
+
+			<a href="/login/google" target="_self">
+				<md-button class="fa fa-google-plus">
+					Zarejestruj się przez Google+
+				</md-button>
+			</a>
+		</div>
+	</md-content>
+</md-dialog>z

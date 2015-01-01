@@ -1,3 +1,11 @@
-<modal title="Galeria" class="gallery-modal">
-	<gallery ng-model="gallery" editing="editing"></gallery>
-</modal>
+<md-dialog aria-label="Galeria" class="gallery-modal">
+
+	<md-subheader class="md-sticky-no-effect">
+		Galeria
+		<span class="modal-close fa fa-times" ng-click="cancel()"></span>
+	</md-subheader>
+
+	<md-content>
+		<gallery ng-model="gallery" editing="editing"></gallery>
+	</md-content>
+</md-dialog>
