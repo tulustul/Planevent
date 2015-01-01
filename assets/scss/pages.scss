@@ -416,20 +416,11 @@ offerpreview {
                                 &.fa-smile-o {
                                     color: rgb(66, 191, 0);
                                 }
-                                &:hover {
-                                    &:before {
-                                        display: none;
-                                    }
-                                    .level-chooser {
-                                        display: flex;
-                                        flex-direction: row;
-                                        flex-wrap: nowrap;
-                                        background-color: white;
-                                    }
-                                }
-                                .level-chooser {
-                                    display: none;
-                                }
+                            }
+                            .level-chooser {
+                                width: 100%;
+                                text-align: right;
+                                white-space: nowrap;
                             }
                         }
                     }

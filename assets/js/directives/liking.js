@@ -18,9 +18,6 @@ angular.module('planevent').directive('liking', function() {
                     case 3:
                         smileIcon = 'smile-o';
                         break;
-                    case 4:
-                        smileIcon = 'heart';
-                        break;
                     default:
                         smileIcon = 'meh-o';
                         break;

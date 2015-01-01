@@ -55,7 +55,11 @@ angular.module('planevent').controller('LoginController',
     };
 
     $scope.showRegistrationForm = function() {
-        $scope.$broadcast('showRegistrationForm');
+        // $scope.$broadcast('showRegistrationForm');
+        $mdDialog.show({
+            templateUrl: 'assets/partials/auth/registrationModal.html',
+            controller: 'RegistrationController',
+        });
     };
 
     $scope.login = function(email, password) {

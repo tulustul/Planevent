@@ -22,12 +22,6 @@ angular.module('planevent').controller('MainPageController',
     function($scope, $mdDialog, $mdSidenav, categoriesService, searchService) {
         $scope.categories = categoriesService.categories;
 
-        // $scope.getPromotedOffers = function() {
-        //     searchService.resetParams();
-        //     searchService.params.category = $routeParams.categoryId;
-        //     searchService.fetch(offset, limit, callback);
-        // };
-
         $scope.$on('showRegistrationForm', function() {
             $scope.showRegistrationForm();
         });

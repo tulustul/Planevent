@@ -103,7 +103,11 @@ angular.module('planevent').controller('ProfileChangePasswordController',
 });
 
 angular.module('planevent').controller('ProfileLikingsController',
-        function($scope, $http, userProfileService, categoriesService) {
+        function($scope, $http, userProfileService, categoriesService,
+            toastService
+        ) {
+
+    var activeLiking;
 
     userProfileService.prepareScope($scope);
 
@@ -111,17 +115,27 @@ angular.module('planevent').controller('ProfileLikingsController',
         $scope.categories = categories;
     });
 
+    $scope.enableLikingChange = function(liking) {
+        if (activeLiking !== undefined) {
+            activeLiking.state = 'ready';
+        }
+        activeLiking = liking;
+        liking.state = 'changing';
+    };
+
     $scope.setLiking = function(liking, level) {
         liking.level = level;
 
-        liking.waiting = true;
+        liking.state = 'waiting';
         $http.post('/api/accounts/liking/' + liking.id + '/level', level)
         .success(function() {
             $scope.$broadcast('likingUpdated', liking);
-            liking.waiting = false;
+            liking.state = 'ready';
+            toastService.show('Zaktualizowano upodobanie');
         })
         .error(function() {
-            liking.waiting = false;
+            liking.state = 'ready';
+            toastService.show('Nie udało się zapisać zmian');
         });
 
     };
