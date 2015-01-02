@@ -1,12 +1,20 @@
-<modal title="Usunąć ofertę?">
-    <p>Usuniętej oferty nie można już przywrócić</p>
+<md-dialog aria-label="Usunąć ofertę?">
 
-    <div class="md-actions" layout="row" layout-align="end">
-        <md-button class="fa fa-times" ng-click="cancel()">
-            Anuluj
-        </md-button>
-        <md-button class="submit-button fa fa-check" ng-click="hide()">
-            Usuń
-        </md-button>
-    </div>
-</modal>
+	<md-subheader class="md-sticky-no-effect">
+		Usunąć ofertę?
+		<span class="modal-close fa fa-times" ng-click="cancel()"></span>
+	</md-subheader>
+
+	<md-content>
+	    <p>Usuniętej oferty nie można już przywrócić</p>
+
+	    <div class="md-actions" layout="row" layout-align="end">
+	        <md-button class="fa fa-times" ng-click="cancel()">
+	            Anuluj
+	        </md-button>
+	        <md-button class="submit-button fa fa-check" ng-click="hide()">
+	            Usuń
+	        </md-button>
+	    </div>
+	</md-content>
+</md-dialog>

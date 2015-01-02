@@ -236,12 +236,24 @@ angular.module('planevent').service('fileUploadService',
 angular.module('planevent').service('toastService',
         function($mdToast) {
 
-    this.show = function(message) {
+    this.info = function(message) {
+        this.show(message, 'infoToast.html');
+    }
+
+    this.warn = function(message) {
+        this.show(message, 'warnToast.html');
+    }
+
+    this.error = function(message) {
+        this.show(message, 'errorToast.html');
+    }
+
+    this.show = function(message, template) {
         $mdToast.show({
             controller: 'ToastController',
-            templateUrl: 'assets/partials/widgets/genericToast.html',
+            templateUrl: 'assets/partials/widgets/' + template,
             hideDelay: 5000,
-            position: 'top center',
+            position: 'bottom right',
             locals: {
                 message: message,
             },

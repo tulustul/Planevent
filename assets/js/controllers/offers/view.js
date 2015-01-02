@@ -66,14 +66,13 @@ angular.module('planevent').controller('OfferPageController',
         $scope.state = 'saving';
         $scope.offer.$save(
             function(offer) {
-                toastService.show('Zmiany zapisane');
+                toastService.info('Zmiany zapisane');
                 $scope.state = 'viewing';
                 $scope.offer = offer;
                 $location.path('/offers/' + offer.id);
             },
             function() {
                 $scope.state = 'viewing';
-                toastService.show('Nie można zapisać zmian');
             }
         );
     };
@@ -99,16 +98,16 @@ angular.module('planevent').controller('OfferPageController',
             $http.post('/api/offer/' + $scope.offer.id + '/delete')
             .success(function(response) {
                 $scope.offer.status = response.status;
-                toastService.show('Usunięto kategorię');
+                toastService.info('Usunięto kategorię');
                 $location.path('/');
             })
             .error(function(response, status_code) {
                 if (status_code === 403) {
-                    toastService.show(
+                    toastService.warn(
                         'Nie posiadasz uprawnień do usunięcia tej oferty'
                     );
                 } else {
-                    toastService.show(
+                    toastService.error(
                         'Nie można usunąć oferty - nieznany błąd'
                     );
                 }
@@ -124,7 +123,7 @@ angular.module('planevent').controller('OfferPageController',
         .success(function(response) {
             $scope.offer.status = response.status;
             $scope.state = 'viewing';
-            toastService.show('Aktywowano ofertę');
+            toastService.info('Aktywowano ofertę');
         });
     };
 
@@ -134,7 +133,7 @@ angular.module('planevent').controller('OfferPageController',
         .success(function(response) {
             $scope.offer.status = response.status;
             $scope.state = 'viewing';
-            toastService.show('Deaktywowano ofertę');
+            toastService.info('Deaktywowano ofertę');
         });
     };
 

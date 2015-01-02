@@ -438,11 +438,24 @@ md-dialog.md-default-theme {
 
 md-toast {
     justify-content: space-between;
+    position: fixed;
     &.md-center {
         right: 40%;
     }
     .fa {
         font-size: 25px;
+    }
+    .level {
+        margin-right: 25px;
+        &.fa-info-circle {
+            color: rgb(121, 176, 225);
+        }
+        &.fa-warning {
+            color: yellow;
+        }
+        &.fa-exclamation-circle {
+            color: red;
+        }
     }
 }
 

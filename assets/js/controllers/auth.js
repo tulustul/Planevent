@@ -16,7 +16,7 @@ angular.module('planevent').service('userProfileService',
             scope.saving = true;
             accountService.saveAccount(scope.account, function() {
                 scope.saving = false;
-                toastService.show('Zapisano zmiany');
+                toastService.info('Zapisano zmiany');
             });
         };
     };

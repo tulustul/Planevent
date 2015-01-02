@@ -92,7 +92,7 @@ angular.module('planevent').controller('ProfileChangePasswordController',
             $scope.oldPassword = '';
             $scope.newPassword = '';
             $scope.newPasswordRepeated = '';
-            toastService.show('Hasło zostało zmienione');
+            toastService.info('Hasło zostało zmienione');
         })
         .error(function(response) {
             $scope.waiting = false;
@@ -131,7 +131,7 @@ angular.module('planevent').controller('ProfileLikingsController',
         .success(function() {
             $scope.$broadcast('likingUpdated', liking);
             liking.state = 'ready';
-            toastService.show('Zaktualizowano upodobanie');
+            toastService.info('Zaktualizowano upodobanie');
         })
         .error(function() {
             liking.state = 'ready';

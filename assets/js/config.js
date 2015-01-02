@@ -27,14 +27,15 @@ angular.module('planevent').config(function($httpProvider) {
 angular.module('planevent').run(function($rootScope, toastService) {
 
     $rootScope.$on('unauthorized', function() {
-        toastService.show('Musisz być zalogowany by wykonać tę akcję');
+        toastService.warn('Musisz być zalogowany by wykonać tę akcję');
+        $rootScope.$broadcast('loggedOut');
     })
 
     $rootScope.$on('forbidden', function() {
-        toastService.show('Nie posiadasz odpowiednich uprawnień');
+        toastService.warn('Nie posiadasz odpowiednich uprawnień');
     })
 
     $rootScope.$on('connectionError', function() {
-        toastService.show('Błąd połączenia. Sprawdź łączę internetowe.');
+        toastService.error('Błąd połączenia. Sprawdź łączę internetowe.');
     })
 });
