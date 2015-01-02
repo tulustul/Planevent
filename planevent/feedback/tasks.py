@@ -11,7 +11,7 @@ def send_new_feedback_notification(feedback):
     if admin_mails:
         services.send_mail(
             template='new_feedback_notification',
-            to=admin_mails,
+            recipients=admin_mails,
             subject='Nowy feedback',
             feedback=feedback,
         )

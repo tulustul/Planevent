@@ -73,12 +73,16 @@ angular.module('planevent').controller('ProfileChangePasswordController',
 
     userProfileService.prepareScope($scope);
 
+    $scope.oldPassword = '';
+    $scope.newPassword = '';
+    $scope.newPasswordRepeated = '';
+
     $scope.changePassword = function(
         oldPassword, newPassword, newPasswordRepeated
     ) {
 
         if (newPassword !== newPasswordRepeated) {
-            $scope.message = 'passwords_dont_match';
+            toastService.warn('Podane hasła nie są identyczne');
             return;
         }
 
@@ -87,7 +91,6 @@ angular.module('planevent').controller('ProfileChangePasswordController',
         authService.changePassword(oldPassword, newPassword)
         .success(function(response) {
             $scope.account.password_protected = true;
-            $scope.message = response.message;
             $scope.waiting = false;
             $scope.oldPassword = '';
             $scope.newPassword = '';
@@ -96,8 +99,20 @@ angular.module('planevent').controller('ProfileChangePasswordController',
         })
         .error(function(response) {
             $scope.waiting = false;
-            $scope.message = response.message;
-            $scope.minPasswordLength = response.mimimum_length;
+
+            if (response.message === 'invalid_credentials') {
+                toastService.warn('Stare hasło jest niepoprawne');
+
+            } else if (response.message === 'password_too_short') {
+                toastService.warn(
+                    'Nowe hasło musi mieć conajmniej ' +
+                    response.mimimum_length +
+                    ' znaków'
+                );
+
+            } else {
+                toastService.warn('Wystąpił nieznany błąd');
+            }
         });
     };
 });

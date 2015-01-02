@@ -6,13 +6,13 @@ from planevent.accounts.models import Account
 @cron(1, 1, -1, -1, -1)
 def send_recomendations_emails(num):
     accounts = Account().filter(
-        Account.use_recommendations==True
+        Account.use_recommendations==True,
     ).all()
 
     for account in accounts:
         services.send_mail(
             template='recomendations',
-            to=account.email,
+            recipients=account.email,
             subject='Planevent - dzisiejsze rekomendacje',
             account=account,
         )

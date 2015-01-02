@@ -43,7 +43,7 @@ angular.module('planevent').controller('PasswordRecallCallbackController',
 });
 
 angular.module('planevent').controller('LoginController',
-        function($scope, $rootScope, $mdDialog, authService) {
+        function($scope, $rootScope, $mdDialog, authService, toastService) {
 
     $scope.cancel = $mdDialog.cancel;
 
@@ -55,7 +55,6 @@ angular.module('planevent').controller('LoginController',
     };
 
     $scope.showRegistrationForm = function() {
-        // $scope.$broadcast('showRegistrationForm');
         $mdDialog.show({
             templateUrl: 'assets/partials/auth/registrationModal.html',
             controller: 'RegistrationController',
@@ -74,13 +73,15 @@ angular.module('planevent').controller('LoginController',
         })
         .error(function(response) {
             $scope.waiting = false;
-            $scope.message = response.message;
+            if (response.message === 'invalid_credentials') {
+                toastService.warn('Niepoprawne hasło');
+            }
         });
     };
 });
 
 angular.module('planevent').controller('RegistrationController',
-        function($scope, $rootScope, $mdDialog, authService) {
+        function($scope, $rootScope, $mdDialog, authService, toastService) {
 
     $scope.cancel = $mdDialog.cancel;
 
@@ -88,10 +89,8 @@ angular.module('planevent').controller('RegistrationController',
         $scope.message = '';
 
         if (password !== passwordRepeat) {
-            $scope.passwordsDontMatch = true;
+            toastService.warn('Hasła nie są identyczne');
             return;
-        } else {
-            $scope.passwordsDontMatch = false;
         }
 
         $scope.waiting = true;
@@ -104,14 +103,16 @@ angular.module('planevent').controller('RegistrationController',
         })
         .error(function(response) {
             $scope.waiting = false;
-            $scope.message = response.message;
+            if (response.message === 'invalid_credentials') {
+                toastService.warn('Niepoprawne hasło');
+            }
         });
     };
 
 });
 
 angular.module('planevent').controller('RemindPasswordController',
-        function($scope, $mdDialog, authService) {
+        function($scope, $mdDialog, authService, toastService) {
 
     $scope.cancel = $mdDialog.cancel;
 
@@ -121,11 +122,19 @@ angular.module('planevent').controller('RemindPasswordController',
         authService.sendRecallEmail(email)
         .success(function(response) {
             $scope.waiting = false;
-            $scope.message = response.message;
+            if (response.message === 'mail_sent') {
+                toastService.info('E-mail z przypomnieniem został wysłany');
+            }
         })
         .error(function(response) {
             $scope.waiting = false;
-            $scope.message = response.message;
+            if (response.message === 'invalid_email') {
+                toastService.warn('Niepoprawny e-mail');
+            } else {
+                toastService.error(
+                    'Wystąpił błąd podczas wysyłania przypomnienia'
+                );
+            }
         });
     };
 });

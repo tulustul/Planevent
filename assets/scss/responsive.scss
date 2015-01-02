@@ -82,4 +82,43 @@
 			}
 		}
 	}
+	md-input-group {
+		width: 100%;
+	}
+	md-dialog.md-default-theme {
+		width: 100%;
+		max-width: 100%;
+		box-shadow: none;
+		position: fixed;
+		bottom: 0px;
+		left: 0px;
+		border: 3px solid gray;
+		max-height: 100%;
+		.md-subheader {
+			font-size: 25px;
+		}
+		md-content {
+			padding: 10px;
+		}
+	}
+	.loginModal, .registrationModal, .remindPasswordModal {
+		p {
+			margin: 0px;
+		}
+		form {
+			margin: 0px;
+		}
+    	.md-button.submit-button {
+        	margin-top: 5px;
+    	}
+    }
+    md-sidenav {
+    	width: 250px;
+		min-width: 250px;
+    }
+    #user-profile-tabs {
+    	#user-profile, .settings, .login-form {
+    		padding: 0px 10px;
+    	}
+    }
 }

@@ -454,21 +454,18 @@ offerpreview {
         width: auto;
     }
     .md-button {
-        width: 50%;
         &.submit-button {
             margin-top: 25px;
         }
     }
     md-input-group {
-        width: 50%;
         input {
             width: 100%;
         }
     }
     .oauth {
-        display: flex;
-        justify-content: space-between;
         .md-button {
+            margin-bottom: 10px;
             &.fa-facebook {
                 @include button-color($facebook-color);
             }
@@ -486,6 +483,7 @@ offerpreview {
         a {
             color: $link-color;
             cursor: pointer;
+            margin-bottom: 10px;
         }
     }
 }
@@ -503,7 +501,7 @@ offerpreview {
 }
 
 $avatar-size: 100px;
-#user-profile {
+#user-profile-tabs {
     .avatar-settings {
         position: relative;
         margin-left: 20px;
@@ -522,8 +520,10 @@ $avatar-size: 100px;
         }
     }
     .settings {
+        max-width: 500px;
+        width: 100%;
         .address-viewer {
-            width: 500px;
+            width: 100%;
             margin-bottom: 10px;
         }
         .address-setter input {

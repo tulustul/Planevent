@@ -20,13 +20,11 @@
 				Zaloguj się
 			</md-button>
 			<spinner ng-show="waiting"></spinner>
-
-			<span ng-show="message=='invalid_credentials'">Niepoprawne hasło</span>
 		</form>
 
 		<p>lub</p>
 
-		<div class="oauth">
+		<div class="oauth" layout="row" layout-sm="column" layout-align="center center">
 			<a href="/login/facebook" target="_self">
 				<md-button class="fa fa-facebook">
 					Zaloguj się przez Facebook
@@ -40,7 +38,7 @@
 			</a>
 		</div>
 
-		<div class="options">
+		<div class="options" layout="row" layout-sm="column" layout-align="center center">
 			<a ng-click="showRegistrationForm()">Nie mam jeszcze konta</a>
 			<a ng-click="showRemindPasswordForm()">Zapomniałem hasła</a>
 		</div>
