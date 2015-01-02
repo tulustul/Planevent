@@ -135,7 +135,6 @@ angular.module('planevent').controller('ProfileLikingsController',
         })
         .error(function() {
             liking.state = 'ready';
-            toastService.show('Nie udało się zapisać zmian');
         });
 
     };

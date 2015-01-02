@@ -9,12 +9,16 @@ from PIL import (
     Image,
     ImageOps,
 )
-from pyramid.httpexceptions import HTTPFound
-from pyramid.exceptions import Forbidden
+from pyramid.httpexceptions import (
+    HTTPUnauthorized,
+    HTTPForbidden,
+    HTTPFound,
+)
 
 from planevent.patches import robot_detection
 from planevent.core.sql import BaseEntity
 from planevent import settings
+from planevent.accounts.models import Account
 import planevent
 
 
@@ -164,8 +168,10 @@ def permission(permission):
     def decorator(mth):
         @wraps(mth)
         def wrap(self, *args, **kwargs):
+            if self.get_user_role() == Account.Role.ANONYMOUS != permission:
+                raise HTTPUnauthorized()
             if settings.USE_PERMISSIONS and self.get_user_role() < permission:
-                raise Forbidden()
+                raise HTTPForbidden()
             return mth(self, *args, **kwargs)
         return wrap
     return decorator

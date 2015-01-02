@@ -148,7 +148,6 @@ class PasswordRecallCallbackView(View):
 @route('logged_user')
 class LoggedUserView(View):
 
-    @permission(models.Account.Role.NORMAL)
     def get(self):
         user_id = self.get_user_id()
         if user_id:
