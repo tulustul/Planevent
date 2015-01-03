@@ -2,7 +2,7 @@
 
 /* Basing on ng-infinite-scroll - v1.0.0 */
 angular.module('planevent').directive('infinitescroll',
-        function($rootScope, $timeout, $location, $routeParams, toastService) {
+        function($rootScope, $timeout, $location, $routeParams) {
 
     return {
         restrict: 'EA',
