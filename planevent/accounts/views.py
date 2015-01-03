@@ -53,7 +53,14 @@ class LoginView(View):
         except (InvalidEmail, auth.InvalidCredentials):
             return self.response(400, 'invalid_credentials')
         else:
-            return models.Account.get_by_email(email)
+            return models.Account.get_by_email(
+                email,
+                'settings',
+                'settings.address',
+                'likings',
+                'likings.subcategory',
+                'likings.subcategory.category',
+            )
 
 
 @route('login_oauth2')
