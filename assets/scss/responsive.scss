@@ -121,4 +121,22 @@
     		padding: 0px 10px;
     	}
     }
+	.gallery-modal {
+		.md-subheader.md-default-theme  {
+			font-size: 15px;
+			padding: 4px;
+			.modal-close {
+            	top: 4px;
+            }
+		}
+		height: 100%;
+		gallery {
+			li .description {
+				font-size: 13px;
+			}
+			.gallery li .image {
+				height: 280px;
+			}
+		}
+	}
 }

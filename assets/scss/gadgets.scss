@@ -120,8 +120,8 @@ $galleryHeigth: 500px;
 gallery {
     display: flex;
     width: 100%;
+    max-width: 1200px;
     .gallery {
-        width: 100%;
         .flex-control-thumbs{
             display: flex;
             align-items: center;
@@ -141,7 +141,6 @@ gallery {
         }
         li {
             .image {
-                width: 100%;
                 height: $galleryHeigth;
                 background-repeat: no-repeat;
                 background-position: center;
