@@ -6,10 +6,14 @@
             </ul>
         </div>
     </div> -->
-    <div class="manual-loader" ng-click="loadPrevious()" ng-show="!topIsLoaded"><span>Wczytaj wcześniejsze</span></div>
+    <div class="manual-loader"
+         ng-click="loadPrevious()"
+         ng-show="!topIsLoaded && waitingForMore != 'top'">
+        <span>Wczytaj wcześniejsze</span>
+    </div>
 
     <div class="loading-message">
-        <span ng-show="waitingForMore == 'top'">Wczytywanie...</span>
+        <spinner class="top-spinner" ng-show="waitingForMore == 'top'"></spinner>
     </div>
 
     <div class="content" ng-transclude></div>
@@ -17,7 +21,7 @@
     <div class="manual-loader" ng-click="loadNext()" ng-show="!bottomIsLoaded && manualNextLoading"><span>Wczytaj kolejne</span></div>
 
     <div class="loading-message">
-        <span ng-show="waitingForMore == 'bottom'">Wczytywanie...</span>
+        <spinner class="bottom-spinner" ng-show="waitingForMore == 'bottom'"></spinner>
         <span ng-show="bottomIsLoaded">Nie ma już więcej ofert :(</span>
     </div>
 </div>

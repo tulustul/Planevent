@@ -2,7 +2,7 @@
 
 /* Basing on ng-infinite-scroll - v1.0.0 */
 angular.module('planevent').directive('infinitescroll',
-        function($rootScope, $timeout, $location, $routeParams) {
+        function($rootScope, $timeout, $location, $routeParams, toastService) {
 
     return {
         restrict: 'EA',
@@ -13,7 +13,7 @@ angular.module('planevent').directive('infinitescroll',
         link: function(scope, elem, attrs) {
             var autoScroolLimit = parseInt(attrs.autoScrollLimit),
                 fetchFunction = scope.$eval(attrs.fetchFunction),
-                scrollingElement = $(attrs.scrollingElement),
+                element = $(attrs.scrollingElement),
                 offset = parseInt($routeParams.offset),
                 loadingPrevious = false,
                 checkWhenEnabled, scrollDistance, scrollEnabled,
@@ -107,6 +107,8 @@ angular.module('planevent').directive('infinitescroll',
 
             function calculatePageSize() {
                 var elementSize = scope.$eval(attrs.elementSize),
+                    isMobile = $(window).width() <= 600,
+                    scrollingElement = isMobile ? $(window) : element,
                     containerHeight = scrollingElement.height(),
                     fetchPages = parseInt(attrs.fetchPages);
 
@@ -181,32 +183,54 @@ angular.module('planevent').directive('infinitescroll',
 
             function calculateCurrentElement() {
                 var elementSize = scope.$eval(attrs.elementSize),
+                    isMobile = $(window).width() <= 600,
+                    scrollingElement = isMobile ? $(window) : element,
                     row = scrollingElement.scrollTop() / elementSize,
                     page = parseInt(row + scope.minLoadedOffset);
+
                 scope.currentPage = page;
-                if(!scope.$$phase) {
+
+                if (!scope.$$phase) {
                     scope.$apply();
                 }
 
                 $location.search('offset', page);
             }
 
-            function handler() {
-                calculateCurrentElement();
+            function handlerMobile() {
+                var elementBottom = (
+                    element.offset().top + element.height()
+                ),
+                    windowScroll = $(window).height() + $(window).scrollTop(),
+                    remaining = elementBottom - windowScroll;
 
-                var elementBottom, remaining, shouldScroll, windowBottom;
+                return(remaining <= $(window).height() * scrollDistance);
+            }
+
+            function handlerDesktop() {
+                var elementBottom, remaining, windowBottom;
+
                 windowBottom = (
-                    scrollingElement.innerHeight() +
-                    scrollingElement.scrollTop()
+                    element.innerHeight() +
+                    element.scrollTop()
                 );
                 elementBottom = (
-                    scrollingElement.offset().top +
-                    scrollingElement[0].scrollHeight
+                    element.offset().top +
+                    element[0].scrollHeight
                 );
                 remaining = elementBottom - windowBottom;
-                shouldScroll = (remaining <=
-                    scrollingElement.innerHeight() * scrollDistance
+
+                return (
+                    remaining <= element.innerHeight() * scrollDistance
                 );
+            }
+
+            function handler() {
+                var isMobile = $(window).width() <= 600,
+                    scrollHandler = isMobile ? handlerMobile : handlerDesktop,
+                    shouldScroll = scrollHandler();
+
+                calculateCurrentElement();
 
                 if (shouldScroll && scrollEnabled &&
                         !scope.manualNextLoading && !scope.waitingForMore &&
@@ -218,9 +242,11 @@ angular.module('planevent').directive('infinitescroll',
                 }
             }
 
-            scrollingElement.on('scroll', handler);
+            element.on('scroll', handler);
+            $(window).on('scroll', handler);
             scope.$on('$destroy', function() {
-                return scrollingElement.off('scroll', handler);
+                element.off('scroll', handler);
+                $(window).off('scroll', handler);
             });
             return $timeout((function() {
                 if (attrs.infiniteScrollImmediateCheck) {

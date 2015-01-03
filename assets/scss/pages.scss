@@ -276,8 +276,13 @@ offerpreview {
             span {
                 font-size: 40px;
                 line-height: 60px;
-                color: white;
             }
+        }
+        .top-spinner {
+            margin-top: 10px;
+        }
+        .bottom-spinner {
+            margin-bottom: 10px;
         }
     }
 }
@@ -465,7 +470,6 @@ offerpreview {
     }
     .oauth {
         .md-button {
-            margin-bottom: 10px;
             &.fa-facebook {
                 @include button-color($facebook-color);
             }
