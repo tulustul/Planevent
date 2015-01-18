@@ -74,8 +74,14 @@ angular.module('planevent').controller('LoginController',
         .error(function(response) {
             $scope.waiting = false;
             if (response.message === 'invalid_credentials') {
-                toastService.warn('Niepoprawne hasło');
+                $scope.loginForm.password.$setValidity('incorrect', false);
+            } else {
+                toastService.error('Wystąpił błąd: ' + response.message);
             }
+        });
+
+        $scope.$watch('password', function() {
+            $scope.loginForm.password.$setValidity('incorrect', true);
         });
     };
 });
@@ -85,14 +91,17 @@ angular.module('planevent').controller('RegistrationController',
 
     $scope.cancel = $mdDialog.cancel;
 
-    $scope.register = function(email, password, passwordRepeat) {
-        $scope.message = '';
-
-        if (password !== passwordRepeat) {
-            toastService.warn('Hasła nie są identyczne');
-            return;
+    $scope.$watchGroup(['password', 'passwordRepeated'], function() {
+        var valid = true;
+        if ($scope.password !== $scope.passwordRepeated) {
+            valid = false;
         }
+        $scope.registrationForm.passwordRepeated.$setValidity(
+            'dontmatch', valid
+        );
+    });
 
+    $scope.register = function(email, password, passwordRepeat) {
         $scope.waiting = true;
 
         authService.register(email, password, passwordRepeat)
@@ -103,9 +112,18 @@ angular.module('planevent').controller('RegistrationController',
         })
         .error(function(response) {
             $scope.waiting = false;
-            if (response.message === 'invalid_credentials') {
-                toastService.warn('Niepoprawne hasło');
+            if (response.message === 'email_already_taken') {
+                $scope.registrationForm.email.$setValidity('taken', false);
+            } else if (response.message === 'invalid_email') {
+                $scope.registrationForm.email.$setValidity('invalid', false);
+            } else {
+                toastService.error('Wystąpił błąd: ' + response.message);
             }
+        });
+
+        $scope.$watch('email', function() {
+            $scope.registrationForm.email.$setValidity('taken', true);
+            $scope.registrationForm.email.$setValidity('invalid', true);
         });
     };
 
@@ -129,13 +147,18 @@ angular.module('planevent').controller('RemindPasswordController',
         .error(function(response) {
             $scope.waiting = false;
             if (response.message === 'invalid_email') {
-                toastService.warn('Niepoprawny e-mail');
+                $scope.remindPasswordForm.email.$setValidity('invalid', false);
             } else {
                 toastService.error(
                     'Wystąpił błąd podczas wysyłania przypomnienia'
                 );
             }
         });
+
+        $scope.$watch('email', function() {
+            $scope.remindPasswordForm.email.$setValidity('invalid', true);
+        });
+
     };
 });
 

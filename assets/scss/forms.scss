@@ -1,6 +1,9 @@
 @import "globals.scss";
 
 form {
+	md-input-container {
+		width: 100%;
+	}
 	.ng-invalid input{
 		border-color: red;
 	}

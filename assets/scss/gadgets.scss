@@ -415,6 +415,10 @@ md-dialog.md-default-theme {
         text-align: center;
         flex: 0 0 auto;
         background-color: transparent;
+        .md-subheader-content {
+            display: block;
+            position: initial;
+        }
         .modal-close {
             float: right;
             position: absolute;

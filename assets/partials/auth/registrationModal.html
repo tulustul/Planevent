@@ -8,25 +8,43 @@
 	<md-content>
 		<p>Zarejestruj się przez swój email</p>
 		<form name="registrationForm" id="login-form" layout="column" layout-align="center center">
-			<md-text-float label="Email" md-fid="email" ng-model="email" type="email" required></md-text-float>
-			<md-text-float name="password" label="Hasło" ng-model="password" type="password" minlength="5" required></md-text-float>
-			<md-text-float name="password" label="Powtórz hasło" ng-model="passwordRepeated" type="password" required></md-text-float>
 
-			<ng-messages for="registrationForm.password.$error">
-				<ng-message when="minlength">Hasło musi mieć przynajmniej 5 znaków</ng-message>
-			</ng-messages>
+			<md-input-container>
+		        <label>Email</label>
+		        <input required name="email" ng-model="email" type="email">
+		        <div ng-messages="registrationForm.email.$error" ng-show="registrationForm.email.$invalid && !registrationForm.email.$pristine">
+		        	<div ng-message="required">Email jest wymagany</div>
+		        	<div ng-message="invalid">Podany email jest niepoprawny</div>
+		        	<div ng-message="taken">Podany email jest już zajęty</div>
+		        </div>
+		    </md-input-container>
 
-			<md-button class="submit-button fa fa-sign-in"
+			<md-input-container>
+		        <label>Hasło</label>
+		        <input required minlength="5" name="password" ng-model="password" type="password">
+		        <div ng-messages="registrationForm.password.$error" ng-show="registrationForm.password.$invalid && !registrationForm.password.$pristine">
+		        	<div ng-message="required">Hasło jest wymagane</div>
+					<ng-message when="minlength">Hasło musi mieć przynajmniej 5 znaków</ng-message>
+		        </div>
+		     </md-input-container>
+
+			<md-input-container>
+		        <label>Powtórz hasło</label>
+		        <input required minlength="5" name="passwordRepeated" ng-model="passwordRepeated" type="password">
+		        <div ng-messages="registrationForm.passwordRepeated.$error" ng-show="registrationForm.passwordRepeated.$invalid && !registrationForm.passwordRepeated.$pristine">
+		        	<div ng-message="required">Hasło jest wymagane</div>
+		        	<div ng-message="dontmatch">Podane hasła nie są identyczne</div>
+		        </div>
+		     </md-input-container>
+
+			<md-button class="submit-button wide-button fa fa-sign-in"
 					   ng-click="register(email, password, passwordRepeated)"
 					   type="submit"
 					   ng-disabled="registrationForm.$invalid"
 					   ng-show="!waiting">
 				Zarejestruj się
 			</md-button>
-
 			<spinner ng-show="waiting"></spinner>
-			<span ng-show="message=='invalid_credentials'">Niepoprawne hasło</span>
-			<span ng-show="passwordsDontMatch">Podane hasła nie są identyczne</span>
 
 		</form>
 
