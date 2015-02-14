@@ -11,10 +11,11 @@ static/vendor.js
 static/*.css
 static/images/uploads/logos/*
 static/images/uploads/avatars/*
+static/fonts
 !static/images/uploads/logos/dummyfile
 static/images/uploads/galleries/*
 !static/images/uploads/galleries/dummyfile
-PlanEvent.sublime-project
-PlanEvent.sublime-workspace
+*.sublime-project
+*.sublime-workspace
 uwsgi_spoolfile*
 uwsgi.pid
