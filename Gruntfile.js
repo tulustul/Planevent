@@ -36,6 +36,8 @@ var vendorJs = {
         'bower_components/flexslider/jquery.flexslider.js',
         'bower_components/angular-flexslider/angular-flexslider.js',
         'bower_components/angular-xe/dist/js/xeditable.js',
+        'bower_components/rangy/rangy-core.js',
+        'bower_components/rangy/rangy-selectionsaverestore.js',
         'bower_components/textAngular/src/textAngular-sanitize.js',
         'bower_components/textAngular/src/textAngular.js',
         'bower_components/textAngular/src/textAngularSetup.js',
