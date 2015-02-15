@@ -23,7 +23,13 @@ angular.module('planevent').controller('OfferPageController',
     var Offer = $resource('/api/offers/:offerId', {offerId: '@id'}),
         offerId = $routeParams.offerId;
 
-    $scope.state = 'viewing';
+    if ($location.path() === '/offers/new') {
+        $scope.state = 'editing';
+        $scope.isNew = true;
+    } else {
+        $scope.state = 'viewing';
+        $scope.isNew = false;
+    }
     $scope.error = '';
 
     function fetchOffer() {

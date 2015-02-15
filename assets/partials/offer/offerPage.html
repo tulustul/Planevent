@@ -1,15 +1,18 @@
 <article layout-sm="column" layout-md="column" layout-lg="column" layout="row" ng-if="fetched">
-    <div class="offer-page">
 
-        <div class="navigation" layout-lg="row" layout="column">
+    <form name="offerForm" class="offer-page">
 
-            <p class="title"
-               editable-text="offer.name"
-               e-form="offerTitle"
-               ng-click="showEditable(offerTitle)"
-               ng-class="{editing: state=='editing'}">
+        <div class="navigation" layout-md="column" layout-sm="column" layout="row">
+
+            <p class="title" ng-if="state!='editing'">
                 {{ offer.name || "Tutaj tytuł oferty" }}
             </p>
+            <md-input-container class="big" ng-if="state=='editing'">
+                <input required name="title" ng-model="offer.name" placeholder="Tutaj tytuł oferty">
+                <div ng-messages="offerForm.title.$error" ng-show="offerForm.title.$invalid && !offerForm.title.$pristine">
+                    <div ng-message="required">Tytuł oferty jest wymagany</div>
+                </div>
+             </md-input-container>
 
             <div class="actions">
                 <div ng-show="state=='editing'">
@@ -42,9 +45,9 @@
 
         <div id="offer-view" ng-include="'assets/partials/offer/offerView.html'" ng-show="fetched"></div>
 
-    </div>
+    </form>
 
-    <div class="related-offers widget" ng-controller="RelatedOffersController">
+    <div ng-if="!isNew" class="related-offers widget" ng-controller="RelatedOffersController">
         <span class="title">Najbliższe podobne oferty</span>
         <div class="related-offers-content">
             <a href="/#/offers/{{ offer.id }}" class="offer-previews-wrapper" ng-repeat="offer in relatedOffers">

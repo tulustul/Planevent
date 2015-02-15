@@ -31,13 +31,11 @@ var vendorJs = {
 
         'bower_components/angucomplete/angucomplete.js',
         'bower_components/ngAutocomplete/src/ngAutocomplete.js',
-        'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-        'bower_components/angular-ui-slider/src/slider.js',
         'bower_components/ng-file-upload/angular-file-upload.js',
         'bower_components/ng-table/ng-table.js',
         'bower_components/flexslider/jquery.flexslider.js',
         'bower_components/angular-flexslider/angular-flexslider.js',
-        'bower_components/angular-xeditable/dist/js/xeditable.js',
+        'bower_components/angular-xe/dist/js/xeditable.js',
         'bower_components/textAngular/src/textAngular-sanitize.js',
         'bower_components/textAngular/src/textAngular.js',
         'bower_components/textAngular/src/textAngularSetup.js',
@@ -49,8 +47,6 @@ var vendorJs = {
 };
 var vendorCss = {
     src: [
-        // 'bower_components/bootstrap/dist/css/bootstrap.css',
-        // 'bower_components/bootstrap/dist/css/bootstrap-theme.css',
         'bower_components/jquery-ui/themes/base/jquery-ui.css',
         'bower_components/angucomplete/angucomplete.css',
         'bower_components/flexslider/flexslider.css',

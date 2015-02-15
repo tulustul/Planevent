@@ -3,7 +3,24 @@
 angular.module('planevent').controller('ContactsEditController',
 		function($scope) {
 
-	$scope.contactTypes = ['tel', 'www', 'email', 'fax', 'facebook'];
+	$scope.contactTypes = [
+		{
+			label: 'telephone',
+			icon: 'phone',
+		}, {
+			label: 'email',
+			icon: 'envelope',
+		}, {
+			label: 'fax',
+			icon: 'fax',
+		}, {
+			label: 'facebook',
+			icon: 'facebook',
+		}, {
+			label: 'www',
+			icon: 'globe',
+		},
+	];
 
 	$scope.contactIcons = {
 		tel: 'phone',

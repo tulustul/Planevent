@@ -3,6 +3,11 @@
 form {
 	md-input-container {
 		width: 100%;
+		&.big {
+			label, input {
+				font-size: 35px;
+			}
+		}
 	}
 	.ng-invalid input{
 		border-color: red;
